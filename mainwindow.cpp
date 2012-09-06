@@ -3,9 +3,11 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    settings(new SettingsDialog(this))
 {
     ui->setupUi(this);
+    connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
     BPDatabase db(this);
     if(db.version() != "-1") {
@@ -46,7 +48,11 @@ void MainWindow::on_actionImport_triggered()
     emit importFilesToLibrary(fileList);
 }
 
-void MainWindow::on_actionSearchText_triggered()
+void MainWindow::on_actionSettings_triggered()
+{
+}
+
+void MainWindow::on_actionSearch_triggered()
 {
 
 }

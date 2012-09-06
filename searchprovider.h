@@ -1,7 +1,8 @@
 #ifndef SEARCHPROVIDER_H
 #define SEARCHPROVIDER_H
 
-#include <QObject>
+#include <QtCore>
+#include <QtNetwork>
 
 class SearchProvider : public QObject
 {
@@ -12,6 +13,10 @@ public:
 signals:
     
 public slots:
+    void searchFromIds(QList<int> ids);
+
+private:
+    QHttp* httpSocket;
     
 };
 

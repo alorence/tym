@@ -3,16 +3,12 @@
 LibraryView::LibraryView(QWidget *parent) :
     QTableView(parent)
 {
-    setShowGrid(false);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
-    setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 void LibraryView::setModel(QAbstractItemModel *model)
 {
     QTableView::setModel(model);
     resizeColumnsToContents();
-    verticalHeader()->setVisible(false);
 
     connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(onSelectionChanged(QItemSelection,QItemSelection)));

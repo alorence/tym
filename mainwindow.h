@@ -4,6 +4,7 @@
 #include <QtSql>
 #include <QtGui>
 
+#include "settingsdialog.h"
 #include "librarymodel.h"
 #include "bpdatabase.h"
 
@@ -25,10 +26,13 @@ signals:
 private slots:
     void on_actionImport_triggered();
 
-    void on_actionSearchText_triggered();
+    void on_actionSettings_triggered();
+
+    void on_actionSearch_triggered();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
+    SettingsDialog* settings;
     LibraryModel* libraryModel;
     QSqlRelationalTableModel* tracksModel;
 

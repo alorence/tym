@@ -15,14 +15,20 @@ SOURCES += main.cpp\
     libraryview.cpp \
     bpdatabase.cpp \
     libraryelementview.cpp \
-    searchprovider.cpp
+    searchprovider.cpp \
+    settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     librarymodel.h \
     libraryview.h \
     bpdatabase.h \
     libraryelementview.h \
-    searchprovider.h
+    searchprovider.h \
+    settingsdialog.h
 
 FORMS    += mainwindow.ui \
-    libraryelementview.ui
+    libraryelementview.ui \
+    settingsdialog.ui
+
+RESOURCES += \
+    resources.qrc
