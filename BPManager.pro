@@ -16,7 +16,8 @@ SOURCES += main.cpp\
     bpdatabase.cpp \
     libraryelementview.cpp \
     searchprovider.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    libs/qt-json/json.cpp
 
 HEADERS  += mainwindow.h \
     librarymodel.h \
@@ -24,7 +25,8 @@ HEADERS  += mainwindow.h \
     bpdatabase.h \
     libraryelementview.h \
     searchprovider.h \
-    settingsdialog.h
+    settingsdialog.h \
+    libs/qt-json/json.h
 
 FORMS    += mainwindow.ui \
     libraryelementview.ui \
