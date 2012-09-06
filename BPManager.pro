@@ -9,28 +9,28 @@ QT       += core gui sql network
 TARGET = BPManager
 TEMPLATE = app
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    librarymodel.cpp \
-    libraryview.cpp \
-    bpdatabase.cpp \
-    libraryelementview.cpp \
-    searchprovider.cpp \
-    settingsdialog.cpp \
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp \
+    src/librarymodel.cpp \
+    src/libraryview.cpp \
+    src/bpdatabase.cpp \
+    src/libraryelementview.cpp \
+    src/searchprovider.cpp \
+    src/settingsdialog.cpp \
     libs/qt-json/json.cpp
 
-HEADERS  += mainwindow.h \
-    librarymodel.h \
-    libraryview.h \
-    bpdatabase.h \
-    libraryelementview.h \
-    searchprovider.h \
-    settingsdialog.h \
-    libs/qt-json/json.h
+HEADERS  += src/mainwindow.h \
+    src/librarymodel.h \
+    src/libraryview.h \
+    src/bpdatabase.h \
+    src/libraryelementview.h \
+    src/searchprovider.h \
+    src/settingsdialog.h \
+    src/libs/qt-json/json.h
 
-FORMS    += mainwindow.ui \
-    libraryelementview.ui \
-    settingsdialog.ui
+FORMS    += src/ui/mainwindow.ui \
+    src/ui/libraryelementview.ui \
+    src/ui/settingsdialog.ui
 
 RESOURCES += \
-    resources.qrc
+    src/resources/resources.qrc
