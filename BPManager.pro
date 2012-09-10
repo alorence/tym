@@ -12,25 +12,27 @@ TEMPLATE = app
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
     src/librarymodel.cpp \
-    src/libraryview.cpp \
+    uis/libraryview.cpp \
     src/bpdatabase.cpp \
-    src/libraryelementview.cpp \
+    uis/libraryelementview.cpp \
     src/searchprovider.cpp \
-    src/settingsdialog.cpp \
+    uis/settingsdialog.cpp \
     libs/qt-json/json.cpp
 
 HEADERS  += src/mainwindow.h \
     src/librarymodel.h \
-    src/libraryview.h \
+    uis/libraryview.h \
     src/bpdatabase.h \
-    src/libraryelementview.h \
+    uis/libraryelementview.h \
     src/searchprovider.h \
-    src/settingsdialog.h \
-    src/libs/qt-json/json.h
+    uis/settingsdialog.h \
+    libs/qt-json/json.h
 
-FORMS    += src/ui/mainwindow.ui \
-    src/ui/libraryelementview.ui \
-    src/ui/settingsdialog.ui
+UI_HEADERS_DIR += uis
+
+FORMS    += uis/mainwindow.ui \
+    uis/libraryelementview.ui \
+    uis/settingsdialog.ui
 
 RESOURCES += \
-    src/resources/resources.qrc
+    res/resources.qrc

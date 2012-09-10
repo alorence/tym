@@ -4,9 +4,10 @@
 #include <QtSql>
 #include <QtGui>
 
-#include "settingsdialog.h"
+#include "uis/settingsdialog.h"
 #include "librarymodel.h"
 #include "bpdatabase.h"
+#include "searchprovider.h"
 
 namespace Ui {
 class MainWindow;

@@ -54,5 +54,6 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionSearch_triggered()
 {
-
+    SearchProvider searcher();
+    searcher.searchFromIds(QList<int>() << 15 << 20 << 12547);
 }

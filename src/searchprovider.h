@@ -4,6 +4,8 @@
 #include <QtCore>
 #include <QtNetwork>
 
+#include "libs/qt-json/json.h"
+
 class SearchProvider : public QObject
 {
     Q_OBJECT
@@ -15,8 +17,12 @@ signals:
 public slots:
     void searchFromIds(QList<int> ids);
 
-private:
-    QHttp* httpSocket;
+private slots:
+    void parseJsonReply();
+    void getError(QNetworkReply::NetworkError);
+
+private :
+    QNetworkAccessManager *manager;
     
 };
 
