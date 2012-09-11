@@ -4,8 +4,8 @@
 #include <QtGui>
 #include <QtCore>
 
-#include "librarymodel.h"
-#include "bpdatabase.h"
+#include "src/librarymodel.h"
+#include "src/bpdatabase.h"
 
 namespace Ui {
 class LibraryElementView;

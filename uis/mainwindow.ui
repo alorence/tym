@@ -146,12 +146,12 @@
   <customwidget>
    <class>LibraryView</class>
    <extends>QTableView</extends>
-   <header>libraryview.h</header>
+   <header>src/libraryview.h</header>
   </customwidget>
   <customwidget>
    <class>LibraryElementView</class>
    <extends>QWidget</extends>
-   <header>libraryelementview.h</header>
+   <header>uis/libraryelementview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

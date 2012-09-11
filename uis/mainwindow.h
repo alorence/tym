@@ -5,9 +5,9 @@
 #include <QtGui>
 
 #include "uis/settingsdialog.h"
-#include "librarymodel.h"
-#include "bpdatabase.h"
-#include "searchprovider.h"
+#include "src/librarymodel.h"
+#include "src/bpdatabase.h"
+#include "src/searchprovider.h"
 
 namespace Ui {
 class MainWindow;
