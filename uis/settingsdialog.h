@@ -23,6 +23,7 @@ private slots:
     void changeDisplayedStack();
 private:
     Ui::SettingsDialog *ui;
+    QMap<QString, QWidget*> pages;
 };
 
 #endif // SETTINGSDIALOG_H

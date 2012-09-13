@@ -12,10 +12,11 @@ TEMPLATE = app
 
 include(src/src.pri)
 include(uis/uis.pri)
+include(res/res.pri)
 
 SOURCES += libs/qt-json/json.cpp
 
 HEADERS  += libs/qt-json/json.h
 
-RESOURCES += \
-    res/resources.qrc
+RESOURCES += resources.qrc
+
