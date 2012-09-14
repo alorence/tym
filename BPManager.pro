@@ -12,7 +12,6 @@ TEMPLATE = app
 
 include(src/src.pri)
 include(uis/uis.pri)
-include(res/res.pri)
 
 SOURCES += libs/qt-json/json.cpp
 
