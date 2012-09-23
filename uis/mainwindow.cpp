@@ -4,7 +4,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    settings(new SettingsDialog(this))
+    settings(new SettingsDialog(this)),
+    searchProvider(settings, this)
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
@@ -54,6 +55,6 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SearchProvider searcher;
-    searcher.searchFromIds(QList<int>() << 15 << 20 << 12547);
+
+    searchProvider.searchFromIds(QList<int>() << 15 << 20 << 12547);
 }

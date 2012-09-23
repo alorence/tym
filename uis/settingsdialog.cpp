@@ -6,24 +6,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
-    connect(ui->menu, SIGNAL(itemSelectionChanged()), SLOT(changeDisplayedStack()));
 
-    QTreeWidgetItem * general = new QTreeWidgetItem(ui->menu, QStringList()<<"General");
-    general->setData(0, Qt::UserRole, QVariant("general"));
-    pages.insert("general", ui->general);
-    QTreeWidgetItem * textIn = new QTreeWidgetItem(general, QStringList()<<"Text input");
-    textIn->setData(0, Qt::UserRole, QVariant("textIn"));
-    pages.insert("textIn", ui->textIn);
-    QTreeWidgetItem * textOut = new QTreeWidgetItem(general, QStringList()<<"Text output");
-    textOut->setData(0, Qt::UserRole, QVariant("textOut"));
-    pages.insert("textOut", ui->textOut);
-
-    QTreeWidgetItem * network = new QTreeWidgetItem(ui->menu, QStringList()<<"Network");
-    network->setData(0, Qt::UserRole, QVariant("network"));
-    pages.insert("network", ui->network);
-    QTreeWidgetItem * beatport = new QTreeWidgetItem(network, QStringList()<<"Beatport");
-    beatport->setData(0, Qt::UserRole, QVariant("beatport"));
-    pages.insert("beatport", ui->beatport);
+    initMenu();
+    initDefaultValues();
+    initWidgetValues();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -31,8 +17,52 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
+void SettingsDialog::initMenu()
+{
+    connect(ui->menu, SIGNAL(itemSelectionChanged()), SLOT(changeDisplayedStack()));
+
+    QTreeWidgetItem * general = new QTreeWidgetItem(ui->menu, QStringList()<<"General");
+    general->setData(0, Qt::UserRole, QVariant("general"));
+    pages.insert("general", ui->general);
+
+    QTreeWidgetItem * textIn = new QTreeWidgetItem(general, QStringList()<<"Text input");
+    textIn->setData(0, Qt::UserRole, QVariant("textIn"));
+    pages.insert("textIn", ui->textIn);
+
+    QTreeWidgetItem * textOut = new QTreeWidgetItem(general, QStringList()<<"Text output");
+    textOut->setData(0, Qt::UserRole, QVariant("textOut"));
+    pages.insert("textOut", ui->textOut);
+
+    QTreeWidgetItem * network = new QTreeWidgetItem(ui->menu, QStringList()<<"Network");
+    network->setData(0, Qt::UserRole, QVariant("network"));
+    pages.insert("network", ui->network);
+
+    QTreeWidgetItem * beatport = new QTreeWidgetItem(network, QStringList()<<"Beatport");
+    beatport->setData(0, Qt::UserRole, QVariant("beatport"));
+    pages.insert("beatport", ui->beatport);
+}
+
+void SettingsDialog::initDefaultValues()
+{
+    defaultValues["settings/network/beatport/apihost"] = QVariant("api.beatport.com");
+}
+
+void SettingsDialog::initWidgetValues()
+{
+    ui->apiHost->setText(getSettingsValue("settings/network/beatport/apihost").toString());
+}
+
+QVariant SettingsDialog::getSettingsValue(const QString &key) const
+{
+    QSettings settings;
+    return settings.value(key, defaultValues.value(key));
+}
+
 void SettingsDialog::on_buttons_accepted()
 {
+    QSettings settings;
+    settings.setValue("settings/network/beatport/apihost", QVariant(ui->apiHost->text()));
+
     close();
 }
 
@@ -47,3 +77,4 @@ void SettingsDialog::changeDisplayedStack()
     QString key = items.at(0)->data(0, Qt::UserRole).toString();
     ui->content->setCurrentIndex(ui->content->indexOf(pages[key]));
 }
+

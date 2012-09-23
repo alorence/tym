@@ -36,7 +36,7 @@ private:
     SettingsDialog* settings;
     LibraryModel* libraryModel;
     QSqlRelationalTableModel* tracksModel;
-
+    SearchProvider searchProvider;
 };
 
 #endif // MAINWINDOW_H
