@@ -5,6 +5,7 @@
 #include <QtGui>
 
 #include "uis/settingsdialog.h"
+#include "uis/selectsearchsource.h"
 #include "src/librarymodel.h"
 #include "src/bpdatabase.h"
 #include "src/searchprovider.h"
@@ -22,13 +23,10 @@ public:
     ~MainWindow();
 
 signals:
-    void importFilesToLibrary(QStringList);
+    void importFilesToLibrary(const QStringList) const;
     
 private slots:
     void on_actionImport_triggered();
-
-    void on_actionSettings_triggered();
-
     void on_actionSearch_triggered();
 
 private:

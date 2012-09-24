@@ -29,6 +29,7 @@ QVariant LibraryModel::data(const QModelIndex &index, int role) const
 bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(index.column() == 0 && role == Qt::CheckStateRole) {
+        // Inform view that a chackbox has been checked / unchecked (call setRowSelectState)
         emit rowChecked(index.row(), value == Qt::Checked);
         return true;
     }
@@ -45,8 +46,22 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
         return QSqlTableModel::headerData(section, orientation, role);
 }
 
+QList<int> LibraryModel::getSelectedIds() const
+{
+    return checkedRows;
+}
 
-void LibraryModel::importFiles(QStringList pathList)
+QList<QPair<int, QSqlRecord> > LibraryModel::getSelectedRecords() const
+{
+    QList<QPair<int, QSqlRecord> > result;
+    foreach(int index, checkedRows) {
+        result << QPair<int, QSqlRecord>(index, record(index));
+    }
+    return result;
+}
+
+
+void LibraryModel::importFiles(const QStringList &pathList)
 {
     foreach(QString path, pathList){
         importFile(path);
@@ -59,7 +74,7 @@ void LibraryModel::importFile(QString path)
     rec.setValue("filePath", QVariant(path));
 
     if(!insertRecord(-1, rec)){
-        qDebug() << lastError().text();
+        qWarning() << lastError().text();
     }
     submitAll();
 }
@@ -67,5 +82,6 @@ void LibraryModel::importFile(QString path)
 void LibraryModel::setRowsChecked(QList<int> rows)
 {
     checkedRows.swap(rows);
+    // Inform view that state has changed (to refresh checkbox display)
     emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }

@@ -17,7 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
         libraryModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
         libraryModel->setRelation(LibraryIndexes::Bpid, QSqlRelation("BPTracks", "bpid", "title"));
         libraryModel->select();
+        // emitted from onSelectionChanged()
         connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)), libraryModel, SLOT(setRowsChecked(QList<int>)));
+        // emitted from setData()
         connect(libraryModel, SIGNAL(rowChecked(int,bool)), ui->libraryView, SLOT(setRowSelectState(int,bool)));
 
         ui->libraryView->setModel(libraryModel);
@@ -32,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
         tracksModel->setRelation(BPTracksIndexes::Label, QSqlRelation("BPLabels", "bpid", "name"));
         tracksModel->select();
     } else {
-        qDebug() << "Impossible to connect to database...";
+        qCritical() << tr("Impossible to connect to database...");
     }
 }
 
@@ -48,12 +50,19 @@ void MainWindow::on_actionImport_triggered()
     emit importFilesToLibrary(fileList);
 }
 
-void MainWindow::on_actionSettings_triggered()
-{
-}
-
 void MainWindow::on_actionSearch_triggered()
 {
+    SelectSearchSource selDialog;
+    int result = selDialog.exec();
+    switch(result) {
+    case QDialog::Accepted:
+        selDialog.result();
+        break;
+    case QDialog::Rejected:
+        default:
+        return;
+    }
 
+    qDebug() << "Hello toto";
     searchProvider.searchFromIds(QStringList() << "15" << "20" << "12547");
 }

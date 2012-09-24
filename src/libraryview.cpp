@@ -10,6 +10,7 @@ void LibraryView::setModel(QAbstractItemModel *model)
     QTableView::setModel(model);
     resizeColumnsToContents();
 
+    // starting point of a selection changing
     connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(onSelectionChanged(QItemSelection,QItemSelection)));
 }
@@ -21,6 +22,7 @@ void LibraryView::onSelectionChanged(QItemSelection, QItemSelection)
     foreach(QModelIndex index, selectionModel()->selectedRows()) {
         selectedRows << index.row();
     }
+    // Inform model that a row has been selected (call setRowsChecked())
     emit rowSelectedChanged(selectedRows);
 }
 
