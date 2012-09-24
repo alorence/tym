@@ -8,7 +8,7 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
     if(index.column() == 0) {
-        return QSqlTableModel::flags(index) | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
     } else {
         return QSqlTableModel::flags(index);
     }

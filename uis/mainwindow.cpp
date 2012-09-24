@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(libraryModel, SIGNAL(rowChecked(int,bool)), ui->libraryView, SLOT(setRowSelectState(int,bool)));
 
         ui->libraryView->setModel(libraryModel);
-        ui->libraryView->selectAll();
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 libraryModel, SLOT(importFiles(QStringList)));
 
@@ -56,5 +55,5 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionSearch_triggered()
 {
 
-    searchProvider.searchFromIds(QList<int>() << 15 << 20 << 12547);
+    searchProvider.searchFromIds(QStringList() << "15" << "20" << "12547");
 }
