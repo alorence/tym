@@ -46,12 +46,12 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
         return QSqlTableModel::headerData(section, orientation, role);
 }
 
-QList<int> LibraryModel::getSelectedIds() const
+QList<int> LibraryModel::selectedIds() const
 {
     return checkedRows;
 }
 
-QList<QPair<int, QSqlRecord> > LibraryModel::getSelectedRecords() const
+QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
 {
     QList<QPair<int, QSqlRecord> > result;
     foreach(int index, checkedRows) {

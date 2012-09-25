@@ -1,16 +1,18 @@
+
 FORMS    += uis/mainwindow.ui \
     uis/libraryelementview.ui \
     uis/settingsdialog.ui \
-    uis/selectsearchsource.ui
+    uis/searchwizard.ui
+
 HEADERS += \
     uis/settingsdialog.h \
     uis/libraryview.h \
     uis/libraryelementview.h \
     uis/mainwindow.h \
-    uis/selectsearchsource.h
+    uis/searchwizard.h
 
 SOURCES += \
     uis/settingsdialog.cpp \
     uis/libraryelementview.cpp \
     uis/mainwindow.cpp \
-    uis/selectsearchsource.cpp
+    uis/searchwizard.cpp

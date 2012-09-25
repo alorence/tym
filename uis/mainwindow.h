@@ -5,10 +5,11 @@
 #include <QtGui>
 
 #include "uis/settingsdialog.h"
-#include "uis/selectsearchsource.h"
+#include "uis/searchwizard.h"
 #include "src/librarymodel.h"
 #include "src/bpdatabase.h"
 #include "src/searchprovider.h"
+#include "src/patterntool.h"
 
 namespace Ui {
 class MainWindow;

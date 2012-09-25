@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     } else {
         qCritical() << tr("Impossible to connect to database...");
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -52,17 +53,28 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SelectSearchSource selDialog;
-    int result = selDialog.exec();
-    switch(result) {
-    case QDialog::Accepted:
-        selDialog.result();
-        break;
-    case QDialog::Rejected:
-        default:
+    SearchWizard wizard;
+    if(wizard.exec() == SearchWizard::Rejected) {
         return;
     }
 
-    qDebug() << "Hello toto";
-    searchProvider.searchFromIds(QStringList() << "15" << "20" << "12547");
+    if(wizard.searchType() == SearchWizard::FromId) {
+
+    } else {
+        QString pattern = wizard.pattern();
+        PatternTool pt(pattern);
+
+        QPair<int, QSqlRecord> entry;
+        foreach (entry, libraryModel->selectedRecords()){
+            int id = entry.first;
+            QSqlRecord record = entry.second;
+
+            QString fileName = record.value(LibraryIndexes::FilePath).toString();
+
+            QMap<QString, QString> parsedValues = pt.parseValues(fileName);
+            foreach(QString key, parsedValues.keys()) {
+                qDebug() << key << parsedValues.value(key);
+            }
+        }
+    }
 }

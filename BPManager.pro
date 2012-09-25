@@ -19,3 +19,5 @@ HEADERS  += libs/qt-json/json.h
 
 RESOURCES += resources.qrc
 
+
+
