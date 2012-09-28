@@ -99,6 +99,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionImport"/>
+   <addaction name="actionDelete"/>
    <addaction name="actionSettings"/>
    <addaction name="separator"/>
    <addaction name="actionSearch"/>
@@ -138,6 +139,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete selected tracks from library</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

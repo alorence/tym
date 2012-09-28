@@ -1,8 +1,10 @@
 #ifndef LIBRARYVIEW_H
 #define LIBRARYVIEW_H
 
+#include <QtCore>
 #include <QtGui>
 #include <QtSql>
+#include "libraryview.h"
 
 class LibraryView : public QTableView
 {
@@ -13,6 +15,9 @@ public:
 
 signals:
     void rowSelectedChanged(QList<int>);
+
+private slots:
+    void rowCountChanged(int, int);
 
 private slots:
     void onSelectionChanged(QItemSelection, QItemSelection);

@@ -32,3 +32,10 @@ void LibraryView::setRowSelectState(int row, bool state)
     QItemSelection selection(model->index(row, 0), model->index(row, model->columnCount() - 1));
     selectionModel()->select(selection, state ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
 }
+
+void LibraryView::rowCountChanged(int, int)
+{
+    resizeColumnsToContents();
+}
+
+

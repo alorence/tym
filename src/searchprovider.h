@@ -14,10 +14,10 @@ public:
     explicit SearchProvider(SettingsDialog *sd, QObject *parent = 0);
     
 signals:
-    void searchResultAvailable() const;
+    void searchResultAvailable(QMap<int, QVariant> resultMap) const;
     
 public slots:
-    void searchFromIds(const QStringList ids);
+    void searchFromIds(QMap<int, QString> *idList);
     void searchFromName(const QStringList ids);
 
 private slots:
@@ -31,6 +31,8 @@ private :
     SettingsDialog* settings;
     QUrl searchUrl;
     QString tracksPath;
+
+    QMap<QNetworkReply *, QMap<int, QString>*> replyMap;
 };
 
 #endif // SEARCHPROVIDER_H

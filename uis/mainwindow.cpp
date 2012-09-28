@@ -33,10 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
         tracksModel = new QSqlRelationalTableModel(this, db.dbObject());
         tracksModel->setRelation(BPTracksIndexes::Label, QSqlRelation("BPLabels", "bpid", "name"));
         tracksModel->select();
+
+        connect(ui->actionDelete, SIGNAL(triggered()), libraryModel, SLOT(deleteSelected()));
     } else {
         qCritical() << tr("Impossible to connect to database...");
     }
-
 }
 
 MainWindow::~MainWindow()
@@ -58,23 +59,31 @@ void MainWindow::on_actionSearch_triggered()
         return;
     }
 
+    PatternTool pt(wizard.pattern());
+
+    QMap<int, QMap<QString, QString> > parsedValueMap;
+
+    QPair<int, QSqlRecord> entry;
+    foreach (entry, libraryModel->selectedRecords()){
+        int id = entry.first;
+        QSqlRecord record = entry.second;
+
+        QString filePath = record.value(LibraryIndexes::FilePath).toString();
+        QString fileName = filePath.split(QDir::separator()).last();
+
+        parsedValueMap[id] = pt.parseValues(fileName);
+    }
+
     if(wizard.searchType() == SearchWizard::FromId) {
-
+        QMap<int, QString> * requestMap = new QMap<int, QString>();
+        foreach(int id, parsedValueMap.keys()) {
+            requestMap->insert(id, parsedValueMap[id]["bpid"]);
+        }
+        searchProvider.searchFromIds(requestMap);
     } else {
-        QString pattern = wizard.pattern();
-        PatternTool pt(pattern);
-
-        QPair<int, QSqlRecord> entry;
-        foreach (entry, libraryModel->selectedRecords()){
-            int id = entry.first;
-            QSqlRecord record = entry.second;
-
-            QString fileName = record.value(LibraryIndexes::FilePath).toString();
-
-            QMap<QString, QString> parsedValues = pt.parseValues(fileName);
-            foreach(QString key, parsedValues.keys()) {
-                qDebug() << key << parsedValues.value(key);
-            }
+        foreach(int id, parsedValueMap.keys()) {
+            qDebug() << id << " : " << parsedValueMap[id];
         }
     }
 }
+

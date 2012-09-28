@@ -13,16 +13,20 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
 
         if(elt == "ID" || elt == "id") {
             regExpList << "([0-9]+)";
+            replacementMap[i+1] = "bpid";
         } else if(elt == "ARTISTS" || elt == "artists") {
             regExpList << "([a-zA-Z0-9_ ',]+)";
+            replacementMap[i+1] = "artists";
         } else if(elt == "TITLE" || elt == "title") {
             regExpList << "([a-zA-Z0-9_ ',]+)";
+            replacementMap[i+1] = "title";
         } else if(elt == "EXT" || elt == "ext") {
             regExpList << "([a-zA-Z]{2,4})";
+            replacementMap[i+1] = "ext";
         } else if(elt == "OTHER" || elt == "other") {
             regExpList << "(.+)";
         } else {
-            regExpList << QString("(?%1)").arg(elt.replace(".", "\\."));
+            regExpList << QString("(%1)").arg(elt.replace(".", "\\."));
         }
     }
     regExpList.prepend("^");
@@ -34,6 +38,10 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
 QMap<QString, QString> PatternTool::parseValues(QString &source) const
 {
     QMap<QString, QString> result;
-
+    if(rexp.indexIn(source) != -1) {
+        foreach(int i, replacementMap.keys()) {
+            result[replacementMap[i]] = rexp.cap(i);
+        }
+    }
     return result;
 }

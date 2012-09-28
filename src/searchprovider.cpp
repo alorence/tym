@@ -3,19 +3,20 @@
 SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     QObject(parent),
     manager(new QNetworkAccessManager(this)),
-    settings(sd)
+    settings(sd),
+    replyMap()
 {
     searchUrl = QUrl(QString("http://%1").arg(settings->getSettingsValue("settings/network/beatport/apihost").toString()));
     tracksPath = "/catalog/3/tracks";
 }
 
-void SearchProvider::searchFromIds(const QStringList ids)
+void SearchProvider::searchFromIds(QMap<int, QString> * idList)
 {
     QUrl requestUrl = QUrl(searchUrl);
     requestUrl.setPath(tracksPath);
 
     QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-    queryItems << QPair<QString, QString>("ids", ids.join(","));
+    queryItems << QPair<QString, QString>("ids", QStringList(idList->values()).join(","));
     requestUrl.setQueryItems(queryItems);
 
     QNetworkRequest request(requestUrl);
@@ -46,10 +47,29 @@ void SearchProvider::initProxy()
 void SearchProvider::parseJsonReply()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+    QMap<int, QString> *requestMap = replyMap.take(reply);
+
+    QString jsonResponse(reply->readAll());
+
+    qDebug()<< jsonResponse;
 
     QtJson::Json jsonParser;
-    QVariant response = jsonParser.parse(reply->readAll());
+    QVariant response = jsonParser.parse(jsonResponse);
 
+    QMap<int, QVariant> indexedResults;
+    QVariant track;
+    foreach(int id, requestMap->keys()) {
+        foreach(track, response.toMap()["results"].toList()) {
+            if(requestMap->value(id) == track.toMap()["id"].toString()) {
+                indexedResults[id] = track;
+                break;
+            }
+        }
+    }
+
+    // TODO : Insert error code for tracks not found
+
+    delete(requestMap);
     reply->deleteLater();
 }
 

@@ -76,7 +76,6 @@ void LibraryModel::importFile(QString path)
     if(!insertRecord(-1, rec)){
         qWarning() << lastError().text();
     }
-    submitAll();
 }
 
 void LibraryModel::setRowsChecked(QList<int> rows)
@@ -84,4 +83,13 @@ void LibraryModel::setRowsChecked(QList<int> rows)
     checkedRows.swap(rows);
     // Inform view that state has changed (to refresh checkbox display)
     emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
+}
+
+void LibraryModel::deleteSelected()
+{
+    foreach(int i, checkedRows) {
+        if(!removeRows(i, 1)) {
+            qWarning() << lastError().text();
+        }
+    }
 }
