@@ -1,7 +1,7 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include <QDialog>
+#include <QtCore>
 #include <QtGui>
 
 namespace Ui {
@@ -23,6 +23,7 @@ private slots:
     void on_buttons_rejected();
 
     void changeDisplayedStack();
+
 private:
     void initMenu();
     void initDefaultValues();

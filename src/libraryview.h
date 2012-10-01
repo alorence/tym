@@ -4,7 +4,6 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtSql>
-#include "libraryview.h"
 
 class LibraryView : public QTableView
 {
@@ -20,7 +19,7 @@ private slots:
     void rowCountChanged(int, int);
 
 private slots:
-    void onSelectionChanged(QItemSelection, QItemSelection);
+    void selectionTotoChanged(const QItemSelection &, const QItemSelection &);
     void setRowSelectState(int row, bool state);
 };
 

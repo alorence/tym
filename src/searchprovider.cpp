@@ -23,6 +23,8 @@ void SearchProvider::searchFromIds(QMap<int, QString> * idList)
 
     QNetworkReply *reply = manager->get(request);
 
+    replyMap.insert(reply, idList);
+
     connect(reply, SIGNAL(readyRead()), this, SLOT(parseJsonReply()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
@@ -50,11 +52,7 @@ void SearchProvider::parseJsonReply()
     QMap<int, QString> *requestMap = replyMap.take(reply);
 
     QString jsonResponse(reply->readAll());
-
-    qDebug()<< jsonResponse;
-
-    QtJson::Json jsonParser;
-    QVariant response = jsonParser.parse(jsonResponse);
+    QVariant response = QtJson::Json::parse(jsonResponse);
 
     QMap<int, QVariant> indexedResults;
     QVariant track;

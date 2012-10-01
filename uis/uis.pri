@@ -1,4 +1,3 @@
-
 FORMS    += uis/mainwindow.ui \
     uis/libraryelementview.ui \
     uis/settingsdialog.ui \
@@ -6,7 +5,6 @@ FORMS    += uis/mainwindow.ui \
 
 HEADERS += \
     uis/settingsdialog.h \
-    uis/libraryview.h \
     uis/libraryelementview.h \
     uis/mainwindow.h \
     uis/searchwizard.h

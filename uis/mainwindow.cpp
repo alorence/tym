@@ -74,6 +74,7 @@ void MainWindow::on_actionSearch_triggered()
         parsedValueMap[id] = pt.parseValues(fileName);
     }
 
+
     if(wizard.searchType() == SearchWizard::FromId) {
         QMap<int, QString> * requestMap = new QMap<int, QString>();
         foreach(int id, parsedValueMap.keys()) {

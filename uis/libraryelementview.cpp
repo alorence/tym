@@ -60,7 +60,7 @@ void LibraryElementView::setWidgetsEnabled(bool enabled, QList<int> indexes)
     }
 }
 
-void LibraryElementView::updateValuesForRow(int row)
+void LibraryElementView::updateValuesForRow(int)
 {
 
 }
