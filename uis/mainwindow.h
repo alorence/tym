@@ -33,9 +33,8 @@ private slots:
 private:
     Ui::MainWindow* ui;
     SettingsDialog* settings;
-    LibraryModel* libraryModel;
-    QSqlRelationalTableModel* tracksModel;
     SearchProvider searchProvider;
+    BPDatabase dbUtil;
 };
 
 #endif // MAINWINDOW_H

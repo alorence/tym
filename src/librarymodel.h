@@ -22,8 +22,6 @@ public:
 
 
 public slots:
-    void importFile(QString filePath);
-    void importFiles(const QStringList &);
     void setRowsChecked(QList<int> rows);
     void deleteSelected();
 

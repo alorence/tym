@@ -12,11 +12,11 @@ void LibraryView::setModel(QAbstractItemModel *model)
 
     // starting point of a selection changing
     connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            this, SLOT(selectionTotoChanged(const QItemSelection&,const QItemSelection&)));
+            this, SLOT(selectionChanged(const QItemSelection&,const QItemSelection&)));
 }
 
 
-void LibraryView::selectionTotoChanged(const QItemSelection&, const QItemSelection&)
+void LibraryView::selectionChanged(const QItemSelection&, const QItemSelection&)
 {
     QList<int> selectedRows;
     foreach(QModelIndex index, selectionModel()->selectedRows()) {

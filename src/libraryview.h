@@ -19,7 +19,7 @@ private slots:
     void rowCountChanged(int, int);
 
 private slots:
-    void selectionTotoChanged(const QItemSelection &, const QItemSelection &);
+    void selectionChanged(const QItemSelection &, const QItemSelection &);
     void setRowSelectState(int row, bool state);
 };
 

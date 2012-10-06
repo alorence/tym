@@ -60,24 +60,6 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
     return result;
 }
 
-
-void LibraryModel::importFiles(const QStringList &pathList)
-{
-    foreach(QString path, pathList){
-        importFile(path);
-    }
-}
-
-void LibraryModel::importFile(QString path)
-{
-    QSqlRecord rec = record();
-    rec.setValue("filePath", QVariant(path));
-
-    if(!insertRecord(-1, rec)){
-        qWarning() << lastError().text();
-    }
-}
-
 void LibraryModel::setRowsChecked(QList<int> rows)
 {
     checkedRows.swap(rows);
@@ -88,8 +70,8 @@ void LibraryModel::setRowsChecked(QList<int> rows)
 void LibraryModel::deleteSelected()
 {
     foreach(int i, checkedRows) {
-        if(!removeRows(i, 1)) {
-            qWarning() << lastError().text();
+        if( ! removeRows(i, 1)) {
+            qWarning() << "Unable to delete row" << i << ":" << lastError().text();
         }
     }
 }

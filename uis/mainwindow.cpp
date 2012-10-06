@@ -5,36 +5,29 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
-    searchProvider(settings, this)
+    searchProvider(settings, this),
+    dbUtil(this)
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
-    BPDatabase db(this);
-    if(db.version() != "-1") {
-        libraryModel = new LibraryModel(this, db.dbObject());
-        libraryModel->setTable("Library");
-        libraryModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
-        libraryModel->setRelation(LibraryIndexes::Bpid, QSqlRelation("BPTracks", "bpid", "title"));
-        libraryModel->select();
+    if(dbUtil.version() != "-1") {
+
         // emitted from onSelectionChanged()
-        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)), libraryModel, SLOT(setRowsChecked(QList<int>)));
+        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)), dbUtil.libraryModel(), SLOT(setRowsChecked(QList<int>)));
         // emitted from setData()
-        connect(libraryModel, SIGNAL(rowChecked(int,bool)), ui->libraryView, SLOT(setRowSelectState(int,bool)));
+        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(int,bool)), ui->libraryView, SLOT(setRowSelectState(int,bool)));
 
-        ui->libraryView->setModel(libraryModel);
+        ui->libraryView->setModel(dbUtil.libraryModel());
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
-                libraryModel, SLOT(importFiles(QStringList)));
+                &dbUtil, SLOT(importFiles(QStringList)));
 
-        ui->singleElementView->setMapping(libraryModel);
+        ui->singleElementView->setMapping(dbUtil.libraryModel());
         connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
                 ui->singleElementView, SLOT(setValuesForRow(QList<int>)));
 
-        tracksModel = new QSqlRelationalTableModel(this, db.dbObject());
-        tracksModel->setRelation(BPTracksIndexes::Label, QSqlRelation("BPLabels", "bpid", "name"));
-        tracksModel->select();
-
-        connect(ui->actionDelete, SIGNAL(triggered()), libraryModel, SLOT(deleteSelected()));
+        connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
+        connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), &dbUtil, SLOT(storeSearchResults(QMap<int,QVariant>)));
     } else {
         qCritical() << tr("Impossible to connect to database...");
     }
@@ -48,7 +41,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionImport_triggered()
 {
     QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
-    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "E:/Library", filters, 0, 0);
+    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "D:/workspaces/qt/sources_files", filters, 0, 0);
     emit importFilesToLibrary(fileList);
 }
 
@@ -64,7 +57,7 @@ void MainWindow::on_actionSearch_triggered()
     QMap<int, QMap<QString, QString> > parsedValueMap;
 
     QPair<int, QSqlRecord> entry;
-    foreach (entry, libraryModel->selectedRecords()){
+    foreach (entry, dbUtil.libraryModel()->selectedRecords()){
         int id = entry.first;
         QSqlRecord record = entry.second;
 
@@ -87,4 +80,5 @@ void MainWindow::on_actionSearch_triggered()
         }
     }
 }
+
 

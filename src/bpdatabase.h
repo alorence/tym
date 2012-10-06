@@ -1,7 +1,11 @@
 #ifndef BPDATABASE_H
 #define BPDATABASE_H
 
+#include <QtCore>
 #include <QtSql>
+
+#include "src/librarymodel.h"
+
 namespace LibraryIndexes {
     enum {
         Uid = 0,
@@ -14,19 +18,19 @@ namespace LibraryIndexes {
 namespace BPTracksIndexes {
     enum {
         Bpid = 0,
-        TrackName = 2,
-        MixName = 3,
-        Title = 4, // Full title, formatted as '%TrackName (%MixName)'
-        Label = 13,
-        Key = 15,
-        Bpm = 16,
-        ReleaseDate = 5,
-        PublishDate = 6,
-        Price = 7,
-        Length = 8,
-        Release = 12,
-        ImageUrl = 14,
-        ImagePath = 14
+        TrackName = 1,
+        MixName = 2,
+        Title = 3, // Full title, formatted as '%TrackName (%MixName)'
+        Label = 4,
+        Key = 5,
+        Bpm = 6,
+        ReleaseDate = 7,
+        PublishDate = 8,
+        Price = 9,
+        Length = 10,
+        Release = 11,
+        ImageUrl = 12,
+        ImagePath = 13
     };
 }
 
@@ -42,8 +46,29 @@ public:
 
     static QSqlDatabase dbObject();
 
+
+    LibraryModel * libraryModel() const;
+    QSqlRelationalTableModel * tracksModel() const;
+    QSqlRelationalTableModel * searchResultsModel() const;
+
+public slots:
+    void storeSearchResults(const QMap<int,QVariant>);
+    QVariant storeTrack(const QVariant track);
+    void importFile(QString filePath);
+    void importFiles(const QStringList &);
+
 private :
+    LibraryModel *_libraryModel;
+    QSqlRelationalTableModel *_tracksModel;
+    QSqlTableModel *_artistsModel;
+    QSqlTableModel *_genresModel;
+    QSqlTableModel *_labelsModel;
+    QSqlRelationalTableModel *_tracksArtistsLink;
+    QSqlRelationalTableModel *_tracksGenresLink;
+    QSqlRelationalTableModel *_tracksRemixersLink;
+    QSqlRelationalTableModel *_searchResultsModel;
     void initTables();
+
 };
 
 #endif // BPDATABASE_H

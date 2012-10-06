@@ -25,7 +25,7 @@ void SearchProvider::searchFromIds(QMap<int, QString> * idList)
 
     replyMap.insert(reply, idList);
 
-    connect(reply, SIGNAL(readyRead()), this, SLOT(parseJsonReply()));
+    connect(reply, SIGNAL(finished()), this, SLOT(parseJsonReply()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
 }
@@ -56,14 +56,20 @@ void SearchProvider::parseJsonReply()
 
     QMap<int, QVariant> indexedResults;
     QVariant track;
-    foreach(int id, requestMap->keys()) {
+    QMapIterator<int, QString> req(*requestMap);
+    while(req.hasNext()) {
+        req.next();
+        int id = req.key();
+        QString bpid = req.value();
         foreach(track, response.toMap()["results"].toList()) {
-            if(requestMap->value(id) == track.toMap()["id"].toString()) {
+            if(bpid == track.toMap()["id"].toString()) {
                 indexedResults[id] = track;
                 break;
             }
         }
     }
+
+    emit searchResultAvailable(indexedResults);
 
     // TODO : Insert error code for tracks not found
 
