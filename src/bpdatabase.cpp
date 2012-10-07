@@ -90,19 +90,27 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
         if(result.type() == QVariant::Map) {
             QVariant bpid = storeTrack(result);
 
-            QSqlRecord entry = _libraryModel->record(libraryRow);
-            entry.setValue("bpid", bpid);
-            qDebug() << entry;
-            _libraryModel->setRecord(libraryRow, entry);
-            if( ! _libraryModel->submitAll()) {
+            QSqlRecord existingRecord = _libraryModel->record(libraryRow);
+            QSqlRecord newRecord = dbObject().record(_libraryModel->tableName());
+            for(int i = 0 ; i < newRecord.count() ; ++i) {
+                newRecord.setValue(i, existingRecord.value(newRecord.fieldName(i)));
+            }
+            newRecord.setValue("bpid", bpid);
+            if( ! _libraryModel->setRecord(libraryRow, newRecord) ){
                 qWarning() << "Unable to update library entry at row " << libraryRow << ":" << _libraryModel->lastError().text();
+            }
+            if( ! _libraryModel->submit()) {
+                qWarning() << "Unable to submit entry at row " << libraryRow << ":" << _libraryModel->lastError().text();
             }
 
             QSqlRecord searchResultEntry = _searchResultsModel->record();
-            searchResultEntry.setValue("libId", entry.value(LibraryIndexes::Uid));
+            searchResultEntry.setValue("libId", newRecord.value(LibraryIndexes::Uid));
             searchResultEntry.setValue("trackId", bpid);
             if( ! _searchResultsModel->insertRecord(-1, searchResultEntry)) {
                 qWarning() << "Unable to register search result :" << _searchResultsModel->lastError().text();
+            }
+            if( ! _searchResultsModel->submit()) {
+                qWarning() << "Unable to submit search results insertions :" << _libraryModel->lastError().text();
             }
 
         } else
@@ -117,6 +125,9 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
                 searchResultEntry.setValue("trackId", bpid);
                 if( ! _searchResultsModel->insertRecord(-1, searchResultEntry)) {
                     qWarning() << "Unable to register search result :" << _searchResultsModel->lastError().text();
+                }
+                if( ! _searchResultsModel->submit()) {
+                    qWarning() << "Unable to submit search results insertions :" << _libraryModel->lastError().text();
                 }
             }
         }

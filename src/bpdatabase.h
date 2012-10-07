@@ -68,6 +68,7 @@ private :
     QSqlRelationalTableModel *_searchResultsModel;
     void initTables();
 
+    QSqlRecord basicLibraryRecord;
 };
 
 #endif // BPDATABASE_H
