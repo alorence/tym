@@ -10,7 +10,7 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
     if(index.column() == 0) {
         return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
     } else {
-        return QSqlTableModel::flags(index);
+        return QSqlRelationalTableModel::flags(index);
     }
 }
 
@@ -23,7 +23,7 @@ QVariant LibraryModel::data(const QModelIndex &index, int role) const
         // For another role : no data displayed
         else return QVariant();
     }
-    return QSqlTableModel::data(index, role);
+    return QSqlRelationalTableModel::data(index, role);
 }
 
 bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -34,7 +34,7 @@ bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int 
         return true;
     }
     else
-        return QSqlTableModel::setData(index, value, role);
+        return QSqlRelationalTableModel::setData(index, value, role);
 }
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -43,7 +43,7 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
     if(orientation == Qt::Horizontal && section == 0)
         return QVariant();
     else
-        return QSqlTableModel::headerData(section, orientation, role);
+        return QSqlRelationalTableModel::headerData(section, orientation, role);
 }
 
 QList<int> LibraryModel::selectedIds() const
