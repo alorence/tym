@@ -137,16 +137,16 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 
     trackRecord.setValue(BPTracksIndexes::ImageUrl,
                          trackMap.value("image").toMap().value("medium").toMap().value("url"));
-    trackRecord.setValue(BPTracksIndexes::PublishDate,
-                         QDateTime::fromString(trackMap.value("publishDate").toString(), "yyyy-MM-dd").toMSecsSinceEpoch());
-    trackRecord.setValue(BPTracksIndexes::ReleaseDate,
-                         QDateTime::fromString(trackMap.value("releaseDate").toString(), "yyyy-MM-dd").toMSecsSinceEpoch());
+    QDateTime pubDate(QDate::fromString(trackMap.value("publishDate").toString(), "yyyy-MM-dd"));
+    trackRecord.setValue(BPTracksIndexes::PublishDate, QVariant(pubDate.toTime_t()));
 
-    QString price = QString::number(trackMap.value("price").toMap().value("value").toDouble() * 0.01, 'g', 2);
+    QDateTime relDate(QDate::fromString(trackMap.value("releaseDate").toString(), "yyyy-MM-dd"));
+    trackRecord.setValue(BPTracksIndexes::ReleaseDate, QVariant(relDate.toTime_t()));
+
+    QString price = QString::number(trackMap.value("price").toMap().value("value").toDouble() * 0.01, 'g');
     price.append(" ");
     price.append(trackMap.value("price").toMap().value("symbol").toString());
     trackRecord.setValue(BPTracksIndexes::Price, price);
-    qDebug() << price;
 
     QMap<QString, QVariant> stdKey = trackMap.value("key").toMap().value("standard").toMap();
     QString key = stdKey.value("letter").toString();
@@ -165,7 +165,6 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     record.setValue("name", trackMap.value("label").toMap().value("name"));
     _labelsModel->insertRecord(-1, record);
     trackRecord.setValue(BPTracksIndexes::Label, record.value("bpid"));
-    qDebug() << "label id : " << record.value("bpid");
 
     _tracksModel->insertRecord(-1, trackRecord);
 
