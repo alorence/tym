@@ -37,7 +37,6 @@ BPDatabase::BPDatabase(QObject *parent) :
         _searchResultsModel->setTable("SearchResults");
         _searchResultsModel->setRelation(0, QSqlRelation("Library", "uid", "filePath"));
         _searchResultsModel->setRelation(1, QSqlRelation("BPTracks", "bpid", "title"));
-        _searchResultsModel->select();
 
         _tracksArtistsLink = new QSqlRelationalTableModel(this, db);
         _tracksArtistsLink->setTable("BPTracksArtistsLink");

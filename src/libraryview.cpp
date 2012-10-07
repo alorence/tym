@@ -3,6 +3,7 @@
 LibraryView::LibraryView(QWidget *parent) :
     QTableView(parent)
 {
+    setItemDelegate(new QSqlRelationalDelegate(this));
 }
 
 void LibraryView::setModel(QAbstractItemModel *model)
