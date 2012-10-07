@@ -14,6 +14,8 @@ void LibraryView::setModel(QAbstractItemModel *model)
     // starting point of a selection changing
     connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
             this, SLOT(onSelectedRowsChanged(const QItemSelection&,const QItemSelection&)));
+
+    hideColumn(LibraryIndexes::Uid);
 }
 
 

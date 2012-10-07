@@ -7,8 +7,8 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
-    if(index.column() == 0) {
-        return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
+    if(index.column() == 1) {
+        return Qt::NoItemFlags | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
     } else {
         return QSqlRelationalTableModel::flags(index);
     }
@@ -16,34 +16,22 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &index, int role) const
 {
-    if(index.column() == 0) {
-        if(role == Qt::CheckStateRole) {
-            return checkedRows.contains(index.row()) ? Qt::Checked : Qt::Unchecked;
-        }
-        // For another role : no data displayed
-        else return QVariant();
+    if(index.column() == 1 && role == Qt::CheckStateRole) {
+        return checkedRows.contains(index.row()) ? Qt::Checked : Qt::Unchecked;
     }
     return QSqlRelationalTableModel::data(index, role);
 }
 
 bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if(index.column() == 0 && role == Qt::CheckStateRole) {
+    if(index.column() == 1 && role == Qt::CheckStateRole) {
         // Inform view that a chackbox has been checked / unchecked (call setRowSelectState)
         emit rowChecked(index.row(), value == Qt::Checked);
         return true;
     }
-    else
+    else {
         return QSqlRelationalTableModel::setData(index, value, role);
-}
-
-QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    // Don't display header for column 0
-    if(orientation == Qt::Horizontal && section == 0)
-        return QVariant();
-    else
-        return QSqlRelationalTableModel::headerData(section, orientation, role);
+    }
 }
 
 QList<int> LibraryModel::selectedIds() const

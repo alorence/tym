@@ -91,8 +91,12 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
             QVariant bpid = storeTrack(result);
 
             QSqlRecord entry = _libraryModel->record(libraryRow);
-            entry.setValue(LibraryIndexes::Bpid, bpid);
+            entry.setValue("bpid", bpid);
+            qDebug() << entry;
             _libraryModel->setRecord(libraryRow, entry);
+            if( ! _libraryModel->submitAll()) {
+                qWarning() << "Unable to update library entry at row " << libraryRow << ":" << _libraryModel->lastError().text();
+            }
 
             QSqlRecord searchResultEntry = _searchResultsModel->record();
             searchResultEntry.setValue("libId", entry.value(LibraryIndexes::Uid));

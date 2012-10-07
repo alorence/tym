@@ -5,6 +5,8 @@
 #include <QtGui>
 #include <QtSql>
 
+#include "src/bpdatabase.h"
+
 class LibraryView : public QTableView
 {
     Q_OBJECT

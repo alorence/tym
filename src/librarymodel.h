@@ -15,7 +15,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant data(const QModelIndex &item, int role) const;
     bool setData(const QModelIndex &i, const QVariant &value, int role);
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+
     QList<int> selectedIds() const;
     QList<QPair<int, QSqlRecord> > selectedRecords() const;
 
