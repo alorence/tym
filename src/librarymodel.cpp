@@ -63,14 +63,16 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
 void LibraryModel::setRowsChecked(QList<int> rows)
 {
     checkedRows.swap(rows);
+    qDebug() << "setRowChecked" << checkedRows;
     // Inform view that state has changed (to refresh checkbox display)
     emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
 void LibraryModel::deleteSelected()
 {
+
     foreach(int i, checkedRows) {
-        if( ! removeRows(i, 1)) {
+        if( ! removeRow(i)) {
             qWarning() << "Unable to delete row" << i << ":" << lastError().text();
         }
     }

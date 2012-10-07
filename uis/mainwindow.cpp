@@ -14,9 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
     if(dbUtil.version() != "-1") {
 
         // emitted from onSelectionChanged()
-        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)), dbUtil.libraryModel(), SLOT(setRowsChecked(QList<int>)));
+        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
+                dbUtil.libraryModel(), SLOT(setRowsChecked(QList<int>)));
         // emitted from setData()
-        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(int,bool)), ui->libraryView, SLOT(setRowSelectState(int,bool)));
+        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(int,bool)),
+                ui->libraryView, SLOT(setRowSelectState(int,bool)));
 
         ui->libraryView->setModel(dbUtil.libraryModel());
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),

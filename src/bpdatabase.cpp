@@ -20,8 +20,6 @@ BPDatabase::BPDatabase(QObject *parent) :
         _libraryModel->setRelation(LibraryIndexes::Bpid, QSqlRelation("BPTracks", "bpid", "title"));
         _libraryModel->select();
 
-        qDebug() << _libraryModel->editStrategy();
-
         _tracksModel = new QSqlRelationalTableModel(this, db);
         _tracksModel->setTable("BPTracks");
         _tracksModel->setRelation(BPTracksIndexes::Label, QSqlRelation("BPLabels", "bpid", "name"));
