@@ -84,78 +84,81 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     QVariant trackBpId = trackMap.value("id");
 
     QStringList artists;
+    QSqlQuery query, linkQuery;
+    query.prepare("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
     foreach (QVariant artist, trackMap.value("artists").toList()) {
         QVariant artistBpId = artist.toMap().value("id");
 
-        QSqlQuery query = QSqlQuery("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
         query.bindValue("bpid", artistBpId);
         query.bindValue("name", artist.toMap().value("name"));
-        if(!query.exec()) {
+        if( ! query.exec()) {
             qWarning() << QString("Unable to insert the artist %1 into the database")
                           .arg(artist.toMap().value("name").toString());
-            qWarning() << dbObject().lastError();
+            qWarning() << query.lastError();
         }
 
         if ( artist.toMap().value("type").toString() == "remixer") {
             artists << query.boundValue(":name").toString();
-            query = QSqlQuery("INSERT OR IGNORE INTO BPTracksArtistsLink VALUES (:trackId,:artistId)");
+            linkQuery.prepare("INSERT OR IGNORE INTO BPTracksArtistsLink VALUES (:trackId,:artistId)");
         } else {
-            query = QSqlQuery("INSERT OR IGNORE INTO BPTracksRemixersLink VALUES (:trackId,:artistId)");
+            linkQuery.prepare("INSERT OR IGNORE INTO BPTracksRemixersLink VALUES (:trackId,:artistId)");
         }
-        query.bindValue(":trackId", trackBpId);
-        query.bindValue(":artistId", artistBpId);
-        if(!query.exec()) {
+        linkQuery.bindValue(":trackId", trackBpId);
+        linkQuery.bindValue(":artistId", artistBpId);
+        if( ! linkQuery.exec()) {
             qWarning() << QString("Unable to insert the artist/remixer <-> track link into the database (%1 for track %2)")
-                          .arg(artist.toMap().value("name").toString(), query.boundValue(":trackId").toString());
-            qWarning() << dbObject().lastError();
+                          .arg(query.boundValue(":name").toString(), linkQuery.boundValue(":trackId").toString());
+            qWarning() << linkQuery.lastError();
         }
     }
 
+    query.prepare("INSERT OR IGNORE INTO BPGenres VALUES (:bpid,:name)");
+    linkQuery.prepare("INSERT OR IGNORE INTO BPTracksGenresLink VALUES (:trackId,:genreId)");
     foreach (QVariant genre, trackMap.value("genres").toList()) {
         QVariant genreBpId = genre.toMap().value("id");
 
-        QSqlQuery query = QSqlQuery("INSERT OR IGNORE INTO BPGenres VALUES (:bpid,:name)");
         query.bindValue("bpid", genreBpId);
         query.bindValue("name", genre.toMap().value("name"));
         if(!query.exec()) {
             qWarning() << QString("Unable to insert the genre %1 into the database")
                           .arg(query.boundValue(":name").toString());
-            qWarning() << dbObject().lastError();
+            qWarning() << query.lastError();
         }
 
-        query = QSqlQuery("INSERT OR IGNORE INTO BPTracksGenresLink VALUES (:trackId,:genreId)");
-        query.bindValue(":trackId", trackBpId);
-        query.bindValue(":genreId", genreBpId);
-        if(!query.exec()){
+        linkQuery.bindValue(":trackId", trackBpId);
+        linkQuery.bindValue(":genreId", genreBpId);
+        if(!linkQuery.exec()){
             qWarning() << QString("Unable to insert the genre <-> track link into the database (%1 for track %2)")
-                          .arg(genre.toMap().value("name").toString(), query.boundValue(":trackId").toString());
-            qWarning() << dbObject().lastError();
+                          .arg(query.boundValue(":name").toString(), linkQuery.boundValue(":trackId").toString());
+            qWarning() << linkQuery.lastError();
         }
     }
 
-    QSqlQuery trackQuery = QSqlQuery("INSERT OR IGNORE into BPTracks "
-                                   "(bpid,name,mixName,title,label,key,bpm,releaseDate,publishDate,price,length,release,imageUrl,imagePath)"
-                                   "VALUES (:bpid,:name,:mixName,:title,:label,:key,:bpm,:releaseDate,:publishDate,:price,:length,:release,:imageUrl,:imagePath)");
+    query.prepare("INSERT OR IGNORE into BPTracks "
+       "(bpid,name,mixName,title,label,key,bpm,releaseDate,publishDate,price,length,release,imageUrl,imagePath) "
+       "VALUES (:bpid,:name,:mixName,:title,:label,:key,:bpm,:releaseDate,:publishDate,:price,:length,:release,:imageUrl,:imagePath)");
 
-    trackQuery.bindValue(":bpid", trackBpId);
-    trackQuery.bindValue(":title", trackMap.value("title"));
-    trackQuery.bindValue(":name", trackMap.value("name"));
-    trackQuery.bindValue(":mixName", trackMap.value("mixName"));
-    trackQuery.bindValue(":length", trackMap.value("length"));
-    trackQuery.bindValue(":bpm", trackMap.value("bpm"));
-    trackQuery.bindValue(":release", trackMap.value("release").toMap().value("name"));
-    trackQuery.bindValue(":imageUrl",trackMap.value("image").toMap().value("medium").toMap().value("url"));
+    query.bindValue(":bpid", trackBpId);
+    query.bindValue(":title", trackMap.value("title"));
+    query.bindValue(":name", trackMap.value("name"));
+    query.bindValue(":mixName", trackMap.value("mixName"));
+    query.bindValue(":length", trackMap.value("length"));
+    query.bindValue(":bpm", trackMap.value("bpm"));
+    query.bindValue(":release", trackMap.value("release").toMap().value("name"));
+    query.bindValue(":imageUrl",trackMap.value("images").toMap().value("medium").toMap().value("url"));
+    // TODO : download and record image for track
+    query.bindValue(":imagePath",QVariant(""));
 
     QDateTime pubDate(QDate::fromString(trackMap.value("publishDate").toString(), "yyyy-MM-dd"));
-    trackQuery.bindValue(":publishDate", QVariant(pubDate.toTime_t()));
+    query.bindValue(":publishDate", QVariant(pubDate.toTime_t()));
 
     QDateTime relDate(QDate::fromString(trackMap.value("releaseDate").toString(), "yyyy-MM-dd"));
-    trackQuery.bindValue(":releaseDate", QVariant(relDate.toTime_t()));
+    query.bindValue(":releaseDate", QVariant(relDate.toTime_t()));
 
     QString price = QString::number(trackMap.value("price").toMap().value("value").toDouble() * 0.01, 'g');
     price.append(" ");
     price.append(trackMap.value("price").toMap().value("symbol").toString());
-    trackQuery.bindValue(":price", price);
+    query.bindValue(":price", price);
 
     QMap<QString, QVariant> stdKey = trackMap.value("key").toMap().value("standard").toMap();
     QString key = stdKey.value("letter").toString();
@@ -167,23 +170,26 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     }
     key.append(" ");
     key.append(stdKey.value("chord").toString());
-    trackQuery.bindValue(":key", key);
+    query.bindValue(":key", key);
 
-    QSqlQuery labelQuery = QSqlQuery("INSERT OR IGNORE INTO BPLabels VALUES (:bpid,:name)");
-    labelQuery.bindValue(":bpid", trackMap.value("label").toMap().value("id"));
+    QVariant labelId = trackMap.value("label").toMap().value("id");
+
+    QSqlQuery labelQuery;
+    labelQuery.prepare("INSERT OR IGNORE INTO BPLabels VALUES (:bpid,:name)");
+    labelQuery.bindValue(":bpid", labelId);
     labelQuery.bindValue(":name", trackMap.value("label").toMap().value("name"));
-    if(!labelQuery.exec()){
+    if( ! labelQuery.exec()){
         qWarning() << QString("Unable to insert the label %1 into database")
                     .arg(labelQuery.boundValue(":name").toString());
-        qWarning() << dbObject().lastError();
-    } else {
-        trackQuery.bindValue(":label", labelQuery.boundValue(":bpid"));
+        qWarning() << labelQuery.lastError();
+        labelId = QVariant("");
     }
+    query.bindValue(":label", labelId);
 
-    if(!trackQuery.exec()){
+    if( ! query.exec()){
         qWarning() << QString("Unable to insert the track %1 - %2 into database")
-                    .arg(artists.join(", "), trackQuery.boundValue(":title").toString());
-        qWarning() << dbObject().lastError();
+                    .arg(artists.join(", "), query.boundValue(":title").toString());
+        qWarning() << query.lastError();
     }
 
     return trackBpId;
@@ -191,13 +197,14 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 
 bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
 {
-    QSqlQuery query = QSqlQuery("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
+    QSqlQuery query;
+    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
     query.bindValue(":uid", _libraryModel->record(row).value(LibraryIndexes::Uid));
     query.bindValue(":bpid", bpid);
-    if(! query.exec()) {
+    if( ! query.exec()) {
         qWarning() << QString("Unable to update library row %1 with the bpid %2")
                       .arg(QString::number(row), query.boundValue(":bpid").toString());
-        qWarning() << dbObject().lastError();
+        qWarning() << query.lastError();
         return false;
     } else {
         return true;
@@ -206,6 +213,9 @@ bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
 
 void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
 {
+    QSqlQuery searchResultQuery;
+    searchResultQuery.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
+
     QMapIterator<int, QVariant> e(trackList);
     while(e.hasNext()) {
         e.next();
@@ -218,12 +228,11 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
 
             setLibraryTrackReference(libraryRow, bpid);
 
-            QSqlQuery searchResultQuery = QSqlQuery("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
-            searchResultQuery.bindValue("libId", _libraryModel->record(libraryRow).value(LibraryIndexes::Uid));
-            searchResultQuery.bindValue("trackId", bpid);
+            searchResultQuery.bindValue(":libId", _libraryModel->record(libraryRow).value(LibraryIndexes::Uid));
+            searchResultQuery.bindValue(":trackId", bpid);
             if( ! searchResultQuery.exec()) {
                 qWarning() << QString("Unable to register search result for track %1").arg(bpid.toString());
-                qWarning() << dbObject().lastError();
+                qWarning() << searchResultQuery.lastError();
             }
 
         } else
@@ -233,16 +242,17 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
             foreach(QVariant track, result.toList()) {
                 QVariant bpid = storeTrack(track);
 
-                QSqlQuery searchResultQuery = QSqlQuery("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
-                searchResultQuery.bindValue("libId", _libraryModel->record(libraryRow).value(LibraryIndexes::Uid));
-                searchResultQuery.bindValue("trackId", bpid);
+                searchResultQuery.bindValue(":libId", _libraryModel->record(libraryRow).value(LibraryIndexes::Uid));
+                searchResultQuery.bindValue(":trackId", bpid);
                 if( ! searchResultQuery.exec()) {
                     qWarning() << QString("Unable to register search result for track %1").arg(bpid.toString());
-                    qWarning() << dbObject().lastError();
+                    qWarning() << searchResultQuery.lastError();
                 }
             }
         }
     }
+
+    _libraryModel->select();
 }
 
 void BPDatabase::importFiles(const QStringList &pathList)
