@@ -146,6 +146,8 @@ QVariant BPDatabase::storeTrack(const QVariant track)
         qWarning() << QString("Unable to insert the track %1 - %2 into database")
                     .arg(artists.join(", "), query.boundValue(":title").toString());
         qWarning() << query.lastError();
+    } else {
+        qDebug() << QString("Track %1 - %2 has been corectly added to database").arg(artists.join(", "), query.boundValue(":title").toString());
     }
 
     return trackBpId;
@@ -194,7 +196,6 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
         } else
         // Many results per library row
         if (result.type() == QVariant::List) {
-
             foreach(QVariant track, result.toList()) {
                 QVariant bpid = storeTrack(track);
 
