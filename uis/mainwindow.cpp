@@ -69,17 +69,17 @@ void MainWindow::on_actionSearch_triggered()
         parsedValueMap[id] = pt.parseValues(fileName);
     }
 
-
+    QMap<int, QString> * requestMap = new QMap<int, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
-        QMap<int, QString> * requestMap = new QMap<int, QString>();
         foreach(int id, parsedValueMap.keys()) {
             requestMap->insert(id, parsedValueMap[id]["bpid"]);
         }
         searchProvider.searchFromIds(requestMap);
     } else {
         foreach(int id, parsedValueMap.keys()) {
-            qDebug() << id << " : " << parsedValueMap[id];
+            requestMap->insert(id, ((QStringList)parsedValueMap[id].keys()).join(" "));
         }
+        searchProvider.searchFromName(requestMap);
     }
 }
 
