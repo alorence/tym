@@ -40,32 +40,33 @@ class BPDatabase : public QObject
 
 public:
     explicit BPDatabase(QObject *parent = 0);
-    
+
     bool databaseConnect();
     QString version();
 
     static QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;
-    QSqlRelationalTableModel * tracksModel() const;
-    QSqlRelationalTableModel * searchResultsModel() const;
+//    QSqlRelationalTableModel * tracksModel() const;
+//    QSqlRelationalTableModel * searchResultsModel() const;
 
 public slots:
     void storeSearchResults(const QMap<int,QVariant>);
     QVariant storeTrack(const QVariant track);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
+    bool setLibraryTrackReference(int row, QVariant bpid);
 
 private :
     LibraryModel *_libraryModel;
-    QSqlRelationalTableModel *_tracksModel;
-    QSqlTableModel *_artistsModel;
-    QSqlTableModel *_genresModel;
-    QSqlTableModel *_labelsModel;
-    QSqlRelationalTableModel *_tracksArtistsLink;
-    QSqlRelationalTableModel *_tracksGenresLink;
-    QSqlRelationalTableModel *_tracksRemixersLink;
-    QSqlRelationalTableModel *_searchResultsModel;
+//    QSqlRelationalTableModel *_tracksModel;
+//    QSqlTableModel *_artistsModel;
+//    QSqlTableModel *_genresModel;
+//    QSqlTableModel *_labelsModel;
+//    QSqlRelationalTableModel *_tracksArtistsLink;
+//    QSqlRelationalTableModel *_tracksGenresLink;
+//    QSqlRelationalTableModel *_tracksRemixersLink;
+//    QSqlRelationalTableModel *_searchResultsModel;
     void initTables();
 
     QSqlRecord basicLibraryRecord;
