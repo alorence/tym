@@ -47,8 +47,6 @@ public:
     static QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;
-//    QSqlRelationalTableModel * tracksModel() const;
-//    QSqlRelationalTableModel * searchResultsModel() const;
 
 public slots:
     void storeSearchResults(const QMap<int,QVariant>);
