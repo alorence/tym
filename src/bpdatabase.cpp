@@ -19,40 +19,6 @@ BPDatabase::BPDatabase(QObject *parent) :
         _libraryModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
         _libraryModel->setRelation(LibraryIndexes::Bpid, QSqlRelation("BPTracks", "bpid", "title"));
         _libraryModel->select();
-
-//        _tracksModel = new QSqlRelationalTableModel(this, db);
-//        _tracksModel->setTable("BPTracks");
-//        _tracksModel->setRelation(BPTracksIndexes::Label, QSqlRelation("BPLabels", "bpid", "name"));
-
-//        _artistsModel = new QSqlTableModel(this, db);
-//        _artistsModel->setTable("BPArtists");
-
-//        _genresModel = new QSqlTableModel(this, db);
-//        _genresModel->setTable("BPGenres");
-
-//        _labelsModel = new QSqlTableModel(this, db);
-//        _labelsModel->setTable("BPLabels");
-
-//        _searchResultsModel = new QSqlRelationalTableModel(this, db);
-//        _searchResultsModel->setTable("SearchResults");
-//        _searchResultsModel->setRelation(0, QSqlRelation("Library", "uid", "filePath"));
-//        _searchResultsModel->setRelation(1, QSqlRelation("BPTracks", "bpid", "title"));
-
-//        _tracksArtistsLink = new QSqlRelationalTableModel(this, db);
-//        _tracksArtistsLink->setTable("BPTracksArtistsLink");
-//        _tracksArtistsLink->setRelation(0, QSqlRelation("BPTracks", "bpid", "name"));
-//        _tracksArtistsLink->setRelation(1, QSqlRelation("BPArtists", "bpid", "name"));
-
-//        _tracksRemixersLink = new QSqlRelationalTableModel(this, db);
-//        _tracksRemixersLink->setTable("BPTracksRemixersLink");
-//        _tracksRemixersLink->setRelation(0, QSqlRelation("BPTracks", "bpid", "name"));
-//        _tracksRemixersLink->setRelation(1, QSqlRelation("BPArtists", "bpid", "name"));
-
-//        _tracksGenresLink = new QSqlRelationalTableModel(this, db);
-//        _tracksGenresLink->setTable("BPTracksGenresLink");
-//        _tracksGenresLink->setRelation(0, QSqlRelation("BPTracks", "bpid", "name"));
-//        _tracksGenresLink->setRelation(1, QSqlRelation("BPGenres", "bpid", "name"));
-
     } else {
         qDebug() << "Error : " << db.lastError().text();
     }
@@ -67,16 +33,6 @@ LibraryModel *BPDatabase::libraryModel() const
 {
     return _libraryModel;
 }
-
-//QSqlRelationalTableModel *BPDatabase::tracksModel() const
-//{
-//    return _tracksModel;
-//}
-
-//QSqlRelationalTableModel *BPDatabase::searchResultsModel() const
-//{
-//    return _searchResultsModel;
-//}
 
 QVariant BPDatabase::storeTrack(const QVariant track)
 {

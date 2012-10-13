@@ -59,14 +59,6 @@ public slots:
 
 private :
     LibraryModel *_libraryModel;
-//    QSqlRelationalTableModel *_tracksModel;
-//    QSqlTableModel *_artistsModel;
-//    QSqlTableModel *_genresModel;
-//    QSqlTableModel *_labelsModel;
-//    QSqlRelationalTableModel *_tracksArtistsLink;
-//    QSqlRelationalTableModel *_tracksGenresLink;
-//    QSqlRelationalTableModel *_tracksRemixersLink;
-//    QSqlRelationalTableModel *_searchResultsModel;
     void initTables();
 
     QSqlRecord basicLibraryRecord;
