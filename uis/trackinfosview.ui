@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LibraryElementView</class>
- <widget class="QWidget" name="LibraryElementView">
+ <class>TrackInfosView</class>
+ <widget class="QWidget" name="TrackInfosView">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -35,13 +35,6 @@
     <widget class="QLabel" name="l_title">
      <property name="text">
       <string>Title</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="l_releaseDate">
-     <property name="text">
-      <string>Release Date</string>
      </property>
     </widget>
    </item>
@@ -83,6 +76,13 @@
    </item>
    <item row="5" column="3">
     <widget class="QLineEdit" name="d_key"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="l_releaseDate">
+     <property name="text">
+      <string>Release Date</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

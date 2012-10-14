@@ -1,9 +1,9 @@
-#include "libraryelementview.h"
-#include "ui_libraryelementview.h"
+#include "trackinfosview.h"
+#include "ui_trackinfosview.h"
 
-LibraryElementView::LibraryElementView(QWidget *parent) :
+TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LibraryElementView),
+    ui(new Ui::TrackInfosView),
     mapper(new QDataWidgetMapper(this))
 {
     ui->setupUi(this);
@@ -19,12 +19,12 @@ LibraryElementView::LibraryElementView(QWidget *parent) :
     widgets[BPTracksIndexes::Key] = ui->d_key;
 }
 
-LibraryElementView::~LibraryElementView()
+TrackInfosView::~TrackInfosView()
 {
     delete ui;
 }
 
-void LibraryElementView::setMapping(LibraryModel *model)
+void TrackInfosView::setMapping(LibraryModel *model)
 {
     mapper->setModel(model);
     mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -33,7 +33,7 @@ void LibraryElementView::setMapping(LibraryModel *model)
     }
 }
 
-void LibraryElementView::setValuesForRow(QList<int> rows)
+void TrackInfosView::setValuesForRow(QList<int> rows)
 {
     if(rows.count() == 1) {
         mapper->setCurrentIndex(rows.at(0));
@@ -42,7 +42,7 @@ void LibraryElementView::setValuesForRow(QList<int> rows)
     }
 }
 
-void LibraryElementView::clearData(QList<int> indexes)
+void TrackInfosView::clearData(QList<int> indexes)
 {
     if(indexes.size() == 0)
         indexes = widgets.keys();
@@ -51,7 +51,7 @@ void LibraryElementView::clearData(QList<int> indexes)
     }
 }
 
-void LibraryElementView::setWidgetsEnabled(bool enabled, QList<int> indexes)
+void TrackInfosView::setWidgetsEnabled(bool enabled, QList<int> indexes)
 {
     if(indexes.size() == 0)
         indexes = widgets.keys();
@@ -60,7 +60,7 @@ void LibraryElementView::setWidgetsEnabled(bool enabled, QList<int> indexes)
     }
 }
 
-void LibraryElementView::updateValuesForRow(int)
+void TrackInfosView::updateValuesForRow(int)
 {
 
 }

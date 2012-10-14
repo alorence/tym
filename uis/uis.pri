@@ -1,16 +1,16 @@
 FORMS    += uis/mainwindow.ui \
-    uis/libraryelementview.ui \
+    uis/trackinfosview.ui \
     uis/settingsdialog.ui \
     uis/searchwizard.ui
 
 HEADERS += \
     uis/settingsdialog.h \
-    uis/libraryelementview.h \
+    uis/trackinfosview.h \
     uis/mainwindow.h \
     uis/searchwizard.h
 
 SOURCES += \
     uis/settingsdialog.cpp \
-    uis/libraryelementview.cpp \
+    uis/trackinfosview.cpp \
     uis/mainwindow.cpp \
     uis/searchwizard.cpp
