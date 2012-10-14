@@ -24,9 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 &dbUtil, SLOT(importFiles(QStringList)));
 
-        ui->singleElementView->setMapping(dbUtil.libraryModel());
-        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
-                ui->singleElementView, SLOT(setValuesForRow(QList<int>)));
+//        ui->singleElementView->setMapping(dbUtil.libraryModel());
+//        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
+//                ui->singleElementView, SLOT(setValuesForRow(QList<int>)));
+
+        ui->tab
 
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
         connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), &dbUtil, SLOT(storeSearchResults(QMap<int,QVariant>)));

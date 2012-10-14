@@ -257,16 +257,14 @@ void BPDatabase::initTables()
 
         "COMMIT;";
 
-    QSqlDatabase db = dbObject();
     foreach(QString line, sqlInitCommands) {
-        db.exec(line);
+        dbObject().exec(line);
     }
 }
 
 QString BPDatabase::version()
 {
-    QSqlDatabase db = dbObject();
-    QSqlQuery query("SELECT value FROM Infos WHERE key='version'", db);
+    QSqlQuery query("SELECT value FROM Infos WHERE key='version'");
     if( ! query.exec()) {
         return "-1";
     } else {

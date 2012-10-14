@@ -33,7 +33,7 @@ private:
     Ui::TrackInfosView *ui;
     QDataWidgetMapper * mapper;
 
-    QMap<int, QLineEdit*> widgets;
+    QMap<int, QLineEdit*> lineWidgets;
 
 };
 
