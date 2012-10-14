@@ -45,8 +45,8 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     foreach (QVariant artist, trackMap.value("artists").toList()) {
         QVariant artistBpId = artist.toMap().value("id");
 
-        query.bindValue("bpid", artistBpId);
-        query.bindValue("name", artist.toMap().value("name"));
+        query.bindValue(":bpid", artistBpId);
+        query.bindValue(":name", artist.toMap().value("name"));
         if( ! query.exec()) {
             qWarning() << QString("Unable to insert the artist %1 into the database")
                           .arg(artist.toMap().value("name").toString());
@@ -73,8 +73,8 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     foreach (QVariant genre, trackMap.value("genres").toList()) {
         QVariant genreBpId = genre.toMap().value("id");
 
-        query.bindValue("bpid", genreBpId);
-        query.bindValue("name", genre.toMap().value("name"));
+        query.bindValue(":bpid", genreBpId);
+        query.bindValue(":name", genre.toMap().value("name"));
         if(!query.exec()) {
             qWarning() << QString("Unable to insert the genre %1 into the database")
                           .arg(query.boundValue(":name").toString());
