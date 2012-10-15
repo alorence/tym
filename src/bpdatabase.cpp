@@ -27,7 +27,7 @@ BPDatabase::BPDatabase(QObject *parent) :
                              "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
                              "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
                              "JOIN BPArtists as a ON a.bpid = talink.artistId "
-                             "WHERE sr.libId=:id");
+                             "WHERE sr.libId=:id GROUP BY tr.bpid");
 
     } else {
         qCritical() << "Error : " << db.lastError().text();
