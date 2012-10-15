@@ -86,7 +86,7 @@ void SearchProvider::parseReplyForIdSearch()
 void SearchProvider::searchFromName(QMap<int, QString> *nameList)
 {
     QUrl requestUrl = QUrl(apiUrl);
-    requestUrl.setPath(tracksPath);
+    requestUrl.setPath(searchPath);
 
 
     QMapIterator<int, QString> searchList(*nameList);
