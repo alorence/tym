@@ -12,6 +12,7 @@ class SearchProvider : public QObject
     Q_OBJECT
 public:
     explicit SearchProvider(SettingsDialog *sd, QObject *parent = 0);
+    ~SearchProvider();
     
 signals:
     void searchResultAvailable(QMap<int, QVariant> resultMap) const;

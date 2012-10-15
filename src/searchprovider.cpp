@@ -14,6 +14,25 @@ SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     connect(textSearchMapper, SIGNAL(mapped(int)), this, SLOT(parseReplyForNameSearch(int)));
 }
 
+SearchProvider::~SearchProvider()
+{
+    foreach(int index, replyMap.keys())
+        delete replyMap.take(index);
+    delete replyMap;
+}
+
+void SearchProvider::initProxy()
+{
+    /*
+    QString h = settings.value("network/proxy/host").toString();
+    qint16 p = settings.value("network/proxy/port").toInt();
+    QString u = settings.value("network/proxy/user").toString();
+    QString pwd = settings.value("network/proxy/pass").toString();
+    QNetworkProxy proxy(QNetworkProxy::DefaultProxy, h, p, u, pwd);
+    QNetworkProxy::setApplicationProxy(proxy);
+    */
+}
+
 void SearchProvider::searchFromIds(QMap<int, QString> * idList)
 {
     QUrl requestUrl = QUrl(apiUrl);
@@ -33,6 +52,37 @@ void SearchProvider::searchFromIds(QMap<int, QString> * idList)
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
 }
+void SearchProvider::parseReplyForIdSearch()
+{
+    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+    QMap<int, QString> *requestMap = replyMap.take(reply);
+
+    QString jsonResponse(reply->readAll());
+    QVariant response = QtJson::Json::parse(jsonResponse);
+
+    QMap<int, QVariant> indexedResults;
+    QVariant track;
+    QMapIterator<int, QString> req(*requestMap);
+    while(req.hasNext()) {
+        req.next();
+        int id = req.key();
+        QString bpid = req.value();
+        foreach(track, response.toMap()["results"].toList()) {
+            if(bpid == track.toMap()["id"].toString()) {
+                indexedResults[id] = track;
+                break;
+            }
+        }
+    }
+
+    emit searchResultAvailable(indexedResults);
+
+    // TODO : Insert error code for tracks not found
+
+    delete requestMap;
+    reply->deleteLater();
+}
+
 
 void SearchProvider::searchFromName(QMap<int, QString> *nameList)
 {
@@ -62,50 +112,6 @@ void SearchProvider::searchFromName(QMap<int, QString> *nameList)
     }
     delete nameList;
 }
-
-void SearchProvider::initProxy()
-{
-    /*
-    QString h = settings.value("network/proxy/host").toString();
-    qint16 p = settings.value("network/proxy/port").toInt();
-    QString u = settings.value("network/proxy/user").toString();
-    QString pwd = settings.value("network/proxy/pass").toString();
-    QNetworkProxy proxy(QNetworkProxy::DefaultProxy, h, p, u, pwd);
-    QNetworkProxy::setApplicationProxy(proxy);
-    */
-}
-
-void SearchProvider::parseReplyForIdSearch()
-{
-    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QMap<int, QString> *requestMap = replyMap.take(reply);
-
-    QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::Json::parse(jsonResponse);
-
-    QMap<int, QVariant> indexedResults;
-    QVariant track;
-    QMapIterator<int, QString> req(*requestMap);
-    while(req.hasNext()) {
-        req.next();
-        int id = req.key();
-        QString bpid = req.value();
-        foreach(track, response.toMap()["results"].toList()) {
-            if(bpid == track.toMap()["id"].toString()) {
-                indexedResults[id] = track;
-                break;
-            }
-        }
-    }
-
-    emit searchResultAvailable(indexedResults);
-
-    // TODO : Insert error code for tracks not found
-
-    delete(requestMap);
-    reply->deleteLater();
-}
-
 void SearchProvider::parseReplyForNameSearch(int index)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(index));
