@@ -47,6 +47,7 @@ public:
     static QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;
+    QSqlQueryModel * searchModel() const;
 
 public slots:
     void storeSearchResults(const QMap<int,QVariant>);
@@ -54,10 +55,13 @@ public slots:
     void importFile(QString filePath);
     void importFiles(const QStringList &);
     bool setLibraryTrackReference(int row, QVariant bpid);
+    void librarySelectionChanged(QList<int>) const;
 
 private :
     LibraryModel *_libraryModel;
     void initTables();
+
+    QSqlQueryModel * _searchModel;
 
     QSqlRecord basicLibraryRecord;
 };

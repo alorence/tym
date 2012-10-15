@@ -19,8 +19,13 @@ BPDatabase::BPDatabase(QObject *parent) :
         _libraryModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
         _libraryModel->setRelation(LibraryIndexes::Bpid, QSqlRelation("BPTracks", "bpid", "title"));
         _libraryModel->select();
+
+        _searchModel = new QSqlQueryModel(this);
+        QSqlQuery searchQuery(db);
+        searchQuery.prepare("SELECT * FROM SearchResults as sr WHERE sr.id=:id");
+        _searchModel->setQuery(searchQuery);
     } else {
-        qDebug() << "Error : " << db.lastError().text();
+        qCritical() << "Error : " << db.lastError().text();
     }
 }
 
@@ -32,6 +37,11 @@ QSqlDatabase BPDatabase::dbObject()
 LibraryModel *BPDatabase::libraryModel() const
 {
     return _libraryModel;
+}
+
+QSqlQueryModel *BPDatabase::searchModel() const
+{
+    return _searchModel;
 }
 
 QVariant BPDatabase::storeTrack(const QVariant track)
@@ -54,10 +64,10 @@ QVariant BPDatabase::storeTrack(const QVariant track)
         }
 
         if ( artist.toMap().value("type").toString() == "remixer") {
-            artists << query.boundValue(":name").toString();
-            linkQuery.prepare("INSERT OR IGNORE INTO BPTracksArtistsLink VALUES (:trackId,:artistId)");
-        } else {
             linkQuery.prepare("INSERT OR IGNORE INTO BPTracksRemixersLink VALUES (:trackId,:artistId)");
+        } else {
+            linkQuery.prepare("INSERT OR IGNORE INTO BPTracksArtistsLink VALUES (:trackId,:artistId)");
+            artists << query.boundValue(":name").toString();
         }
         linkQuery.bindValue(":trackId", trackBpId);
         linkQuery.bindValue(":artistId", artistBpId);
@@ -166,6 +176,15 @@ bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
         return false;
     } else {
         return true;
+    }
+}
+
+void BPDatabase::librarySelectionChanged(QList<int> selected) const
+{
+    if(selected.size() == 1) {
+        int id = selected.first();
+        _searchModel->query().bindValue(":id", QVariant(id));
+        _searchModel->query();
     }
 }
 
