@@ -23,7 +23,11 @@ BPDatabase::BPDatabase(QObject *parent) :
         _searchModel = new QSqlQueryModel(this);
 
         _searchQuery = QSqlQuery();
-        _searchQuery.prepare("SELECT sr.libId, sr.trackId FROM searchresults as sr WHERE sr.libId=:id");
+        _searchQuery.prepare("SELECT group_concat(a.name, ', ') as Artists, tr.title as Title FROM BPTracks as tr "
+                             "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
+                             "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
+                             "JOIN BPArtists as a ON a.bpid = talink.artistId "
+                             "WHERE sr.libId=:id");
 
     } else {
         qCritical() << "Error : " << db.lastError().text();

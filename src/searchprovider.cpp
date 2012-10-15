@@ -131,7 +131,7 @@ void SearchProvider::parseReplyForNameSearch(int index)
 void SearchProvider::getError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    qWarning() << QString(tr("Request %1 : %2"))
+    qWarning() << QString(tr("Error on request %1 : %2"))
                   .arg(reply->request().url().toString())
                   .arg(error);
     reply->deleteLater();
