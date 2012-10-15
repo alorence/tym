@@ -94,6 +94,12 @@ void SearchProvider::searchFromName(QMap<int, QString> *nameList)
         searchList.next();
         int index = searchList.key();
         QString text = searchList.value();
+        text = text.replace(", ", " ");
+        text = text.replace(",", " ");
+        text = text.replace("(", "");
+        text = text.replace(")", "");
+        text = text.replace("[", "");
+        text = text.replace("]", "");
 
         QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
         queryItems << QPair<QString, QString>("query", text);
