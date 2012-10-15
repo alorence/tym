@@ -21,15 +21,16 @@ BPDatabase::BPDatabase(QObject *parent) :
         _libraryModel->select();
 
         _searchModel = new QSqlQueryModel(this);
-        QSqlQuery searchQuery(db);
-        searchQuery.prepare("SELECT * FROM SearchResults as sr WHERE sr.id=:id");
-        _searchModel->setQuery(searchQuery);
+
+        _searchQuery = QSqlQuery();
+        _searchQuery.prepare("SELECT sr.libId, sr.trackId FROM searchresults as sr WHERE sr.libId=:id");
+
     } else {
         qCritical() << "Error : " << db.lastError().text();
     }
 }
 
-QSqlDatabase BPDatabase::dbObject()
+const QSqlDatabase BPDatabase::dbObject()
 {
     return QSqlDatabase::database();
 }
@@ -42,6 +43,22 @@ LibraryModel *BPDatabase::libraryModel() const
 QSqlQueryModel *BPDatabase::searchModel() const
 {
     return _searchModel;
+}
+
+void BPDatabase::librarySelectionChanged(QList<int> selected)
+{
+    if(selected.size() == 1) {
+        int id = selected.first();
+        _searchQuery.bindValue(":id", _libraryModel->record(id).value(LibraryIndexes::Uid));
+        _searchQuery.exec();
+        _searchModel->setQuery(_searchQuery);
+        if (_searchModel->lastError().isValid())
+             qDebug() << _searchModel->lastError();
+    } else {
+        _searchQuery.bindValue(":id", -1);
+        _searchQuery.exec();
+        _searchModel->setQuery(_searchQuery);
+    }
 }
 
 QVariant BPDatabase::storeTrack(const QVariant track)
@@ -176,15 +193,6 @@ bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
         return false;
     } else {
         return true;
-    }
-}
-
-void BPDatabase::librarySelectionChanged(QList<int> selected) const
-{
-    if(selected.size() == 1) {
-        int id = selected.first();
-        _searchModel->query().bindValue(":id", QVariant(id));
-        _searchModel->query();
     }
 }
 
