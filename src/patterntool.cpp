@@ -37,12 +37,14 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
     rexp = QRegExp(regExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
 }
 
-QMap<QString, QString> PatternTool::parseValues(QString &source) const
+QMap<QString, QString> PatternTool::parseValues(QString &source, const QStringList & interestingKeys) const
 {
     QMap<QString, QString> result;
     if(rexp.indexIn(source) != -1) {
         foreach(int i, replacementMap.keys()) {
-            result[replacementMap[i]] = rexp.cap(i);
+            if(interestingKeys.contains(replacementMap[i])) {
+                result[replacementMap[i]] = rexp.cap(i);
+            }
         }
     }
     return result;

@@ -56,8 +56,14 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     PatternTool pt(wizard.pattern());
-
     QMap<int, QMap<QString, QString> > parsedValueMap;
+
+    QStringList interestingKeys;
+    if(wizard.searchType() == SearchWizard::FromId) {
+        interestingKeys << "bpid";
+    } else {
+        interestingKeys << "artists" << "title" << "remixers" << "name" << "mixname" << "label";
+    }
 
     QPair<int, QSqlRecord> entry;
     foreach (entry, dbUtil.libraryModel()->selectedRecords()){
@@ -67,7 +73,7 @@ void MainWindow::on_actionSearch_triggered()
         QString filePath = record.value(LibraryIndexes::FilePath).toString();
         QString fileName = filePath.split(QDir::separator()).last();
 
-        parsedValueMap[id] = pt.parseValues(fileName);
+        parsedValueMap[id] = pt.parseValues(fileName, interestingKeys);
     }
 
     QMap<int, QString> * requestMap = new QMap<int, QString>();
