@@ -78,7 +78,7 @@ void MainWindow::on_actionSearch_triggered()
         searchProvider.searchFromIds(requestMap);
     } else {
         foreach(int id, parsedValueMap.keys()) {
-            requestMap->insert(id, ((QStringList)parsedValueMap[id].keys()).join(" "));
+            requestMap->insert(id, ((QStringList)parsedValueMap[id].values()).join(" "));
         }
         searchProvider.searchFromName(requestMap);
     }
