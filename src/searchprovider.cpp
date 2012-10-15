@@ -60,6 +60,7 @@ void SearchProvider::searchFromName(QMap<int, QString> *nameList)
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(getError(QNetworkReply::NetworkError)));
     }
+    delete nameList;
 }
 
 void SearchProvider::initProxy()
