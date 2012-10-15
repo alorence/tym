@@ -115,7 +115,6 @@ void SearchProvider::parseReplyForNameSearch(int index)
 
     QMap<int, QVariant> indexedResults;
     indexedResults[index] = response.toMap()["results"].toList();
-    qDebug()<<indexedResults;
     emit searchResultAvailable(indexedResults);
 
     // TODO : Insert error code for tracks not found
