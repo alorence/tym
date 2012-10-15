@@ -16,9 +16,8 @@ SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
 
 SearchProvider::~SearchProvider()
 {
-    foreach(int index, replyMap.keys())
-        delete replyMap.take(index);
-    delete replyMap;
+    foreach(QNetworkReply* reply, replyMap.keys())
+       delete replyMap.take(reply);
 }
 
 void SearchProvider::initProxy()
