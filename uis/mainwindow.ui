@@ -43,14 +43,29 @@
       </attribute>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="LibraryElementView" name="singleElementView" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>160</height>
-       </size>
+    <item row="1" column="1">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
+      <widget class="QWidget" name="searchTab">
+       <attribute name="title">
+        <string>Search Results</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QTableView" name="searchResultsView"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="TrackInfosView" name="widget" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="trackInfoTab">
+       <attribute name="title">
+        <string>Track Informations</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -161,9 +176,9 @@
    <header>src/libraryview.h</header>
   </customwidget>
   <customwidget>
-   <class>LibraryElementView</class>
+   <class>TrackInfosView</class>
    <extends>QWidget</extends>
-   <header>uis/libraryelementview.h</header>
+   <header>uis/trackinfosview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

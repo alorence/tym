@@ -24,9 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 &dbUtil, SLOT(importFiles(QStringList)));
 
-        ui->singleElementView->setMapping(dbUtil.libraryModel());
-        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
-                ui->singleElementView, SLOT(setValuesForRow(QList<int>)));
+//        ui->singleElementView->setMapping(dbUtil.libraryModel());
+//        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
+//                ui->singleElementView, SLOT(setValuesForRow(QList<int>)));
+
+        ui->tab
 
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
         connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), &dbUtil, SLOT(storeSearchResults(QMap<int,QVariant>)));
@@ -43,7 +45,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionImport_triggered()
 {
     QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
-    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "D:/workspaces/qt/sources_files", filters, 0, 0);
+    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../bpmanager/sources_files", filters, 0, 0);
     emit importFilesToLibrary(fileList);
 }
 
@@ -69,17 +71,17 @@ void MainWindow::on_actionSearch_triggered()
         parsedValueMap[id] = pt.parseValues(fileName);
     }
 
-
+    QMap<int, QString> * requestMap = new QMap<int, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
-        QMap<int, QString> * requestMap = new QMap<int, QString>();
         foreach(int id, parsedValueMap.keys()) {
             requestMap->insert(id, parsedValueMap[id]["bpid"]);
         }
         searchProvider.searchFromIds(requestMap);
     } else {
         foreach(int id, parsedValueMap.keys()) {
-            qDebug() << id << " : " << parsedValueMap[id];
+            requestMap->insert(id, ((QStringList)parsedValueMap[id].keys()).join(" "));
         }
+        searchProvider.searchFromName(requestMap);
     }
 }
 

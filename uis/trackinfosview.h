@@ -1,5 +1,5 @@
-#ifndef LIBRARYELEMENTVIEW_H
-#define LIBRARYELEMENTVIEW_H
+#ifndef TRACKINFOSVIEW_H
+#define TRACKINFOSVIEW_H
 
 #include <QtGui>
 #include <QtCore>
@@ -8,16 +8,16 @@
 #include "src/bpdatabase.h"
 
 namespace Ui {
-class LibraryElementView;
+class TrackInfosView;
 }
 
-class LibraryElementView : public QWidget
+class TrackInfosView : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit LibraryElementView(QWidget *parent = 0);
-    ~LibraryElementView();
+    explicit TrackInfosView(QWidget *parent = 0);
+    ~TrackInfosView();
 
     void setMapping(LibraryModel * model);
 
@@ -30,11 +30,11 @@ private slots:
     void updateValuesForRow(int row);
 
 private:
-    Ui::LibraryElementView *ui;
+    Ui::TrackInfosView *ui;
     QDataWidgetMapper * mapper;
 
-    QMap<int, QLineEdit*> widgets;
+    QMap<int, QLineEdit*> lineWidgets;
 
 };
 
-#endif // LIBRARYELEMENTVIEW_H
+#endif // TRACKINFOSVIEW_H

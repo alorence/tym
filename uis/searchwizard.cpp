@@ -45,7 +45,7 @@ void SearchWizard::idSearchSelected(bool checked)
 void SearchWizard::titleArtistSearchSelected(bool checked)
 {
     if(checked) {
-        setPattern("%ARTISTS%_%TITLE%.%EXT%");
+        setPattern("%ARTISTS% - %TITLE%.%EXT%");
         type = FromArtistTitle;
     }
 }

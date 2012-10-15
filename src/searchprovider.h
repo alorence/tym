@@ -18,10 +18,11 @@ signals:
     
 public slots:
     void searchFromIds(QMap<int, QString> *idList);
-    void searchFromName(const QStringList ids);
+    void searchFromName(QMap<int, QString> *nameList);
 
 private slots:
-    void parseJsonReply();
+    void parseReplyForIdSearch();
+    void parseReplyForNameSearch(int index);
     void getError(QNetworkReply::NetworkError);
 
 private :
@@ -29,10 +30,12 @@ private :
 
     QNetworkAccessManager *manager;
     SettingsDialog* settings;
-    QUrl searchUrl;
+    QUrl apiUrl;
     QString tracksPath;
+    QString searchPath;
 
     QMap<QNetworkReply *, QMap<int, QString>*> replyMap;
+    QSignalMapper *textSearchMapper;
 };
 
 #endif // SEARCHPROVIDER_H
