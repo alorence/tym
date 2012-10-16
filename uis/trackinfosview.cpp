@@ -3,20 +3,14 @@
 
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TrackInfosView),
-    mapper(new QDataWidgetMapper(this))
+    ui(new Ui::TrackInfosView)
 {
     ui->setupUi(this);
 
-    connect(mapper, SIGNAL(currentIndexChanged(int)), SLOT(updateValuesForRow(int)));
+//    QString req = "SELECT "
+//            "";
+//    QSqlQueryModel * model = new QSqlQueryModel(req);
 
-//    widgets[BPTracksIndexes::Artists] = ui->d_artists;
-    lineWidgets[BPTracksIndexes::Title] = ui->d_title;
-//    widgets[BPTracksIndexes::Remixers] = ui->d_remixers;
-    lineWidgets[BPTracksIndexes::Label] = ui->d_label;
-    lineWidgets[BPTracksIndexes::ReleaseDate] = ui->d_releaseDate;
-    lineWidgets[BPTracksIndexes::Bpm] = ui->d_bpm;
-    lineWidgets[BPTracksIndexes::Key] = ui->d_key;
 }
 
 TrackInfosView::~TrackInfosView()
@@ -24,43 +18,12 @@ TrackInfosView::~TrackInfosView()
     delete ui;
 }
 
-void TrackInfosView::setMapping(LibraryModel *model)
+void TrackInfosView::updateValues(QModelIndex & selection)
 {
-    mapper->setModel(model);
-    mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    foreach(int col, lineWidgets.keys()) {
-        mapper->addMapping(lineWidgets[col], col);
-    }
+//    selection.row()
 }
 
-void TrackInfosView::setValuesForRow(QList<int> rows)
-{
-    if(rows.count() == 1) {
-        mapper->setCurrentIndex(rows.at(0));
-    } else {
-        clearData();
-    }
-}
-
-void TrackInfosView::clearData(QList<int> indexes)
-{
-    if(indexes.size() == 0)
-        indexes = lineWidgets.keys();
-    foreach(int index, indexes) {
-        lineWidgets[index]->clear();
-    }
-}
-
-void TrackInfosView::setWidgetsEnabled(bool enabled, QList<int> indexes)
-{
-    if(indexes.size() == 0)
-        indexes = lineWidgets.keys();
-    foreach(int index, indexes) {
-        lineWidgets[index]->setEnabled(enabled);
-    }
-}
-
-void TrackInfosView::updateValuesForRow(int)
+void TrackInfosView::clearData()
 {
 
 }

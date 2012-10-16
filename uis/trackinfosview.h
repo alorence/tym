@@ -3,8 +3,8 @@
 
 #include <QtGui>
 #include <QtCore>
+#include <QtSql>
 
-#include "src/librarymodel.h"
 #include "src/bpdatabase.h"
 
 namespace Ui {
@@ -19,22 +19,14 @@ public:
     explicit TrackInfosView(QWidget *parent = 0);
     ~TrackInfosView();
 
-    void setMapping(LibraryModel * model);
-
 public slots:
-    void setValuesForRow(QList<int> rows);
-    void clearData(QList<int> indexes = QList<int>());
-    void setWidgetsEnabled(bool, QList<int> indexes = QList<int>());
+    void clearData();
 
 private slots:
-    void updateValuesForRow(int row);
+    void updateValues(QModelIndex &selection);
 
 private:
     Ui::TrackInfosView *ui;
-    QDataWidgetMapper * mapper;
-
-    QMap<int, QLineEdit*> lineWidgets;
-
 };
 
 #endif // TRACKINFOSVIEW_H
