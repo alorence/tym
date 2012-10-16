@@ -2,7 +2,7 @@ FORMS    += uis/mainwindow.ui \
     uis/trackinfosview.ui \
     uis/settingsdialog.ui \
     uis/searchwizard.ui \
-    uis/about.pri
+    uis/about.ui
 
 HEADERS += \
     uis/settingsdialog.h \
