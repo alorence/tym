@@ -1,3 +1,18 @@
 <RCC>
-    <qresource prefix="/img"/>
+    <qresource prefix="/img/actions">
+        <file alias="export_app">resources/fugues-icons-3.5/icons/application-export.png</file>
+        <file alias="import">resources/fugues-icons-3.5/icons/music--plus.png</file>
+        <file alias="export">resources/fugues-icons-3.5/icons/music--arrow.png</file>
+        <file>resources/fugues-icons-3.5/icons/music--exclamation.png</file>
+        <file alias="delete">resources/fugues-icons-3.5/icons/music--minus.png</file>
+        <file>resources/fugues-icons-3.5/icons/music--pencil.png</file>
+        <file alias="params">resources/fugues-icons-3.5/icons/wrench-screwdriver.png</file>
+        <file alias="search">resources/fugues-icons-3.5/icons/magnifier.png</file>
+        <file alias="close">resources/fugues-icons-3.5/icons/cross.png</file>
+        <file>resources/fugues-icons-3.5/icons/cross-button.png</file>
+        <file>resources/fugues-icons-3.5/icons/book.png</file>
+        <file>resources/fugues-icons-3.5/icons/book--exclamation.png</file>
+        <file alias="about">resources/fugues-icons-3.5/icons/question.png</file>
+        <file alias="help">resources/fugues-icons-3.5/icons/book-question.png</file>
+    </qresource>
 </RCC>
