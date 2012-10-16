@@ -59,8 +59,6 @@ void BPDatabase::librarySelectionChanged(QList<int> selected)
         _searchQuery.bindValue(":id", _libraryModel->record(id).value(LibraryIndexes::Uid));
         _searchQuery.exec();
         _searchModel->setQuery(_searchQuery);
-        if (_searchModel->lastError().isValid())
-             qDebug() << _searchModel->lastError();
     } else {
         _searchQuery.bindValue(":id", -1);
         _searchQuery.exec();

@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
+        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+                this, SLOT(searchResultSelectionChanged(QModelIndex,QModelIndex)));
+        ui->searchResultsView->hideColumn(0);
 
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
         connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), &dbUtil, SLOT(storeSearchResults(QMap<int,QVariant>)));
@@ -88,5 +91,4 @@ void MainWindow::on_actionSearch_triggered()
         searchProvider.searchFromName(requestMap);
     }
 }
-
 
