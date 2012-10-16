@@ -19,5 +19,8 @@ HEADERS  += libs/qt-json/json.h
 
 RESOURCES += resources.qrc
 
+FORMS += \
+    about.ui
+
 
 
