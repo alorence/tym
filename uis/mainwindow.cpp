@@ -13,19 +13,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     if(dbUtil.version() != "-1") {
 
-        // emitted from onSelectionChanged()
-        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
-                dbUtil.libraryModel(), SLOT(setRowsChecked(QList<int>)));
-        // emitted from setData()
-        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(int,bool)),
-                ui->libraryView, SLOT(setRowSelectState(int,bool)));
-
         ui->libraryView->setModel(dbUtil.libraryModel());
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 &dbUtil, SLOT(importFiles(QStringList)));
 
         connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
                 &dbUtil, SLOT(librarySelectionChanged(QList<int>)));
+
+        connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+                dbUtil.libraryModel(), SLOT(onSelectedRowsChanged(const QItemSelection&,const QItemSelection&)));
+        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
+                ui->libraryView->selectionModel(), SLOT(select(QModelIndex,QItemSelectionModel::SelectionFlags)));
+
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
 

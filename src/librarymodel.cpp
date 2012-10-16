@@ -38,8 +38,9 @@ QVariant LibraryModel::data(const QModelIndex &index, int role) const
 bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(index.column() == 1 && role == Qt::CheckStateRole) {
-        // Inform view that a chackbox has been checked / unchecked (call setRowSelectState)
-        emit rowChecked(index.row(), value == Qt::Checked);
+        checkedRows << index.row();
+        // Select corresponding row in QTableView
+        emit rowChecked(index, value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
         return true;
     }
     else {
@@ -61,13 +62,6 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
     return result;
 }
 
-void LibraryModel::setRowsChecked(QList<int> rows)
-{
-    checkedRows.swap(rows);
-    // Inform view that state has changed (to refresh checkbox display)
-    emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
-}
-
 void LibraryModel::deleteSelected()
 {
     QList<int> checkedCopy = checkedRows;
@@ -76,4 +70,19 @@ void LibraryModel::deleteSelected()
             qWarning() << "Unable to delete row" << checkedCopy.value(i) << ":" << lastError().text();
         }
     }
+}
+
+void LibraryModel::onSelectedRowsChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    foreach(QItemSelectionRange range, deselected) {
+        foreach(QModelIndex index, range.indexes()) {
+            checkedRows.removeAll(index.row());
+        }
+    }
+    foreach(QItemSelectionRange range, selected) {
+        foreach(QModelIndex index, range.indexes()) {
+            checkedRows << index.row();
+        }
+    }
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }

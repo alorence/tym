@@ -1,8 +1,9 @@
 #ifndef LIBRARYMODEL_H
 #define LIBRARYMODEL_H
 
-#include <QtSql>
 #include <QtCore>
+#include <QtGui>
+#include <QtSql>
 
 class LibraryModel : public QSqlRelationalTableModel
 {
@@ -19,17 +20,15 @@ public:
     QList<int> selectedIds() const;
     QList<QPair<int, QSqlRecord> > selectedRecords() const;
 
-
-
 public slots:
-    void setRowsChecked(QList<int> rows);
     void deleteSelected();
+    void onSelectedRowsChanged(const QItemSelection &, const QItemSelection &);
 
 private:
     QList<int> checkedRows;
 
 signals:
-    void rowChecked(int row, bool state);
+    void rowChecked(QModelIndex,QItemSelectionModel::SelectionFlags);
 
 };
 
