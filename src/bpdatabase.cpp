@@ -24,7 +24,7 @@ BPDatabase::BPDatabase(QObject *parent) :
 
         _searchQuery = QSqlQuery();
         _searchQuery.prepare("SELECT "
-                             "tr.bpid as 'Beatport ID', "
+                             "tr.bpid as ID, "
                              "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
                              "FROM BPTracks as tr "
                              "JOIN SearchResults as sr ON tr.bpid = sr.trackId "

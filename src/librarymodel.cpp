@@ -16,8 +16,21 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &index, int role) const
 {
-    if(index.column() == 1 && role == Qt::CheckStateRole) {
-        return checkedRows.contains(index.row()) ? Qt::Checked : Qt::Unchecked;
+    if(index.column() == 1) {
+        if(role == Qt::CheckStateRole) {
+            return checkedRows.contains(index.row()) ? Qt::Checked : Qt::Unchecked;
+        } else if (role == Qt::DisplayRole) {
+            QString filePath = QSqlRelationalTableModel::data(index, role).toString();
+            return QVariant(filePath.split(QDir::separator()).last());
+        }
+    }
+    if(role == Qt::ToolTipRole) {
+            QStringList elts = QSqlRelationalTableModel::data(QAbstractTableModel::index(index.row(), 1, index.parent()), Qt::DisplayRole).toString().split(QDir::separator());
+            QString folder = QStringList(elts.mid(0, elts.size() - 2)).join(QDir::separator());
+
+            QString tooltip = "In directory ";
+            tooltip.append(folder);
+            return QVariant(tooltip);
     }
     return QSqlRelationalTableModel::data(index, role);
 }
