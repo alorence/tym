@@ -239,9 +239,8 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
                 }
             }
         }
+        _libraryModel->refreshAndPreserveSelection();
     }
-
-    _libraryModel->select();
 }
 
 void BPDatabase::importFiles(const QStringList &pathList)
