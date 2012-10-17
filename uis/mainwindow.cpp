@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
-//        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-//                this, SLOT(searchResultSelectionChanged(QModelIndex,QModelIndex)));
+        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+                this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
         ui->searchResultsView->hideColumn(0);
 
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
@@ -90,6 +90,17 @@ void MainWindow::on_actionSearch_triggered()
             requestMap->insert(id, ((QStringList)parsedValueMap[id].values()).join(" "));
         }
         searchProvider.searchFromName(requestMap);
+    }
+}
+
+void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
+{
+    if(selected.isValid()) {
+        QSqlQueryModel *model = dbUtil.searchModel();
+        QVariant bpid = model->record(selected.row()).value(0);
+        ui->trackInfos->updateInfos(bpid);
+    } else {
+        ui->trackInfos->clearData();
     }
 }
 

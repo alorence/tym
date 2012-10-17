@@ -29,6 +29,7 @@ signals:
 private slots:
     void on_actionImport_triggered();
     void on_actionSearch_triggered();
+    void updateTrackInfos(QModelIndex,QModelIndex);
 
 private:
     Ui::MainWindow* ui;

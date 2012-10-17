@@ -21,9 +21,7 @@ public:
 
 public slots:
     void clearData();
-
-private slots:
-    void updateValues(QModelIndex &selection);
+    void updateInfos(QVariant &bpid);
 
 private:
     Ui::TrackInfosView *ui;

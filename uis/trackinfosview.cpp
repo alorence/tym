@@ -6,11 +6,6 @@ TrackInfosView::TrackInfosView(QWidget *parent) :
     ui(new Ui::TrackInfosView)
 {
     ui->setupUi(this);
-
-//    QString req = "SELECT "
-//            "";
-//    QSqlQueryModel * model = new QSqlQueryModel(req);
-
 }
 
 TrackInfosView::~TrackInfosView()
@@ -18,13 +13,22 @@ TrackInfosView::~TrackInfosView()
     delete ui;
 }
 
-void TrackInfosView::updateValues(QModelIndex & selection)
+void TrackInfosView::updateInfos(QVariant & bpid)
 {
-//    selection.row()
+    QSqlQuery query;
+    query.prepare("SELECT * FROM BPTracks WHERE bpid=:bpid");
+    query.bindValue(":bpid", bpid);
+    if( ! query.exec() ) {
+        qWarning() << "Unable to get track informations :" << query.lastError().text();
+    }
+
+    query.next();
+    query.nextResult();
+    qDebug() << "Result size:" << query.size();
 }
 
 void TrackInfosView::clearData()
 {
-
+    qDebug() << "clear data";
 }
 
