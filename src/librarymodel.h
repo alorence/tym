@@ -21,14 +21,15 @@ public:
     QList<QPair<int, QSqlRecord> > selectedRecords() const;
 
 public slots:
-    void deleteSelected();
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
+    void deleteSelected();
 
 private:
     QList<int> checkedRows;
+    int columnWithCheckbox;
 
 signals:
-    void rowChecked(QModelIndex,QItemSelectionModel::SelectionFlags);
+    void rowChecked(QItemSelection,QItemSelectionModel::SelectionFlags);
 
 };
 

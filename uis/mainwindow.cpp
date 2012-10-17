@@ -20,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
         connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
                 dbUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
-        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
-                ui->libraryView->selectionModel(), SLOT(select(QModelIndex,QItemSelectionModel::SelectionFlags)));
+        connect(dbUtil.libraryModel(), SIGNAL(rowChecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
+                ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
 
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
