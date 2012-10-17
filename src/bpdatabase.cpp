@@ -52,11 +52,10 @@ QSqlQueryModel *BPDatabase::searchModel() const
     return _searchModel;
 }
 
-void BPDatabase::librarySelectionChanged(QList<int> selected)
+void BPDatabase::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    if(selected.size() == 1) {
-        int id = selected.first();
-        _searchQuery.bindValue(":id", _libraryModel->record(id).value(LibraryIndexes::Uid));
+    if(selected.isValid()) {
+        _searchQuery.bindValue(":id", _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid)));
         _searchQuery.exec();
         _searchModel->setQuery(_searchQuery);
     } else {

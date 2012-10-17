@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(dbUtil.libraryModel(), SIGNAL(rowChecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
                 ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
 
+        connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+                &dbUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
+
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
 //        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
