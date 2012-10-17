@@ -12,23 +12,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
     if(dbUtil.version() != "-1") {
-
         ui->libraryView->setModel(dbUtil.libraryModel());
+        ui->libraryView->hideColumn(0);
+
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 &dbUtil, SLOT(importFiles(QStringList)));
 
-        connect(ui->libraryView, SIGNAL(rowSelectedChanged(QList<int>)),
-                &dbUtil, SLOT(librarySelectionChanged(QList<int>)));
-
         connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-                dbUtil.libraryModel(), SLOT(onSelectedRowsChanged(const QItemSelection&,const QItemSelection&)));
+                dbUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
         connect(dbUtil.libraryModel(), SIGNAL(rowChecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
                 ui->libraryView->selectionModel(), SLOT(select(QModelIndex,QItemSelectionModel::SelectionFlags)));
 
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
-        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-                this, SLOT(searchResultSelectionChanged(QModelIndex,QModelIndex)));
+//        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+//                this, SLOT(searchResultSelectionChanged(QModelIndex,QModelIndex)));
         ui->searchResultsView->hideColumn(0);
 
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));

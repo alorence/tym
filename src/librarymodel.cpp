@@ -35,16 +35,21 @@ QVariant LibraryModel::data(const QModelIndex &index, int role) const
     return QSqlRelationalTableModel::data(index, role);
 }
 
-bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int role)
 {
-    if(index.column() == 1 && role == Qt::CheckStateRole) {
-        checkedRows << index.row();
-        // Select corresponding row in QTableView
-        emit rowChecked(index, value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
+    if(ind.column() == 1 && role == Qt::CheckStateRole) {
+        checkedRows << ind.row();
+        QItemSelectionModel::SelectionFlag selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
+        for(int i = 0 ; i < columnCount() ; i++) {
+            // Create index for complete line
+            QModelIndex lineIndex = index(ind.row(), i, ind.parent());
+            // Select corresponding row in QTableView
+            emit rowChecked(lineIndex, selStatus);
+        }
         return true;
     }
     else {
-        return QSqlRelationalTableModel::setData(index, value, role);
+        return QSqlRelationalTableModel::setData(ind, value, role);
     }
 }
 
@@ -72,7 +77,7 @@ void LibraryModel::deleteSelected()
     }
 }
 
-void LibraryModel::onSelectedRowsChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
 {
     foreach(QItemSelectionRange range, deselected) {
         foreach(QModelIndex index, range.indexes()) {

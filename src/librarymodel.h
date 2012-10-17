@@ -22,7 +22,7 @@ public:
 
 public slots:
     void deleteSelected();
-    void onSelectedRowsChanged(const QItemSelection &, const QItemSelection &);
+    void updateCheckedRows(const QItemSelection &, const QItemSelection &);
 
 private:
     QList<int> checkedRows;
