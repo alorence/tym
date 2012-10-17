@@ -24,12 +24,13 @@ QVariant LibraryModel::data(const QModelIndex &index, int role) const
             return QVariant(filePath.split(QDir::separator()).last());
         }
     }
+    // For tooltip, display onlt the folder (all text before the last dir separator)
     if(role == Qt::ToolTipRole) {
-            QStringList elts = QSqlRelationalTableModel::data(QAbstractTableModel::index(index.row(), 1, index.parent()), Qt::DisplayRole).toString().split(QDir::separator());
-            QString folder = QStringList(elts.mid(0, elts.size() - 2)).join(QDir::separator());
+            QStringList pathElements = QSqlRelationalTableModel::data(QAbstractTableModel::index(index.row(), 1, index.parent()), Qt::DisplayRole).toString().split(QDir::separator());
+            pathElements.removeLast();
 
             QString tooltip = "In directory ";
-            tooltip.append(folder);
+            tooltip.append(pathElements.join(QDir::separator()));
             return QVariant(tooltip);
     }
     return QSqlRelationalTableModel::data(index, role);
