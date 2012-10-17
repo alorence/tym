@@ -58,13 +58,14 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
         for(i = range.top() ; i <= range.bottom() ; i++) {
             checkedRows.removeAll(i);
         }
+        emit dataChanged(index(range.top(), columnWithCheckbox), index(range.bottom(), columnWithCheckbox));
     }
     foreach(range, selected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
             checkedRows << i;
         }
+        emit dataChanged(index(range.top(), columnWithCheckbox), index(range.bottom(), columnWithCheckbox));
     }
-    emit dataChanged(index(0, columnWithCheckbox), index(rowCount() - 1, columnWithCheckbox));
 }
 
 QList<int> LibraryModel::selectedIds() const
@@ -84,9 +85,10 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
 void LibraryModel::deleteSelected()
 {
     QList<int> checkedCopy = checkedRows;
-    for(int i = checkedCopy.size() - 1 ; i >= 0 ; --i) {
-        if( ! removeRow(checkedCopy.value(i))) {
-            qWarning() << "Unable to delete row" << checkedCopy.value(i) << " : " << lastError().text();
+    qSort(checkedCopy.begin(), checkedCopy.end(), qGreater<int>());
+    foreach(int row, checkedCopy) {
+        if( ! removeRow(row)) {
+            qWarning() << QString(tr("Unable to delete row %1 : %2")).arg(row).arg(lastError().text());
         }
     }
 }
