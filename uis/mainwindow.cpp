@@ -13,7 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     if(dbUtil.version() != "-1") {
         ui->libraryView->setModel(dbUtil.libraryModel());
-        ui->libraryView->hideColumn(0);
+        ui->libraryView->hideColumn(LibraryIndexes::Uid);
+        ui->libraryView->hideColumn(LibraryIndexes::Bpid);
+        ui->libraryView->resizeColumnsToContents();
 
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 &dbUtil, SLOT(importFiles(QStringList)));

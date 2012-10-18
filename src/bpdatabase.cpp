@@ -16,8 +16,6 @@ BPDatabase::BPDatabase(QObject *parent) :
 
         _libraryModel = new LibraryModel(this, db);
         _libraryModel->setTable("Library");
-        _libraryModel->setJoinMode(QSqlRelationalTableModel::LeftJoin);
-        _libraryModel->setRelation(LibraryIndexes::Bpid, QSqlRelation("BPTracks", "bpid", "title"));
         _libraryModel->select();
 
         _searchModel = new QSqlQueryModel(this);
