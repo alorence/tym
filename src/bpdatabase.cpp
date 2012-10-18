@@ -261,31 +261,35 @@ void BPDatabase::importFile(QString path)
 
 void BPDatabase::initTables()
 {
-    QStringList sqlInitCommands = QStringList() <<
-        "BEGIN TRANSACTION;" <<
-        "PRAGMA foreign_keys = ON;" <<
+    QStringList sqlInitCommands;
+    sqlInitCommands <<  "BEGIN TRANSACTION;" <<
+                        "PRAGMA foreign_keys = ON;" <<
 
-        "CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);" <<
-        "INSERT INTO Infos (key, value) VALUES ('version', '0.1');" <<
+                        "CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);" <<
+                        "INSERT INTO Infos (key, value) VALUES ('version', '0.1');" <<
 
-        //Main library table
-        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT, note TEXT);" <<
+                        //Main library table
+                        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT, note TEXT);" <<
 
-        // Main BeatPort infos tables
-        "CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, imageUrl TEXT, imagePath TEXT);" <<
-        "CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-        "CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-        "CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
+                        // Main BeatPort infos tables
+                        "CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, imageUrl TEXT, imagePath TEXT);" <<
+                        "CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);" <<
+                        "CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
+                        "CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
 
-        "CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
-        "CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
-        "CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid), PRIMARY KEY(trackId, genreId));" <<
-        "CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid), PRIMARY KEY(libId, trackId));" <<
+                        "CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
+                        "CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
+                        "CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid), PRIMARY KEY(trackId, genreId));" <<
+                        "CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid), PRIMARY KEY(libId, trackId));" <<
 
-        "CREATE TABLE Infos (key TEXT PRIMARY KEY, value TEXT);" <<
-        "INSERT INTO Infos VALUES('version',0.1);" <<
+                       "CREATE TABLE Infos (key TEXT PRIMARY KEY, value TEXT);" <<
+                       "INSERT INTO Infos VALUES ('version',0.1);" <<
 
-        "COMMIT;";
+//                       "CREATE TABLE States (uid INTEGER PRIMARY KEY, text TEXT, comment TEXT);" <<
+//                       "INSERT INTO States (text, comment) VALUES ('error','Error with your file');" <<
+//                       "INSERT INTO States (text, comment) VALUES ('missing','Unable to find your file at specified location.');" <<
+
+                       "COMMIT;";
 
     foreach(QString line, sqlInitCommands) {
         dbObject().exec(line);

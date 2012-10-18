@@ -52,8 +52,10 @@ void TrackInfosView::updateInfos(QVariant & bpid)
     //ui->d_labelNumber->setText(query.record().value(8).toString());
     ui->d_key->setText(query.record().value(9).toString());
     ui->d_bpm->setText(query.record().value(10).toString());
-    ui->d_releaseDate->setText(query.record().value(11).toString());
-    ui->d_publishdate->setText(query.record().value(12).toString());
+    QDateTime d = QDateTime::fromTime_t(query.record().value(11).toInt());
+    ui->d_releaseDate->setText(d.toString(tr("yyyy-MM-dd")));
+    d = QDateTime::fromTime_t(query.record().value(12).toInt());
+    ui->d_publishdate->setText(d.toString(tr("yyyy-MM-dd")));
     ui->d_price->setText(query.record().value(13).toString());
     ui->d_length->setText(query.record().value(14).toString());
     ui->d_release->setText(query.record().value(15).toString());
