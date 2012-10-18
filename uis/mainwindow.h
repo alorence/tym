@@ -36,6 +36,7 @@ private:
     SettingsDialog* settings;
     SearchProvider searchProvider;
     BPDatabase dbUtil;
+    QSignalMapper * generalMapper;
 };
 
 #endif // MAINWINDOW_H
