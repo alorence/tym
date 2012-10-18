@@ -249,11 +249,15 @@ void BPDatabase::importFiles(const QStringList &pathList)
 
 void BPDatabase::importFile(QString path)
 {
-    QSqlRecord rec = _libraryModel->record();
-    rec.setValue("filePath", QVariant(path));
+    QSqlQuery query;
+    query.prepare("INSERT INTO Library (filePath, status) VALUES (:path, :status);");
+    query.bindValue(":path", path);
+    query.bindValue(":status", TrackState::New);
 
-    if( ! _libraryModel->insertRecord(-1, rec)){
+    if( ! query.exec()){
         qWarning() << "Unable to import file" << path << ":" << _libraryModel->lastError().text();
+    } else {
+        _libraryModel->refreshAndPreserveSelection();
     }
 }
 
@@ -267,7 +271,7 @@ void BPDatabase::initTables()
                         "INSERT INTO Infos (key, value) VALUES ('version', '0.1');" <<
 
                         //Main library table
-                        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT, note TEXT);" <<
+                        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);" <<
 
                         // Main BeatPort infos tables
                         "CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, imageUrl TEXT, imagePath TEXT);" <<
@@ -282,10 +286,6 @@ void BPDatabase::initTables()
 
                        "CREATE TABLE Infos (key TEXT PRIMARY KEY, value TEXT);" <<
                        "INSERT INTO Infos VALUES ('version',0.1);" <<
-
-//                       "CREATE TABLE States (uid INTEGER PRIMARY KEY, text TEXT, comment TEXT);" <<
-//                       "INSERT INTO States (text, comment) VALUES ('error','Error with your file');" <<
-//                       "INSERT INTO States (text, comment) VALUES ('missing','Unable to find your file at specified location.');" <<
 
                        "COMMIT;";
 

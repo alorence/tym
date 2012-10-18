@@ -33,6 +33,13 @@ namespace BPTracksIndexes {
         ImagePath
     };
 }
+namespace TrackState {
+    enum {
+        New = 0,
+        ResultsAvailable = 1,
+        FileNotFound = 16
+    };
+}
 
 class BPDatabase : public QObject
 {
