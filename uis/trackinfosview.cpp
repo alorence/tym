@@ -58,6 +58,9 @@ void TrackInfosView::updateInfos(QVariant & bpid)
     ui->d_length->setText(query.record().value(14).toString());
     ui->d_release->setText(query.record().value(15).toString());
 
+    // TODO : dl image and print here.
+    // URL : query.record().value(15).toString()
+    // ui->imageArea->setPixmap(load );
 }
 
 void TrackInfosView::clearData()
