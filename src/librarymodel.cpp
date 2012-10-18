@@ -98,7 +98,6 @@ void LibraryModel::refreshAndPreserveSelection()
     QList<int> checkedCopy = checkedRows;
     select();
     foreach(int row, checkedCopy) {
-        qDebug() << "check row" << row;
         setData(index(row, columnWithCheckbox), Qt::Checked, Qt::CheckStateRole);
     }
 }

@@ -16,34 +16,23 @@ TrackInfosView::~TrackInfosView()
 void TrackInfosView::updateInfos(QVariant & bpid)
 {
     QSqlQuery query;
-    QString queryString = "SELECT group_concat(a.name, ', ') as artists, "
-            "group_concat(r.name, ', ') as remixers, "
-            "group_concat(g.name, ', ') as genres, tr.* "
-            "FROM BPTracks as tr "
-            "JOIN BPTracksArtistsLink as talink ON tr.bpid = talink.trackId "
-            "JOIN BPArtists as a ON a.bpid = talink.artistId "
-            "LEFT JOIN BPTracksRemixersLink as trlink ON tr.bpid = trlink.trackId "
-            "LEFT JOIN BPArtists as r ON r.bpid = trlink.artistId "
-            "JOIN BPTracksGenresLink as tglink ON tr.bpid = tglink.trackId "
-            "JOIN BPGenres as g ON g.bpid = tglink.genreId "
-            "JOIN BPLabels as l ON l.bpid = tr.label "
-            "WHERE tr.bpid=:bpid GROUP BY a.bpid AND r.bpid AND g.bpid";
+    QString queryString = "SELECT "
+            "(SELECT DISTINCT group_concat( art.name, ', ') "
+            "FROM BPArtists as art JOIN BPTracksArtistsLink as artl "
+            "ON artl.artistId=art.bpid "
+            "WHERE artl.trackId=tr.bpid) as artists, "
+            "(SELECT DISTINCT group_concat( rmx.name, ', ') "
+            "FROM BPArtists as rmx JOIN BPTracksRemixersLink as rmxl "
+            "ON rmxl.artistId=rmx.bpid "
+            "WHERE rmxl.trackId=tr.bpid) as remixers, "
+            "(SELECT DISTINCT group_concat( genre.name, ', ') "
+            "FROM BPGenres as genre JOIN BPTracksGenresLink as genrel "
+            "ON genrel.genreId=genre.bpid "
+            "WHERE genrel.trackId=tr.bpid) as genres, "
+            "l.name as labelName, tr.* "
+            "FROM BPTracks as tr JOIN BPLabels as l ON l.bpid = tr.label "
+            "WHERE tr.bpid=:bpid";
 
-/*
-SELECT group_concat( a.name, ', ') as artists,
-group_concat(r.name, ', ') as remixers,
-group_concat( g.name, ', ') as genres, tr.*
-FROM BPTracks as tr
-JOIN BPTracksArtistsLink as talink ON tr.bpid = talink.trackId
-JOIN BPArtists as a ON a.bpid = talink.artistId
-LEFT JOIN BPTracksRemixersLink as trlink ON tr.bpid = trlink.trackId
-LEFT JOIN BPArtists as r ON r.bpid = trlink.artistId
-JOIN BPTracksGenresLink as tglink ON tr.bpid = tglink.trackId
-JOIN BPGenres as g ON g.bpid = tglink.genreId
-JOIN BPLabels as l ON l.bpid = tr.label
-WHERE tr.bpid=3682187
-GROUP BY tr.bpid
-*/
     query.prepare(queryString);
     query.bindValue(":bpid", bpid);
     if( ! query.exec() ) {
@@ -51,12 +40,43 @@ GROUP BY tr.bpid
     }
 
     query.next();
-    qDebug() << query.record();
+    //qDebug() << query.record();
+    ui->d_artists->setText(query.record().value(0).toString());
+    ui->d_remixers->setText(query.record().value(1).toString());
+    //ui->d_genres->setText(query.record().value(2).toString());
+    ui->d_label->setText(query.record().value(3).toString());
+    // No BPID lineEdit for now ui->d_->setText(query.record().value(4).toString());
+    ui->d_name->setText(query.record().value(5).toString());
+    ui->d_mixname->setText(query.record().value(6).toString());
+    ui->d_title->setText(query.record().value(7).toString());
+    //ui->d_labelNumber->setText(query.record().value(8).toString());
+    ui->d_key->setText(query.record().value(9).toString());
+    ui->d_bpm->setText(query.record().value(10).toString());
+    ui->d_releaseDate->setText(query.record().value(11).toString());
+    ui->d_publishdate->setText(query.record().value(12).toString());
+    ui->d_price->setText(query.record().value(13).toString());
+    ui->d_length->setText(query.record().value(14).toString());
+    ui->d_release->setText(query.record().value(15).toString());
 
 }
 
 void TrackInfosView::clearData()
 {
-    qDebug() << "clear data";
+    ui->d_artists->clear();
+    ui->d_remixers->clear();
+    //ui->d_genres->clear();
+    ui->d_label->clear();
+    // No BPID lineEdit for now ui->d_->->clear();
+    ui->d_name->clear();
+    ui->d_mixname->clear();
+    ui->d_title->clear();
+    //ui->d_labelNumber->clear();
+    ui->d_key->clear();
+    ui->d_bpm->clear();
+    ui->d_releaseDate->clear();
+    ui->d_publishdate->clear();
+    ui->d_price->clear();
+    ui->d_length->clear();
+    ui->d_release->clear();
 }
 
