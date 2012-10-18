@@ -3,7 +3,8 @@ HEADERS += \
     src/searchprovider.h \
     src/librarymodel.h \
     src/bpdatabase.h \
-    src/patterntool.h
+    src/patterntool.h \
+    src/commons.h
 
 SOURCES += \
     src/searchprovider.cpp \
