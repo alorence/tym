@@ -4,6 +4,7 @@
 #include <QtSql>
 #include <QtGui>
 
+#include "ui_about.h"
 #include "uis/settingsdialog.h"
 #include "uis/searchwizard.h"
 #include "src/librarymodel.h"
@@ -30,6 +31,8 @@ private slots:
     void on_actionImport_triggered();
     void on_actionSearch_triggered();
     void updateTrackInfos(QModelIndex,QModelIndex);
+
+    void on_actionAbout_triggered();
 
 private:
     Ui::MainWindow* ui;

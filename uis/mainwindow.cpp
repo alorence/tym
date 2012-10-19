@@ -104,3 +104,11 @@ void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
     }
 }
 
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QDialog * container = new QDialog(this);
+    Ui::AboutDialog about;
+    about.setupUi(container);
+    container->show();
+}
