@@ -20,23 +20,16 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 {
     if(ind.column() == columnWithCheckbox) {
         if(role == Qt::CheckStateRole) {
+
             return checkedRows.contains(ind.row()) ? Qt::Checked : Qt::Unchecked;
+
         } else if (role == Qt::DisplayRole) {
+
             QString filePath = QSqlRelationalTableModel::data(ind, role).toString();
             return QVariant(filePath.split(QDir::separator()).last());
-        }
-    } else if (ind.column() == LibraryIndexes::Note && role == Qt::DisplayRole) {
-        int status = data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
-        switch(status) {
-            case TrackStates::New:
-                return tr("Recently imported, no result for now...");
-            break;
-        default:
-            return "";
-        }
-    }
-    // For tooltip, display only the folder (all text before the last dir separator)
-    if(role == Qt::ToolTipRole) {
+
+        } else if(role == Qt::ToolTipRole) {
+            // Display only the folder (all text before the last dir separator)
             QStringList pathElements = QSqlRelationalTableModel::data(QAbstractTableModel::index(ind.row(), LibraryIndexes::FilePath, ind.parent()), Qt::DisplayRole)
                     .toString().split(QDir::separator());
             pathElements.removeLast();
@@ -44,15 +37,54 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             QString tooltip = "In directory ";
             tooltip.append(pathElements.join(QDir::separator()));
             return QVariant(tooltip);
+
+        }
+    } else if (ind.column() == LibraryIndexes::Note && role == Qt::DisplayRole) {
+
+        int status = data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+
+        switch(status) {
+        case TrackStates::New:
+            return tr("Recently imported, no result for now...");
+        break;
+        case TrackStates::FileNotFound:
+            return tr("Unable to find the file on your disk.");
+        break;
+        case TrackStates::ResultsAvailable:
+            return tr("n results available.");
+        break;
+        default:
+            return "";
+        }
+
+    } else if (ind.column() == LibraryIndexes::Status && role == Qt::DisplayRole) {
+
+        int status = data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+
+        switch (status) {
+        case TrackStates::New:
+            return tr("New");
+        break;
+        case TrackStates::FileNotFound:
+            return tr("Missing");
+        break;
+        case TrackStates::ResultsAvailable:
+            return tr("Searched");
+        break;
+        default:
+            return "";
+        }
     }
+
     return QSqlRelationalTableModel::data(ind, role);
 }
 
 bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int role)
 {
     if(ind.column() == columnWithCheckbox && role == Qt::CheckStateRole) {
-        QItemSelectionModel::SelectionFlag selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
-        QItemSelection lineSelection(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() -1, ind.parent()));
+        QItemSelectionModel::SelectionFlag selStatus;
+        selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
+        QItemSelection lineSelection(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
         emit rowChecked(lineSelection, selStatus);
         return true;
     }
@@ -64,7 +96,7 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(section == LibraryIndexes::Note - 1 && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-        return "infos";
+        return "message";
     }
     return QSqlRelationalTableModel::headerData(section, orientation, role);
 }
