@@ -12,35 +12,50 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
     if(dbUtil.version() != "-1") {
+        // Used to transfer fixed parameters to some slots
+        generalMapper = new QSignalMapper(this);
+
+        /**
+         * Library
+         */
+        // Configure view
         ui->libraryView->setModel(dbUtil.libraryModel());
         ui->libraryView->hideColumn(LibraryIndexes::Uid);
         ui->libraryView->hideColumn(LibraryIndexes::Bpid);
         ui->libraryView->resizeColumnsToContents();
 
-        connect(this, SIGNAL(importFilesToLibrary(QStringList)),
-                &dbUtil, SLOT(importFiles(QStringList)));
-
+        // Check rows in model when selection change on the view
         connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
                 dbUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
+        // Select or deselect rows on the view when checkboxes are checked / unchecked
         connect(dbUtil.libraryModel(), SIGNAL(rowChecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
                 ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
-
+        // Update search results view when selecting something in the library view
         connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
                 &dbUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
-        generalMapper = new QSignalMapper(this);
-        // 0 is both the row to select and the column to hide
-        generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
+        /**
+         * Search Results
+         */
+        // Configure view
+        ui->searchResultsView->setModel(dbUtil.searchModel());
+
+        // Display informations about a track when selecting it in the view
+        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+                this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
+
+        // When the selection change in library view, the search results view should be reconfigured.
         connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
                 generalMapper, SLOT(map()));
+        // The first column (0) must be hidden, the first row must be selected :
+        generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
         connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
         connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
 
-        ui->searchResultsView->setModel(dbUtil.searchModel());
-        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-                this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
-        ui->searchResultsView->hideColumn(0);
 
+        /**
+         * Actions
+         */
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
         connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), &dbUtil, SLOT(storeSearchResults(QMap<int,QVariant>)));
     } else {
@@ -54,11 +69,22 @@ MainWindow::~MainWindow()
     delete generalMapper;
 }
 
+void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
+{
+    if(selected.isValid()) {
+        QVariant bpid = dbUtil.searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
+        ui->trackInfos->updateInfos(bpid);
+    } else {
+        ui->trackInfos->clearData();
+    }
+}
+
 void MainWindow::on_actionImport_triggered()
 {
     QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../bpmanager/sources_files", filters, 0, 0);
-    emit importFilesToLibrary(fileList);
+
+    dbUtil.importFiles(fileList);
 }
 
 void MainWindow::on_actionSearch_triggered()
@@ -79,7 +105,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     QPair<int, QSqlRecord> entry;
-    foreach (entry, dbUtil.libraryModel()->selectedRecords()){
+    foreach (entry, dbUtil.libraryModel()->selectedRecords()) {
         int id = entry.first;
         QSqlRecord record = entry.second;
 
@@ -102,18 +128,6 @@ void MainWindow::on_actionSearch_triggered()
         searchProvider.searchFromName(requestMap);
     }
 }
-
-void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
-{
-    if(selected.isValid()) {
-        QSqlQueryModel *model = dbUtil.searchModel();
-        QVariant bpid = model->record(selected.row()).value(0);
-        ui->trackInfos->updateInfos(bpid);
-    } else {
-        ui->trackInfos->clearData();
-    }
-}
-
 
 void MainWindow::on_actionAbout_triggered()
 {

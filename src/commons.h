@@ -28,7 +28,13 @@ namespace BPTracksIndexes {
         ImagePath
     };
 }
-namespace TrackState {
+namespace SearchResultsIndexes {
+    enum {
+        Bpid = 0,
+        Track
+    };
+}
+namespace TrackStates {
     enum {
         New = 0,
         ResultsAvailable = 1,

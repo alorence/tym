@@ -252,7 +252,7 @@ void BPDatabase::importFile(QString path)
     QSqlQuery query;
     query.prepare("INSERT INTO Library (filePath, status) VALUES (:path, :status);");
     query.bindValue(":path", path);
-    query.bindValue(":status", TrackState::New);
+    query.bindValue(":status", TrackStates::New);
 
     if( ! query.exec()){
         qWarning() << "Unable to import file" << path << ":" << _libraryModel->lastError().text();

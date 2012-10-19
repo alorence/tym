@@ -28,10 +28,9 @@ signals:
     void importFilesToLibrary(const QStringList) const;
     
 private slots:
+    void updateTrackInfos(QModelIndex,QModelIndex);
     void on_actionImport_triggered();
     void on_actionSearch_triggered();
-    void updateTrackInfos(QModelIndex,QModelIndex);
-
     void on_actionAbout_triggered();
 
 private:

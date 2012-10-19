@@ -28,7 +28,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
     } else if (ind.column() == LibraryIndexes::Note && role == Qt::DisplayRole) {
         int status = data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
         switch(status) {
-            case TrackState::New:
+            case TrackStates::New:
                 return tr("Recently imported, no result for now...");
             break;
         default:
