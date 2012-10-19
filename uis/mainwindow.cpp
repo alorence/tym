@@ -13,7 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     if(dbUtil.version() != "-1") {
         ui->libraryView->setModel(dbUtil.libraryModel());
-        ui->libraryView->hideColumn(0);
+        ui->libraryView->hideColumn(LibraryIndexes::Uid);
+        ui->libraryView->hideColumn(LibraryIndexes::Bpid);
+        ui->libraryView->resizeColumnsToContents();
 
         connect(this, SIGNAL(importFilesToLibrary(QStringList)),
                 &dbUtil, SLOT(importFiles(QStringList)));
@@ -26,6 +28,13 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
                 &dbUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
+        generalMapper = new QSignalMapper(this);
+        // 0 is both the row to select and the column to hide
+        generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
+        connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+                generalMapper, SLOT(map()));
+        connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
+        connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
 
         ui->searchResultsView->setModel(dbUtil.searchModel());
         connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -42,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete generalMapper;
 }
 
 void MainWindow::on_actionImport_triggered()

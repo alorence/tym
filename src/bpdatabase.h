@@ -5,34 +5,7 @@
 #include <QtSql>
 
 #include "src/librarymodel.h"
-
-namespace LibraryIndexes {
-    enum {
-        Uid = 0,
-        FilePath,
-        Bpid,
-        Status,
-        Note
-    };
-}
-namespace BPTracksIndexes {
-    enum {
-        Bpid = 0,
-        TrackName,
-        MixName,
-        Title, // Full title, formatted as '%TrackName (%MixName)'
-        Label,
-        Key,
-        Bpm,
-        ReleaseDate,
-        PublishDate,
-        Price,
-        Length,
-        Release,
-        ImageUrl,
-        ImagePath
-    };
-}
+#include "commons.h"
 
 class BPDatabase : public QObject
 {
