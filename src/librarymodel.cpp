@@ -85,7 +85,7 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
         QItemSelectionModel::SelectionFlag selStatus;
         selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
         QItemSelection lineSelection(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
-        emit rowChecked(lineSelection, selStatus);
+        emit rowCheckedOrUnchecked(lineSelection, selStatus);
         return true;
     }
     else {

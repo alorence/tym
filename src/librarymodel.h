@@ -33,7 +33,7 @@ private:
     int columnWithCheckbox;
 
 signals:
-    void rowChecked(QItemSelection,QItemSelectionModel::SelectionFlags);
+    void rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags);
 
 };
 
