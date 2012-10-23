@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
+    ui->progress->setVisible(false);
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), this, SLOT(updateProgressBar()));
+
     if(dbUtil.version() != "-1") {
         // Used to transfer fixed parameters to some slots
         generalMapper = new QSignalMapper(this);
@@ -126,16 +129,19 @@ void MainWindow::on_actionSearch_triggered()
         parsedValueMap[id] = pt.parseValues(fileName, interestingKeys);
     }
 
+    ui->progress->setVisible(true);
     QMap<int, QString> * requestMap = new QMap<int, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
         foreach(int id, parsedValueMap.keys()) {
             requestMap->insert(id, parsedValueMap[id]["bpid"]);
         }
+        ui->progress->setMaximum(requestMap->size());
         searchProvider.searchFromIds(requestMap);
     } else {
         foreach(int id, parsedValueMap.keys()) {
             requestMap->insert(id, ((QStringList)parsedValueMap[id].values()).join(" "));
         }
+        ui->progress->setMaximum(requestMap->size());
         searchProvider.searchFromName(requestMap);
     }
 }
@@ -146,4 +152,13 @@ void MainWindow::on_actionAbout_triggered()
     Ui::AboutDialog about;
     about.setupUi(container);
     container->show();
+}
+
+void MainWindow::updateProgressBar()
+{
+    int newValue = ui->progress->value() + 1;
+    ui->progress->setValue(newValue);
+    if(newValue == ui->progress->maximum()) {
+        ui->progress->setVisible(false);
+    }
 }

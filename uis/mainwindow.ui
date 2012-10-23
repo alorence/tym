@@ -21,7 +21,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="enabled">
        <bool>true</bool>
@@ -88,7 +88,10 @@
          <string>Search Results</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
+         <item row="2" column="0">
+          <widget class="TrackInfosView" name="trackInfos" native="true"/>
+         </item>
+         <item row="1" column="0">
           <widget class="QTableView" name="searchResultsView">
            <property name="alternatingRowColors">
             <bool>true</bool>
@@ -116,8 +119,12 @@
            </attribute>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="TrackInfosView" name="trackInfos" native="true"/>
+         <item row="0" column="0">
+          <widget class="QProgressBar" name="progress">
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 
     w.registerConsole(console);
 
-
     a.setOrganizationName("Beatport Library Manager");
     a.setApplicationName("BPManager");
     a.setApplicationVersion("0.0.0.1");

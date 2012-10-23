@@ -34,6 +34,7 @@ private slots:
     void on_actionImport_triggered();
     void on_actionSearch_triggered();
     void on_actionAbout_triggered();
+    void updateProgressBar();
 
 private:
     bool defaultConsoleDisplaying;
