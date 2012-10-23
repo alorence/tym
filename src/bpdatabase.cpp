@@ -194,9 +194,10 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
 {
     QSqlQuery query;
-    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
+    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid, status=:status WHERE uid=:uid");
     query.bindValue(":uid", _libraryModel->record(row).value(LibraryIndexes::Uid));
     query.bindValue(":bpid", bpid);
+    query.bindValue(":status", FileStatus::ResultsAvailable);
     if( ! query.exec()) {
         qWarning() << QString("Unable to update library row %1 with the bpid %2")
                       .arg(QString::number(row), query.boundValue(":bpid").toString());
@@ -261,7 +262,7 @@ void BPDatabase::importFile(QString path)
     QSqlQuery query;
     query.prepare("INSERT INTO Library (filePath, status) VALUES (:path, :status);");
     query.bindValue(":path", path);
-    query.bindValue(":status", TrackStates::New);
+    query.bindValue(":status", FileStatus::New);
 
     if( ! query.exec()){
         qWarning() << "Unable to import file" << path << ":" << _libraryModel->lastError().text();

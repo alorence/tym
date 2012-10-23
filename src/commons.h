@@ -34,7 +34,7 @@ namespace SearchResultsIndexes {
         Track
     };
 }
-namespace TrackStates {
+namespace FileStatus {
     enum {
         New = 0,
         ResultsAvailable = 1,

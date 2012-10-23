@@ -44,13 +44,13 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
 
         switch(status) {
-        case TrackStates::New:
+        case FileStatus::New:
             return tr("Recently imported, no result for now...");
         break;
-        case TrackStates::FileNotFound:
+        case FileStatus::FileNotFound:
             return tr("Unable to find the file on your disk.");
         break;
-        case TrackStates::ResultsAvailable:
+        case FileStatus::ResultsAvailable:
             return tr("n results available.");
         break;
         default:
@@ -62,13 +62,13 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
 
         switch (status) {
-        case TrackStates::New:
+        case FileStatus::New:
             return tr("New");
         break;
-        case TrackStates::FileNotFound:
+        case FileStatus::FileNotFound:
             return tr("Missing");
         break;
-        case TrackStates::ResultsAvailable:
+        case FileStatus::ResultsAvailable:
             return tr("Searched");
         break;
         default:
