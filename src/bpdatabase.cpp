@@ -68,6 +68,15 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     QMap<QString, QVariant> trackMap = track.toMap();
     QVariant trackBpId = trackMap.value("id");
 
+    QSqlQuery isExisting;
+    isExisting.prepare("SELECT bpid FROM BPTracks WHERE bpid=:id");
+    isExisting.bindValue(":id", trackBpId);
+    isExisting.exec();
+    if(isExisting.next()) {
+        qDebug() << QString(tr("Tracks %1 already stored in database.")).arg(trackBpId.toString());
+        return trackBpId;
+    }
+
     QStringList artists;
     QSqlQuery query, linkQuery;
     query.prepare("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
@@ -176,7 +185,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
                     .arg(artists.join(", "), query.boundValue(":title").toString());
         qWarning() << query.lastError();
     } else {
-        qDebug() << QString("Track %1 - %2 has been corectly added to database").arg(artists.join(", "), query.boundValue(":title").toString());
+        qDebug() << QString("Track %1 - %2 has been corectly stored into database").arg(artists.join(", "), query.boundValue(":title").toString());
     }
 
     return trackBpId;
