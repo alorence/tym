@@ -23,7 +23,7 @@ public:
     QSqlQueryModel * searchModel() const;
 
 public slots:
-    void storeSearchResults(const QMap<int,QVariant>);
+    void storeSearchResults(int row, QVariant result);
     QVariant storeTrack(const QVariant track);
     void importFile(QString filePath);
     void importFiles(const QStringList &);

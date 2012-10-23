@@ -32,20 +32,20 @@ void SearchProvider::initProxy()
     */
 }
 
-void SearchProvider::searchFromIds(QMap<int, QString> * idList)
+void SearchProvider::searchFromIds(QMap<int, QString> * rowBpidMap)
 {
     QUrl requestUrl = QUrl(apiUrl);
     requestUrl.setPath(tracksPath);
 
     QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-    queryItems << QPair<QString, QString>("ids", QStringList(idList->values()).join(","));
+    queryItems << QPair<QString, QString>("ids", QStringList(rowBpidMap->values()).join(","));
     requestUrl.setQueryItems(queryItems);
 
     QNetworkRequest request(requestUrl);
 
     QNetworkReply *reply = manager->get(request);
 
-    replyMap.insert(reply, idList);
+    replyMap.insert(reply, rowBpidMap);
 
     connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -59,22 +59,22 @@ void SearchProvider::parseReplyForIdSearch()
     QString jsonResponse(reply->readAll());
     QVariant response = QtJson::Json::parse(jsonResponse);
 
-    QMap<int, QVariant> indexedResults;
     QVariant track;
     QMapIterator<int, QString> req(*requestMap);
+
     while(req.hasNext()) {
         req.next();
+
         int id = req.key();
         QString bpid = req.value();
+
         foreach(track, response.toMap()["results"].toList()) {
             if(bpid == track.toMap()["id"].toString()) {
-                indexedResults[id] = track;
+                emit searchResultAvailable(id, track);
                 break;
             }
         }
     }
-
-    emit searchResultAvailable(indexedResults);
 
     // TODO : Insert error code for tracks not found
 
@@ -117,17 +117,14 @@ void SearchProvider::searchFromName(QMap<int, QString> *nameList)
     }
     delete nameList;
 }
-void SearchProvider::parseReplyForNameSearch(int index)
+void SearchProvider::parseReplyForNameSearch(int row)
 {
-    QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(index));
+    QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(row));
 
     QString jsonResponse(reply->readAll());
     QVariant response = QtJson::Json::parse(jsonResponse);
 
-
-    QMap<int, QVariant> indexedResults;
-    indexedResults[index] = response.toMap()["results"].toList();
-    emit searchResultAvailable(indexedResults);
+    emit searchResultAvailable(row, response.toMap()["results"].toList());
 
     // TODO : Insert error code for tracks not found
 

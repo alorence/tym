@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
     ui->progress->setVisible(false);
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), this, SLOT(updateProgressBar()));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), this, SLOT(updateProgressBar()));
 
     if(dbUtil.version() != "-1") {
         // Used to transfer fixed parameters to some slots
@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
          * Actions
          */
         connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
-        connect(&searchProvider, SIGNAL(searchResultAvailable(QMap<int,QVariant>)), &dbUtil, SLOT(storeSearchResults(QMap<int,QVariant>)));
+        connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), &dbUtil, SLOT(storeSearchResults(int,QVariant)));
     } else {
         qCritical() << tr("Impossible to connect to database...");
     }

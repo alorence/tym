@@ -15,15 +15,15 @@ public:
     ~SearchProvider();
     
 signals:
-    void searchResultAvailable(QMap<int, QVariant> resultMap) const;
+    void searchResultAvailable(int row, QVariant result) const;
     
 public slots:
-    void searchFromIds(QMap<int, QString> *idList);
-    void searchFromName(QMap<int, QString> *nameList);
+    void searchFromIds(QMap<int, QString> *);
+    void searchFromName(QMap<int, QString> *);
 
 private slots:
     void parseReplyForIdSearch();
-    void parseReplyForNameSearch(int index);
+    void parseReplyForNameSearch(int row);
     void getError(QNetworkReply::NetworkError);
 
 private :
