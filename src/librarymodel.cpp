@@ -41,7 +41,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         }
     } else if (ind.column() == LibraryIndexes::Note && role == Qt::DisplayRole) {
 
-        int status = data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
 
         switch(status) {
         case TrackStates::New:
@@ -59,7 +59,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
     } else if (ind.column() == LibraryIndexes::Status && role == Qt::DisplayRole) {
 
-        int status = data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
 
         switch (status) {
         case TrackStates::New:
