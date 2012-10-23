@@ -194,10 +194,9 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
 {
     QSqlQuery query;
-    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid, status=:status WHERE uid=:uid");
+    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
     query.bindValue(":uid", _libraryModel->record(row).value(LibraryIndexes::Uid));
     query.bindValue(":bpid", bpid);
-    query.bindValue(":status", FileStatus::ResultsAvailable);
     if( ! query.exec()) {
         qWarning() << QString("Unable to update library row %1 with the bpid %2")
                       .arg(QString::number(row), query.boundValue(":bpid").toString());
@@ -219,8 +218,10 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
         int libraryRow = e.key();
         QVariant result = e.value();
 
+        int libUid = _libraryModel->record(libraryRow).value(LibraryIndexes::Uid).toInt();
+
         // 1 result for each library row
-        if(result.type() == QVariant::Map) {
+        if(result.type() == QVariant::Map && ! result.toMap().empty()) {
             QVariant bpid = storeTrack(result);
 
             setLibraryTrackReference(libraryRow, bpid);
@@ -232,21 +233,39 @@ void BPDatabase::storeSearchResults(const QMap<int, QVariant> trackList)
                 qWarning() << searchResultQuery.lastError();
             }
 
+            updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
+            _libraryModel->refreshAndPreserveSelection();
+
         } else
         // Many results per library row
-        if (result.type() == QVariant::List) {
+        if (result.type() == QVariant::List && ! result.toList().empty()) {
             foreach(QVariant track, result.toList()) {
                 QVariant bpid = storeTrack(track);
 
-                searchResultQuery.bindValue(":libId", _libraryModel->record(libraryRow).value(LibraryIndexes::Uid));
+                searchResultQuery.bindValue(":libId", libUid);
                 searchResultQuery.bindValue(":trackId", bpid);
                 if( ! searchResultQuery.exec()) {
                     qWarning() << QString("Unable to register search result for track %1").arg(bpid.toString());
                     qWarning() << searchResultQuery.lastError();
                 }
             }
+
+            updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
+            _libraryModel->refreshAndPreserveSelection();
         }
-        _libraryModel->refreshAndPreserveSelection();
+    }
+}
+
+
+void BPDatabase::updateLibraryStatus(int uid, FileStatus::Status status)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
+    query.bindValue(":uid", uid);
+    query.bindValue(":status", status);
+    if( ! query.exec()) {
+        qWarning() << QString("Unable to update library elements's %1 status").arg(uid);
+        qWarning() << query.lastError();
     }
 }
 

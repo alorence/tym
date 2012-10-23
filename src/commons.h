@@ -2,7 +2,7 @@
 #define COMMONS_H
 
 namespace LibraryIndexes {
-    enum {
+    enum Index {
         Uid = 0,
         FilePath,
         Bpid,
@@ -11,7 +11,7 @@ namespace LibraryIndexes {
     };
 }
 namespace BPTracksIndexes {
-    enum {
+    enum Index {
         Bpid = 0,
         TrackName,
         MixName,
@@ -29,13 +29,13 @@ namespace BPTracksIndexes {
     };
 }
 namespace SearchResultsIndexes {
-    enum {
+    enum Index {
         Bpid = 0,
         Track
     };
 }
 namespace FileStatus {
-    enum {
+    enum Status {
         New = 0,
         ResultsAvailable = 1,
         FileNotFound = 16

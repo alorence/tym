@@ -29,6 +29,7 @@ public slots:
     void importFiles(const QStringList &);
     bool setLibraryTrackReference(int row, QVariant bpid);
     void updateSearchResults(const QModelIndex&,const QModelIndex&);
+    void updateLibraryStatus(int uid, FileStatus::Status status);
 
 private :
     LibraryModel *_libraryModel;
