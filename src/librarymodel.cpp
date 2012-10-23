@@ -11,6 +11,8 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
     Qt::ItemFlags flags = QSqlRelationalTableModel::flags(index);
     if(index.column() == columnWithCheckbox) {
         return flags | Qt::ItemIsUserCheckable;
+    } else if(index.column() == LibraryIndexes::Message){
+        return QSqlRelationalTableModel::flags(QAbstractTableModel::index(index.row(), LibraryIndexes::FilePath, index.parent()));
     } else {
         return flags;
     }
@@ -39,7 +41,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return QVariant(tooltip);
 
         }
-    } else if (ind.column() == LibraryIndexes::Note && role == Qt::DisplayRole) {
+    } else if (ind.column() == LibraryIndexes::Message && role == Qt::DisplayRole) {
 
         int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
 
@@ -75,7 +77,6 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return "";
         }
     }
-
     return QSqlRelationalTableModel::data(ind, role);
 }
 
@@ -95,7 +96,7 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(section == LibraryIndexes::Note && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+    if(section == LibraryIndexes::Message && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         return "message";
     }
     return QSqlRelationalTableModel::headerData(section, orientation, role);

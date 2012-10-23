@@ -7,7 +7,7 @@ namespace LibraryIndexes {
         FilePath,
         Bpid,
         Status,
-        Note
+        Message
     };
 }
 namespace BPTracksIndexes {
