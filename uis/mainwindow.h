@@ -24,6 +24,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void registerConsole(QWidget * c);
+
 signals:
     void importFilesToLibrary(const QStringList) const;
     
@@ -39,6 +41,8 @@ private:
     SearchProvider searchProvider;
     BPDatabase dbUtil;
     QSignalMapper * generalMapper;
+
+    QWidget * console;
 };
 
 #endif // MAINWINDOW_H

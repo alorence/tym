@@ -160,6 +160,7 @@
     <property name="separatorsCollapsible">
      <bool>true</bool>
     </property>
+    <addaction name="actionToggleConsole"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -262,6 +263,20 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionToggleConsole">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display console</string>
+   </property>
+   <property name="toolTip">
+    <string>Display console</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+C</string>
    </property>
   </action>
  </widget>

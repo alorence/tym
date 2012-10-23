@@ -52,7 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
         connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
 
-
         /**
          * Actions
          */
@@ -67,6 +66,14 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete generalMapper;
+}
+
+void MainWindow::registerConsole(QWidget *c)
+{
+    console = c;
+    ui->centralWidget->layout()->addWidget(c);
+    connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), console, SLOT(setVisible(bool)));
+    ui->actionToggleConsole->setChecked(true);
 }
 
 void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
