@@ -3,6 +3,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
     searchProvider(settings, this),
@@ -66,6 +67,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete generalMapper;
+    delete console;
 }
 
 void MainWindow::registerConsole(QWidget *c)
@@ -73,7 +75,9 @@ void MainWindow::registerConsole(QWidget *c)
     console = c;
     ui->centralWidget->layout()->addWidget(c);
     connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), console, SLOT(setVisible(bool)));
-    ui->actionToggleConsole->setChecked(true);
+
+    ui->actionToggleConsole->setChecked(defaultConsoleDisplaying);
+    console->setVisible(defaultConsoleDisplaying);
 }
 
 void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)

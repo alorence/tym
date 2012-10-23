@@ -36,6 +36,8 @@ private slots:
     void on_actionAbout_triggered();
 
 private:
+    bool defaultConsoleDisplaying;
+
     Ui::MainWindow* ui;
     SettingsDialog* settings;
     SearchProvider searchProvider;
