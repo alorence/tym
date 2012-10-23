@@ -101,6 +101,11 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
     return QSqlRelationalTableModel::headerData(section, orientation, role);
 }
 
+int LibraryModel::columnCount(const QModelIndex &) const
+{
+    return QSqlRelationalTableModel::columnCount() + 1;
+}
+
 void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
 {
     int i;

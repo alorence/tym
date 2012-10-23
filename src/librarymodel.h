@@ -19,6 +19,7 @@ public:
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &i, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
     QList<int> selectedIds() const;
     QList<QPair<int, QSqlRecord> > selectedRecords() const;
