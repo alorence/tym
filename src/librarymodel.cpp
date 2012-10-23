@@ -95,7 +95,7 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(section == LibraryIndexes::Note - 1 && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+    if(section == LibraryIndexes::Note && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         return "message";
     }
     return QSqlRelationalTableModel::headerData(section, orientation, role);
