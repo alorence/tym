@@ -69,11 +69,11 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     QVariant trackBpId = trackMap.value("id");
 
     QSqlQuery isExisting;
-    isExisting.prepare("SELECT bpid FROM BPTracks WHERE bpid=:id");
+    isExisting.prepare("SELECT bpid, name FROM BPTracks WHERE bpid=:id");
     isExisting.bindValue(":id", trackBpId);
     isExisting.exec();
     if(isExisting.next()) {
-        qDebug() << QString(tr("Tracks %1 already stored in database.")).arg(trackBpId.toString());
+        qDebug() << QString(tr("Track %1 (%2) already stored in database.")).arg(isExisting.record().value(1).toString()).arg(trackBpId.toString());
         return trackBpId;
     }
 
