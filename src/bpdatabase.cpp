@@ -23,7 +23,11 @@ BPDatabase::BPDatabase(QObject *parent) :
     QObject(parent)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../bpmanager.bpl");
+    db.setDatabaseName(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+                       + QDir::separator()
+                       + QCoreApplication::applicationName()
+                       + QDir::separator()
+                       + "default.db");
 
     if(db.open()) {
         if(version() == "-1") {
