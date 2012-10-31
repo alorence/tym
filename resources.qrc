@@ -15,4 +15,7 @@
         <file alias="about">resources/fugues-icons-3.5/icons/question.png</file>
         <file alias="help">resources/fugues-icons-3.5/icons/book-question.png</file>
     </qresource>
+    <qresource prefix="/img/logos">
+        <file>resources/logos/gplv3-88x31.png</file>
+    </qresource>
 </RCC>
