@@ -25,7 +25,7 @@
 QT       += core gui sql network
 CONFIG   += debug
 
-TARGET = BPManager
+TARGET = tym
 TEMPLATE = app
 
 include(src/src.pri)

@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>BPManager</string>
+   <string>TYM - Tag Your Music</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -144,7 +144,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
