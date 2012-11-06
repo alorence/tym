@@ -1,7 +1,7 @@
 /**
 * Copyright 2012 Antoine Lorence. All right reserved.
 *
-* This file is part of TYM (Tag your Music).
+* This file is part of TYM (Tag Your Music).
 *
 * TYM (Tag your Library) is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
