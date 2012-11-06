@@ -114,8 +114,9 @@ void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
 
 void MainWindow::on_actionImport_triggered()
 {
-    QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
-    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../bpmanager/sources_files", filters, 0, 0);
+    //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
+    QString filters = "Audio tracks (*.wav *.flac *.mp3)";
+    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/sources_files", filters, 0, 0);
 
     dbUtil.importFiles(fileList);
 }
