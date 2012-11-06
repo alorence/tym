@@ -26,15 +26,21 @@
 #include "src/librarymodel.h"
 #include "commons.h"
 
+
+static bool dbInitialized = false;
+
 class BPDatabase : public QObject
 {
     Q_OBJECT
 
 public:
     explicit BPDatabase(QObject *parent = 0);
+    ~BPDatabase();
 
+    static bool initDB();
+    static const bool initialized();
     static const QString version();
-    static const QSqlDatabase dbObject();
+    static QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;
     QSqlQueryModel * searchModel() const;
@@ -50,7 +56,7 @@ public slots:
 
 private :
     LibraryModel *_libraryModel;
-    void initTables();
+    static bool initTables();
 
     QSqlQueryModel * _searchModel;
     QSqlQuery _searchQuery;

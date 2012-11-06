@@ -22,45 +22,119 @@
 BPDatabase::BPDatabase(QObject *parent) :
     QObject(parent)
 {
+    if( ! BPDatabase::initialized()) {
+        BPDatabase::initDB();
+    }
+
+    _libraryModel = new LibraryModel(this, dbObject());
+    _libraryModel->setTable("Library");
+    _libraryModel->select();
+
+    _searchModel = new QSqlQueryModel(this);
+
+    _searchQuery = QSqlQuery(BPDatabase::dbObject());
+    _searchQuery.prepare("SELECT "
+                         "tr.bpid as ID, "
+                         "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
+                         "FROM BPTracks as tr "
+                         "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
+                         "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
+                         "JOIN BPArtists as a ON a.bpid = talink.artistId "
+                         "WHERE sr.libId=:id GROUP BY tr.bpid");
+
+}
+
+BPDatabase::~BPDatabase()
+{
+    dbObject().close();
+}
+
+bool BPDatabase::initDB()
+{
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
                     + QDir::separator()
-                    + QCoreApplication::organizationName()
-                    + QDir::separator()
                     + "default.db";
+
+    QFileInfo dbFileInfo(dbPath);
+    if( ! dbFileInfo.dir().exists()) {
+        QDir dir;
+        dir.mkpath(dbFileInfo.dir().path());
+    }
+
     db.setDatabaseName(dbPath);
     qDebug() << dbPath;
 
-    if(db.open()) {
-        if(version() == "-1") {
-            initTables();
-            qDebug() << "DB opened and initialized for the first time, version " << version();
+    dbInitialized = db.open();
+    if( ! dbInitialized) {
+        qCritical() << tr("Unable to open database at location %1").arg(dbPath);
+    } else if(BPDatabase::version() == "-1") {
+        dbInitialized = BPDatabase::initTables();
+        if( ! dbInitialized) {
+            qCritical() << tr("Unable to initialise database.");
+            //QFile(dbPath).remove();
         } else {
-            qDebug() << "DB opened, version " << version();
+            qDebug() << tr("DB opened and initialized for the first time, version %1").arg(version());
         }
-
-        _libraryModel = new LibraryModel(this, db);
-        _libraryModel->setTable("Library");
-        _libraryModel->select();
-
-        _searchModel = new QSqlQueryModel(this);
-
-        _searchQuery = QSqlQuery(BPDatabase::dbObject());
-        _searchQuery.prepare("SELECT "
-                             "tr.bpid as ID, "
-                             "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
-                             "FROM BPTracks as tr "
-                             "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
-                             "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
-                             "JOIN BPArtists as a ON a.bpid = talink.artistId "
-                             "WHERE sr.libId=:id GROUP BY tr.bpid");
-
     } else {
-        qCritical() << "Error : " << db.lastError().text();
+        qDebug() << tr("DB opened, version %1").arg(version());
+    }
+
+    return dbInitialized;
+}
+
+const bool BPDatabase::initialized()
+{
+    return dbInitialized;
+}
+
+bool BPDatabase::initTables()
+{
+    QStringList sqlInitCommands;
+    sqlInitCommands <<  "BEGIN TRANSACTION;" <<
+                        "PRAGMA foreign_keys = ON;" <<
+
+                        "CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);" <<
+                        "INSERT INTO Infos (key, value) VALUES ('version', '0.1');" <<
+
+                        //Main library table
+                        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);" <<
+
+                        // Main BeatPort infos tables
+                        "CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, imageUrl TEXT, imagePath TEXT);" <<
+                        "CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);" <<
+                        "CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
+                        "CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
+
+                        "CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
+                        "CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
+                        "CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid), PRIMARY KEY(trackId, genreId));" <<
+                        "CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid), PRIMARY KEY(libId, trackId));" <<
+
+                       "COMMIT;";
+
+    foreach(QString line, sqlInitCommands) {
+        QSqlQuery query = dbObject().exec(line);
+        if( query.lastError().isValid()) {
+            qCritical() << tr("Unable to execute line : %1 (%2)").arg(line).arg(query.lastError().text());
+            return false;
+        }
+    }
+    return true;
+}
+
+const QString BPDatabase::version()
+{
+    QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
+    if( ! query.exec()) {
+        return "-1";
+    } else {
+        query.next();
+        return query.value(0).toString();
     }
 }
 
-const QSqlDatabase BPDatabase::dbObject()
+QSqlDatabase BPDatabase::dbObject()
 {
     return QSqlDatabase::database();
 }
@@ -303,52 +377,9 @@ void BPDatabase::importFile(QString path)
     query.bindValue(":status", FileStatus::New);
 
     if( ! query.exec()){
-        qWarning() << "Unable to import file" << path << ":" << _libraryModel->lastError().text();
+        qWarning() << tr("Unable to import file %1 : %2").arg(path).arg(_libraryModel->lastError().text());
     } else {
         _libraryModel->refreshAndPreserveSelection();
     }
 }
 
-void BPDatabase::initTables()
-{
-    QStringList sqlInitCommands;
-    sqlInitCommands <<  "BEGIN TRANSACTION;" <<
-                        "PRAGMA foreign_keys = ON;" <<
-
-                        "CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);" <<
-                        "INSERT INTO Infos (key, value) VALUES ('version', '0.1');" <<
-
-                        //Main library table
-                        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);" <<
-
-                        // Main BeatPort infos tables
-                        "CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, imageUrl TEXT, imagePath TEXT);" <<
-                        "CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-                        "CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-                        "CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-
-                        "CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
-                        "CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
-                        "CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid), PRIMARY KEY(trackId, genreId));" <<
-                        "CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid), PRIMARY KEY(libId, trackId));" <<
-
-                       "CREATE TABLE Infos (key TEXT PRIMARY KEY, value TEXT);" <<
-                       "INSERT INTO Infos VALUES ('version',0.1);" <<
-
-                       "COMMIT;";
-
-    foreach(QString line, sqlInitCommands) {
-        dbObject().exec(line);
-    }
-}
-
-const QString BPDatabase::version()
-{
-    QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
-    if( ! query.exec()) {
-        return "-1";
-    } else {
-        query.next();
-        return query.value(0).toString();
-    }
-}

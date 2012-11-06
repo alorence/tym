@@ -31,58 +31,59 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
+    if( ! BPDatabase::initialized()) {
+        qCritical() << tr("Impossible to connect with database...");
+        return;
+    }
+
     ui->progress->setVisible(false);
     connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), this, SLOT(updateProgressBar()));
 
-    if(dbUtil.version() != "-1") {
-        // Used to transfer fixed parameters to some slots
-        generalMapper = new QSignalMapper(this);
+    // Used to transfer fixed parameters to some slots
+    generalMapper = new QSignalMapper(this);
 
-        /**
-         * Library
-         */
-        // Configure view
-        ui->libraryView->setModel(dbUtil.libraryModel());
-        ui->libraryView->hideColumn(LibraryIndexes::Uid);
-        ui->libraryView->hideColumn(LibraryIndexes::Bpid);
-        ui->libraryView->resizeColumnsToContents();
+    /**
+     * Library
+     */
+    // Configure view
+    ui->libraryView->setModel(dbUtil.libraryModel());
+    ui->libraryView->hideColumn(LibraryIndexes::Uid);
+    ui->libraryView->hideColumn(LibraryIndexes::Bpid);
+    ui->libraryView->resizeColumnsToContents();
 
-        // Check rows in model when selection change on the view
-        connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-                dbUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
-        // Select or deselect rows on the view when checkboxes are checked / unchecked
-        connect(dbUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
-                ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
-        // Update search results view when selecting something in the library view
-        connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-                &dbUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
+    // Check rows in model when selection change on the view
+    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+            dbUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
+    // Select or deselect rows on the view when checkboxes are checked / unchecked
+    connect(dbUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
+            ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
+    // Update search results view when selecting something in the library view
+    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            &dbUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
-        /**
-         * Search Results
-         */
-        // Configure view
-        ui->searchResultsView->setModel(dbUtil.searchModel());
+    /**
+     * Search Results
+     */
+    // Configure view
+    ui->searchResultsView->setModel(dbUtil.searchModel());
 
-        // Display informations about a track when selecting it in the view
-        connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-                this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
+    // Display informations about a track when selecting it in the view
+    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
 
-        // When the selection change in library view, the search results view should be reconfigured.
-        connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-                generalMapper, SLOT(map()));
-        // The first column (0) must be hidden, the first row must be selected :
-        generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
-        connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
-        connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
+    // When the selection change in library view, the search results view should be reconfigured.
+    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            generalMapper, SLOT(map()));
+    // The first column (0) must be hidden, the first row must be selected :
+    generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
+    connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
+    connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
 
-        /**
-         * Actions
-         */
-        connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
-        connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), &dbUtil, SLOT(storeSearchResults(int,QVariant)));
-    } else {
-        qCritical() << tr("Impossible to connect to database...");
-    }
+    /**
+     * Actions
+     */
+    connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), &dbUtil, SLOT(storeSearchResults(int,QVariant)));
 }
 
 MainWindow::~MainWindow()
