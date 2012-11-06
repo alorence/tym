@@ -23,11 +23,13 @@ BPDatabase::BPDatabase(QObject *parent) :
     QObject(parent)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
-                       + QDir::separator()
-                       + QCoreApplication::applicationName()
-                       + QDir::separator()
-                       + "default.db");
+    QString dbPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+                    + QDir::separator()
+                    + QCoreApplication::organizationName()
+                    + QDir::separator()
+                    + "default.db";
+    db.setDatabaseName(dbPath);
+    qDebug() << dbPath;
 
     if(db.open()) {
         if(version() == "-1") {
