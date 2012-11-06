@@ -33,9 +33,7 @@ class BPDatabase : public QObject
 public:
     explicit BPDatabase(QObject *parent = 0);
 
-    bool databaseConnect();
-    QString version();
-
+    static const QString version();
     static const QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;

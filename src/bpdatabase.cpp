@@ -342,7 +342,7 @@ void BPDatabase::initTables()
     }
 }
 
-QString BPDatabase::version()
+const QString BPDatabase::version()
 {
     QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
     if( ! query.exec()) {
