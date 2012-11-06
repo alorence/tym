@@ -46,17 +46,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    console = new QTextEdit();
-    qInstallMsgHandler(printConsoleMessage);
-
-    MainWindow w;
-
-    w.registerConsole(console);
-
     a.setOrganizationName("Tag Your Music");
     a.setApplicationName("tym");
     a.setApplicationVersion("0.0.0.1");
 
+    console = new QTextEdit();
+    qInstallMsgHandler(printConsoleMessage);
+
+    MainWindow w;
+    w.registerConsole(console);
     w.show();
 
     return a.exec();
