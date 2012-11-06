@@ -45,7 +45,7 @@ BPDatabase::BPDatabase(QObject *parent) :
 
         _searchModel = new QSqlQueryModel(this);
 
-        _searchQuery = QSqlQuery();
+        _searchQuery = QSqlQuery(BPDatabase::dbObject());
         _searchQuery.prepare("SELECT "
                              "tr.bpid as ID, "
                              "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
@@ -93,7 +93,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     QMap<QString, QVariant> trackMap = track.toMap();
     QVariant trackBpId = trackMap.value("id");
 
-    QSqlQuery isExisting;
+    QSqlQuery isExisting(BPDatabase::dbObject());
     isExisting.prepare("SELECT bpid, name FROM BPTracks WHERE bpid=:id");
     isExisting.bindValue(":id", trackBpId);
     isExisting.exec();
@@ -103,7 +103,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     }
 
     QStringList artists;
-    QSqlQuery query, linkQuery;
+    QSqlQuery query(BPDatabase::dbObject()), linkQuery(BPDatabase::dbObject());
     query.prepare("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
     foreach (QVariant artist, trackMap.value("artists").toList()) {
         QVariant artistBpId = artist.toMap().value("id");
@@ -193,7 +193,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 
     QVariant labelId = trackMap.value("label").toMap().value("id");
 
-    QSqlQuery labelQuery;
+    QSqlQuery labelQuery(BPDatabase::dbObject());
     labelQuery.prepare("INSERT OR IGNORE INTO BPLabels VALUES (:bpid,:name)");
     labelQuery.bindValue(":bpid", labelId);
     labelQuery.bindValue(":name", trackMap.value("label").toMap().value("name"));
@@ -218,7 +218,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 
 bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
 {
-    QSqlQuery query;
+    QSqlQuery query(BPDatabase::dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
     query.bindValue(":uid", _libraryModel->record(row).value(LibraryIndexes::Uid));
     query.bindValue(":bpid", bpid);
@@ -234,8 +234,8 @@ bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
 
 void BPDatabase::storeSearchResults(int row, QVariant result)
 {
-    QSqlQuery searchResultQuery;
-    searchResultQuery.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
+    QSqlQuery query(BPDatabase::dbObject());
+    query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
 
     int libUid = _libraryModel->record(row).value(LibraryIndexes::Uid).toInt();
 
@@ -245,11 +245,11 @@ void BPDatabase::storeSearchResults(int row, QVariant result)
 
         setLibraryTrackReference(row, bpid);
 
-        searchResultQuery.bindValue(":libId", _libraryModel->record(row).value(LibraryIndexes::Uid));
-        searchResultQuery.bindValue(":trackId", bpid);
-        if( ! searchResultQuery.exec()) {
+        query.bindValue(":libId", _libraryModel->record(row).value(LibraryIndexes::Uid));
+        query.bindValue(":trackId", bpid);
+        if( ! query.exec()) {
             qWarning() << QString("Unable to register search result for track %1").arg(bpid.toString());
-            qWarning() << searchResultQuery.lastError();
+            qWarning() << query.lastError();
         }
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
@@ -261,11 +261,11 @@ void BPDatabase::storeSearchResults(int row, QVariant result)
         foreach(QVariant track, result.toList()) {
             QVariant bpid = storeTrack(track);
 
-            searchResultQuery.bindValue(":libId", libUid);
-            searchResultQuery.bindValue(":trackId", bpid);
-            if( ! searchResultQuery.exec()) {
+            query.bindValue(":libId", libUid);
+            query.bindValue(":trackId", bpid);
+            if( ! query.exec()) {
                 qWarning() << QString("Unable to register search result for track %1").arg(bpid.toString());
-                qWarning() << searchResultQuery.lastError();
+                qWarning() << query.lastError();
             }
         }
 
@@ -278,7 +278,7 @@ void BPDatabase::storeSearchResults(int row, QVariant result)
 
 void BPDatabase::updateLibraryStatus(int uid, FileStatus::Status status)
 {
-    QSqlQuery query;
+    QSqlQuery query(BPDatabase::dbObject());
     query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
     query.bindValue(":uid", uid);
     query.bindValue(":status", status);
@@ -297,7 +297,7 @@ void BPDatabase::importFiles(const QStringList &pathList)
 
 void BPDatabase::importFile(QString path)
 {
-    QSqlQuery query;
+    QSqlQuery query(BPDatabase::dbObject());
     query.prepare("INSERT INTO Library (filePath, status) VALUES (:path, :status);");
     query.bindValue(":path", path);
     query.bindValue(":status", FileStatus::New);
@@ -344,7 +344,7 @@ void BPDatabase::initTables()
 
 QString BPDatabase::version()
 {
-    QSqlQuery query("SELECT value FROM Infos WHERE key='version'");
+    QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
     if( ! query.exec()) {
         return "-1";
     } else {

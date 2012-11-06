@@ -34,7 +34,7 @@ TrackInfosView::~TrackInfosView()
 
 void TrackInfosView::updateInfos(QVariant & bpid)
 {
-    QSqlQuery query;
+    QSqlQuery query(BPDatabase::dbObject());
     QString queryString = "SELECT "
             "(SELECT DISTINCT group_concat( art.name, ', ') "
             "FROM BPArtists as art JOIN BPTracksArtistsLink as artl "
