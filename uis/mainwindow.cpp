@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
     searchProvider(settings, this),
-    dbUtil(this)
+    databaseUtil(this)
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
@@ -46,26 +46,26 @@ MainWindow::MainWindow(QWidget *parent) :
      * Library
      */
     // Configure view
-    ui->libraryView->setModel(dbUtil.libraryModel());
+    ui->libraryView->setModel(databaseUtil.libraryModel());
     ui->libraryView->hideColumn(LibraryIndexes::Uid);
     ui->libraryView->hideColumn(LibraryIndexes::Bpid);
     ui->libraryView->resizeColumnsToContents();
 
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            dbUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
+            databaseUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
     // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(dbUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
+    connect(databaseUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            &dbUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
+            &databaseUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
     /**
      * Search Results
      */
     // Configure view
-    ui->searchResultsView->setModel(dbUtil.searchModel());
+    ui->searchResultsView->setModel(databaseUtil.searchModel());
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -82,8 +82,8 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * Actions
      */
-    connect(ui->actionDelete, SIGNAL(triggered()), dbUtil.libraryModel(), SLOT(deleteSelected()));
-    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), &dbUtil, SLOT(storeSearchResults(int,QVariant)));
+    connect(ui->actionDelete, SIGNAL(triggered()), databaseUtil.libraryModel(), SLOT(deleteSelected()));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), &databaseUtil, SLOT(storeSearchResults(int,QVariant)));
 }
 
 MainWindow::~MainWindow()
@@ -106,7 +106,7 @@ void MainWindow::registerConsole(QWidget *c)
 void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
 {
     if(selected.isValid()) {
-        QVariant bpid = dbUtil.searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
+        QVariant bpid = databaseUtil.searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
         ui->trackInfos->updateInfos(bpid);
     } else {
         ui->trackInfos->clearData();
@@ -119,7 +119,9 @@ void MainWindow::on_actionImport_triggered()
     QString filters = "Audio tracks (*.wav *.flac *.mp3)";
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/sources_files", filters, 0, 0);
 
-    dbUtil.importFiles(fileList);
+    databaseUtil.importFiles(fileList);
+
+    ui->libraryView->resizeColumnsToContents();
 }
 
 void MainWindow::on_actionSearch_triggered()
@@ -140,7 +142,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     QPair<int, QSqlRecord> entry;
-    foreach (entry, dbUtil.libraryModel()->selectedRecords()) {
+    foreach (entry, databaseUtil.libraryModel()->selectedRecords()) {
         int id = entry.first;
         QSqlRecord record = entry.second;
 
