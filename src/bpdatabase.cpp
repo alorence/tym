@@ -54,13 +54,7 @@ bool BPDatabase::initDB()
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
                     + QDir::separator()
-                    + "default.db";
-
-    QFileInfo dbFileInfo(dbPath);
-    if( ! dbFileInfo.dir().exists()) {
-        QDir dir;
-        dir.mkpath(dbFileInfo.dir().path());
-    }
+                    + "default.db3";
 
     db.setDatabaseName(dbPath);
     qDebug() << dbPath;
