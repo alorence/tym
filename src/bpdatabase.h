@@ -45,6 +45,8 @@ public:
     LibraryModel * libraryModel() const;
     QSqlQueryModel * searchModel() const;
 
+    QSqlRecord trackInformations(QVariant & bpid);
+
 public slots:
     void storeSearchResults(int row, QVariant result);
     QVariant storeTrack(const QVariant track);

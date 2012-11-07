@@ -67,10 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Configure view
     ui->searchResultsView->setModel(databaseUtil.searchModel());
 
-    // Display informations about a track when selecting it in the view
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
-
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             generalMapper, SLOT(map()));
@@ -78,6 +74,10 @@ MainWindow::MainWindow(QWidget *parent) :
     generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
     connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
     connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
+
+    // Display informations about a track when selecting it in the view
+    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
 
     /**
      * Actions
@@ -107,7 +107,7 @@ void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
 {
     if(selected.isValid()) {
         QVariant bpid = databaseUtil.searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
-        ui->trackInfos->updateInfos(bpid);
+        ui->trackInfos->updateInfos(databaseUtil.trackInformations(bpid));
     } else {
         ui->trackInfos->clearData();
     }

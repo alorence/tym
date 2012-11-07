@@ -143,6 +143,36 @@ QSqlQueryModel *BPDatabase::searchModel() const
     return _searchModel;
 }
 
+QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
+{
+    QSqlQuery query(BPDatabase::dbObject());
+    QString queryString = "SELECT "
+            "(SELECT DISTINCT group_concat( art.name, ', ') "
+            "FROM BPArtists as art JOIN BPTracksArtistsLink as artl "
+            "ON artl.artistId=art.bpid "
+            "WHERE artl.trackId=tr.bpid) as artists, "
+            "(SELECT DISTINCT group_concat( rmx.name, ', ') "
+            "FROM BPArtists as rmx JOIN BPTracksRemixersLink as rmxl "
+            "ON rmxl.artistId=rmx.bpid "
+            "WHERE rmxl.trackId=tr.bpid) as remixers, "
+            "(SELECT DISTINCT group_concat( genre.name, ', ') "
+            "FROM BPGenres as genre JOIN BPTracksGenresLink as genrel "
+            "ON genrel.genreId=genre.bpid "
+            "WHERE genrel.trackId=tr.bpid) as genres, "
+            "l.name as labelName, tr.* "
+            "FROM BPTracks as tr JOIN BPLabels as l ON l.bpid = tr.label "
+            "WHERE tr.bpid=:bpid";
+
+    query.prepare(queryString);
+    query.bindValue(":bpid", bpid);
+    if( ! query.exec() ) {
+        qWarning() << "Unable to get track informations :" << query.lastError().text();
+    }
+
+    query.next();
+    return query.record();
+}
+
 void BPDatabase::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
     if(selected.isValid()) {

@@ -40,7 +40,7 @@ public:
 
 public slots:
     void clearData();
-    void updateInfos(QVariant &bpid);
+    void updateInfos(QSqlRecord &);
 
 private:
     Ui::TrackInfosView *ui;
