@@ -181,8 +181,8 @@ void MainWindow::on_actionAbout_triggered()
 }
 
 void MainWindow::updateProgressBar()
-{
-    ui->progress->setValue(ui->progress->value() + 1);
+{int newValue = ui->progress->value() + 1;
+    ui->progress->setValue(newValue);
 
     if(newValue == ui->progress->maximum()) {
         ui->progress->setVisible(false);
