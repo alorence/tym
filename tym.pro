@@ -23,7 +23,7 @@
 #
 
 QT       += core gui sql network
-CONFIG   += debug
+CONFIG   += debug_and_release
 
 TARGET = tym
 TEMPLATE = app
