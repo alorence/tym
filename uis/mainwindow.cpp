@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->progress->setVisible(false);
     connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), this, SLOT(updateProgressBar()));
 
+
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
 
@@ -62,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
             &databaseUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
     /**
-     * Search Results
+     * Search Results View
      */
     // Configure view
     ui->searchResultsView->setModel(databaseUtil.searchModel());
@@ -70,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             generalMapper, SLOT(map()));
-    // The first column (0) must be hidden, the first row must be selected :
+    // The first column (0) must be hidden, the first row (0) must be selected :
     generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
     connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
     connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
@@ -153,6 +154,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     ui->progress->setVisible(true);
+
     QMap<int, QString> * requestMap = new QMap<int, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
         foreach(int id, parsedValueMap.keys()) {

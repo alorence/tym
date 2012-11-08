@@ -70,16 +70,17 @@ void SearchProvider::searchFromIds(QMap<int, QString> * rowBpidMap)
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
 }
+
 void SearchProvider::parseReplyForIdSearch()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QMap<int, QString> *requestMap = replyMap.take(reply);
+    QMap<int, QString> *rowBpidMap = replyMap.take(reply);
 
     QString jsonResponse(reply->readAll());
     QVariant response = QtJson::Json::parse(jsonResponse);
 
     QVariant track;
-    QMapIterator<int, QString> req(*requestMap);
+    QMapIterator<int, QString> req(*rowBpidMap);
 
     while(req.hasNext()) {
         req.next();
@@ -95,20 +96,17 @@ void SearchProvider::parseReplyForIdSearch()
         }
     }
 
-    // TODO : Insert error code for tracks not found
-
-    delete requestMap;
+    delete rowBpidMap;
     reply->deleteLater();
 }
 
 
-void SearchProvider::searchFromName(QMap<int, QString> *nameList)
+void SearchProvider::searchFromName(QMap<int, QString> *rowNameMap)
 {
     QUrl requestUrl = QUrl(apiUrl);
     requestUrl.setPath(searchPath);
 
-
-    QMapIterator<int, QString> searchList(*nameList);
+    QMapIterator<int, QString> searchList(*rowNameMap);
     while(searchList.hasNext()) {
         searchList.next();
         int index = searchList.key();
@@ -134,8 +132,9 @@ void SearchProvider::searchFromName(QMap<int, QString> *nameList)
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(getError(QNetworkReply::NetworkError)));
     }
-    delete nameList;
+    delete rowNameMap;
 }
+
 void SearchProvider::parseReplyForNameSearch(int row)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(row));
@@ -144,8 +143,6 @@ void SearchProvider::parseReplyForNameSearch(int row)
     QVariant response = QtJson::Json::parse(jsonResponse);
 
     emit searchResultAvailable(row, response.toMap()["results"].toList());
-
-    // TODO : Insert error code for tracks not found
 
     reply->deleteLater();
 }
