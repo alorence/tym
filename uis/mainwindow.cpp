@@ -154,6 +154,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     ui->progress->setVisible(true);
+    ui->progress->setValue(ui->progress->minimum());
 
     QMap<int, QString> * requestMap = new QMap<int, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
@@ -181,8 +182,8 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::updateProgressBar()
 {
-    int newValue = ui->progress->value() + 1;
-    ui->progress->setValue(newValue);
+    ui->progress->setValue(ui->progress->value() + 1);
+
     if(newValue == ui->progress->maximum()) {
         ui->progress->setVisible(false);
     }
