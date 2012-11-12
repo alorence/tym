@@ -117,6 +117,7 @@ void SearchProvider::searchFromName(QMap<int, QString> *rowNameMap)
         text = text.replace(")", "");
         text = text.replace("[", "");
         text = text.replace("]", "");
+        text = text.replace("-", "");
 
         QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
         queryItems << QPair<QString, QString>("query", text);
@@ -133,6 +134,10 @@ void SearchProvider::searchFromName(QMap<int, QString> *rowNameMap)
                 this, SLOT(getError(QNetworkReply::NetworkError)));
     }
     delete rowNameMap;
+}
+
+void SearchProvider::downloadTrackPicture(const QVariant &bpid)
+{
 }
 
 void SearchProvider::parseReplyForNameSearch(int row)
