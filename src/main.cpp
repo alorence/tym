@@ -50,11 +50,14 @@ int main(int argc, char *argv[])
     a.setApplicationName("tym");
     a.setApplicationVersion("0.0.0.1");
 
-    // Initialize some mandatory software items
     {
+        // Initialize some mandatory software items
         QString dataLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
         if( ! QDir(dataLocation).exists()) {
             QDir().mkpath(dataLocation);
+        }
+        if( ! QDir(dataLocation + QDir::separator() + "albumarts").exists()) {
+            QDir().mkpath(dataLocation + QDir::separator() + "albumarts");
         }
     }
 
