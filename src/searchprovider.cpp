@@ -37,6 +37,8 @@ SearchProvider::~SearchProvider()
 {
     foreach(QNetworkReply* reply, replyMap.keys())
        delete replyMap.take(reply);
+
+    delete textSearchMapper;
 }
 
 void SearchProvider::initProxy()
@@ -136,10 +138,6 @@ void SearchProvider::searchFromName(QMap<int, QString> *rowNameMap)
     delete rowNameMap;
 }
 
-void SearchProvider::downloadTrackPicture(const QVariant &bpid)
-{
-}
-
 void SearchProvider::parseReplyForNameSearch(int row)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(row));
@@ -150,6 +148,36 @@ void SearchProvider::parseReplyForNameSearch(int row)
     emit searchResultAvailable(row, response.toMap()["results"].toList());
 
     reply->deleteLater();
+}
+
+void SearchProvider::downloadTrackPicture(const QString & imageUrl)
+{
+    QNetworkRequest request(imageUrl);
+
+    QNetworkReply *reply = manager->get(request);
+    connect(reply, SIGNAL(readyRead()), this, SLOT(writeImagePicture()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+            this, SLOT(getError(QNetworkReply::NetworkError)));
+}
+
+void SearchProvider::writeImagePicture()
+{
+    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+
+    QUrl imageUrl = reply->request().url();
+    QString imgPath = imageUrl.path();
+    QString imgName = imgPath.mid(imgPath.lastIndexOf('/'));
+    QFile imgFile(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+                      + QDir::separator() + "albumarts"
+                      + QDir::separator() + imgName);
+
+    imgFile.open(QIODevice::WriteOnly);
+    do {
+        imgFile.write(reply->read(reply->bytesAvailable()));
+    } while (reply->waitForReadyRead(-1));
+    imgFile.close();
+
+    emit pictureDownloadFinished(imageUrl.toString(), imgFile.fileName());
 }
 
 void SearchProvider::getError(QNetworkReply::NetworkError error)

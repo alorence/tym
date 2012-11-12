@@ -35,14 +35,17 @@ public:
     
 signals:
     void searchResultAvailable(int row, QVariant result) const;
-    
+    void pictureDownloadFinished(QString imgUrl, QString imgLocalPath) const;
+
 public slots:
     void searchFromIds(QMap<int, QString> *);
     void searchFromName(QMap<int, QString> *);
+    void downloadTrackPicture(const QString & url);
 
 private slots:
     void parseReplyForIdSearch();
     void parseReplyForNameSearch(int row);
+    void writeImagePicture();
     void getError(QNetworkReply::NetworkError);
 
 private :

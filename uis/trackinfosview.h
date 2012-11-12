@@ -41,9 +41,15 @@ public:
 public slots:
     void clearData();
     void updateInfos(QSqlRecord &);
+    void displayDownloadedPicture(QString url, QString localPath);
+
+signals:
+    void downloadPicture(const QString &url);
 
 private:
     Ui::TrackInfosView *ui;
+
+    QString currentImageUrl;
 };
 
 #endif // TRACKINFOSVIEW_H
