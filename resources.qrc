@@ -18,4 +18,7 @@
     <qresource prefix="/img/logos">
         <file>resources/logos/gplv3-88x31.png</file>
     </qresource>
+    <qresource prefix="/sql/init">
+        <file alias="0.1">config/sql/init-0.1.sql</file>
+    </qresource>
 </RCC>

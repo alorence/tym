@@ -84,35 +84,27 @@ const bool BPDatabase::initialized()
 
 bool BPDatabase::initTables()
 {
-    QStringList sqlInitCommands;
-    sqlInitCommands <<  "BEGIN TRANSACTION;" <<
-                        "PRAGMA foreign_keys = ON;" <<
+    QFile initFile(":/sql/init/0.1");
 
-                        "CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);" <<
-                        "INSERT INTO Infos (key, value) VALUES ('version', '0.1');" <<
+    QString line;
+    QSqlQuery query;
+    if(initFile.open(QFile::ReadOnly)) {
+        QTextStream in(&initFile);
+        while ( ! in.atEnd()) {
+            line = in.readLine().trimmed();
 
-                        //Main library table
-                        "CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);" <<
+            if (line.isEmpty() || line.startsWith('#')) continue;
 
-                        // Main BeatPort infos tables
-                        "CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, imageUrl TEXT, imagePath TEXT);" <<
-                        "CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-                        "CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-                        "CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);" <<
-
-                        "CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
-                        "CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));" <<
-                        "CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid), PRIMARY KEY(trackId, genreId));" <<
-                        "CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid), PRIMARY KEY(libId, trackId));" <<
-
-                       "COMMIT;";
-
-    foreach(QString line, sqlInitCommands) {
-        QSqlQuery query = dbObject().exec(line);
-        if( query.lastError().isValid()) {
-            qCritical() << tr("Unable to execute line : %1 (%2)").arg(line).arg(query.lastError().text());
-            return false;
+            query = dbObject().exec(line);
+            if( query.lastError().isValid()) {
+                qCritical() << tr("Unable to execute line : %1 (%2)").arg(line).arg(query.lastError().text());
+                return false;
+            }
         }
+        initFile.close();
+    } else {
+        qCritical() << tr("Unable to open init file : %1").arg(initFile.errorString());
+        return false;
     }
     return true;
 }
