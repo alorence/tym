@@ -53,6 +53,13 @@ namespace SearchResultsIndexes {
         Track
     };
 }
+namespace TracksPicturesIndexes {
+    enum Index {
+        Bpid = 0,
+        Url = 1,
+        Path = 16
+    };
+}
 namespace FileStatus {
     enum Status {
         New = 0,
