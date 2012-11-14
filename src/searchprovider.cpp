@@ -153,8 +153,9 @@ void SearchProvider::parseReplyForNameSearch(int row)
     reply->deleteLater();
 }
 
-void SearchProvider::downloadTrackPicture(const QString & picId, QString url)
+void SearchProvider::downloadTrackPicture(const QString & picId)
 {
+    QString url = "http://geo-media.beatport.com/image_size/200x200/"+picId+".jpg";
     QNetworkRequest request(url);
 
     QNetworkReply *reply = manager->get(request);
@@ -167,17 +168,17 @@ void SearchProvider::downloadTrackPicture(const QString & picId, QString url)
 void SearchProvider::writeTrackPicture(QString trackId)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper*>(sender())->mapping(trackId));
-
-    QUrl imageUrl = reply->request().url();
-    QString imgPath = imageUrl.path();
-    QString imgName = imgPath.mid(imgPath.lastIndexOf('/'));
+    qDebug() << tr("dl - bytes available : %1").arg(reply->bytesAvailable());
+    QString imgName = trackId + ".jpg";
     QFile imgFile(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
                       + QDir::separator() + "albumarts"
                       + QDir::separator() + imgName);
 
     imgFile.open(QIODevice::WriteOnly);
     do {
-        imgFile.write(reply->read(reply->bytesAvailable()));
+        int ba = reply->bytesAvailable();
+        imgFile.write(reply->read(ba));
+        qDebug() << tr("bytes written : %1").arg(ba);
     } while (reply->waitForReadyRead(-1));
     imgFile.close();
 

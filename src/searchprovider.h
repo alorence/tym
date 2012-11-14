@@ -40,7 +40,7 @@ signals:
 public slots:
     void searchFromIds(QMap<int, QString> *);
     void searchFromName(QMap<int, QString> *);
-    void downloadTrackPicture(const QString & picId, QString url);
+    void downloadTrackPicture(const QString & picId);
 
 private slots:
     void parseReplyForIdSearch();

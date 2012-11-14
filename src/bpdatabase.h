@@ -55,7 +55,6 @@ public slots:
     bool setLibraryTrackReference(int row, QVariant bpid);
     void updateSearchResults(const QModelIndex&,const QModelIndex&);
     void updateLibraryStatus(int uid, FileStatus::Status status);
-    void storePicturePath(QString picId, QString localPath);
 
 private :
     LibraryModel *_libraryModel;

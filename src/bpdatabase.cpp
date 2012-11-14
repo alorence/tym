@@ -155,10 +155,8 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
             "FROM BPGenres as genre JOIN BPTracksGenresLink as genrel "
             "ON genrel.genreId=genre.bpid "
             "WHERE genrel.trackId=tr.bpid) as genres, "
-            "l.name as labelName, tr.*, "
-            "p.bpid as picId, p.url as picUrl, p.localPath as picPath "
+            "l.name as labelName, tr.* "
             "FROM BPTracks as tr JOIN BPLabels as l ON l.bpid = tr.label "
-            "JOIN BPTracksPictures as p ON p.bpid = tr.image "
             "WHERE tr.bpid=:bpid";
 
     query.prepare(queryString);
@@ -301,21 +299,9 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     }
     query.bindValue(":label", labelId);
 
-    QVariant picUrl = trackMap.value("images").toMap().value("medium").toMap().value("url");
+    QVariant picUrl = trackMap.value("dynamicImages").toMap().value("main").toMap().value("url");
     int lastSlashPos = picUrl.toString().lastIndexOf('/') + 1;
     QVariant picId = picUrl.toString().mid(lastSlashPos, picUrl.toString().lastIndexOf('.') - lastSlashPos);
-
-    {
-        QSqlQuery picQuery(BPDatabase::dbObject());
-        picQuery.prepare("INSERT OR IGNORE INTO BPTracksPictures VALUES (:bpid,:url, NULL)");
-        picQuery.bindValue(":bpid", picId);
-        picQuery.bindValue(":url", picUrl);
-        if( ! picQuery.exec()){
-            qWarning() << tr("Unable to insert picture information into database");
-            qWarning() << picQuery.lastError().text();
-            picId = QVariant("");
-        }
-    }
     query.bindValue(":image", picId);
 
     if( ! query.exec()){
@@ -396,18 +382,6 @@ void BPDatabase::updateLibraryStatus(int uid, FileStatus::Status status)
     query.bindValue(":status", status);
     if( ! query.exec()) {
         qWarning() << tr("Unable to update library elements's %1 status").arg(uid);
-        qWarning() << query.lastError().text();
-    }
-}
-
-void BPDatabase::storePicturePath(QString picId, QString localPath)
-{
-    QSqlQuery query(BPDatabase::dbObject());
-    query.prepare("UPDATE OR FAIL BPTracksPictures SET localPath=:path WHERE bpid=:bpid");
-    query.bindValue(":bpid", picId);
-    query.bindValue(":path", localPath);
-    if( ! query.exec()) {
-        qWarning() << tr("Unable to save picture local path : %1").arg(localPath);
         qWarning() << query.lastError().text();
     }
 }

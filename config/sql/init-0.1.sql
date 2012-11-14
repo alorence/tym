@@ -11,11 +11,10 @@ CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFER
 # Main BeatPort infos tables
 CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT,
 	label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER,
-	publishDate INTEGER, price TEXT, length TEXT, release TEXT, image REFERENCES BPTracksPictures(bpid));
+	publishDate INTEGER, price TEXT, length TEXT, release TEXT, image INTEGER);
 CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);
 CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);
 CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);
-CREATE TABLE BPTracksPictures (bpid INTEGER PRIMARY KEY, url TEXT, localPath TEXT);
 
 # N-n join tables
 CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));

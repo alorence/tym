@@ -53,12 +53,13 @@ void TrackInfosView::updateInfos(QSqlRecord & result)
     ui->d_length->setText(result.value(14).toString());
     ui->d_release->setText(result.value(15).toString());
 
-    currentPictureId = result.value(17).toString();
+    currentPictureId = result.value(16).toString();
 
-    // If localFile has not been registered
-    QString picPath = result.value(19).toString();
-    if(picPath.isEmpty()) {
-        emit downloadPicture(currentPictureId, result.value(18).toString());
+    QString picPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+            + QDir::separator() + "albumarts"
+            + QDir::separator() + currentPictureId + ".jpg";
+    if( ! QFile(picPath).exists()) {
+        emit downloadPicture(currentPictureId);
     } else {
         displayDownloadedPicture(currentPictureId, picPath);
     }

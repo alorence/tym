@@ -79,12 +79,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
-    connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&, QString)),
-            &searchProvider, SLOT(downloadTrackPicture(const QString&, QString)));
+    connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&)),
+            &searchProvider, SLOT(downloadTrackPicture(const QString&)));
     connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString,QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString,QString)));
-    connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString,QString)),
-            &databaseUtil, SLOT(storePicturePath(QString,QString)));
 
     /**
      * Actions
