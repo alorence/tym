@@ -155,12 +155,12 @@ void SearchProvider::downloadTrackPicture(const QString & imageUrl)
     QNetworkRequest request(imageUrl);
 
     QNetworkReply *reply = manager->get(request);
-    connect(reply, SIGNAL(readyRead()), this, SLOT(writeImagePicture()));
+    connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
 }
 
-void SearchProvider::writeImagePicture()
+void SearchProvider::writeTrackPicture()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
 

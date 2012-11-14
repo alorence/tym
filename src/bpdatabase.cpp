@@ -66,7 +66,6 @@ bool BPDatabase::initDB()
         dbInitialized = BPDatabase::initTables();
         if( ! dbInitialized) {
             qCritical() << tr("Unable to initialise database.");
-            //QFile(dbPath).remove();
         } else {
             qDebug() << tr("DB opened and initialized for the first time, version %1").arg(version());
         }

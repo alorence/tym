@@ -45,7 +45,7 @@ public slots:
 private slots:
     void parseReplyForIdSearch();
     void parseReplyForNameSearch(int row);
-    void writeImagePicture();
+    void writeTrackPicture();
     void getError(QNetworkReply::NetworkError);
 
 private :
