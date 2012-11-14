@@ -44,12 +44,12 @@ public slots:
     void displayDownloadedPicture(QString url, QString localPath);
 
 signals:
-    void downloadPicture(const QString &url);
+    void downloadPicture(const QString &picId, const QString url);
 
 private:
     Ui::TrackInfosView *ui;
 
-    QString currentImageUrl;
+    QString currentPictureId;
 };
 
 #endif // TRACKINFOSVIEW_H

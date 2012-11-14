@@ -53,18 +53,20 @@ void TrackInfosView::updateInfos(QSqlRecord & result)
     ui->d_length->setText(result.value(14).toString());
     ui->d_release->setText(result.value(15).toString());
 
+    currentPictureId = result.value(17).toString();
+
     // If localFile has not been registered
-    if(result.value(17).toString().isEmpty()) {
-        currentImageUrl = result.value(16).toString();
-        emit downloadPicture(currentImageUrl);
+    QString picPath = result.value(19).toString();
+    if(picPath.isEmpty()) {
+        emit downloadPicture(currentPictureId, result.value(18).toString());
+    } else {
+        displayDownloadedPicture(currentPictureId, picPath);
     }
 }
 
-void TrackInfosView::displayDownloadedPicture(QString url, QString localPath)
+void TrackInfosView::displayDownloadedPicture(QString picId, QString localPath)
 {
-    // TODO : save local path of the file in database
-
-    if(url == currentImageUrl) {
+    if(picId == currentPictureId) {
         ui->imageArea->setPixmap(QPixmap(localPath));
     }
 }
@@ -89,6 +91,6 @@ void TrackInfosView::clearData()
     ui->d_release->clear();
 
     ui->imageArea->clear();
-    currentImageUrl = "";
+    currentPictureId = "";
 }
 

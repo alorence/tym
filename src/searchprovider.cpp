@@ -24,13 +24,15 @@ SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     manager(new QNetworkAccessManager(this)),
     settings(sd),
     replyMap(),
-    textSearchMapper(new QSignalMapper(this))
+    textSearchMapper(new QSignalMapper(this)),
+    pictureDownloadMapper(new QSignalMapper(this))
 {
     apiUrl = QUrl(QString("http://%1").arg(settings->getSettingsValue("settings/network/beatport/apihost").toString()));
     tracksPath = "/catalog/3/tracks";
     searchPath = "/catalog/3/search";
 
     connect(textSearchMapper, SIGNAL(mapped(int)), this, SLOT(parseReplyForNameSearch(int)));
+    connect(pictureDownloadMapper, SIGNAL(mapped(QString)), this, SLOT(writeTrackPicture(QString)));
 }
 
 SearchProvider::~SearchProvider()
@@ -39,6 +41,7 @@ SearchProvider::~SearchProvider()
        delete replyMap.take(reply);
 
     delete textSearchMapper;
+    delete pictureDownloadMapper;
 }
 
 void SearchProvider::initProxy()
@@ -150,19 +153,20 @@ void SearchProvider::parseReplyForNameSearch(int row)
     reply->deleteLater();
 }
 
-void SearchProvider::downloadTrackPicture(const QString & imageUrl)
+void SearchProvider::downloadTrackPicture(const QString & picId, QString url)
 {
-    QNetworkRequest request(imageUrl);
+    QNetworkRequest request(url);
 
     QNetworkReply *reply = manager->get(request);
-    connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
+    pictureDownloadMapper->setMapping(reply, picId);
+    connect(reply, SIGNAL(readyRead()), pictureDownloadMapper, SLOT(map()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
 }
 
-void SearchProvider::writeTrackPicture()
+void SearchProvider::writeTrackPicture(QString trackId)
 {
-    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+    QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper*>(sender())->mapping(trackId));
 
     QUrl imageUrl = reply->request().url();
     QString imgPath = imageUrl.path();
@@ -177,7 +181,8 @@ void SearchProvider::writeTrackPicture()
     } while (reply->waitForReadyRead(-1));
     imgFile.close();
 
-    emit pictureDownloadFinished(imageUrl.toString(), imgFile.fileName());
+    emit pictureDownloadFinished(trackId, imgFile.fileName());
+    reply->deleteLater();
 }
 
 void SearchProvider::getError(QNetworkReply::NetworkError error)

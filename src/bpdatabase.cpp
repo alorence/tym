@@ -155,7 +155,8 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
             "FROM BPGenres as genre JOIN BPTracksGenresLink as genrel "
             "ON genrel.genreId=genre.bpid "
             "WHERE genrel.trackId=tr.bpid) as genres, "
-            "l.name as labelName, tr.* "
+            "l.name as labelName, tr.*, "
+            "p.bpid as picId, p.url as picUrl, p.localPath as picPath "
             "FROM BPTracks as tr JOIN BPLabels as l ON l.bpid = tr.label "
             "JOIN BPTracksPictures as p ON p.bpid = tr.image "
             "WHERE tr.bpid=:bpid";
@@ -395,6 +396,18 @@ void BPDatabase::updateLibraryStatus(int uid, FileStatus::Status status)
     query.bindValue(":status", status);
     if( ! query.exec()) {
         qWarning() << tr("Unable to update library elements's %1 status").arg(uid);
+        qWarning() << query.lastError().text();
+    }
+}
+
+void BPDatabase::storePicturePath(QString picId, QString localPath)
+{
+    QSqlQuery query(BPDatabase::dbObject());
+    query.prepare("UPDATE OR FAIL BPTracksPictures SET localPath=:path WHERE bpid=:bpid");
+    query.bindValue(":bpid", picId);
+    query.bindValue(":path", localPath);
+    if( ! query.exec()) {
+        qWarning() << tr("Unable to save picture local path : %1").arg(localPath);
         qWarning() << query.lastError().text();
     }
 }
