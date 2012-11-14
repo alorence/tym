@@ -41,7 +41,7 @@ public:
 public slots:
     void clearData();
     void updateInfos(QSqlRecord &);
-    void displayDownloadedPicture(QString url, QString localPath);
+    void displayDownloadedPicture(QString url);
 
 signals:
     void downloadPicture(const QString &picId);

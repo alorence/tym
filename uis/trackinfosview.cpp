@@ -61,14 +61,17 @@ void TrackInfosView::updateInfos(QSqlRecord & result)
     if( ! QFile(picPath).exists()) {
         emit downloadPicture(currentPictureId);
     } else {
-        displayDownloadedPicture(currentPictureId, picPath);
+        displayDownloadedPicture(currentPictureId);
     }
 }
 
-void TrackInfosView::displayDownloadedPicture(QString picId, QString localPath)
+void TrackInfosView::displayDownloadedPicture(QString picId)
 {
     if(picId == currentPictureId) {
-        ui->imageArea->setPixmap(QPixmap(localPath));
+        QString path(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+                      + QDir::separator() + "albumarts"
+                      + QDir::separator() + picId + ".jpg");
+        ui->imageArea->setPixmap(QPixmap(path));
     }
 }
 

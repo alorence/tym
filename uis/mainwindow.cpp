@@ -81,8 +81,8 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
     connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&)),
             &searchProvider, SLOT(downloadTrackPicture(const QString&)));
-    connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString,QString)),
-            ui->trackInfos, SLOT(displayDownloadedPicture(QString,QString)));
+    connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString)),
+            ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
 
     /**
      * Actions

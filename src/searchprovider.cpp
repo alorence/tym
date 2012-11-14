@@ -24,15 +24,13 @@ SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     manager(new QNetworkAccessManager(this)),
     settings(sd),
     replyMap(),
-    textSearchMapper(new QSignalMapper(this)),
-    pictureDownloadMapper(new QSignalMapper(this))
+    textSearchMapper(new QSignalMapper(this))
 {
     apiUrl = QUrl(QString("http://%1").arg(settings->getSettingsValue("settings/network/beatport/apihost").toString()));
     tracksPath = "/catalog/3/tracks";
     searchPath = "/catalog/3/search";
 
     connect(textSearchMapper, SIGNAL(mapped(int)), this, SLOT(parseReplyForNameSearch(int)));
-    connect(pictureDownloadMapper, SIGNAL(mapped(QString)), this, SLOT(writeTrackPicture(QString)));
 }
 
 SearchProvider::~SearchProvider()
@@ -41,7 +39,6 @@ SearchProvider::~SearchProvider()
        delete replyMap.take(reply);
 
     delete textSearchMapper;
-    delete pictureDownloadMapper;
 }
 
 void SearchProvider::initProxy()
@@ -158,31 +155,33 @@ void SearchProvider::downloadTrackPicture(const QString & picId)
     QString url = "http://geo-media.beatport.com/image_size/200x200/"+picId+".jpg";
     QNetworkRequest request(url);
 
+    qDebug() << tr("Download file %1").arg(url);
     QNetworkReply *reply = manager->get(request);
-    pictureDownloadMapper->setMapping(reply, picId);
-    connect(reply, SIGNAL(readyRead()), pictureDownloadMapper, SLOT(map()));
+    downloadManagaer.insert(reply, picId);
+    connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(getError(QNetworkReply::NetworkError)));
+    connect(reply, SIGNAL(finished()), this, SLOT(pictureDownloaded()));
 }
 
-void SearchProvider::writeTrackPicture(QString trackId)
+void SearchProvider::writeTrackPicture()
 {
-    QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper*>(sender())->mapping(trackId));
-    qDebug() << tr("dl - bytes available : %1").arg(reply->bytesAvailable());
-    QString imgName = trackId + ".jpg";
+    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+
+    QString imgName = downloadManagaer.value(reply) + ".jpg";
     QFile imgFile(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
                       + QDir::separator() + "albumarts"
                       + QDir::separator() + imgName);
-
-    imgFile.open(QIODevice::WriteOnly);
-    do {
-        int ba = reply->bytesAvailable();
-        imgFile.write(reply->read(ba));
-        qDebug() << tr("bytes written : %1").arg(ba);
-    } while (reply->waitForReadyRead(-1));
+    qDebug() << tr("Write %1 bytes").arg(reply->bytesAvailable());
+    imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    imgFile.write(reply->readAll());
     imgFile.close();
+}
 
-    emit pictureDownloadFinished(trackId, imgFile.fileName());
+void SearchProvider::pictureDownloaded()
+{
+    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+    emit pictureDownloadFinished(downloadManagaer.take(reply));
     reply->deleteLater();
 }
 
