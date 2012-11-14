@@ -28,16 +28,16 @@ void printConsoleMessage(QtMsgType type, const char *msg)
 {
     switch (type) {
     case QtDebugMsg:
-    console->append(QString(msg));
+    console->append(msg);
     break;
     case QtWarningMsg:
-    console->append(QString("Warning: %1").arg(msg));
+    console->append(QObject::tr("Warning: %1").arg(msg));
     break;
     case QtCriticalMsg:
-    console->append(QString("Critical: %1").arg(msg));
+    console->append(QObject::tr("Critical: %1").arg(msg));
     break;
     case QtFatalMsg:
-    console->append(QString("Fatal: %1").arg(msg));
+    console->append(QObject::tr("Fatal: %1").arg(msg));
     abort();
     }
 }
