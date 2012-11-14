@@ -9,7 +9,9 @@ INSERT INTO Infos (key, value) VALUES ('version', '0.1');
 CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);
 
 # Main BeatPort infos tables
-CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT, label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER, publishDate INTEGER, price TEXT, length TEXT, release TEXT, image REFERENCES BPTracksPictures(bpid));
+CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT,
+	label INTEGER REFERENCES BPLabels(bpid), key TEXT, bpm TEXT, releaseDate INTEGER,
+	publishDate INTEGER, price TEXT, length TEXT, release TEXT, image REFERENCES BPTracksPictures(bpid));
 CREATE TABLE BPArtists (bpid INTEGER PRIMARY KEY, name TEXT);
 CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);
 CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);
