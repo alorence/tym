@@ -55,6 +55,8 @@ private slots:
     void on_actionAbout_triggered();
     void updateProgressBar();
 
+    void on_actionDelete_triggered();
+
 private:
     bool defaultConsoleDisplaying;
 

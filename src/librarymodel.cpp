@@ -155,17 +155,6 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
     return result;
 }
 
-void LibraryModel::deleteSelected()
-{
-    QList<int> checkedCopy = checkedRows;
-    qSort(checkedCopy.begin(), checkedCopy.end(), qGreater<int>());
-    foreach(int row, checkedCopy) {
-        if( ! removeRow(row)) {
-            qWarning() << tr("Unable to delete row %1 : %2").arg(row).arg(lastError().text());
-        }
-    }
-}
-
 void LibraryModel::refreshAndPreserveSelection()
 {
     QList<int> checkedCopy = checkedRows;
@@ -173,5 +162,13 @@ void LibraryModel::refreshAndPreserveSelection()
     foreach(int row, checkedCopy) {
         setData(index(row, columnWithCheckbox), Qt::Checked, Qt::CheckStateRole);
     }
+}
+
+void LibraryModel::refreshAndUnselectRows(QList<int> rows)
+{
+    foreach(int row, rows) {
+        checkedRows.removeAll(row);
+    }
+    refreshAndPreserveSelection();
 }
 

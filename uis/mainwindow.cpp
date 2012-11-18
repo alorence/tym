@@ -192,3 +192,17 @@ void MainWindow::updateProgressBar()
         ui->progress->setVisible(false);
     }
 }
+
+void MainWindow::on_actionDelete_triggered()
+{
+    QList<QPair<int, QSqlRecord> > selecteds = databaseUtil.libraryModel()->selectedRecords();
+    QList<int> rows;
+    QVariantList uids;
+    QPair<int, QSqlRecord> elt;
+    foreach(elt, selecteds) {
+        rows << elt.first;
+        uids << elt.second.value(LibraryIndexes::Uid);
+    }
+    databaseUtil.deleteFromLibrary(uids);
+    databaseUtil.libraryModel()->refreshAndUnselectRows(rows);
+}

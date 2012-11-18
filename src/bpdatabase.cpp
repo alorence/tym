@@ -153,6 +153,19 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
     return query.record();
 }
 
+void BPDatabase::deleteFromLibrary(QVariantList &uids)
+{
+    QSqlQuery delQuery(BPDatabase::dbObject());
+    delQuery.prepare("DELETE FROM Library WHERE uid=:uid");
+
+    foreach(QVariant uid, uids) {
+        delQuery.bindValue(":uid", uid);
+        if(!delQuery.exec()) {
+            qWarning() << tr("Unable to remove track %1 from library : %2").arg(uid.toString()).arg(delQuery.lastError().text());
+        }
+    }
+}
+
 void BPDatabase::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
     if(selected.isValid()) {

@@ -46,6 +46,7 @@ public:
     QSqlQueryModel * searchModel() const;
 
     QSqlRecord trackInformations(QVariant & bpid);
+    void deleteFromLibrary(QVariantList &uids);
 
 public slots:
     void storeSearchResults(int row, QVariant result);
