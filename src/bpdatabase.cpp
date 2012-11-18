@@ -262,7 +262,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     QDateTime relDate(QDate::fromString(trackMap.value("releaseDate").toString(), "yyyy-MM-dd"));
     query.bindValue(":releaseDate", QVariant(relDate.toTime_t()));
 
-    QString price = QString::number(trackMap.value("price").toMap().value("value").toDouble() * 0.01, 'g');
+    QString price = QString::number(trackMap.value("price").toMap().value("value").toDouble() * 0.01, 'f', 2);
     price.append(" ");
     price.append(trackMap.value("price").toMap().value("symbol").toString());
     query.bindValue(":price", price);
