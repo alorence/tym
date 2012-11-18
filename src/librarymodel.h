@@ -52,7 +52,7 @@ private:
     int columnWithCheckbox;
 
 signals:
-    void rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags);
+    void rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags);
 
 };
 

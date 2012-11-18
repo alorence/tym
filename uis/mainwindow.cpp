@@ -56,8 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
             databaseUtil.libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
     // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(databaseUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
-            ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
+    connect(databaseUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
+            ui->libraryView->selectionModel(), SLOT(select(QModelIndex,QItemSelectionModel::SelectionFlags)));
+    connect(databaseUtil.libraryModel(), SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
+            ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             &databaseUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
