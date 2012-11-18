@@ -55,7 +55,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
                     .toString().split(QDir::separator());
             pathElements.removeLast();
 
-            QString tooltip = "In directory ";
+            QString tooltip = tr("In directory ");
             tooltip.append(pathElements.join(QDir::separator()));
             return QVariant(tooltip);
 
@@ -63,6 +63,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
     } else if (ind.column() == LibraryIndexes::Message && role == Qt::DisplayRole) {
 
         int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int n = 0;
 
         switch(status) {
         case FileStatus::New:
@@ -72,7 +73,8 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return tr("Unable to find the file on your disk.");
         break;
         case FileStatus::ResultsAvailable:
-            return tr("n results available.");
+            n = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Message), Qt::DisplayRole).toInt();
+            return tr("%n result(s) available.", "Display number of results available for one library element", n);
         break;
         default:
             return "";
@@ -116,14 +118,9 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(section == LibraryIndexes::Message && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-        return "message";
+        return tr("Comment");
     }
     return QSqlRelationalTableModel::headerData(section, orientation, role);
-}
-
-int LibraryModel::columnCount(const QModelIndex &) const
-{
-    return QSqlRelationalTableModel::columnCount() + 1;
 }
 
 void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
@@ -164,7 +161,7 @@ void LibraryModel::deleteSelected()
     qSort(checkedCopy.begin(), checkedCopy.end(), qGreater<int>());
     foreach(int row, checkedCopy) {
         if( ! removeRow(row)) {
-            qWarning() << QString(tr("Unable to delete row %1 : %2")).arg(row).arg(lastError().text());
+            qWarning() << tr("Unable to delete row %1 : %2").arg(row).arg(lastError().text());
         }
     }
 }

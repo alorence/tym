@@ -37,4 +37,7 @@ HEADERS  += libs/qt-json/json.h
 
 RESOURCES += resources.qrc
 
+TRANSLATIONS =  translations/tym_en.ts \
+                translations/tym_fr.ts
+
 

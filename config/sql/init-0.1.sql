@@ -17,9 +17,18 @@ CREATE TABLE BPGenres  (bpid INTEGER PRIMARY KEY, name TEXT);
 CREATE TABLE BPLabels  (bpid INTEGER PRIMARY KEY, name TEXT);
 
 # N-n join tables
-CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));
-CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid), PRIMARY KEY(trackId, artistId));
-CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid), PRIMARY KEY(trackId, genreId));
-CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid), PRIMARY KEY(libId, trackId));
+CREATE TABLE BPTracksArtistsLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid),
+	PRIMARY KEY(trackId, artistId));
+CREATE TABLE BPTracksRemixersLink (trackId INTEGER REFERENCES BPTracks(bpid), artistId INTEGER REFERENCES BPArtists(bpid),
+	PRIMARY KEY(trackId, artistId));
+CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genreId INTEGER REFERENCES BPGenres(bpid),
+	PRIMARY KEY(trackId, genreId));
+CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid),
+	PRIMARY KEY(libId, trackId));
+
+# Views to simplify infos displaying
+CREATE VIEW LibraryHelper AS SELECT l.*, count(sr.trackId) as results
+FROM Library as l LEFT JOIN SearchResults as sr ON sr.libId = l.uid
+GROUP BY l.uid;
 
 COMMIT;

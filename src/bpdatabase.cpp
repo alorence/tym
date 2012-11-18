@@ -27,7 +27,7 @@ BPDatabase::BPDatabase(QObject *parent) :
     }
 
     _libraryModel = new LibraryModel(this, dbObject());
-    _libraryModel->setTable("Library");
+    _libraryModel->setTable("LibraryHelper");
     _libraryModel->select();
 
     _searchModel = new QSqlQueryModel(this);
