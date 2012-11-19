@@ -118,8 +118,14 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(section == LibraryIndexes::Message && orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-        return tr("Comment");
+    if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+        switch(section) {
+        case LibraryIndexes::Uid:           return tr("Uid");
+        case LibraryIndexes::FilePath:      return tr("File");
+        case LibraryIndexes::Status:        return tr("Status");
+        case LibraryIndexes::Message:       return tr("Comment");
+        case LibraryIndexes::Bpid:          return tr("Track Id");
+        }
     }
     return QSqlRelationalTableModel::headerData(section, orientation, role);
 }
