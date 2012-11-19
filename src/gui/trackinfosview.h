@@ -24,7 +24,7 @@
 #include <QtCore>
 #include <QtSql>
 
-#include "src/bpdatabase.h"
+#include "src/dbaccess/bpdatabase.h"
 
 namespace Ui {
 class TrackInfosView;

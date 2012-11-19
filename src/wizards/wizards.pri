@@ -17,18 +17,11 @@
 # along with TYM (Tag your Library).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include(dbaccess/dbaccess.pri)
-include(network/network.pri)
-include(wizards/wizards.pri)
-include(gui/gui.pri)
+FORMS    += \
+    src/wizards/searchwizard.ui
 
 HEADERS += \
-    src/librarymodel.h \
-    src/patterntool.h \
-    src/commons.h
+    src/wizards/searchwizard.h
 
 SOURCES += \
-    src/main.cpp \
-    src/librarymodel.cpp \
-    src/patterntool.cpp
-
+    src/wizards/searchwizard.cpp

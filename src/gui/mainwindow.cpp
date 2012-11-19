@@ -90,7 +90,6 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * Actions
      */
-    connect(ui->actionDelete, SIGNAL(triggered()), databaseUtil.libraryModel(), SLOT(deleteSelected()));
     connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), &databaseUtil, SLOT(storeSearchResults(int,QVariant)));
 }
 

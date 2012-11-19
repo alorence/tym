@@ -17,18 +17,8 @@
 # along with TYM (Tag your Library).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include(dbaccess/dbaccess.pri)
-include(network/network.pri)
-include(wizards/wizards.pri)
-include(gui/gui.pri)
-
 HEADERS += \
-    src/librarymodel.h \
-    src/patterntool.h \
-    src/commons.h
+    src/dbaccess/bpdatabase.h
 
 SOURCES += \
-    src/main.cpp \
-    src/librarymodel.cpp \
-    src/patterntool.cpp
-
+    src/dbaccess/bpdatabase.cpp

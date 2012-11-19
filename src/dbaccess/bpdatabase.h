@@ -24,7 +24,7 @@
 #include <QtSql>
 
 #include "src/librarymodel.h"
-#include "commons.h"
+#include "src/commons.h"
 
 class BPDatabase : public QObject
 {

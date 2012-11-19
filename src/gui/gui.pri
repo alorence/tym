@@ -17,18 +17,18 @@
 # along with TYM (Tag your Library).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include(dbaccess/dbaccess.pri)
-include(network/network.pri)
-include(wizards/wizards.pri)
-include(gui/gui.pri)
+FORMS += \
+    src/gui/mainwindow.ui \
+    src/gui/trackinfosview.ui \
+    src/gui/settingsdialog.ui \
+    src/gui/about.ui
 
 HEADERS += \
-    src/librarymodel.h \
-    src/patterntool.h \
-    src/commons.h
+    src/gui/settingsdialog.h \
+    src/gui/trackinfosview.h \
+    src/gui/mainwindow.h
 
 SOURCES += \
-    src/main.cpp \
-    src/librarymodel.cpp \
-    src/patterntool.cpp
-
+    src/gui/settingsdialog.cpp \
+    src/gui/trackinfosview.cpp \
+    src/gui/mainwindow.cpp

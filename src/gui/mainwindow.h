@@ -24,11 +24,11 @@
 #include <QtGui>
 
 #include "ui_about.h"
-#include "uis/settingsdialog.h"
-#include "uis/searchwizard.h"
+#include "src/gui/settingsdialog.h"
+#include "src/wizards/searchwizard.h"
 #include "src/librarymodel.h"
-#include "src/bpdatabase.h"
-#include "src/searchprovider.h"
+#include "src/dbaccess/bpdatabase.h"
+#include "src/network/searchprovider.h"
 #include "src/patterntool.h"
 
 namespace Ui {

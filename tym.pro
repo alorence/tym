@@ -22,20 +22,16 @@
 # along with TYM (Tag your Library).  If not, see <http://www.gnu.org/licenses/>.
 #
 
+CONFIG   += qt thread debug_and_release
 QT       += core gui sql network
-CONFIG   += debug_and_release
 
 TARGET = tym
 TEMPLATE = app
 
 include(src/src.pri)
-include(uis/uis.pri)
+include(libs/libs.pri)
 
-SOURCES += libs/qt-json/json.cpp
-
-HEADERS  += libs/qt-json/json.h
-
-RESOURCES += resources.qrc
+RESOURCES += resources/resources.qrc
 
 TRANSLATIONS =  translations/tym_en.ts \
                 translations/tym_fr.ts

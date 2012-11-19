@@ -20,7 +20,7 @@
 #include <QtGui/QApplication>
 #include <QTextEdit>
 #include "ui_mainwindow.h"
-#include "uis/mainwindow.h"
+#include "src/gui/mainwindow.h"
 #include "commons.h"
 
 QTextEdit * console;

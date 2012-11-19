@@ -24,7 +24,7 @@
 #include <QtNetwork>
 
 #include "libs/qt-json/json.h"
-#include "uis/settingsdialog.h"
+#include "src/gui/settingsdialog.h"
 
 class SearchProvider : public QObject
 {

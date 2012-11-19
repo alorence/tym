@@ -17,18 +17,6 @@
 # along with TYM (Tag your Library).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include(dbaccess/dbaccess.pri)
-include(network/network.pri)
-include(wizards/wizards.pri)
-include(gui/gui.pri)
+SOURCES += libs/qt-json/json.cpp
 
-HEADERS += \
-    src/librarymodel.h \
-    src/patterntool.h \
-    src/commons.h
-
-SOURCES += \
-    src/main.cpp \
-    src/librarymodel.cpp \
-    src/patterntool.cpp
-
+HEADERS  += libs/qt-json/json.h
