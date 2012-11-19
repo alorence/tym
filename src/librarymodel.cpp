@@ -106,8 +106,9 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
     if(ind.column() == columnWithCheckbox && role == Qt::CheckStateRole) {
         QItemSelectionModel::SelectionFlag selStatus;
         selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
-        for(int i = columnCount() - 1 ; i >= 0 ; --i)
-            emit rowCheckedOrUnchecked(index(ind.row(), i, ind.parent()), selStatus);
+        QItemSelection line(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
+        emit rowCheckedOrUnchecked(line, selStatus);
+        emit rowCheckedOrUnchecked(index(ind.row(), columnWithCheckbox, ind.parent()), selStatus);
         return true;
     }
     else {

@@ -53,6 +53,7 @@ private:
 
 signals:
     void rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags);
+    void rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags);
 
 };
 
