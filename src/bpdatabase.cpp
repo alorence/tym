@@ -19,6 +19,8 @@
 
 #include "bpdatabase.h"
 
+static bool dbInitialized = false;
+
 BPDatabase::BPDatabase(QObject *parent) :
     QObject(parent)
 {
@@ -75,7 +77,7 @@ bool BPDatabase::initDB()
     return dbInitialized;
 }
 
-const bool BPDatabase::initialized()
+bool BPDatabase::initialized()
 {
     return dbInitialized;
 }
@@ -113,7 +115,7 @@ bool BPDatabase::initTables()
     return true;
 }
 
-const QString BPDatabase::version()
+QString BPDatabase::version()
 {
     QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
     if( ! query.exec()) {

@@ -26,9 +26,6 @@
 #include "src/librarymodel.h"
 #include "commons.h"
 
-
-static bool dbInitialized = false;
-
 class BPDatabase : public QObject
 {
     Q_OBJECT
@@ -38,8 +35,8 @@ public:
     ~BPDatabase();
 
     static bool initDB();
-    static const bool initialized();
-    static const QString version();
+    static bool initialized();
+    static QString version();
     static QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;

@@ -32,7 +32,7 @@ TrackInfosView::~TrackInfosView()
     delete ui;
 }
 
-void TrackInfosView::updateInfos(QSqlRecord & result)
+void TrackInfosView::updateInfos(QSqlRecord result)
 {
     ui->d_artists->setText(result.value(0).toString());
     ui->d_remixers->setText(result.value(1).toString());

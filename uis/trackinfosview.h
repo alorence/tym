@@ -40,7 +40,7 @@ public:
 
 public slots:
     void clearData();
-    void updateInfos(QSqlRecord &);
+    void updateInfos(QSqlRecord);
     void displayDownloadedPicture(QString url);
 
 signals:

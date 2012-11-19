@@ -155,7 +155,6 @@ void SearchProvider::downloadTrackPicture(const QString & picId)
     QString url = "http://geo-media.beatport.com/image_size/200x200/"+picId+".jpg";
     QNetworkRequest request(url);
 
-    qDebug() << tr("Download file %1").arg(url);
     QNetworkReply *reply = manager->get(request);
     downloadManagaer.insert(reply, picId);
     connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
@@ -172,7 +171,7 @@ void SearchProvider::writeTrackPicture()
     QFile imgFile(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
                       + QDir::separator() + "albumarts"
                       + QDir::separator() + imgName);
-    qDebug() << tr("Write %1 bytes").arg(reply->bytesAvailable());
+
     imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
     imgFile.write(reply->readAll());
     imgFile.close();
