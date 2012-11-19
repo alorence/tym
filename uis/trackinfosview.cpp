@@ -19,6 +19,7 @@
 
 #include "trackinfosview.h"
 #include "ui_trackinfosview.h"
+#include "src/commons.h"
 
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
@@ -55,9 +56,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
 
     currentPictureId = result.value(16).toString();
 
-    QString picPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
-            + QDir::separator() + "albumarts"
-            + QDir::separator() + currentPictureId + ".jpg";
+    QString picPath = Constants::picturesLocation + QDir::separator() + currentPictureId + ".jpg";
     if( ! QFile(picPath).exists()) {
         emit downloadPicture(currentPictureId);
     } else {
@@ -68,9 +67,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
 void TrackInfosView::displayDownloadedPicture(QString picId)
 {
     if(picId == currentPictureId) {
-        QString path(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
-                      + QDir::separator() + "albumarts"
-                      + QDir::separator() + picId + ".jpg");
+        QString path(Constants::picturesLocation + QDir::separator() + picId + ".jpg");
         ui->imageArea->setPixmap(QPixmap(path));
     }
 }

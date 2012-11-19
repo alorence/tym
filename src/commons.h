@@ -20,6 +20,10 @@
 #ifndef COMMONS_H
 #define COMMONS_H
 
+#include <QtCore>
+#include <QDesktopServices>
+#include <QDir>
+
 namespace LibraryIndexes {
     enum Index {
         Uid = 0,
@@ -67,5 +71,9 @@ namespace FileStatus {
         FileNotFound = 16
     };
 }
-
+namespace Constants {
+    static QString dynamicPictureUrl = "http://geo-media.beatport.com/image_size/200x200/%1.jpg";
+    static QString dataLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    static QString picturesLocation = dataLocation + QDir::separator() + "albumarts";
+}
 #endif // COMMONS_H

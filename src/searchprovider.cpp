@@ -18,6 +18,7 @@
 */
 
 #include "searchprovider.h"
+#include "commons.h"
 
 SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     QObject(parent),
@@ -152,8 +153,7 @@ void SearchProvider::parseReplyForNameSearch(int row)
 
 void SearchProvider::downloadTrackPicture(const QString & picId)
 {
-    QString url = "http://geo-media.beatport.com/image_size/200x200/"+picId+".jpg";
-    QNetworkRequest request(url);
+    QNetworkRequest request(Constants::dynamicPictureUrl.arg(picId));
 
     QNetworkReply *reply = manager->get(request);
     downloadManagaer.insert(reply, picId);
@@ -168,9 +168,7 @@ void SearchProvider::writeTrackPicture()
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
 
     QString imgName = downloadManagaer.value(reply) + ".jpg";
-    QFile imgFile(QDesktopServices::storageLocation(QDesktopServices::DataLocation)
-                      + QDir::separator() + "albumarts"
-                      + QDir::separator() + imgName);
+    QFile imgFile(Constants::picturesLocation + QDir::separator() + imgName);
 
     imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
     imgFile.write(reply->readAll());

@@ -21,6 +21,7 @@
 #include <QTextEdit>
 #include "ui_mainwindow.h"
 #include "uis/mainwindow.h"
+#include "commons.h"
 
 QTextEdit * console;
 
@@ -52,12 +53,11 @@ int main(int argc, char *argv[])
 
     {
         // Initialize some mandatory software items
-        QString dataLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        if( ! QDir(dataLocation).exists()) {
-            QDir().mkpath(dataLocation);
+        if( ! QDir(Constants::dataLocation).exists()) {
+            QDir().mkpath(Constants::dataLocation);
         }
-        if( ! QDir(dataLocation + QDir::separator() + "albumarts").exists()) {
-            QDir().mkpath(dataLocation + QDir::separator() + "albumarts");
+        if( ! QDir(Constants::picturesLocation).exists()) {
+            QDir().mkpath(Constants::picturesLocation);
         }
     }
 
