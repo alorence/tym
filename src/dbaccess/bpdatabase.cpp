@@ -19,36 +19,56 @@
 
 #include "bpdatabase.h"
 
-static bool dbInitialized = false;
+BPDatabase * BPDatabase::_instance = 0;
+
+BPDatabase *BPDatabase::instance()
+{
+    static QMutex mutex;
+    mutex.lock();
+    if(!_instance) {
+        _instance = new BPDatabase();
+    }
+    mutex.unlock();
+    return _instance;
+}
+
+void BPDatabase::deleteInstance()
+{
+    static QMutex mutex;
+    mutex.lock();
+    _instance->deleteLater();
+    mutex.unlock();
+}
 
 BPDatabase::BPDatabase(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    dbInitialized(false)
 {
-    if( ! BPDatabase::initialized()) {
-        BPDatabase::initDB();
+    initDB();
+
+    if(dbInitialized) {
+        _libraryModel = new LibraryModel(this, BPDatabase::dbObject());
+        _libraryModel->setTable("LibraryHelper");
+        _libraryModel->select();
+
+        _searchModel = new QSqlQueryModel(this);
+
+        _searchQuery = QSqlQuery(BPDatabase::dbObject());
+        _searchQuery.prepare("SELECT "
+                             "tr.bpid as ID, "
+                             "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
+                             "FROM BPTracks as tr "
+                             "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
+                             "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
+                             "JOIN BPArtists as a ON a.bpid = talink.artistId "
+                             "WHERE sr.libId=:id GROUP BY tr.bpid");
     }
-
-    _libraryModel = new LibraryModel(this, dbObject());
-    _libraryModel->setTable("LibraryHelper");
-    _libraryModel->select();
-
-    _searchModel = new QSqlQueryModel(this);
-
-    _searchQuery = QSqlQuery(BPDatabase::dbObject());
-    _searchQuery.prepare("SELECT "
-                         "tr.bpid as ID, "
-                         "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
-                         "FROM BPTracks as tr "
-                         "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
-                         "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
-                         "JOIN BPArtists as a ON a.bpid = talink.artistId "
-                         "WHERE sr.libId=:id GROUP BY tr.bpid");
 
 }
 
 BPDatabase::~BPDatabase()
 {
-    dbObject().close();
+    BPDatabase::dbObject().close();
 }
 
 bool BPDatabase::initDB()
@@ -63,10 +83,11 @@ bool BPDatabase::initDB()
     dbInitialized = db.open();
     if( ! dbInitialized) {
         qCritical() << tr("Unable to open database at location %1").arg(dbPath);
-    } else if(BPDatabase::version() == "-1") {
-        dbInitialized = BPDatabase::initTables();
+    } else if(version() == "-1") {
+        dbInitialized = initTables();
         if( ! dbInitialized) {
             qCritical() << tr("Unable to initialise database.");
+            db.close();
         } else {
             qDebug() << tr("DB opened and initialized for the first time, version %1").arg(version());
         }
@@ -89,7 +110,7 @@ bool BPDatabase::initTables()
     if(initFile.open(QFile::ReadOnly)) {
         QTextStream in(&initFile);
         QString line;
-        QSqlQuery query;
+        QSqlQuery query(BPDatabase::dbObject());
         QStringList currentRequest;
         while ( ! in.atEnd()) {
             line = in.readLine().trimmed();
@@ -98,7 +119,7 @@ bool BPDatabase::initTables()
             else currentRequest << line;
 
             if(currentRequest.last().endsWith(';')) {
-                query = dbObject().exec(currentRequest.join(" "));
+                query = BPDatabase::dbObject().exec(currentRequest.join(" "));
                 if( query.lastError().isValid()) {
                     qCritical() << tr("Unable to execute request : %1 (%2)").arg(currentRequest.join(" ")).arg(query.lastError().text());
                     return false;
@@ -117,6 +138,10 @@ bool BPDatabase::initTables()
 
 QString BPDatabase::version()
 {
+    if(!initialized()) {
+        return "-1";
+    }
+
     QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
     if( ! query.exec()) {
         return "-1";
@@ -405,4 +430,3 @@ void BPDatabase::importFile(QString path)
         _libraryModel->refreshAndPreserveSelection();
     }
 }
-

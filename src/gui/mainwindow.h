@@ -63,7 +63,7 @@ private:
     Ui::MainWindow* ui;
     SettingsDialog* settings;
     SearchProvider searchProvider;
-    BPDatabase databaseUtil;
+    BPDatabase * databaseUtil;
     QSignalMapper * generalMapper;
 
     QWidget * console;
