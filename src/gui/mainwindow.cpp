@@ -25,13 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
-    searchProvider(settings, this),
-    databaseUtil(BPDatabase::instance())
+    searchProvider(settings, this)
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
-    if( ! databaseUtil->initialized()) {
+    if( ! BPDatabase::instance()->initialized()) {
         qCritical() << tr("Impossible to connect with database...");
         return;
     }
@@ -47,29 +46,29 @@ MainWindow::MainWindow(QWidget *parent) :
      * Library
      */
     // Configure view
-    ui->libraryView->setModel(databaseUtil->libraryModel());
+    ui->libraryView->setModel(BPDatabase::instance()->libraryModel());
     ui->libraryView->hideColumn(LibraryIndexes::Uid);
     ui->libraryView->hideColumn(LibraryIndexes::Bpid);
     ui->libraryView->resizeColumnsToContents();
 
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            databaseUtil->libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
+            BPDatabase::instance()->libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
     // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(databaseUtil->libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
+    connect(BPDatabase::instance()->libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
     // Set current selection index to last modified row
-    connect(databaseUtil->libraryModel(), SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
+    connect(BPDatabase::instance()->libraryModel(), SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            databaseUtil, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
+            BPDatabase::instance(), SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
     /**
      * Search Results View
      */
     // Configure view
-    ui->searchResultsView->setModel(databaseUtil->searchModel());
+    ui->searchResultsView->setModel(BPDatabase::instance()->searchModel());
 
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -95,6 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    BPDatabase::instance()->deleteInstance();
     delete ui;
     delete generalMapper;
     delete console;
@@ -113,8 +113,8 @@ void MainWindow::registerConsole(QWidget *c)
 void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
 {
     if(selected.isValid()) {
-        QVariant bpid = databaseUtil->searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
-        ui->trackInfos->updateInfos(databaseUtil->trackInformations(bpid));
+        QVariant bpid = BPDatabase::instance()->searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
+        ui->trackInfos->updateInfos(BPDatabase::instance()->trackInformations(bpid));
     } else {
         ui->trackInfos->clearData();
     }
@@ -126,7 +126,7 @@ void MainWindow::on_actionImport_triggered()
     QString filters = "Audio tracks (*.wav *.flac *.mp3)";
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/sources_files", filters, 0, 0);
 
-    databaseUtil->importFiles(fileList);
+    BPDatabase::instance()->importFiles(fileList);
 
     ui->libraryView->resizeColumnsToContents();
 }
@@ -149,7 +149,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     QPair<int, QSqlRecord> entry;
-    foreach (entry, databaseUtil->libraryModel()->selectedRecords()) {
+    foreach (entry, BPDatabase::instance()->libraryModel()->selectedRecords()) {
         int id = entry.first;
         QSqlRecord record = entry.second;
 
@@ -197,7 +197,7 @@ void MainWindow::updateProgressBar()
 
 void MainWindow::on_actionDelete_triggered()
 {
-    QList<QPair<int, QSqlRecord> > selecteds = databaseUtil->libraryModel()->selectedRecords();
+    QList<QPair<int, QSqlRecord> > selecteds = BPDatabase::instance()->libraryModel()->selectedRecords();
     QList<int> rows;
     QVariantList uids;
     QPair<int, QSqlRecord> elt;
@@ -205,6 +205,6 @@ void MainWindow::on_actionDelete_triggered()
         rows << elt.first;
         uids << elt.second.value(LibraryIndexes::Uid);
     }
-    databaseUtil->deleteFromLibrary(uids);
-    databaseUtil->libraryModel()->refreshAndUnselectRows(rows);
+    BPDatabase::instance()->deleteFromLibrary(uids);
+    BPDatabase::instance()->libraryModel()->refreshAndUnselectRows(rows);
 }
