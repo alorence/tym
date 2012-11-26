@@ -80,7 +80,7 @@ void SearchProvider::parseReplyForIdSearch()
     QMap<int, QString> *rowBpidMap = replyMap.take(reply);
 
     QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::Json::parse(jsonResponse);
+    QVariant response = QtJson::parse(jsonResponse);
 
     QVariant track;
     QMapIterator<int, QString> req(*rowBpidMap);
@@ -144,7 +144,7 @@ void SearchProvider::parseReplyForNameSearch(int row)
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(row));
 
     QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::Json::parse(jsonResponse);
+    QVariant response = QtJson::parse(jsonResponse);
 
     emit searchResultAvailable(row, response.toMap()["results"].toList());
 
