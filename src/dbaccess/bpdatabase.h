@@ -23,7 +23,7 @@
 #include <QtCore>
 #include <QtSql>
 
-#include "src/librarymodel.h"
+#include "librarymodel.h"
 #include "src/commons.h"
 
 

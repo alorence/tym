@@ -24,7 +24,7 @@
 #include <QtGui>
 #include <QtSql>
 
-#include "commons.h"
+#include "src/commons.h"
 
 class LibraryModel : public QSqlRelationalTableModel
 {
