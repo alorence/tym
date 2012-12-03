@@ -51,6 +51,9 @@ int main(int argc, char *argv[])
     a.setApplicationName("tym");
     a.setApplicationVersion("0.0.0.1");
 
+    Constants::dataLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    Constants::picturesLocation = Constants::dataLocation + QDir::separator() + "albumarts";
+
     {
         // Initialize some mandatory software items
         if( ! QDir(Constants::dataLocation).exists()) {

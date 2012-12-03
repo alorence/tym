@@ -73,7 +73,7 @@ namespace FileStatus {
 }
 namespace Constants {
     static QString dynamicPictureUrl = "http://geo-media.beatport.com/image_size/200x200/%1.jpg";
-    static QString dataLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-    static QString picturesLocation = dataLocation + QDir::separator() + "albumarts";
+    static QString dataLocation;
+    static QString picturesLocation;
 }
 #endif // COMMONS_H
