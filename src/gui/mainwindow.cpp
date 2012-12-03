@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
-    searchProvider(settings, this)
+    searchProvider(settings, this),
+    dbThread(new QThread(this))
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
@@ -35,9 +36,11 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
 
+    dbThread->start();
+    BPDatabase::instance()->moveToThread(dbThread);
+
     ui->progress->setVisible(false);
     connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), this, SLOT(updateProgressBar()));
-
 
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
@@ -94,10 +97,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    dbThread->exit();
     BPDatabase::instance()->deleteInstance();
     delete ui;
     delete generalMapper;
     delete console;
+    dbThread->wait();
+    dbThread->deleteLater();
 }
 
 void MainWindow::registerConsole(QWidget *c)

@@ -65,6 +65,8 @@ private:
     SearchProvider searchProvider;
     QSignalMapper * generalMapper;
 
+    QThread * dbThread;
+
     QWidget * console;
 };
 
