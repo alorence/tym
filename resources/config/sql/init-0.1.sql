@@ -26,12 +26,12 @@ CREATE TABLE BPTracksGenresLink (trackId INTEGER REFERENCES BPTracks(bpid), genr
 CREATE TABLE SearchResults (libId INTEGER REFERENCES Library(uid), trackId INTEGER REFERENCES BPTracks(bpid),
 	PRIMARY KEY(libId, trackId));
 
-# Views to simplify infos displaying
+# Simplify library infos displaying
 CREATE VIEW LibraryHelper AS SELECT l.*, count(sr.trackId) as results
 FROM Library as l LEFT JOIN SearchResults as sr ON sr.libId = l.uid
 GROUP BY l.uid;
 
-# Views to simplify infos reading
+# Simplify tracks infos reading
 CREATE VIEW TrackFullInfos as SELECT 
 	(SELECT DISTINCT group_concat( art.name, ', ') FROM BPArtists as art
 		JOIN BPTracksArtistsLink as artl ON artl.artistId=art.bpid WHERE artl.trackId=tr.bpid) as artists,
@@ -41,5 +41,18 @@ CREATE VIEW TrackFullInfos as SELECT
 		JOIN BPTracksGenresLink as genrel ON genrel.genreId=genre.bpid WHERE genrel.trackId=tr.bpid) as genres,
 	l.name as labelName, tr.* FROM BPTracks as tr 
 		JOIN BPLabels as l ON l.bpid = tr.label;
+
+# Simplify search results displaying and library element <-> track join
+CREATE VIEW SearchResultsHelper as SELECT
+		sr.libId as libId, tr.bpid as trId,
+		(group_concat(a.name, ', ') || ' - ' || tr.title) as Track,
+		lib.uid as defaultFor
+	FROM
+		BPTracks as tr
+		JOIN SearchResults as sr ON tr.bpid = sr.trackId
+		JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId
+		JOIN BPArtists as a ON a.bpid = talink.artistId
+		LEFT JOIN Library as lib ON lib.bpid = tr.bpid
+	GROUP BY tr.bpid;
 
 COMMIT;
