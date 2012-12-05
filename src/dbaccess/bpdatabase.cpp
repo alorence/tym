@@ -69,6 +69,8 @@ BPDatabase::BPDatabase(QObject *parent) :
 BPDatabase::~BPDatabase()
 {
     BPDatabase::dbObject().close();
+    delete _libraryModel;
+    delete _searchModel;
 }
 
 bool BPDatabase::initDB()
