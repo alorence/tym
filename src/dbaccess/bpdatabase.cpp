@@ -51,17 +51,9 @@ BPDatabase::BPDatabase(QObject *parent) :
         _libraryModel->setTable("LibraryHelper");
         _libraryModel->select();
 
-        _searchModel = new QSqlQueryModel(this);
-
-        _searchQuery = QSqlQuery(BPDatabase::dbObject());
-        _searchQuery.prepare("SELECT "
-                             "tr.bpid as ID, "
-                             "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
-                             "FROM BPTracks as tr "
-                             "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
-                             "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
-                             "JOIN BPArtists as a ON a.bpid = talink.artistId "
-                             "WHERE sr.libId=:id GROUP BY tr.bpid");
+        _searchModel = new SearchResultsModel(this, BPDatabase::dbObject());
+        _searchModel->setTable("SearchResultsHelper");
+        _searchModel->select();
     }
 
 }
@@ -163,7 +155,7 @@ LibraryModel *BPDatabase::libraryModel() const
     return _libraryModel;
 }
 
-QSqlQueryModel *BPDatabase::searchModel() const
+SearchResultsModel *BPDatabase::searchModel() const
 {
     return _searchModel;
 }
@@ -197,15 +189,8 @@ void BPDatabase::deleteFromLibrary(QVariantList &uids)
 
 void BPDatabase::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    if(selected.isValid()) {
-        _searchQuery.bindValue(":id", _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid)));
-        _searchQuery.exec();
-        _searchModel->setQuery(_searchQuery);
-    } else {
-        _searchQuery.bindValue(":id", -1);
-        _searchQuery.exec();
-        _searchModel->setQuery(_searchQuery);
-    }
+    QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid));
+    _searchModel->setFilter("libId=" + libId.toString());
 }
 
 QVariant BPDatabase::storeTrack(const QVariant track)

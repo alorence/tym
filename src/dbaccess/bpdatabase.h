@@ -24,6 +24,7 @@
 #include <QtSql>
 
 #include "librarymodel.h"
+#include "searchresultsmodel.h"
 #include "src/commons.h"
 
 
@@ -42,7 +43,7 @@ public:
     static QSqlDatabase dbObject();
 
     LibraryModel * libraryModel() const;
-    QSqlQueryModel * searchModel() const;
+    SearchResultsModel * searchModel() const;
 
     QSqlRecord trackInformations(QVariant & bpid);
     void deleteFromLibrary(QVariantList &uids);
@@ -64,11 +65,10 @@ private :
     static BPDatabase * _instance;
 
     LibraryModel *_libraryModel;
+    SearchResultsModel * _searchModel;
+
     bool initTables();
     bool dbInitialized;
-
-    QSqlQueryModel * _searchModel;
-    QSqlQuery _searchQuery;
 
     QSqlRecord basicLibraryRecord;
 };

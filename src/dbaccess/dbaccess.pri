@@ -19,8 +19,10 @@
 
 HEADERS += \
     src/dbaccess/bpdatabase.h \
-    src/dbaccess/librarymodel.h
+    src/dbaccess/librarymodel.h \
+    src/dbaccess/searchresultsmodel.h
 
 SOURCES += \
     src/dbaccess/bpdatabase.cpp \
-    src/dbaccess/librarymodel.cpp
+    src/dbaccess/librarymodel.cpp \
+    src/dbaccess/searchresultsmodel.cpp

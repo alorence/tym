@@ -72,14 +72,16 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     // Configure view
     ui->searchResultsView->setModel(BPDatabase::instance()->searchModel());
+    ui->searchResultsView->hideColumn(SearchResultsIndexes::LibId);
+    ui->searchResultsView->hideColumn(SearchResultsIndexes::Bpid);
+    ui->searchResultsView->hideColumn(SearchResultsIndexes::DefaultFor);
 
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             generalMapper, SLOT(map()));
-    // The first column (0) must be hidden, the first row (0) must be selected :
+    // The first row (0) must be selected :
     generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
     connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
-    connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
