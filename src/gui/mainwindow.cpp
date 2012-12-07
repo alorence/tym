@@ -77,11 +77,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->searchResultsView->hideColumn(SearchResultsIndexes::DefaultFor);
 
     // When the selection change in library view, the search results view should be reconfigured.
-    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            generalMapper, SLOT(map()));
+    //connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+    //        generalMapper, SLOT(map()));
     // The first row (0) must be selected :
-    generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
-    connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
+    //generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
+    //connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
+
+    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            this, SLOT(updateSearchResultsSelection(QModelIndex,QModelIndex)));
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -118,7 +121,16 @@ void MainWindow::registerConsole(QWidget *c)
     console->setVisible(defaultConsoleDisplaying);
 }
 
-void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
+void MainWindow::updateSearchResultsSelection(QModelIndex, QModelIndex)
+{
+    if(BPDatabase::instance()->searchModel()->rowCount() > 0) {
+        ui->searchResultsView->selectRow(0);
+    } else {
+        ui->searchResultsView->setCurrentIndex(QModelIndex());
+    }
+}
+
+void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex deselected)
 {
     if(selected.isValid()) {
         QVariant bpid = BPDatabase::instance()->searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
