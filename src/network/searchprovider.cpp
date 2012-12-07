@@ -54,20 +54,20 @@ void SearchProvider::initProxy()
     */
 }
 
-void SearchProvider::searchFromIds(QMap<int, QString> * rowBpidMap)
+void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
 {
     QUrl requestUrl = QUrl(apiUrl);
     requestUrl.setPath(tracksPath);
 
     QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-    queryItems << QPair<QString, QString>("ids", QStringList(rowBpidMap->values()).join(","));
+    queryItems << QPair<QString, QString>("ids", QStringList(uidBpidMap->values()).join(","));
     requestUrl.setQueryItems(queryItems);
 
     QNetworkRequest request(requestUrl);
 
     QNetworkReply *reply = manager->get(request);
 
-    replyMap.insert(reply, rowBpidMap);
+    replyMap.insert(reply, uidBpidMap);
 
     connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -77,13 +77,12 @@ void SearchProvider::searchFromIds(QMap<int, QString> * rowBpidMap)
 void SearchProvider::parseReplyForIdSearch()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QMap<int, QString> *rowBpidMap = replyMap.take(reply);
+    QMap<QString, QString> *uidBpidMap = replyMap.take(reply);
 
     QString jsonResponse(reply->readAll());
     QVariant response = QtJson::parse(jsonResponse);
 
-    QVariant track;
-    QMapIterator<int, QString> req(*rowBpidMap);
+    QMapIterator<QString, QString> req(*uidBpidMap);
 
     while(req.hasNext()) {
         req.next();
@@ -91,7 +90,7 @@ void SearchProvider::parseReplyForIdSearch()
         int id = req.key();
         QString bpid = req.value();
 
-        foreach(track, response.toMap()["results"].toList()) {
+        foreach(QVariant track, response.toMap()["results"].toList()) {
             if(bpid == track.toMap()["id"].toString()) {
                 emit searchResultAvailable(id, track);
                 break;
@@ -99,7 +98,7 @@ void SearchProvider::parseReplyForIdSearch()
         }
     }
 
-    delete rowBpidMap;
+    delete uidBpidMap;
     reply->deleteLater();
 }
 

@@ -20,18 +20,18 @@
 #include "librarymodel.h"
 
 LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
-    QSqlRelationalTableModel(parent, db)
+    QSqlTableModel(parent, db)
 {
     columnWithCheckbox = LibraryIndexes::FilePath;
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
-    Qt::ItemFlags flags = QSqlRelationalTableModel::flags(index);
+    Qt::ItemFlags flags = QSqlTableModel::flags(index);
     if(index.column() == columnWithCheckbox) {
         return flags | Qt::ItemIsUserCheckable;
     } else if(index.column() == LibraryIndexes::Message){
-        return QSqlRelationalTableModel::flags(QAbstractTableModel::index(index.row(), LibraryIndexes::FilePath, index.parent()));
+        return QSqlTableModel::flags(QAbstractTableModel::index(index.row(), LibraryIndexes::FilePath, index.parent()));
     } else {
         return flags;
     }
@@ -46,12 +46,12 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
         } else if (role == Qt::DisplayRole) {
 
-            QString filePath = QSqlRelationalTableModel::data(ind, role).toString();
+            QString filePath = QSqlTableModel::data(ind, role).toString();
             return QVariant(filePath.split(QDir::separator()).last());
 
         } else if(role == Qt::ToolTipRole) {
             // Display only the folder (all text before the last dir separator)
-            QStringList pathElements = QSqlRelationalTableModel::data(QAbstractTableModel::index(ind.row(), LibraryIndexes::FilePath, ind.parent()), Qt::DisplayRole)
+            QStringList pathElements = QSqlTableModel::data(QAbstractTableModel::index(ind.row(), LibraryIndexes::FilePath, ind.parent()), Qt::DisplayRole)
                     .toString().split(QDir::separator());
             pathElements.removeLast();
 
@@ -62,7 +62,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         }
     } else if (ind.column() == LibraryIndexes::Message && role == Qt::DisplayRole) {
 
-        int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int status = QSqlTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
         int n = 0;
 
         switch(status) {
@@ -73,7 +73,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return tr("Unable to find the file on your disk.");
         break;
         case FileStatus::ResultsAvailable:
-            n = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Message), Qt::DisplayRole).toInt();
+            n = QSqlTableModel::data(index(ind.row(), LibraryIndexes::Message), Qt::DisplayRole).toInt();
             return tr("%n result(s) available.", "Display number of results available for one library element", n);
         break;
         default:
@@ -82,7 +82,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
     } else if (ind.column() == LibraryIndexes::Status && role == Qt::DisplayRole) {
 
-        int status = QSqlRelationalTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int status = QSqlTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
 
         switch (status) {
         case FileStatus::New:
@@ -98,7 +98,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return "";
         }
     }
-    return QSqlRelationalTableModel::data(ind, role);
+    return QSqlTableModel::data(ind, role);
 }
 
 bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int role)
@@ -112,7 +112,7 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
         return true;
     }
     else {
-        return QSqlRelationalTableModel::setData(ind, value, role);
+        return QSqlTableModel::setData(ind, value, role);
     }
 }
 
@@ -127,7 +127,7 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
         case LibraryIndexes::Bpid:          return tr("Track Id");
         }
     }
-    return QSqlRelationalTableModel::headerData(section, orientation, role);
+    return QSqlTableModel::headerData(section, orientation, role);
 }
 
 void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
@@ -162,7 +162,7 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
     return result;
 }
 
-void LibraryModel::refreshAndPreserveSelection()
+void LibraryModel::refresh()
 {
     QList<int> checkedCopy = checkedRows;
     select();
@@ -171,11 +171,11 @@ void LibraryModel::refreshAndPreserveSelection()
     }
 }
 
-void LibraryModel::refreshAndUnselectRows(QList<int> rows)
+void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
     foreach(int row, rows) {
         checkedRows.removeAll(row);
     }
-    refreshAndPreserveSelection();
+    refresh();
 }
 

@@ -376,7 +376,7 @@ void BPDatabase::storeSearchResults(int row, QVariant result)
         }
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
-        _libraryModel->refreshAndPreserveSelection();
+        _libraryModel->refresh();
 
     } else
     // Many results per library row
@@ -393,7 +393,7 @@ void BPDatabase::storeSearchResults(int row, QVariant result)
         }
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
-        _libraryModel->refreshAndPreserveSelection();
+        _libraryModel->refresh();
     }
 }
 
@@ -427,6 +427,6 @@ void BPDatabase::importFile(QString path)
     if( ! query.exec()){
         qWarning() << tr("Unable to import file %1 : %2").arg(path).arg(_libraryModel->lastError().text());
     } else {
-        _libraryModel->refreshAndPreserveSelection();
+        _libraryModel->refresh();
     }
 }

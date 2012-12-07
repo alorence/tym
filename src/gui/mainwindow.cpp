@@ -212,5 +212,5 @@ void MainWindow::on_actionDelete_triggered()
         uids << elt.second.value(LibraryIndexes::Uid);
     }
     BPDatabase::instance()->deleteFromLibrary(uids);
-    BPDatabase::instance()->libraryModel()->refreshAndUnselectRows(rows);
+    BPDatabase::instance()->libraryModel()->unselectRowsAndRefresh(rows);
 }

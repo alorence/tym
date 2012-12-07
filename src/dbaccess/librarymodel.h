@@ -26,7 +26,7 @@
 
 #include "src/commons.h"
 
-class LibraryModel : public QSqlRelationalTableModel
+class LibraryModel : public QSqlTableModel
 {
     Q_OBJECT
 
@@ -44,8 +44,8 @@ public:
 
 public slots:
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
-    void refreshAndPreserveSelection();
-    void refreshAndUnselectRows(QList<int> rows);
+    void refresh();
+    void unselectRowsAndRefresh(QList<int> rows);
 
 private:
     QList<int> checkedRows;
