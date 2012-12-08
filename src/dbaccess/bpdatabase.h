@@ -27,8 +27,6 @@
 #include "searchresultsmodel.h"
 #include "src/commons.h"
 
-
-
 class BPDatabase : public QObject
 {
     Q_OBJECT
@@ -37,10 +35,13 @@ public:
     static BPDatabase * instance();
     static void deleteInstance();
 
+    static QString const MAIN_DB;
+    static QString const THREAD_DB;
+
     bool initialized();
     bool initDB();
     QString version();
-    static QSqlDatabase dbObject();
+    static QSqlDatabase dbObject(const QString &dbId = THREAD_DB);
 
     LibraryModel * libraryModel() const;
     SearchResultsModel * searchModel() const;
