@@ -375,8 +375,19 @@ void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
 
 void BPDatabase::importFiles(const QStringList &pathList)
 {
+    QString baseQuery = "INSERT INTO Library (filePath, status) ";
+    QString value = QString("SELECT '%2', %1").arg(FileStatus::New);
+
+    QStringList values;
     foreach(QString path, pathList){
-        importFile(path);
+        values << value.arg(path.replace("'", "''"));
+    }
+
+    QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
+    if(query.lastError().isValid()){
+        qWarning() << tr("Unable to import files : %2").arg(query.lastError().text());
+    } else {
+        emit libraryEntryUpdated(query.lastInsertId().toString());
     }
 }
 
