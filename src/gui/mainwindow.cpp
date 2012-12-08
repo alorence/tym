@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     BPDatabase::instance()->moveToThread(dbThread);
 
     ui->progress->setVisible(false);
-    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), this, SLOT(updateProgressBar()));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)), this, SLOT(updateProgressBar()));
 
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
@@ -98,6 +98,7 @@ MainWindow::MainWindow(QWidget *parent) :
      * Actions
      */
     connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), databaseUtil, SLOT(storeSearchResults(int,QVariant)));
+
 }
 
 MainWindow::~MainWindow()
@@ -159,7 +160,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     PatternTool pt(wizard.pattern());
-    QMap<int, QMap<QString, QString> > parsedValueMap;
+    QMap<QString, QMap<QString, QString> > parsedValueMap;
 
     QStringList interestingKeys;
     if(wizard.searchType() == SearchWizard::FromId) {
@@ -170,28 +171,27 @@ void MainWindow::on_actionSearch_triggered()
 
     QPair<int, QSqlRecord> entry;
     foreach (entry, BPDatabase::instance()->libraryModel()->selectedRecords()) {
-        int id = entry.first;
         QSqlRecord record = entry.second;
 
         QString filePath = record.value(LibraryIndexes::FilePath).toString();
         QString fileName = filePath.split(QDir::separator()).last();
 
-        parsedValueMap[id] = pt.parseValues(fileName, interestingKeys);
+        parsedValueMap[record.value(LibraryIndexes::Uid).toString()] = pt.parseValues(fileName, interestingKeys);
     }
 
     ui->progress->setVisible(true);
     ui->progress->setValue(ui->progress->minimum());
 
-    QMap<int, QString> * requestMap = new QMap<int, QString>();
+    QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
-        foreach(int id, parsedValueMap.keys()) {
-            requestMap->insert(id, parsedValueMap[id]["bpid"]);
+        foreach(QString key, parsedValueMap.keys()) {
+            requestMap->insert(key, parsedValueMap[key]["bpid"]);
         }
         ui->progress->setMaximum(requestMap->size());
         searchProvider.searchFromIds(requestMap);
     } else {
-        foreach(int id, parsedValueMap.keys()) {
-            requestMap->insert(id, ((QStringList)parsedValueMap[id].values()).join(" "));
+        foreach(QString key, parsedValueMap.keys()) {
+            requestMap->insert(key, ((QStringList)parsedValueMap[key].values()).join(" "));
         }
         ui->progress->setMaximum(requestMap->size());
         searchProvider.searchFromName(requestMap);

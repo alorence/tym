@@ -31,7 +31,7 @@ SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     tracksPath = "/catalog/3/tracks";
     searchPath = "/catalog/3/search";
 
-    connect(textSearchMapper, SIGNAL(mapped(int)), this, SLOT(parseReplyForNameSearch(int)));
+    connect(textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
 }
 
 SearchProvider::~SearchProvider()
@@ -83,16 +83,15 @@ void SearchProvider::parseReplyForIdSearch()
     QVariant response = QtJson::parse(jsonResponse);
 
     QMapIterator<QString, QString> req(*uidBpidMap);
-
     while(req.hasNext()) {
         req.next();
 
-        int id = req.key();
+        QString uid = req.key();
         QString bpid = req.value();
 
         foreach(QVariant track, response.toMap()["results"].toList()) {
             if(bpid == track.toMap()["id"].toString()) {
-                emit searchResultAvailable(id, track);
+                emit searchResultAvailable(uid, track);
                 break;
             }
         }
@@ -103,15 +102,15 @@ void SearchProvider::parseReplyForIdSearch()
 }
 
 
-void SearchProvider::searchFromName(QMap<int, QString> *rowNameMap)
+void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
 {
     QUrl requestUrl = QUrl(apiUrl);
     requestUrl.setPath(searchPath);
 
-    QMapIterator<int, QString> searchList(*rowNameMap);
+    QMapIterator<QString, QString> searchList(*rowNameMap);
     while(searchList.hasNext()) {
         searchList.next();
-        int index = searchList.key();
+        QString libId = searchList.key();
         QString text = searchList.value();
         text = text.replace(", ", " ");
         text = text.replace(",", " ");
@@ -131,21 +130,21 @@ void SearchProvider::searchFromName(QMap<int, QString> *rowNameMap)
 
         QNetworkReply *reply = manager->get(request);
         connect(reply, SIGNAL(finished()), textSearchMapper, SLOT(map()));
-        textSearchMapper->setMapping(reply, index);
+        textSearchMapper->setMapping(reply, libId);
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(getError(QNetworkReply::NetworkError)));
     }
     delete rowNameMap;
 }
 
-void SearchProvider::parseReplyForNameSearch(int row)
+void SearchProvider::parseReplyForNameSearch(QString uid)
 {
-    QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(row));
+    QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(uid));
 
     QString jsonResponse(reply->readAll());
     QVariant response = QtJson::parse(jsonResponse);
 
-    emit searchResultAvailable(row, response.toMap()["results"].toList());
+    emit searchResultAvailable(uid, response.toMap()["results"].toList());
 
     reply->deleteLater();
 }

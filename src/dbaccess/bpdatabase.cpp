@@ -326,15 +326,15 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     return trackBpId;
 }
 
-bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
+bool BPDatabase::setLibraryTrackReference(QString libUid, QVariant bpid)
 {
     QSqlQuery query(BPDatabase::dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
-    query.bindValue(":uid", _libraryModel->record(row).value(LibraryIndexes::Uid));
+    query.bindValue(":uid", libUid);
     query.bindValue(":bpid", bpid);
     if( ! query.exec()) {
-        qWarning() << tr("Unable to update library row %1 with the bpid %2")
-                      .arg(QString::number(row), query.boundValue(":bpid").toString());
+        qWarning() << tr("Unable to update library element %1 with the bpid %2")
+                      .arg(libUid, query.boundValue(":bpid").toString());
         qWarning() << query.lastError().text();
         return false;
     } else {
@@ -342,20 +342,18 @@ bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
     }
 }
 
-void BPDatabase::storeSearchResults(int row, QVariant result)
+void BPDatabase::storeSearchResults(QString libUid, QVariant result)
 {
     QSqlQuery query(BPDatabase::dbObject());
     query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
-
-    int libUid = _libraryModel->record(row).value(LibraryIndexes::Uid).toInt();
 
     // 1 result for each library row
     if(result.type() == QVariant::Map && ! result.toMap().empty()) {
         QVariant bpid = storeTrack(result);
 
-        setLibraryTrackReference(row, bpid);
+        setLibraryTrackReference(libUid, bpid);
 
-        query.bindValue(":libId", _libraryModel->record(row).value(LibraryIndexes::Uid));
+        query.bindValue(":libId", libUid);
         query.bindValue(":trackId", bpid);
         if( ! query.exec()) {
             qWarning() << tr("Unable to register search result for track %1").arg(bpid.toString());
@@ -385,7 +383,7 @@ void BPDatabase::storeSearchResults(int row, QVariant result)
 }
 
 
-void BPDatabase::updateLibraryStatus(int uid, FileStatus::Status status)
+void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
 {
     QSqlQuery query(BPDatabase::dbObject());
     query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");

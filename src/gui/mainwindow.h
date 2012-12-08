@@ -49,7 +49,7 @@ signals:
     void importFilesToLibrary(const QStringList) const;
     
 private slots:
-    void updateSearchResultsList(QModelIndex,QModelIndex);
+    void updateSearchResultsSelection(QModelIndex,QModelIndex);
     void updateTrackInfos(QModelIndex,QModelIndex);
 
     void on_actionImport_triggered();

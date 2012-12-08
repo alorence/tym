@@ -49,13 +49,13 @@ public:
     void deleteFromLibrary(QVariantList &uids);
 
 public slots:
-    void storeSearchResults(int row, QVariant result);
+    void storeSearchResults(QString libId, QVariant result);
     QVariant storeTrack(const QVariant track);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
-    bool setLibraryTrackReference(int row, QVariant bpid);
+    bool setLibraryTrackReference(QString libUid, QVariant bpid);
     void updateSearchResults(const QModelIndex&,const QModelIndex&);
-    void updateLibraryStatus(int uid, FileStatus::Status status);
+    void updateLibraryStatus(QString uid, FileStatus::Status status);
 
 private :
     explicit BPDatabase(QObject *parent = 0);
