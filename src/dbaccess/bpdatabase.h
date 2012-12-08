@@ -43,9 +43,6 @@ public:
     QString version();
     static QSqlDatabase dbObject(const QString &dbId = THREAD_DB);
 
-    LibraryModel * libraryModel() const;
-    SearchResultsModel * searchModel() const;
-
     QSqlRecord trackInformations(QVariant & bpid);
     void deleteFromLibrary(QVariantList &uids);
 
@@ -55,8 +52,10 @@ public slots:
     void importFile(QString filePath);
     void importFiles(const QStringList &);
     bool setLibraryTrackReference(QString libUid, QVariant bpid);
-    void updateSearchResults(const QModelIndex&,const QModelIndex&);
     void updateLibraryStatus(QString uid, FileStatus::Status status);
+
+signals:
+    void libraryEntryUpdated(QString uid);
 
 private :
     explicit BPDatabase(QObject *parent = 0);
@@ -64,9 +63,6 @@ private :
     BPDatabase operator=(const BPDatabase &);
     ~BPDatabase();
     static BPDatabase * _instance;
-
-    LibraryModel *_libraryModel;
-    SearchResultsModel * _searchModel;
 
     bool initTables();
     bool dbInitialized;

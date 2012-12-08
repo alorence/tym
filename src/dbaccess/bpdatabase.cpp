@@ -48,23 +48,12 @@ BPDatabase::BPDatabase(QObject *parent) :
     dbInitialized(false)
 {
     initDB();
-
-    if(dbInitialized) {
-        _libraryModel = new LibraryModel(this, dbObject());
-        _libraryModel->setTable("LibraryHelper");
-        _libraryModel->select();
-
-        _searchModel = new SearchResultsModel(this, dbObject());
-        _searchModel->setTable("SearchResultsHelper");
-        _searchModel->select();
-    }
 }
 
 BPDatabase::~BPDatabase()
 {
-    dbObject().close();
-    delete _libraryModel;
-    delete _searchModel;
+    dbObject(MAIN_DB).close();
+    dbObject(THREAD_DB).close();
 }
 
 bool BPDatabase::initDB()
@@ -156,16 +145,6 @@ QSqlDatabase BPDatabase::dbObject(const QString &conName)
     return QSqlDatabase::database(conName);
 }
 
-LibraryModel *BPDatabase::libraryModel() const
-{
-    return _libraryModel;
-}
-
-SearchResultsModel *BPDatabase::searchModel() const
-{
-    return _searchModel;
-}
-
 QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
 {
     QSqlQuery query(dbObject());
@@ -191,12 +170,6 @@ void BPDatabase::deleteFromLibrary(QVariantList &uids)
             qWarning() << tr("Unable to remove track %1 from library : %2").arg(uid.toString()).arg(delQuery.lastError().text());
         }
     }
-}
-
-void BPDatabase::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
-{
-    QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid));
-    _searchModel->setFilter("libId=" + libId.toString());
 }
 
 QVariant BPDatabase::storeTrack(const QVariant track)
@@ -367,8 +340,6 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
         }
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
-        _libraryModel->refresh();
-
     } else
     // Many results per library row
     if (result.type() == QVariant::List && ! result.toList().empty()) {
@@ -384,7 +355,6 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
         }
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
-        _libraryModel->refresh();
     }
 }
 
@@ -398,7 +368,9 @@ void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
     if( ! query.exec()) {
         qWarning() << tr("Unable to update library elements's %1 status").arg(uid);
         qWarning() << query.lastError().text();
+        return;
     }
+    emit libraryEntryUpdated(uid);
 }
 
 void BPDatabase::importFiles(const QStringList &pathList)
@@ -416,8 +388,8 @@ void BPDatabase::importFile(QString path)
     query.bindValue(":status", FileStatus::New);
 
     if( ! query.exec()){
-        qWarning() << tr("Unable to import file %1 : %2").arg(path).arg(_libraryModel->lastError().text());
+        qWarning() << tr("Unable to import file %1 : %2").arg(path).arg(query.lastError().text());
     } else {
-        _libraryModel->refresh();
+        emit libraryEntryUpdated(query.lastInsertId().toString());
     }
 }
