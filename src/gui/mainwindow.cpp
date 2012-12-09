@@ -134,6 +134,10 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
 {
     QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid));
     _searchModel->setFilter("libId=" + libId.toString());
+
+    if( ! _searchModel->query().isActive()) {
+        _searchModel->select();
+    }
 }
 
 
