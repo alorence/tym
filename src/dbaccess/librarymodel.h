@@ -25,6 +25,7 @@
 #include <QtSql>
 
 #include "src/commons.h"
+#include "bpdatabase.h"
 
 class LibraryModel : public QSqlTableModel
 {
@@ -38,6 +39,7 @@ public:
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &i, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    bool select();
 
     QList<int> selectedIds() const;
     QList<QPair<int, QSqlRecord> > selectedRecords() const;

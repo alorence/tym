@@ -130,6 +130,12 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
     return QSqlTableModel::headerData(section, orientation, role);
 }
 
+bool LibraryModel::select()
+{
+    QMutexLocker locker(BPDatabase::instance()->dbMutex);
+    return QSqlTableModel::select();
+}
+
 void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
 {
     int i;

@@ -23,9 +23,10 @@
 #include <QtCore>
 #include <QtSql>
 
-#include "librarymodel.h"
-#include "searchresultsmodel.h"
 #include "src/commons.h"
+
+class LibraryModel;
+class SearchResultsModel;
 
 class BPDatabase : public QObject
 {
@@ -45,6 +46,8 @@ public:
 
     QSqlRecord trackInformations(QVariant & bpid);
     void deleteFromLibrary(QVariantList &uids);
+
+    friend class LibraryModel;
 
 public slots:
     void storeSearchResults(QString libId, QVariant result);
@@ -66,6 +69,8 @@ private :
 
     bool initTables();
     bool dbInitialized;
+
+    QMutex *dbMutex;
 
     QSqlRecord basicLibraryRecord;
 };
