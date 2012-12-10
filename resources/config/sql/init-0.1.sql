@@ -46,13 +46,13 @@ CREATE VIEW TrackFullInfos as SELECT
 CREATE VIEW SearchResultsHelper as SELECT
 		sr.libId as libId, tr.bpid as trId,
 		(group_concat(a.name, ', ') || ' - ' || tr.title) as Track,
-		lib.uid as defaultFor
+		lib.bpid = tr.bpid as defaultVal
 	FROM
-		BPTracks as tr
-		JOIN SearchResults as sr ON tr.bpid = sr.trackId
-		JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId
-		JOIN BPArtists as a ON a.bpid = talink.artistId
-		LEFT JOIN Library as lib ON lib.bpid = tr.bpid
-	GROUP BY tr.bpid;
+	Library as lib
+	JOIN SearchResults as sr ON sr.libId = lib.uid
+	JOIN BPTracks as tr ON tr.bpid = sr.trackId
+	JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId
+	JOIN BPArtists as a ON a.bpid = talink.artistId
+	GROUP BY sr.libId, sr.trackId;
 
 COMMIT;
