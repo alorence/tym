@@ -157,9 +157,10 @@ void MainWindow::on_actionImport_triggered()
     QString filters = "Audio tracks (*.wav *.flac *.mp3)";
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/sources_files", filters, 0, 0);
 
-    BPDatabase::instance()->importFiles(fileList);
-
-    ui->libraryView->resizeColumnsToContents();
+    if(! fileList.isEmpty()) {
+        BPDatabase::instance()->importFiles(fileList);
+        ui->libraryView->resizeColumnsToContents();
+    }
 }
 
 void MainWindow::on_actionSearch_triggered()
