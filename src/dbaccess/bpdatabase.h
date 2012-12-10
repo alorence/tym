@@ -45,7 +45,7 @@ public:
     static QSqlDatabase dbObject(const QString &dbId = THREAD_DB);
 
     QSqlRecord trackInformations(QVariant & bpid);
-    void deleteFromLibrary(QVariantList &uids);
+    void deleteFromLibrary(QStringList uids);
 
     friend class LibraryModel;
 

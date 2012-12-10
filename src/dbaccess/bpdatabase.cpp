@@ -169,17 +169,15 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
     return query.record();
 }
 
-void BPDatabase::deleteFromLibrary(QVariantList &uids)
+void BPDatabase::deleteFromLibrary(QStringList uids)
 {
-    QSqlQuery delQuery(dbObject());
-    delQuery.prepare("DELETE FROM Library WHERE uid=:uid");
+    QString query = "DELETE FROM Library WHERE " +
+            uids.replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR ");
 
+    QSqlQuery delQuery(query, dbObject());
     dbMutex->lock();
-    foreach(QVariant uid, uids) {
-        delQuery.bindValue(":uid", uid);
-        if(!delQuery.exec()) {
-            qWarning() << tr("Unable to remove track %1 from library : %2").arg(uid.toString()).arg(delQuery.lastError().text());
-        }
+    if(!delQuery.exec()) {
+        qWarning() << tr("Unable to remove tracks from library : %1").arg(delQuery.lastError().text());
     }
     dbMutex->unlock();
 }

@@ -229,11 +229,11 @@ void MainWindow::on_actionDelete_triggered()
 {
     QList<QPair<int, QSqlRecord> > selecteds = _libraryModel->selectedRecords();
     QList<int> rows;
-    QVariantList uids;
+    QStringList uids;
     QPair<int, QSqlRecord> elt;
     foreach(elt, selecteds) {
         rows << elt.first;
-        uids << elt.second.value(LibraryIndexes::Uid);
+        uids << elt.second.value(LibraryIndexes::Uid).toString();
     }
     BPDatabase::instance()->deleteFromLibrary(uids);
     _libraryModel->unselectRowsAndRefresh(rows);
