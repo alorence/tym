@@ -182,7 +182,7 @@ void BPDatabase::deleteFromLibrary(QStringList uids)
     dbMutex->unlock();
 }
 
-QVariant BPDatabase::storeTrack(const QVariant track)
+QString BPDatabase::storeTrack(const QVariant track)
 {
     QMap<QString, QVariant> trackMap = track.toMap();
     QVariant trackBpId = trackMap.value("id");
@@ -196,7 +196,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     isExisting.exec();
     if(isExisting.next()) {
         qDebug() << tr("Track %1 (%2) already stored in database.").arg(isExisting.record().value(1).toString()).arg(trackBpId.toString());
-        return trackBpId;
+        return trackBpId.toString();
     }
 
     QStringList artists;
@@ -315,10 +315,10 @@ QVariant BPDatabase::storeTrack(const QVariant track)
         qDebug() << tr("Track %1 - %2 has been correctly stored into database").arg(artists.join(", "), query.boundValue(":title").toString());
     }
 
-    return trackBpId;
+    return trackBpId.toString();
 }
 
-bool BPDatabase::setLibraryTrackReference(QString libUid, QVariant bpid)
+bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
 {
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
@@ -329,10 +329,11 @@ bool BPDatabase::setLibraryTrackReference(QString libUid, QVariant bpid)
 
     if( ! query.exec()) {
         qWarning() << tr("Unable to update library element %1 with the bpid %2")
-                      .arg(libUid, query.boundValue(":bpid").toString());
+                      .arg(libUid, bpid);
         qWarning() << query.lastError().text();
         return false;
     } else {
+        emit referenceForTrackUpdated(libUid);
         return true;
     }
 }
@@ -344,7 +345,7 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
 
     // 1 result for each library row
     if(result.type() == QVariant::Map && ! result.toMap().empty()) {
-        QVariant bpid = storeTrack(result);
+        QString bpid = storeTrack(result);
 
         setLibraryTrackReference(libUid, bpid);
 
@@ -353,7 +354,7 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
 
         dbMutex->lock();
         if( ! query.exec()) {
-            qWarning() << tr("Unable to register search result for track %1").arg(bpid.toString());
+            qWarning() << tr("Unable to register search result for track %1").arg(bpid);
             qWarning() << query.lastError().text();
         }
         dbMutex->unlock();

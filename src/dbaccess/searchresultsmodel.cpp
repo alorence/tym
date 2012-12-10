@@ -21,3 +21,10 @@ QVariant SearchResultsModel::data(const QModelIndex &item, int role) const
     }
     return QSqlTableModel::data(item, role);
 }
+
+void SearchResultsModel::refresh(QString libId)
+{
+    if(filter().endsWith(libId)) {
+        select();
+    }
+}

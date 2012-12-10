@@ -51,14 +51,15 @@ public:
 
 public slots:
     void storeSearchResults(QString libId, QVariant result);
-    QVariant storeTrack(const QVariant track);
+    QString storeTrack(const QVariant track);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
-    bool setLibraryTrackReference(QString libUid, QVariant bpid);
+    bool setLibraryTrackReference(QString libUid, QString bpid);
     void updateLibraryStatus(QString uid, FileStatus::Status status);
 
 signals:
     void libraryEntryUpdated(QString uid);
+    void referenceForTrackUpdated(QString uid);
 
 private :
     explicit BPDatabase(QObject *parent = 0);

@@ -60,6 +60,10 @@ private slots:
 
     void on_actionDelete_triggered();
 
+    void on_searchResultsView_customContextMenuRequested(const QPoint &pos);
+
+    void on_actionSetDefaultResult_triggered();
+
 private:
     bool defaultConsoleDisplaying;
 

@@ -17,6 +17,7 @@ public:
 signals:
 
 public slots:
+    void refresh(QString libId);
 
 private:
     int columnWithTicker;

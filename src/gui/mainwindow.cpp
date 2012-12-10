@@ -98,6 +98,8 @@ MainWindow::MainWindow(QWidget *parent) :
             &searchProvider, SLOT(downloadTrackPicture(const QString&)));
     connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
+    connect(BPDatabase::instance(), SIGNAL(referenceForTrackUpdated(QString)),
+            _searchModel, SLOT(refresh(QString)));
 
     /**
      * Actions
@@ -128,6 +130,7 @@ void MainWindow::registerConsole(QWidget *c)
     ui->actionToggleConsole->setChecked(defaultConsoleDisplaying);
     console->setVisible(defaultConsoleDisplaying);
 }
+
 
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
@@ -238,4 +241,22 @@ void MainWindow::on_actionDelete_triggered()
     }
     BPDatabase::instance()->deleteFromLibrary(uids);
     _libraryModel->unselectRowsAndRefresh(rows);
+}
+
+void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
+{
+    QMenu contextMenu;
+    contextMenu.addAction(ui->actionSetDefaultResult);
+    contextMenu.exec(ui->searchResultsView->mapToGlobal(pos));
+}
+
+void MainWindow::on_actionSetDefaultResult_triggered()
+{
+    int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
+
+    QString libId = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::LibId)).toString();
+    QString bpid = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::Bpid)).toString();
+
+    BPDatabase::instance()->setLibraryTrackReference(libId, bpid);
+    ui->searchResultsView->selectRow(row);
 }
