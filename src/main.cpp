@@ -67,6 +67,8 @@ int main(int argc, char *argv[])
     console = new QTextEdit();
     qInstallMsgHandler(printConsoleMessage);
 
+    qRegisterMetaType<QItemSelection>("QItemSelection");
+
     MainWindow w;
     w.registerConsole(console);
     w.show();

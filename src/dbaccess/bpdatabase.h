@@ -23,10 +23,10 @@
 #include <QtCore>
 #include <QtSql>
 
-#include "src/librarymodel.h"
 #include "src/commons.h"
 
-
+class LibraryModel;
+class SearchResultsModel;
 
 class BPDatabase : public QObject
 {
@@ -36,25 +36,29 @@ public:
     static BPDatabase * instance();
     static void deleteInstance();
 
+    static QString const MAIN_DB;
+    static QString const THREAD_DB;
+
     bool initialized();
     bool initDB();
     QString version();
-    static QSqlDatabase dbObject();
-
-    LibraryModel * libraryModel() const;
-    QSqlQueryModel * searchModel() const;
+    static QSqlDatabase dbObject(const QString &dbId = THREAD_DB);
 
     QSqlRecord trackInformations(QVariant & bpid);
     void deleteFromLibrary(QVariantList &uids);
 
+    friend class LibraryModel;
+
 public slots:
-    void storeSearchResults(int row, QVariant result);
+    void storeSearchResults(QString libId, QVariant result);
     QVariant storeTrack(const QVariant track);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
-    bool setLibraryTrackReference(int row, QVariant bpid);
-    void updateSearchResults(const QModelIndex&,const QModelIndex&);
-    void updateLibraryStatus(int uid, FileStatus::Status status);
+    bool setLibraryTrackReference(QString libUid, QVariant bpid);
+    void updateLibraryStatus(QString uid, FileStatus::Status status);
+
+signals:
+    void libraryEntryUpdated(QString uid);
 
 private :
     explicit BPDatabase(QObject *parent = 0);
@@ -63,12 +67,10 @@ private :
     ~BPDatabase();
     static BPDatabase * _instance;
 
-    LibraryModel *_libraryModel;
     bool initTables();
     bool dbInitialized;
 
-    QSqlQueryModel * _searchModel;
-    QSqlQuery _searchQuery;
+    QMutex *dbMutex;
 
     QSqlRecord basicLibraryRecord;
 };

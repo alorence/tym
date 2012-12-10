@@ -23,12 +23,10 @@ include(wizards/wizards.pri)
 include(gui/gui.pri)
 
 HEADERS += \
-    src/librarymodel.h \
     src/patterntool.h \
     src/commons.h
 
 SOURCES += \
-    src/main.cpp \
-    src/librarymodel.cpp \
-    src/patterntool.cpp
+    src/patterntool.cpp \
+    src/main.cpp
 

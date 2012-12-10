@@ -21,6 +21,9 @@
 
 BPDatabase * BPDatabase::_instance = 0;
 
+const QString BPDatabase::MAIN_DB = "guiHandle";
+const QString BPDatabase::THREAD_DB = "threadHandle";
+
 BPDatabase *BPDatabase::instance()
 {
     static QMutex mutex;
@@ -42,52 +45,41 @@ void BPDatabase::deleteInstance()
 
 BPDatabase::BPDatabase(QObject *parent) :
     QObject(parent),
-    dbInitialized(false)
+    dbInitialized(false),
+    dbMutex(new QMutex())
 {
     initDB();
-
-    if(dbInitialized) {
-        _libraryModel = new LibraryModel(this, BPDatabase::dbObject());
-        _libraryModel->setTable("LibraryHelper");
-        _libraryModel->select();
-
-        _searchModel = new QSqlQueryModel(this);
-
-        _searchQuery = QSqlQuery(BPDatabase::dbObject());
-        _searchQuery.prepare("SELECT "
-                             "tr.bpid as ID, "
-                             "(group_concat(a.name, ', ') || ' - ' || tr.title) as Track "
-                             "FROM BPTracks as tr "
-                             "JOIN SearchResults as sr ON tr.bpid = sr.trackId "
-                             "JOIN BPTracksArtistsLink as talink ON talink.trackId = sr.trackId "
-                             "JOIN BPArtists as a ON a.bpid = talink.artistId "
-                             "WHERE sr.libId=:id GROUP BY tr.bpid");
-    }
-
 }
 
 BPDatabase::~BPDatabase()
 {
-    BPDatabase::dbObject().close();
+    dbObject(MAIN_DB).close();
+    dbObject(THREAD_DB).close();
+
+    delete dbMutex;
 }
 
 bool BPDatabase::initDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
                     + QDir::separator()
                     + "default.db3";
 
-    db.setDatabaseName(dbPath);
+    QSqlDatabase guiDb = QSqlDatabase::addDatabase("QSQLITE", MAIN_DB);
+    QSqlDatabase threadDb = QSqlDatabase::addDatabase("QSQLITE", THREAD_DB);
 
-    dbInitialized = db.open();
+    guiDb.setDatabaseName(dbPath);
+    threadDb.setDatabaseName(dbPath);
+
+    dbInitialized = guiDb.open() && threadDb.open();
     if( ! dbInitialized) {
         qCritical() << tr("Unable to open database at location %1").arg(dbPath);
     } else if(version() == "-1") {
         dbInitialized = initTables();
         if( ! dbInitialized) {
             qCritical() << tr("Unable to initialise database.");
-            db.close();
+            guiDb.close();
+            threadDb.close();
         } else {
             qDebug() << tr("DB opened and initialized for the first time, version %1").arg(version());
         }
@@ -110,7 +102,7 @@ bool BPDatabase::initTables()
     if(initFile.open(QFile::ReadOnly)) {
         QTextStream in(&initFile);
         QString line;
-        QSqlQuery query(BPDatabase::dbObject());
+        QSqlQuery query(dbObject());
         QStringList currentRequest;
         while ( ! in.atEnd()) {
             line = in.readLine().trimmed();
@@ -119,7 +111,9 @@ bool BPDatabase::initTables()
             else currentRequest << line;
 
             if(currentRequest.last().endsWith(';')) {
-                query = BPDatabase::dbObject().exec(currentRequest.join(" "));
+                dbMutex->lock();
+                query = dbObject().exec(currentRequest.join(" "));
+                dbMutex->unlock();
                 if( query.lastError().isValid()) {
                     qCritical() << tr("Unable to execute request : %1 (%2)").arg(currentRequest.join(" ")).arg(query.lastError().text());
                     return false;
@@ -142,7 +136,9 @@ QString BPDatabase::version()
         return "-1";
     }
 
-    QSqlQuery query("SELECT value FROM Infos WHERE key='version'", BPDatabase::dbObject());
+    QSqlQuery query("SELECT value FROM Infos WHERE key='version'", dbObject());
+
+    QMutexLocker locker(dbMutex);
     if( ! query.exec()) {
         return "-1";
     } else {
@@ -151,30 +147,23 @@ QString BPDatabase::version()
     }
 }
 
-QSqlDatabase BPDatabase::dbObject()
+QSqlDatabase BPDatabase::dbObject(const QString &conName)
 {
-    return QSqlDatabase::database();
-}
-
-LibraryModel *BPDatabase::libraryModel() const
-{
-    return _libraryModel;
-}
-
-QSqlQueryModel *BPDatabase::searchModel() const
-{
-    return _searchModel;
+    return QSqlDatabase::database(conName);
 }
 
 QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
 {
-    QSqlQuery query(BPDatabase::dbObject());
+    QSqlQuery query(dbObject());
 
     query.prepare("SELECT * from TrackFullInfos WHERE bpid=:bpid");
     query.bindValue(":bpid", bpid);
+
+    dbMutex->lock();
     if( ! query.exec() ) {
         qWarning() << tr("Unable to get track informations : %1").arg(query.lastError().text());
     }
+    dbMutex->unlock();
 
     query.next();
     return query.record();
@@ -182,28 +171,17 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
 
 void BPDatabase::deleteFromLibrary(QVariantList &uids)
 {
-    QSqlQuery delQuery(BPDatabase::dbObject());
+    QSqlQuery delQuery(dbObject());
     delQuery.prepare("DELETE FROM Library WHERE uid=:uid");
 
+    dbMutex->lock();
     foreach(QVariant uid, uids) {
         delQuery.bindValue(":uid", uid);
         if(!delQuery.exec()) {
             qWarning() << tr("Unable to remove track %1 from library : %2").arg(uid.toString()).arg(delQuery.lastError().text());
         }
     }
-}
-
-void BPDatabase::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
-{
-    if(selected.isValid()) {
-        _searchQuery.bindValue(":id", _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid)));
-        _searchQuery.exec();
-        _searchModel->setQuery(_searchQuery);
-    } else {
-        _searchQuery.bindValue(":id", -1);
-        _searchQuery.exec();
-        _searchModel->setQuery(_searchQuery);
-    }
+    dbMutex->unlock();
 }
 
 QVariant BPDatabase::storeTrack(const QVariant track)
@@ -211,9 +189,12 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     QMap<QString, QVariant> trackMap = track.toMap();
     QVariant trackBpId = trackMap.value("id");
 
-    QSqlQuery isExisting(BPDatabase::dbObject());
+    QSqlQuery isExisting(dbObject());
     isExisting.prepare("SELECT bpid, name FROM BPTracks WHERE bpid=:id");
     isExisting.bindValue(":id", trackBpId);
+
+    QMutexLocker locker(dbMutex);
+
     isExisting.exec();
     if(isExisting.next()) {
         qDebug() << tr("Track %1 (%2) already stored in database.").arg(isExisting.record().value(1).toString()).arg(trackBpId.toString());
@@ -221,7 +202,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     }
 
     QStringList artists;
-    QSqlQuery query(BPDatabase::dbObject()), linkQuery(BPDatabase::dbObject());
+    QSqlQuery query(dbObject()), linkQuery(dbObject());
     query.prepare("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
     foreach (QVariant artist, trackMap.value("artists").toList()) {
         QVariant artistBpId = artist.toMap().value("id");
@@ -310,7 +291,7 @@ QVariant BPDatabase::storeTrack(const QVariant track)
 
     QVariant labelId = trackMap.value("label").toMap().value("id");
     {
-        QSqlQuery labelQuery(BPDatabase::dbObject());
+        QSqlQuery labelQuery(dbObject());
         labelQuery.prepare("INSERT OR IGNORE INTO BPLabels VALUES (:bpid,:name)");
         labelQuery.bindValue(":bpid", labelId);
         labelQuery.bindValue(":name", trackMap.value("label").toMap().value("name"));
@@ -339,15 +320,18 @@ QVariant BPDatabase::storeTrack(const QVariant track)
     return trackBpId;
 }
 
-bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
+bool BPDatabase::setLibraryTrackReference(QString libUid, QVariant bpid)
 {
-    QSqlQuery query(BPDatabase::dbObject());
+    QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
-    query.bindValue(":uid", _libraryModel->record(row).value(LibraryIndexes::Uid));
+    query.bindValue(":uid", libUid);
     query.bindValue(":bpid", bpid);
+
+    QMutexLocker locker(dbMutex);
+
     if( ! query.exec()) {
-        qWarning() << tr("Unable to update library row %1 with the bpid %2")
-                      .arg(QString::number(row), query.boundValue(":bpid").toString());
+        qWarning() << tr("Unable to update library element %1 with the bpid %2")
+                      .arg(libUid, query.boundValue(":bpid").toString());
         qWarning() << query.lastError().text();
         return false;
     } else {
@@ -355,78 +339,100 @@ bool BPDatabase::setLibraryTrackReference(int row, QVariant bpid)
     }
 }
 
-void BPDatabase::storeSearchResults(int row, QVariant result)
+void BPDatabase::storeSearchResults(QString libUid, QVariant result)
 {
-    QSqlQuery query(BPDatabase::dbObject());
+    QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
-
-    int libUid = _libraryModel->record(row).value(LibraryIndexes::Uid).toInt();
 
     // 1 result for each library row
     if(result.type() == QVariant::Map && ! result.toMap().empty()) {
         QVariant bpid = storeTrack(result);
 
-        setLibraryTrackReference(row, bpid);
+        setLibraryTrackReference(libUid, bpid);
 
-        query.bindValue(":libId", _libraryModel->record(row).value(LibraryIndexes::Uid));
+        query.bindValue(":libId", libUid);
         query.bindValue(":trackId", bpid);
+
+        dbMutex->lock();
         if( ! query.exec()) {
             qWarning() << tr("Unable to register search result for track %1").arg(bpid.toString());
             qWarning() << query.lastError().text();
         }
+        dbMutex->unlock();
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
-        _libraryModel->refreshAndPreserveSelection();
-
     } else
     // Many results per library row
     if (result.type() == QVariant::List && ! result.toList().empty()) {
+
         foreach(QVariant track, result.toList()) {
             QVariant bpid = storeTrack(track);
 
             query.bindValue(":libId", libUid);
             query.bindValue(":trackId", bpid);
+            dbMutex->lock();
             if( ! query.exec()) {
                 qWarning() << tr("Unable to register search result for track %1").arg(bpid.toString());
                 qWarning() << query.lastError().text();
             }
+            dbMutex->unlock();
         }
 
         updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
-        _libraryModel->refreshAndPreserveSelection();
     }
 }
 
 
-void BPDatabase::updateLibraryStatus(int uid, FileStatus::Status status)
+void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
 {
-    QSqlQuery query(BPDatabase::dbObject());
+    QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
     query.bindValue(":uid", uid);
     query.bindValue(":status", status);
+
+    dbMutex->lock();
     if( ! query.exec()) {
         qWarning() << tr("Unable to update library elements's %1 status").arg(uid);
         qWarning() << query.lastError().text();
+        dbMutex->unlock();
+        return;
     }
+    dbMutex->unlock();
+    emit libraryEntryUpdated(uid);
 }
 
 void BPDatabase::importFiles(const QStringList &pathList)
 {
+    QString baseQuery = "INSERT INTO Library (filePath, status) ";
+    QString value = QString("SELECT '%2', %1").arg(FileStatus::New);
+
+    QStringList values;
     foreach(QString path, pathList){
-        importFile(path);
+        values << value.arg(path.replace("'", "''"));
+    }
+    dbMutex->lock();
+    QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
+    dbMutex->unlock();
+    if(query.lastError().isValid()){
+        qWarning() << tr("Unable to import files : %2").arg(query.lastError().text());
+    } else {
+        emit libraryEntryUpdated(query.lastInsertId().toString());
     }
 }
 
 void BPDatabase::importFile(QString path)
 {
-    QSqlQuery query(BPDatabase::dbObject());
+    QSqlQuery query(dbObject());
     query.prepare("INSERT INTO Library (filePath, status) VALUES (:path, :status);");
     query.bindValue(":path", path);
     query.bindValue(":status", FileStatus::New);
 
+    dbMutex->lock();
     if( ! query.exec()){
-        qWarning() << tr("Unable to import file %1 : %2").arg(path).arg(_libraryModel->lastError().text());
+        dbMutex->unlock();
+        qWarning() << tr("Unable to import file %1 : %2").arg(path).arg(query.lastError().text());
     } else {
-        _libraryModel->refreshAndPreserveSelection();
+        dbMutex->unlock();
+        emit libraryEntryUpdated(query.lastInsertId().toString());
     }
 }

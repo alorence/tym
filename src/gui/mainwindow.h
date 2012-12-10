@@ -26,7 +26,8 @@
 #include "ui_about.h"
 #include "src/gui/settingsdialog.h"
 #include "src/wizards/searchwizard.h"
-#include "src/librarymodel.h"
+#include "src/dbaccess/librarymodel.h"
+#include "src/dbaccess/searchresultsmodel.h"
 #include "src/dbaccess/bpdatabase.h"
 #include "src/network/searchprovider.h"
 #include "src/patterntool.h"
@@ -49,7 +50,9 @@ signals:
     void importFilesToLibrary(const QStringList) const;
     
 private slots:
-    void updateTrackInfos(QModelIndex,QModelIndex);
+    void updateSearchResults(const QModelIndex & selected, const QModelIndex &);
+    void updateTrackInfos(const QModelIndex, const QModelIndex);
+
     void on_actionImport_triggered();
     void on_actionSearch_triggered();
     void on_actionAbout_triggered();
@@ -64,6 +67,11 @@ private:
     SettingsDialog* settings;
     SearchProvider searchProvider;
     QSignalMapper * generalMapper;
+
+    LibraryModel *_libraryModel;
+    SearchResultsModel * _searchModel;
+
+    QThread * dbThread;
 
     QWidget * console;
 };

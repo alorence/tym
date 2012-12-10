@@ -34,17 +34,17 @@ public:
     ~SearchProvider();
     
 signals:
-    void searchResultAvailable(int row, QVariant result) const;
+    void searchResultAvailable(QString libId, QVariant result) const;
     void pictureDownloadFinished(QString picId) const;
 
 public slots:
-    void searchFromIds(QMap<int, QString> *);
-    void searchFromName(QMap<int, QString> *);
+    void searchFromIds(QMap<QString, QString> *);
+    void searchFromName(QMap<QString, QString> *);
     void downloadTrackPicture(const QString & picId);
 
 private slots:
     void parseReplyForIdSearch();
-    void parseReplyForNameSearch(int row);
+    void parseReplyForNameSearch(QString);
     void writeTrackPicture();
     void pictureDownloaded();
     void getError(QNetworkReply::NetworkError);
@@ -58,7 +58,7 @@ private :
     QString tracksPath;
     QString searchPath;
 
-    QMap<QNetworkReply *, QMap<int, QString>*> replyMap;
+    QMap<QNetworkReply *, QMap<QString, QString>*> replyMap;
     QSignalMapper *textSearchMapper;
     QMap<QNetworkReply*, QString> downloadManagaer;
 };

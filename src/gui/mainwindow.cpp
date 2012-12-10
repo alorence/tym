@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
-    searchProvider(settings, this)
+    searchProvider(settings, this),
+    dbThread(new QThread(this))
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
@@ -35,9 +36,19 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
 
-    ui->progress->setVisible(false);
-    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), this, SLOT(updateProgressBar()));
+    dbThread->start();
+    BPDatabase::instance()->moveToThread(dbThread);
 
+    _libraryModel = new LibraryModel(this, BPDatabase::instance()->dbObject(BPDatabase::MAIN_DB));
+    _libraryModel->setTable("LibraryHelper");
+    _libraryModel->select();
+
+    _searchModel = new SearchResultsModel(this, BPDatabase::instance()->dbObject(BPDatabase::MAIN_DB));
+    _searchModel->setTable("SearchResultsHelper");
+    _searchModel->select();
+
+    ui->progress->setVisible(false);
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)), this, SLOT(updateProgressBar()));
 
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
@@ -46,37 +57,39 @@ MainWindow::MainWindow(QWidget *parent) :
      * Library
      */
     // Configure view
-    ui->libraryView->setModel(BPDatabase::instance()->libraryModel());
+    ui->libraryView->setModel(_libraryModel);
     ui->libraryView->hideColumn(LibraryIndexes::Uid);
     ui->libraryView->hideColumn(LibraryIndexes::Bpid);
     ui->libraryView->resizeColumnsToContents();
 
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            BPDatabase::instance()->libraryModel(), SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
+            _libraryModel, SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
     // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(BPDatabase::instance()->libraryModel(), SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
+    connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
     // Set current selection index to last modified row
-    connect(BPDatabase::instance()->libraryModel(), SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
+    connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            BPDatabase::instance(), SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
+            this, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
     /**
      * Search Results View
      */
     // Configure view
-    ui->searchResultsView->setModel(BPDatabase::instance()->searchModel());
+    ui->searchResultsView->setModel(_searchModel);
+    ui->searchResultsView->hideColumn(SearchResultsIndexes::LibId);
+    ui->searchResultsView->hideColumn(SearchResultsIndexes::Bpid);
+    ui->searchResultsView->hideColumn(SearchResultsIndexes::DefaultFor);
 
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             generalMapper, SLOT(map()));
-    // The first column (0) must be hidden, the first row (0) must be selected :
+    // The first row (0) must be selected :
     generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
     connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
-    connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(hideColumn(int)));
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -89,15 +102,21 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * Actions
      */
-    connect(&searchProvider, SIGNAL(searchResultAvailable(int,QVariant)), databaseUtil, SLOT(storeSearchResults(int,QVariant)));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)),
+            BPDatabase::instance(), SLOT(storeSearchResults(QString,QVariant)));
+    connect(BPDatabase::instance(), SIGNAL(libraryEntryUpdated(QString)),
+            _libraryModel, SLOT(refresh()));
 }
 
 MainWindow::~MainWindow()
 {
+    dbThread->exit();
     BPDatabase::instance()->deleteInstance();
     delete ui;
     delete generalMapper;
     delete console;
+    dbThread->wait();
+    dbThread->deleteLater();
 }
 
 void MainWindow::registerConsole(QWidget *c)
@@ -110,10 +129,22 @@ void MainWindow::registerConsole(QWidget *c)
     console->setVisible(defaultConsoleDisplaying);
 }
 
-void MainWindow::updateTrackInfos(QModelIndex selected, QModelIndex)
+
+void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
+{
+    QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid));
+    _searchModel->setFilter("libId=" + libId.toString());
+
+    if( ! _searchModel->query().isActive()) {
+        _searchModel->select();
+    }
+}
+
+
+void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex deselected)
 {
     if(selected.isValid()) {
-        QVariant bpid = BPDatabase::instance()->searchModel()->record(selected.row()).value(SearchResultsIndexes::Bpid);
+        QVariant bpid = _searchModel->record(selected.row()).value(SearchResultsIndexes::Bpid);
         ui->trackInfos->updateInfos(BPDatabase::instance()->trackInformations(bpid));
     } else {
         ui->trackInfos->clearData();
@@ -139,7 +170,7 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     PatternTool pt(wizard.pattern());
-    QMap<int, QMap<QString, QString> > parsedValueMap;
+    QMap<QString, QMap<QString, QString> > parsedValueMap;
 
     QStringList interestingKeys;
     if(wizard.searchType() == SearchWizard::FromId) {
@@ -149,29 +180,28 @@ void MainWindow::on_actionSearch_triggered()
     }
 
     QPair<int, QSqlRecord> entry;
-    foreach (entry, BPDatabase::instance()->libraryModel()->selectedRecords()) {
-        int id = entry.first;
+    foreach (entry, _libraryModel->selectedRecords()) {
         QSqlRecord record = entry.second;
 
         QString filePath = record.value(LibraryIndexes::FilePath).toString();
         QString fileName = filePath.split(QDir::separator()).last();
 
-        parsedValueMap[id] = pt.parseValues(fileName, interestingKeys);
+        parsedValueMap[record.value(LibraryIndexes::Uid).toString()] = pt.parseValues(fileName, interestingKeys);
     }
 
     ui->progress->setVisible(true);
     ui->progress->setValue(ui->progress->minimum());
 
-    QMap<int, QString> * requestMap = new QMap<int, QString>();
+    QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
-        foreach(int id, parsedValueMap.keys()) {
-            requestMap->insert(id, parsedValueMap[id]["bpid"]);
+        foreach(QString key, parsedValueMap.keys()) {
+            requestMap->insert(key, parsedValueMap[key]["bpid"]);
         }
         ui->progress->setMaximum(requestMap->size());
         searchProvider.searchFromIds(requestMap);
     } else {
-        foreach(int id, parsedValueMap.keys()) {
-            requestMap->insert(id, ((QStringList)parsedValueMap[id].values()).join(" "));
+        foreach(QString key, parsedValueMap.keys()) {
+            requestMap->insert(key, ((QStringList)parsedValueMap[key].values()).join(" "));
         }
         ui->progress->setMaximum(requestMap->size());
         searchProvider.searchFromName(requestMap);
@@ -197,7 +227,7 @@ void MainWindow::updateProgressBar()
 
 void MainWindow::on_actionDelete_triggered()
 {
-    QList<QPair<int, QSqlRecord> > selecteds = BPDatabase::instance()->libraryModel()->selectedRecords();
+    QList<QPair<int, QSqlRecord> > selecteds = _libraryModel->selectedRecords();
     QList<int> rows;
     QVariantList uids;
     QPair<int, QSqlRecord> elt;
@@ -206,5 +236,5 @@ void MainWindow::on_actionDelete_triggered()
         uids << elt.second.value(LibraryIndexes::Uid);
     }
     BPDatabase::instance()->deleteFromLibrary(uids);
-    BPDatabase::instance()->libraryModel()->refreshAndUnselectRows(rows);
+    _libraryModel->unselectRowsAndRefresh(rows);
 }

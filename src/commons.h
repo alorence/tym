@@ -53,8 +53,10 @@ namespace BPTracksIndexes {
 }
 namespace SearchResultsIndexes {
     enum Index {
-        Bpid = 0,
-        Track
+        LibId = 0,
+        Bpid,
+        Track,
+        DefaultFor
     };
 }
 namespace TracksPicturesIndexes {

@@ -24,9 +24,10 @@
 #include <QtGui>
 #include <QtSql>
 
-#include "commons.h"
+#include "src/commons.h"
+#include "bpdatabase.h"
 
-class LibraryModel : public QSqlRelationalTableModel
+class LibraryModel : public QSqlTableModel
 {
     Q_OBJECT
 
@@ -38,14 +39,15 @@ public:
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &i, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    bool select();
 
     QList<int> selectedIds() const;
     QList<QPair<int, QSqlRecord> > selectedRecords() const;
 
 public slots:
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
-    void refreshAndPreserveSelection();
-    void refreshAndUnselectRows(QList<int> rows);
+    void refresh();
+    void unselectRowsAndRefresh(QList<int> rows);
 
 private:
     QList<int> checkedRows;
