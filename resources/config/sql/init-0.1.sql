@@ -6,7 +6,7 @@ CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);
 INSERT INTO Infos (key, value) VALUES ('version', '0.1');
 
 # Main library table
-CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);
+CREATE TABLE Library (uid INTEGER PRIMARY KEY, filePath TEXT UNIQUE, bpid INTEGER REFERENCES BPTracks(bpid), status TEXT);
 
 # Main BeatPort infos tables
 CREATE TABLE BPTracks  (bpid INTEGER PRIMARY KEY, name TEXT, mixName TEXT, title TEXT,

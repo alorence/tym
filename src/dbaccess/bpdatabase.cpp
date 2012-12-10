@@ -401,7 +401,7 @@ void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
 
 void BPDatabase::importFiles(const QStringList &pathList)
 {
-    QString baseQuery = "INSERT INTO Library (filePath, status) ";
+    QString baseQuery = "INSERT OR IGNORE INTO Library (filePath, status) ";
     QString value = QString("SELECT '%2', %1").arg(FileStatus::New);
 
     QStringList values;
@@ -421,7 +421,7 @@ void BPDatabase::importFiles(const QStringList &pathList)
 void BPDatabase::importFile(QString path)
 {
     QSqlQuery query(dbObject());
-    query.prepare("INSERT INTO Library (filePath, status) VALUES (:path, :status);");
+    query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
     query.bindValue(":path", path);
     query.bindValue(":status", FileStatus::New);
 
