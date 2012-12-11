@@ -61,9 +61,7 @@ BPDatabase::~BPDatabase()
 
 bool BPDatabase::initDB()
 {
-    QString dbPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
-                    + QDir::separator()
-                    + "default.db3";
+    QString dbPath = Constants::dataLocation() + QDir::separator() + "default.db3";
 
     QSqlDatabase guiDb = QSqlDatabase::addDatabase("QSQLITE", MAIN_DB);
     QSqlDatabase threadDb = QSqlDatabase::addDatabase("QSQLITE", THREAD_DB);

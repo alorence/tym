@@ -151,7 +151,7 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 
 void SearchProvider::downloadTrackPicture(const QString & picId)
 {
-    QNetworkRequest request(Constants::dynamicPictureUrl.arg(picId));
+    QNetworkRequest request(Constants::dynamicPictureUrl().arg(picId));
 
     QNetworkReply *reply = manager->get(request);
     downloadManagaer.insert(reply, picId);
@@ -166,7 +166,7 @@ void SearchProvider::writeTrackPicture()
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
 
     QString imgName = downloadManagaer.value(reply) + ".jpg";
-    QFile imgFile(Constants::picturesLocation + QDir::separator() + imgName);
+    QFile imgFile(Constants::picturesLocation() + QDir::separator() + imgName);
 
     imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
     imgFile.write(reply->readAll());

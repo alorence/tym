@@ -21,8 +21,7 @@
 #define COMMONS_H
 
 #include <QtCore>
-#include <QDesktopServices>
-#include <QDir>
+#include <QtGui>
 
 namespace LibraryIndexes {
     enum Index {
@@ -73,9 +72,10 @@ namespace FileStatus {
         FileNotFound = 16
     };
 }
-namespace Constants {
-    static QString dynamicPictureUrl = "http://geo-media.beatport.com/image_size/200x200/%1.jpg";
-    static QString dataLocation;
-    static QString picturesLocation;
-}
+class Constants {
+public:
+    static const QString dynamicPictureUrl();
+    static const QString dataLocation();
+    static const QString picturesLocation();
+};
 #endif // COMMONS_H

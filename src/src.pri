@@ -28,5 +28,6 @@ HEADERS += \
 
 SOURCES += \
     src/patterntool.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/commons.cpp
 
