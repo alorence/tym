@@ -58,10 +58,13 @@ private slots:
 
     void updateProgressBar();
 
-    void on_actionImport_triggered();
-    void on_actionSearch_triggered();
     void on_actionAbout_triggered();
+    void on_actionSearch_triggered();
+
+    void on_libraryView_customContextMenuRequested(const QPoint &pos);
+    void on_actionImport_triggered();
     void on_actionDelete_triggered();
+
     void on_searchResultsView_customContextMenuRequested(const QPoint &pos);
     void on_actionSetDefaultResult_triggered();
 

@@ -196,15 +196,12 @@ void MainWindow::updateProgressBar()
     }
 }
 
-void MainWindow::on_actionImport_triggered()
+void MainWindow::on_actionAbout_triggered()
 {
-    //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
-    QString filters = "Audio tracks (*.wav *.flac *.mp3)";
-    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/sources_files", filters, 0, 0);
-
-    if(! fileList.isEmpty()) {
-        BPDatabase::instance()->importFiles(fileList);
-    }
+    QDialog * container = new QDialog(this);
+    Ui::AboutDialog about;
+    about.setupUi(container);
+    container->show();
 }
 
 void MainWindow::on_actionSearch_triggered()
@@ -253,12 +250,22 @@ void MainWindow::on_actionSearch_triggered()
     }
 }
 
-void MainWindow::on_actionAbout_triggered()
+void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
-    QDialog * container = new QDialog(this);
-    Ui::AboutDialog about;
-    about.setupUi(container);
-    container->show();
+    QMenu contextMenu;
+    contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionDelete);
+    contextMenu.exec(ui->libraryView->mapToGlobal(pos));
+}
+
+void MainWindow::on_actionImport_triggered()
+{
+    //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
+    QString filters = "Audio tracks (*.wav *.flac *.mp3)";
+    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/sources_files", filters, 0, 0);
+
+    if(! fileList.isEmpty()) {
+        BPDatabase::instance()->importFiles(fileList);
+    }
 }
 
 void MainWindow::on_actionDelete_triggered()
@@ -278,7 +285,7 @@ void MainWindow::on_actionDelete_triggered()
 void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
-    contextMenu.addAction(ui->actionSetDefaultResult);
+    contextMenu.addActions(QList<QAction*>() << ui->actionSetDefaultResult);
     contextMenu.exec(ui->searchResultsView->mapToGlobal(pos));
 }
 
@@ -292,3 +299,4 @@ void MainWindow::on_actionSetDefaultResult_triggered()
     BPDatabase::instance()->setLibraryTrackReference(libId, bpid);
     ui->searchResultsView->selectRow(row);
 }
+
