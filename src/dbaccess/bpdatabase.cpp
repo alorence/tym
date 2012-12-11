@@ -169,13 +169,19 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
 
 void BPDatabase::deleteFromLibrary(QStringList uids)
 {
-    QString query = "DELETE FROM Library WHERE " +
+    QString queryLib = "DELETE FROM Library WHERE " +
             uids.replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR ");
+    QString querySR = "DELETE FROM SearchResults WHERE " +
+            uids.replaceInStrings("uid=", "libId=").join(" OR ");
 
-    QSqlQuery delQuery(query, dbObject());
+    QSqlQuery delLibQuery(queryLib, dbObject());
+    QSqlQuery delSRQuery(querySR, dbObject());
     dbMutex->lock();
-    if(!delQuery.exec()) {
-        qWarning() << tr("Unable to remove tracks from library : %1").arg(delQuery.lastError().text());
+    if( ! delLibQuery.exec()) {
+        qWarning() << tr("Unable to remove tracks from library : %1").arg(delLibQuery.lastError().text());
+    }
+    if( ! delSRQuery.exec()) {
+        qWarning() << tr("Unable to delete search results : %1").arg(delSRQuery.lastError().text());
     }
     dbMutex->unlock();
 }
