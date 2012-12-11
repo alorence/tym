@@ -76,7 +76,7 @@
         <bool>false</bool>
        </property>
        <attribute name="horizontalHeaderVisible">
-        <bool>true</bool>
+        <bool>false</bool>
        </attribute>
        <attribute name="horizontalHeaderDefaultSectionSize">
         <number>90</number>
@@ -216,7 +216,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionImport"/>
-   <addaction name="actionDelete"/>
+   <addaction name="actionLibraryDelete"/>
    <addaction name="actionSettings"/>
    <addaction name="separator"/>
    <addaction name="actionSearch"/>
@@ -278,7 +278,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionDelete">
+  <action name="actionLibraryDelete">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
      <normaloff>:/img/actions/delete</normaloff>:/img/actions/delete</iconset>
@@ -314,6 +314,15 @@
    </property>
    <property name="text">
     <string>Set as default result</string>
+   </property>
+  </action>
+  <action name="actionSearchResultDelete">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/img/actions/close</normaloff>:/img/actions/close</iconset>
+   </property>
+   <property name="text">
+    <string>Delete</string>
    </property>
   </action>
  </widget>

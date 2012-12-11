@@ -46,6 +46,7 @@ public:
 
     QSqlRecord trackInformations(QVariant & bpid);
     void deleteFromLibrary(QStringList uids);
+    void deleteSearchResult(QString libId, QString trackId);
 
     friend class LibraryModel;
 

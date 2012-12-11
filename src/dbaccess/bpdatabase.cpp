@@ -186,6 +186,28 @@ void BPDatabase::deleteFromLibrary(QStringList uids)
     dbMutex->unlock();
 }
 
+void BPDatabase::deleteSearchResult(QString libId, QString trackId)
+{
+    QSqlQuery delQuery(dbObject());
+    delQuery.prepare("DELETE FROM SearchResults WHERE libId=:libId AND trackId=:trackId");
+    delQuery.bindValue(":libId", libId);
+    delQuery.bindValue(":trackId", trackId);
+
+    QSqlQuery updadeLibQuery(dbObject());
+    updadeLibQuery.prepare("UPDATE Library SET bpid=null WHERE uid=:libId and bpid=:trackId");
+    updadeLibQuery.bindValue(":libId", libId);
+    updadeLibQuery.bindValue(":trackId", trackId);
+
+    dbMutex->lock();
+    if( ! delQuery.exec()) {
+        qWarning() << tr("Unable to remove search result %1 / %2 : %3").arg(libId).arg(trackId).arg(delQuery.lastError().text());
+    }
+    if( ! updadeLibQuery.exec()) {
+        qWarning() << tr("Unable to update Library entry %1 to delete default bpid %2 : %3").arg(libId).arg(trackId).arg(updadeLibQuery.lastError().text());
+    }
+    dbMutex->unlock();
+}
+
 QString BPDatabase::storeTrack(const QVariant track)
 {
     QMap<QString, QVariant> trackMap = track.toMap();

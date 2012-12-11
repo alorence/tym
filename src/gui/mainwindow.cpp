@@ -176,7 +176,7 @@ void MainWindow::updateLibraryActions()
 {
     int numSel = _libraryModel->selectedIds().size();
 
-    ui->actionDelete->setDisabled(numSel == 0);
+    ui->actionLibraryDelete->setDisabled(numSel == 0);
     ui->actionSearch->setDisabled(numSel == 0);
 }
 
@@ -185,6 +185,7 @@ void MainWindow::updateSearchResultsActions()
     int numSel = ui->searchResultsView->selectionModel()->selectedRows().size();
 
     ui->actionSetDefaultResult->setDisabled(numSel == 0);
+    ui->actionSearchResultDelete->setDisabled(numSel == 0);
 }
 
 void MainWindow::updateProgressBar()
@@ -253,7 +254,7 @@ void MainWindow::on_actionSearch_triggered()
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
-    contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionDelete);
+    contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionLibraryDelete);
     contextMenu.exec(ui->libraryView->mapToGlobal(pos));
 }
 
@@ -268,7 +269,7 @@ void MainWindow::on_actionImport_triggered()
     }
 }
 
-void MainWindow::on_actionDelete_triggered()
+void MainWindow::on_actionLibraryDelete_triggered()
 {
     QList<QPair<int, QSqlRecord> > selecteds = _libraryModel->selectedRecords();
     QList<int> rows;
@@ -285,7 +286,7 @@ void MainWindow::on_actionDelete_triggered()
 void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
-    contextMenu.addActions(QList<QAction*>() << ui->actionSetDefaultResult);
+    contextMenu.addActions(QList<QAction*>() << ui->actionSetDefaultResult << ui->actionSearchResultDelete);
     contextMenu.exec(ui->searchResultsView->mapToGlobal(pos));
 }
 
@@ -300,3 +301,13 @@ void MainWindow::on_actionSetDefaultResult_triggered()
     ui->searchResultsView->selectRow(row);
 }
 
+void MainWindow::on_actionSearchResultDelete_triggered()
+{
+    int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
+
+    QString libId = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::LibId)).toString();
+    QString trackId = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::Bpid)).toString();
+    BPDatabase::instance()->deleteSearchResult(libId, trackId);
+    _libraryModel->refresh();
+    ui->searchResultsView->selectRow(row-1);
+}

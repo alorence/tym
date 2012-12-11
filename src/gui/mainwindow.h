@@ -63,10 +63,14 @@ private slots:
 
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
     void on_actionImport_triggered();
-    void on_actionDelete_triggered();
+    void on_actionLibraryDelete_triggered();
+
 
     void on_searchResultsView_customContextMenuRequested(const QPoint &pos);
     void on_actionSetDefaultResult_triggered();
+
+
+    void on_actionSearchResultDelete_triggered();
 
 private:
     bool defaultConsoleDisplaying;
