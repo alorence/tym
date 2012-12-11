@@ -45,6 +45,7 @@ public:
     ~MainWindow();
 
     void registerConsole(QWidget * c);
+    void show();
 
 signals:
     void importFilesToLibrary(const QStringList) const;
@@ -53,15 +54,13 @@ private slots:
     void updateSearchResults(const QModelIndex & selected, const QModelIndex &);
     void updateTrackInfos(const QModelIndex, const QModelIndex);
 
+    void updateProgressBar();
+
     void on_actionImport_triggered();
     void on_actionSearch_triggered();
     void on_actionAbout_triggered();
-    void updateProgressBar();
-
     void on_actionDelete_triggered();
-
     void on_searchResultsView_customContextMenuRequested(const QPoint &pos);
-
     void on_actionSetDefaultResult_triggered();
 
 private:

@@ -60,7 +60,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->libraryView->setModel(_libraryModel);
     ui->libraryView->hideColumn(LibraryIndexes::Uid);
     ui->libraryView->hideColumn(LibraryIndexes::Bpid);
-    ui->libraryView->resizeColumnsToContents();
 
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
@@ -131,6 +130,15 @@ void MainWindow::registerConsole(QWidget *c)
     console->setVisible(defaultConsoleDisplaying);
 }
 
+void MainWindow::show()
+{
+    QMainWindow::show();
+
+    // Configure libraryView filePath column to take as space as possible
+    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
+    ui->libraryView->setColumnWidth(LibraryIndexes::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+}
+
 
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
@@ -154,6 +162,15 @@ void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
     }
 }
 
+void MainWindow::updateProgressBar()
+{int newValue = ui->progress->value() + 1;
+    ui->progress->setValue(newValue);
+
+    if(newValue == ui->progress->maximum()) {
+        ui->progress->setVisible(false);
+    }
+}
+
 void MainWindow::on_actionImport_triggered()
 {
     //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
@@ -162,7 +179,6 @@ void MainWindow::on_actionImport_triggered()
 
     if(! fileList.isEmpty()) {
         BPDatabase::instance()->importFiles(fileList);
-        ui->libraryView->resizeColumnsToContents();
     }
 }
 
@@ -218,15 +234,6 @@ void MainWindow::on_actionAbout_triggered()
     Ui::AboutDialog about;
     about.setupUi(container);
     container->show();
-}
-
-void MainWindow::updateProgressBar()
-{int newValue = ui->progress->value() + 1;
-    ui->progress->setValue(newValue);
-
-    if(newValue == ui->progress->maximum()) {
-        ui->progress->setVisible(false);
-    }
 }
 
 void MainWindow::on_actionDelete_triggered()
