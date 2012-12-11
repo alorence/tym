@@ -144,7 +144,7 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
 }
 
 
-void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex deselected)
+void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
 {
     if(selected.isValid()) {
         QVariant bpid = _searchModel->record(selected.row()).value(SearchResultsIndexes::Bpid);
