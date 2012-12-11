@@ -53,6 +53,8 @@ signals:
 private slots:
     void updateSearchResults(const QModelIndex & selected, const QModelIndex &);
     void updateTrackInfos(const QModelIndex, const QModelIndex);
+    void updateLibraryActions();
+    void updateSearchResultsActions();
 
     void updateProgressBar();
 

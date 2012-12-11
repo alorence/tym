@@ -74,6 +74,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
 
+    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+            this, SLOT(updateLibraryActions()));
+
     /**
      * Search Results View
      */
@@ -100,6 +103,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(BPDatabase::instance(), SIGNAL(referenceForTrackUpdated(QString)),
             _searchModel, SLOT(refresh(QString)));
 
+    connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+            this, SLOT(updateSearchResultsActions()));
+
+
     /**
      * Actions
      */
@@ -107,6 +114,9 @@ MainWindow::MainWindow(QWidget *parent) :
             BPDatabase::instance(), SLOT(storeSearchResults(QString,QVariant)));
     connect(BPDatabase::instance(), SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
+
+    updateLibraryActions();
+    updateSearchResultsActions();
 }
 
 MainWindow::~MainWindow()
@@ -160,6 +170,21 @@ void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
     } else {
         ui->trackInfos->clearData();
     }
+}
+
+void MainWindow::updateLibraryActions()
+{
+    int numSel = _libraryModel->selectedIds().size();
+
+    ui->actionDelete->setDisabled(numSel == 0);
+    ui->actionSearch->setDisabled(numSel == 0);
+}
+
+void MainWindow::updateSearchResultsActions()
+{
+    int numSel = ui->searchResultsView->selectionModel()->selectedRows().size();
+
+    ui->actionSetDefaultResult->setDisabled(numSel == 0);
 }
 
 void MainWindow::updateProgressBar()
