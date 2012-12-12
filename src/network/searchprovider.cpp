@@ -151,6 +151,8 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 
 void SearchProvider::downloadTrackPicture(const QString & picId)
 {
+    if(downloadManagaer.values().contains(picId)) return;
+
     QNetworkRequest request(Constants::dynamicPictureUrl().arg(picId));
 
     QNetworkReply *reply = manager->get(request);
