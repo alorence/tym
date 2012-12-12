@@ -46,7 +46,7 @@ void BPDatabase::deleteInstance()
 BPDatabase::BPDatabase(QObject *parent) :
     QObject(parent),
     dbInitialized(false),
-    dbMutex(new QMutex())
+    dbMutex(new QMutex(QMutex::Recursive))
 {
     initDB();
 }
@@ -64,10 +64,9 @@ bool BPDatabase::initDB()
     QString dbPath = Constants::dataLocation() + QDir::separator() + "default.db3";
 
     QSqlDatabase guiDb = QSqlDatabase::addDatabase("QSQLITE", MAIN_DB);
-    QSqlDatabase threadDb = QSqlDatabase::addDatabase("QSQLITE", THREAD_DB);
-
     guiDb.setDatabaseName(dbPath);
-    threadDb.setDatabaseName(dbPath);
+
+    QSqlDatabase threadDb = QSqlDatabase::cloneDatabase(guiDb, THREAD_DB);
 
     dbInitialized = guiDb.open() && threadDb.open();
     if( ! dbInitialized) {
@@ -80,6 +79,8 @@ bool BPDatabase::initDB()
             threadDb.close();
         } else {
             qDebug() << tr("DB opened and initialized for the first time, version %1").arg(version());
+            guiDb.exec("PRAGMA cache_size = 16384;");
+            threadDb.exec("PRAGMA cache_size = 16384;");
         }
     } else {
         qDebug() << tr("DB opened, version %1").arg(version());
@@ -217,13 +218,13 @@ QString BPDatabase::storeTrack(const QVariant track)
     isExisting.prepare("SELECT bpid, name FROM BPTracks WHERE bpid=:id");
     isExisting.bindValue(":id", trackBpId);
 
-    QMutexLocker locker(dbMutex);
-
     isExisting.exec();
     if(isExisting.next()) {
         qDebug() << tr("Track %1 (%2) already stored in database.").arg(isExisting.record().value(1).toString()).arg(trackBpId.toString());
         return trackBpId.toString();
     }
+
+    QMutexLocker locker(dbMutex);
 
     QStringList artists;
     QSqlQuery query(dbObject()), linkQuery(dbObject());
@@ -351,14 +352,15 @@ bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
     query.bindValue(":uid", libUid);
     query.bindValue(":bpid", bpid);
 
-    QMutexLocker locker(dbMutex);
-
+    dbMutex->lock();
     if( ! query.exec()) {
+        dbMutex->unlock();
         qWarning() << tr("Unable to update library element %1 with the bpid %2")
                       .arg(libUid, bpid);
         qWarning() << query.lastError().text();
         return false;
     } else {
+        dbMutex->unlock();
         emit referenceForTrackUpdated(libUid);
         return true;
     }
@@ -366,6 +368,9 @@ bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
 
 void BPDatabase::storeSearchResults(QString libUid, QVariant result)
 {
+    dbMutex->lock();
+    dbObject().exec("BEGIN TRANSACTION");
+
     QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
 
@@ -378,14 +383,11 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
         query.bindValue(":libId", libUid);
         query.bindValue(":trackId", bpid);
 
-        dbMutex->lock();
         if( ! query.exec()) {
             qWarning() << tr("Unable to register search result for track %1").arg(bpid);
             qWarning() << query.lastError().text();
         }
-        dbMutex->unlock();
 
-        updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
     } else
     // Many results per library row
     if (result.type() == QVariant::List && ! result.toList().empty()) {
@@ -395,16 +397,16 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
 
             query.bindValue(":libId", libUid);
             query.bindValue(":trackId", bpid);
-            dbMutex->lock();
             if( ! query.exec()) {
                 qWarning() << tr("Unable to register search result for track %1").arg(bpid.toString());
                 qWarning() << query.lastError().text();
             }
-            dbMutex->unlock();
         }
-
-        updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
     }
+    dbObject().exec("COMMIT");
+    dbMutex->unlock();
+
+    updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
 }
 
 
@@ -417,9 +419,9 @@ void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
 
     dbMutex->lock();
     if( ! query.exec()) {
+        dbMutex->unlock();
         qWarning() << tr("Unable to update library elements's %1 status").arg(uid);
         qWarning() << query.lastError().text();
-        dbMutex->unlock();
         return;
     }
     dbMutex->unlock();

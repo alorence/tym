@@ -1,7 +1,14 @@
 BEGIN TRANSACTION;
 
 PRAGMA foreign_keys = ON;
-
+###############################################################
+# Optimizations
+# See https://qt-project.org/forums/viewthread/9090 for details
+###############################################################
+# DB page size in bytes
+PRAGMA page_size = 4096;
+# Store temp in memory
+PRAGMA temp_store = MEMORY;
 CREATE TABLE Infos (key TEXT UNIQUE, value TEXT);
 INSERT INTO Infos (key, value) VALUES ('version', '0.1');
 

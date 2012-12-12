@@ -52,11 +52,10 @@ public:
 
 public slots:
     void storeSearchResults(QString libId, QVariant result);
-    QString storeTrack(const QVariant track);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
-    bool setLibraryTrackReference(QString libUid, QString bpid);
     void updateLibraryStatus(QString uid, FileStatus::Status status);
+    bool setLibraryTrackReference(QString libUid, QString bpid);
 
 signals:
     void libraryEntryUpdated(QString uid);
@@ -67,7 +66,10 @@ private :
     BPDatabase(const BPDatabase &);
     BPDatabase operator=(const BPDatabase &);
     ~BPDatabase();
+
     static BPDatabase * _instance;
+
+    QString storeTrack(const QVariant track);
 
     bool initTables();
     bool dbInitialized;
