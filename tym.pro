@@ -36,4 +36,5 @@ RESOURCES += resources/resources.qrc
 TRANSLATIONS =  translations/tym_en.ts \
                 translations/tym_fr.ts
 
+RC_FILE = resources/logos/tym.rc
 
