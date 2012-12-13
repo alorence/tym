@@ -1,8 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2012-08-29T10:38:04
-#
-#-------------------------------------------------
 #
 # Copyright 2012 Antoine Lorence. All right reserved.
 #
@@ -21,20 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 #
+# Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-CONFIG   += qt thread debug_and_release
-QT       += core gui sql network
+project(tymlibs)
 
-TARGET = tym
-TEMPLATE = app
+set(json_HEADERS
+    qt-json/json.h
+)
 
-include(src/src.pri)
-include(libs/libs.pri)
+set(json_SOURCES
+    qt-json/json.cpp
+)
 
-RESOURCES += resources/resources.qrc
-
-TRANSLATIONS =  translations/tym_en.ts \
-                translations/tym_fr.ts
-
-RC_FILE = resources/logos/tym.rc
-
+add_library(json STATIC ${json_SOURCES})
+target_link_libraries(json ${QT_LIBRARIES})

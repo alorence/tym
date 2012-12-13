@@ -16,7 +16,24 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 #
+# Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-SOURCES += libs/qt-json/json.cpp
+project(tymdb)
 
-HEADERS  += libs/qt-json/json.h
+set(dbaccess_HEADERS
+    bpdatabase.h
+    librarymodel.h
+    searchresultsmodel.h
+)
+
+set(dbaccess_SOURCES
+    bpdatabase.cpp
+    librarymodel.cpp
+    searchresultsmodel.cpp
+)
+
+# Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
+# These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
+qt4_wrap_cpp(dbaccess_MOCS ${dbaccess_HEADERS})
+
+add_library(dbaccess OBJECT EXCLUDE_FROM_ALL ${dbaccess_SOURCES} ${dbaccess_MOCS})

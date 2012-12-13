@@ -19,7 +19,6 @@
 
 #include "trackinfosview.h"
 #include "ui_trackinfosview.h"
-#include "src/commons.h"
 
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),

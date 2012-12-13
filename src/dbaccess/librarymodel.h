@@ -24,7 +24,7 @@
 #include <QtGui>
 #include <QtSql>
 
-#include "src/commons.h"
+#include "commons.h"
 #include "bpdatabase.h"
 
 class LibraryModel : public QSqlTableModel

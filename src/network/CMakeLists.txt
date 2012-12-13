@@ -16,19 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 #
+# Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-FORMS += \
-    src/gui/mainwindow.ui \
-    src/gui/trackinfosview.ui \
-    src/gui/settingsdialog.ui \
-    src/gui/about.ui
+project(tymnet)
 
-HEADERS += \
-    src/gui/settingsdialog.h \
-    src/gui/trackinfosview.h \
-    src/gui/mainwindow.h
+set(network_HEADERS
+    searchprovider.h
+)
 
-SOURCES += \
-    src/gui/settingsdialog.cpp \
-    src/gui/trackinfosview.cpp \
-    src/gui/mainwindow.cpp
+set(network_SOURCES
+    searchprovider.cpp
+)
+
+# Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
+# These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
+qt4_wrap_cpp(network_MOCS ${network_HEADERS})
+
+add_library(network OBJECT EXCLUDE_FROM_ALL ${network_SOURCES} ${network_MOCS})

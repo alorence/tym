@@ -16,18 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 #
+# Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-include(dbaccess/dbaccess.pri)
-include(network/network.pri)
-include(wizards/wizards.pri)
-include(gui/gui.pri)
+project(tymwiz)
 
-HEADERS += \
-    src/patterntool.h \
-    src/commons.h
+set(wizards_HEADERS
+    searchwizard.h
+)
 
-SOURCES += \
-    src/patterntool.cpp \
-    src/main.cpp \
-    src/commons.cpp
+set(wizards_SOURCES
+    searchwizard.cpp
+)
 
+set(wizards_UIS
+    searchwizard.ui
+)
+
+# Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
+qt4_wrap_ui(wizards_UIS_HEADERS ${wizards_UIS})
+# Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
+# These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
+qt4_wrap_cpp(wizards_MOCS ${wizards_HEADERS})
+
+add_library(wizards OBJECT EXCLUDE_FROM_ALL ${wizards_SOURCES} ${wizards_MOCS} ${wizards_UIS_HEADERS})

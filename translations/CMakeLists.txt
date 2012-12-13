@@ -16,10 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 #
+# Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-HEADERS += \
-    src/network/searchprovider.h
+set(TRANSLATIONS
+    tym_en.ts
+    tym_fr.ts
+)
 
-SOURCES += \
-    src/network/searchprovider.cpp
-
+qt4_add_translation(TRS ${TRANSLATIONS})

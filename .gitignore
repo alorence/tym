@@ -1,6 +1,16 @@
-bin
+# Executables are genrated here
+bin/
+
+# Often used to generate CMake cache entries
+*build*/
+
+# QtCreator store project's preferences and
+# rollback data under these suffixes
 *.user
-*.json
 *.autosave
 
+# Local json exmple data's
+*.json
+
+# Graphic working directory
 resources/work/

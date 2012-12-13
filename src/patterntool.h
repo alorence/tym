@@ -21,7 +21,7 @@
 #define PATTERNTOOL_H
 
 #include <QtCore>
-#include "src/network/searchprovider.h"
+#include "network/searchprovider.h"
 
 class PatternTool : public QObject
 {

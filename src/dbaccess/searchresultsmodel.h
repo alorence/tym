@@ -4,7 +4,7 @@
 #include <QtCore>
 #include <QtSql>
 
-#include "src/commons.h"
+#include "commons.h"
 
 class SearchResultsModel : public QSqlTableModel
 {

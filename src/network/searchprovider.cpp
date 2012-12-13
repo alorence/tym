@@ -18,7 +18,6 @@
 */
 
 #include "searchprovider.h"
-#include "src/commons.h"
 
 SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
     QObject(parent),

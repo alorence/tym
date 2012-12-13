@@ -332,7 +332,7 @@
   <customwidget>
    <class>TrackInfosView</class>
    <extends>QWidget</extends>
-   <header>src/gui/trackinfosview.h</header>
+   <header>gui/trackinfosview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
