@@ -1,0 +1,55 @@
+;
+; Copyright 2012 Antoine Lorence. All right reserved.
+;
+; This file is part of TYM (Tag Your Music).
+;
+; TYM (Tag Your Music) is free software: you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation, either version 3 of the License, or
+; (at your option) any later version.
+;
+; TYM (Tag Your Music) is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
+;
+
+[Setup]
+AppName=Tym - Tag Your Music
+AppVersion=${TYM_VERSION}
+VersionInfoVersion=${TYM_VERSION}
+;ArchitecturesInstallIn64BitMode=x64 when program will be compiled for x64 systems
+DefaultDirName={pf}\Tym
+DefaultGroupName=Tag Your Music
+UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
+OutputDir=${SETUP_OUTPUT_PATH}
+OutputBaseFilename=${SETUP_FILENAME}
+MinVersion=0,5.1
+;SetupIconFile=MyProgSetup.ico
+;WizardImageFile=myimage.bmp
+;WizardSmallImageFile=mysmallimage.bmp
+;WizardImageStretch=yes|no
+ShowLanguageDialog=auto
+AppPublisher=Antoine Lorence
+;AppPublisherURL=www.tym.fr
+;AppSupportURL=www.tym.fr/issues
+;AppUpdatesURL=www.tym.fr/updatesurl
+
+[Languages]
+Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
+
+[Icons]
+Name: "{group}\Tym"; Filename: "{app}\${EXECUTABLE_FILENAME}.exe"
+
+[Types]
+Name: "full"; Description: "Full installation"
+Name: "custom"; Description: "Custom installation"; Flags: iscustom
+
+[Files]
+Source: "${SETUP_TREE_PATH}/*.exe";             DestDir: "{app}"
+Source: "${SETUP_TREE_PATH}/Qt*.dll";           DestDir: "{app}"
+Source: "${QT_QSQLITE_PLUGIN_RELEASE}";         DestDir: "{app}/sqldrivers"

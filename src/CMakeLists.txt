@@ -53,7 +53,7 @@ qt4_wrap_cpp(tym_MOCS ${tym_HEADERS})
 include_directories(${tymgui_BINARY_DIR})
 
 # Configure final executable building
-add_executable(tym
+add_executable(${EXECUTABLE_FILENAME}
     ${tym_SOURCES} ${tym_MOCS}
     $<TARGET_OBJECTS:dbaccess>
     $<TARGET_OBJECTS:network>
@@ -65,4 +65,4 @@ add_executable(tym
 
 
 # Set dependency for final executable
-target_link_libraries(tym ${QT_LIBRARIES} json)
+target_link_libraries(${EXECUTABLE_FILENAME} ${QT_LIBRARIES} json)

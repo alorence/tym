@@ -30,12 +30,6 @@ SET(QT_USE_QTSQL TRUE)
 include(${QT_USE_FILE})
 #######################################
 
-# Automatically add to each subdir the current source and binary dirs to include path
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# Fix the path of resulting executable
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
-
 # Some macros, to help debug and build cmake files
 macro(print_all_variables)
     get_cmake_property(_variableNames VARIABLES)
@@ -51,7 +45,29 @@ macro(print_include_dirs)
         message(STATUS "  * " ${_inc_dir})
     endforeach()
 endmacro(print_include_dirs)
-# End of macro definitions
+
+# Automatically add to each subdir the current source and binary dirs to include path
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# Setup the version number
+set(TYM_MAJOR_VERSION 0)
+set(TYM_MINOR_VERSION 1)
+set(TYM_PATCH_VERSION 0)
+set(TYM_BUILD_VERSION 0)
+
+set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_VERSION}")
+
+# Fix outpout paths and names
+set(BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
+if("" STREQUAL "${CMAKE_BUILD_TYPE}")
+    set(EXECUTABLE_OUTPUT_PATH "${BIN_DIR}")
+else()
+    set(EXECUTABLE_OUTPUT_PATH "${BIN_DIR}/${CMAKE_BUILD_TYPE}")
+endif()
+set(EXECUTABLE_FILENAME tym)
+set(SETUP_TREE_PATH ${BIN_DIR}/installtree)
+set(SETUP_OUTPUT_PATH ${BIN_DIR})
+set(SETUP_FILENAME setup-tym-${TYM_VERSION})
 
 set(TRANSLATIONS_DIR translations)
 
@@ -59,4 +75,5 @@ set(TRANSLATIONS_DIR translations)
 add_subdirectory(libs)
 add_subdirectory(resources)
 add_subdirectory(src)
+add_subdirectory(packages)
 #END
