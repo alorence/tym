@@ -18,10 +18,10 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-qt4_add_resources(RCC resources.qrc)
+qt4_add_resources(RCC_OBJ resources.qrc)
 
 set(resources
     logos/tym.rc
 )
 
-add_library(resources OBJECT ${resources})
+add_library(resources OBJECT ${resources} ${RCC_OBJ})

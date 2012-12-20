@@ -53,9 +53,10 @@ macro(print_include_dirs)
 endmacro(print_include_dirs)
 # End of macro definitions
 
+set(TRANSLATIONS_DIR translations)
+
 # Parse subdirectories
 add_subdirectory(libs)
-add_subdirectory(translations)
 add_subdirectory(resources)
 add_subdirectory(src)
 #END
