@@ -50,8 +50,15 @@ qt4_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 # build/gui/ui_mainwindow.h must be accessible for main.cpp
 include_directories(${tymgui_BINARY_DIR})
 
+if(${WIN32})
+    set(GUI_FLAG WIN32)
+elseif(${APPLE})
+    set(GUI_FLAG MACOSX_BUNDLE)
+endif(${WIN32})
+
 # Configure final executable building
 add_executable(${TYM_EXECUTABLE_FILENAME}
+    ${GUI_FLAG}
     ${tym_SOURCES} ${tym_MOCS}
     $<TARGET_OBJECTS:dbaccess>
     $<TARGET_OBJECTS:network>
@@ -63,3 +70,15 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
 
 # Set dependency for final executable
 target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${QT_LIBRARIES} json)
+
+if(${MINGW})
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS "-mwindows")
+elseif(${MSVC})
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES MINSIZEREL "/SUBSYSTEM:WINDOWS")
+endif(${MINGW})
+

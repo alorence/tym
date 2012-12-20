@@ -29,6 +29,9 @@ find_package(Qt4 REQUIRED)
 
 SET(QT_USE_QTNETWORK TRUE)
 SET(QT_USE_QTSQL TRUE)
+if(${WIN32})
+    SET(QT_USE_QTMAIN TRUE)
+endif(${WIN32})
 
 include(${QT_USE_FILE})
 
