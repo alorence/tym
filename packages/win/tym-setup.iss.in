@@ -21,7 +21,7 @@
 AppName=Tag Your Music
 AppVersion=${TYM_SHORT_VERSION}
 AppPublisher=Antoine Lorence
-;AppPublisherURL=www.tym.fr
+AppPublisherURL=http://www.antoine-lorence.fr/
 ;AppSupportURL=www.tym.fr/issues
 ;AppUpdatesURL=www.tym.fr/updatesurl
 
