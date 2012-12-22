@@ -18,38 +18,48 @@
 ;
 
 [Setup]
-AppName=Tym - Tag Your Music
-AppVersion=${TYM_VERSION}
-VersionInfoVersion=${TYM_VERSION}
-;ArchitecturesInstallIn64BitMode=x64 when program will be compiled for x64 systems
-DefaultDirName={pf}\Tym
-DefaultGroupName=Tag Your Music
-UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
-OutputDir=${SETUP_OUTPUT_PATH}
-OutputBaseFilename=${SETUP_FILENAME}
-MinVersion=0,5.1
-;SetupIconFile=MyProgSetup.ico
-;WizardImageFile=myimage.bmp
-;WizardSmallImageFile=mysmallimage.bmp
-;WizardImageStretch=yes|no
-ShowLanguageDialog=auto
+AppName=Tag Your Music
+AppVersion=${TYM_SHORT_VERSION}
 AppPublisher=Antoine Lorence
 ;AppPublisherURL=www.tym.fr
 ;AppSupportURL=www.tym.fr/issues
 ;AppUpdatesURL=www.tym.fr/updatesurl
 
-[Languages]
-Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
+;ArchitecturesInstallIn64BitMode=x64 when program will be compiled for x64 systems
+DefaultDirName={pf}\TagYourMusic
+DefaultGroupName=Tag Your Music
+UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
 
-[Icons]
-Name: "{group}\Tym"; Filename: "{app}\${EXECUTABLE_FILENAME}.exe"
+;SetupIconFile=MyProgSetup.ico
+;WizardImageFile=myimage.bmp
+;WizardSmallImageFile=mysmallimage.bmp
+;WizardImageStretch=yes|no
+MinVersion=0,5.1
+ShowLanguageDialog=auto
 
-[Types]
-Name: "full"; Description: "Full installation"
-Name: "custom"; Description: "Custom installation"; Flags: iscustom
+OutputDir=${SETUP_OUTPUT_PATH}
+OutputBaseFilename=${SETUP_FILENAME}
+VersionInfoVersion=${TYM_VERSION}
+
+[UninstallDelete]
+; TODO : Do not release with this option. Used only for BETA
+Type: filesandordirs;                           Name: "{localappdata}\TagYourMusic"
 
 [Files]
+Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     DestDir: "{app}"
 Source: "${SETUP_TREE_PATH}/*.exe";             DestDir: "{app}"
 Source: "${SETUP_TREE_PATH}/Qt*.dll";           DestDir: "{app}"
 Source: "${QT_QSQLITE_PLUGIN_RELEASE}";         DestDir: "{app}/sqldrivers"
+Source: "${QT_QJPEG_PLUGIN_RELEASE}";           DestDir: "{app}/imageformats"
+
+[Icons]
+Name: "{group}\Tym";                            Filename: "{app}\${EXECUTABLE_FILENAME}.exe"
+Name: "{group}\Uninstall Tym";                  Filename: "{uninstallexe}"
+
+[Types]
+Name: "full";                                   Description: "Full installation"
+Name: "custom";                                 Description: "Custom installation";                         Flags: iscustom
+
+[Languages]
+Name: "en";                                     MessagesFile: "compiler:Default.isl"
+Name: "fr";                                     MessagesFile: "compiler:Languages\French.isl"
