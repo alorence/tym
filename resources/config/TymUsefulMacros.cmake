@@ -18,22 +18,19 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-if(WIN32)
-    configure_file(win/tym-setup.iss.in tym-setup.iss)
+# Print all cmake variables
+macro(print_all_variables)
+    get_cmake_property(_variableNames VARIABLES)
+    foreach (_variableName ${_variableNames})
+        message(STATUS "${_variableName}=${${_variableName}}")
+    endforeach()
+endmacro(print_all_variables)
 
-    add_custom_target(makesetup
-
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtCore4.dll ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtGui4.dll ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtSql4.dll ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtNetwork4.dll ${TYM_SETUP_TREE_PATH}
-
-        COMMAND iscc ${CMAKE_CURRENT_BINARY_DIR}/tym-setup.iss
-
-        COMMENT "Building installer with Inno Setup compiler (iscc)."
-        SOURCES win/tym-setup.iss.in
-    )
-    add_dependencies(makesetup ${TYM_EXECUTABLE_FILENAME})
-else()
-    # TBD
-endif()
+# Print content of _inc_dir variable
+macro(print_include_dirs)
+    get_directory_property(_incs INCLUDE_DIRECTORIES)
+    message(STATUS "Include directories for ${CMAKE_CURRENT_SOURCE_DIR} :")
+    foreach (_inc_dir ${_incs})
+        message(STATUS "  * " ${_inc_dir})
+    endforeach()
+endmacro(print_include_dirs)

@@ -40,31 +40,26 @@ set(tym_SOURCES
     patterntool.cpp
 )
 
-set(TRANSLATIONS
-    ../${TRANSLATIONS_DIR}/tym_en.ts
-    ../${TRANSLATIONS_DIR}/tym_fr.ts
-)
-
-qt4_add_translation(TRS ${TRANSLATIONS})
-
 # Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
 # These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
 qt4_wrap_cpp(tym_MOCS ${tym_HEADERS})
+
+# Compile translations (*.ts) files
+qt4_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 
 # build/gui/ui_mainwindow.h must be accessible for main.cpp
 include_directories(${tymgui_BINARY_DIR})
 
 # Configure final executable building
-add_executable(${EXECUTABLE_FILENAME}
+add_executable(${TYM_EXECUTABLE_FILENAME}
     ${tym_SOURCES} ${tym_MOCS}
     $<TARGET_OBJECTS:dbaccess>
     $<TARGET_OBJECTS:network>
     $<TARGET_OBJECTS:gui>
     $<TARGET_OBJECTS:wizards>
     $<TARGET_OBJECTS:resources>
-    ${TRS}
+    ${TYM_TRANSLATIONS}
 )
 
-
 # Set dependency for final executable
-target_link_libraries(${EXECUTABLE_FILENAME} ${QT_LIBRARIES} json)
+target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${QT_LIBRARIES} json)

@@ -21,61 +21,51 @@
 project(tym CXX)
 cmake_minimum_required(VERSION 2.8)
 
-### Qt part ###########################
+# Include some macros usable accross cmake projects
+include(resources/config/TymUsefulMacros.cmake)
+
+# Configure projects to use Qt4
 find_package(Qt4 REQUIRED)
 
 SET(QT_USE_QTNETWORK TRUE)
 SET(QT_USE_QTSQL TRUE)
 
 include(${QT_USE_FILE})
-#######################################
-
-# Some macros, to help debug and build cmake files
-macro(print_all_variables)
-    get_cmake_property(_variableNames VARIABLES)
-    foreach (_variableName ${_variableNames})
-        message(STATUS "${_variableName}=${${_variableName}}")
-    endforeach()
-endmacro(print_all_variables)
-
-macro(print_include_dirs)
-    get_directory_property(_incs INCLUDE_DIRECTORIES)
-    message(STATUS "Include directories for ${CMAKE_CURRENT_SOURCE_DIR} :")
-    foreach (_inc_dir ${_incs})
-        message(STATUS "  * " ${_inc_dir})
-    endforeach()
-endmacro(print_include_dirs)
 
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Setup the version number
+# Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
 set(TYM_MINOR_VERSION 1)
 set(TYM_PATCH_VERSION 0)
 set(TYM_BUILD_VERSION 0)
 
-set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_VERSION}")
 set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}")
+set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_VERSION}")
 
 # Fix outpout paths and names
-set(BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
+set(TYM_EXECUTABLE_FILENAME tym)
+set(TYM_BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 if("" STREQUAL "${CMAKE_BUILD_TYPE}")
-    set(EXECUTABLE_OUTPUT_PATH "${BIN_DIR}")
+    set(EXECUTABLE_OUTPUT_PATH "${TYM_BIN_DIR}/Default")
 else()
-    set(EXECUTABLE_OUTPUT_PATH "${BIN_DIR}/${CMAKE_BUILD_TYPE}")
+    set(EXECUTABLE_OUTPUT_PATH "${TYM_BIN_DIR}/${CMAKE_BUILD_TYPE}")
 endif()
 
-set(EXECUTABLE_FILENAME tym)
-set(SETUP_TREE_PATH ${BIN_DIR}/installtree)
-set(SETUP_OUTPUT_PATH ${BIN_DIR})
-set(SETUP_FILENAME setup-tym-${TYM_SHORT_VERSION})
+# Path where all dlls will be copied before compiling package
+set(TYM_SETUP_TREE_PATH ${EXECUTABLE_OUTPUT_PATH})
+# Directory were resulting package will be generated
+set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
+# Resulting package filename
+set(TYM_SETUP_FILENAME setup-tym-${TYM_SHORT_VERSION})
 
-set(TRANSLATIONS_DIR translations)
+# Set the list of translations (*.ts) files to compile them in src directory
+file(GLOB TRANSLATIONS_FILES translations/*.ts)
+# TODO : Add a custom target to create / update ts files in transl. dir.
 
 # Parse subdirectories
 add_subdirectory(libs)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)
-#END

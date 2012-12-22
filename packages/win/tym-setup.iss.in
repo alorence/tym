@@ -37,8 +37,8 @@ UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
 MinVersion=0,5.1
 ShowLanguageDialog=auto
 
-OutputDir=${SETUP_OUTPUT_PATH}
-OutputBaseFilename=${SETUP_FILENAME}
+OutputDir=${TYM_SETUP_OUTPUT_PATH}
+OutputBaseFilename=${TYM_SETUP_FILENAME}
 VersionInfoVersion=${TYM_VERSION}
 
 [UninstallDelete]
@@ -47,13 +47,13 @@ Type: filesandordirs;                           Name: "{localappdata}\TagYourMus
 
 [Files]
 Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     DestDir: "{app}"
-Source: "${SETUP_TREE_PATH}/*.exe";             DestDir: "{app}"
-Source: "${SETUP_TREE_PATH}/Qt*.dll";           DestDir: "{app}"
+Source: "${TYM_SETUP_TREE_PATH}/*.exe";         DestDir: "{app}"
+Source: "${TYM_SETUP_TREE_PATH}/Qt*.dll";       DestDir: "{app}"
 Source: "${QT_QSQLITE_PLUGIN_RELEASE}";         DestDir: "{app}/sqldrivers"
 Source: "${QT_QJPEG_PLUGIN_RELEASE}";           DestDir: "{app}/imageformats"
 
 [Icons]
-Name: "{group}\Tym";                            Filename: "{app}\${EXECUTABLE_FILENAME}.exe"
+Name: "{group}\Tym";                            Filename: "{app}\${TYM_EXECUTABLE_FILENAME}.exe"
 Name: "{group}\Uninstall Tym";                  Filename: "{uninstallexe}"
 
 [Types]
