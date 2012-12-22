@@ -1,0 +1,385 @@
+//http://api.beatport.com/catalog/3/tracks?ids=1947592,1655624
+{
+    "metadata": {
+        "host": "api.beatport.com",
+        "path": "/catalog/tracks",
+        "query": "ids=1947592%2C1655624",
+        "page": 1,
+        "perPage": 10,
+        "count": 2,
+        "totalPages": 1,
+        "perPageOptions": [
+            {
+                "value": 50,
+                "applyQuery": "ids=1947592%2C1655624&perPage=50"
+            },
+            {
+                "value": 100,
+                "applyQuery": "ids=1947592%2C1655624&perPage=100"
+            },
+            {
+                "value": 150,
+                "applyQuery": "ids=1947592%2C1655624&perPage=150"
+            }
+        ],
+        "facets": {
+            "fields": []
+        },
+        "appliedFacets": [],
+        "dateFilters": [
+            {
+                "name": "today",
+                "startDate": "2012-09-27",
+                "endDate": "2012-09-27",
+                "applyQuery": "ids=1947592%2C1655624&publishDateStart=2012-09-27&publishDateEnd=2012-09-27",
+                "applied": false
+            },
+            {
+                "name": "yesterday",
+                "startDate": "2012-09-26",
+                "endDate": "2012-09-27",
+                "applyQuery": "ids=1947592%2C1655624&publishDateStart=2012-09-26&publishDateEnd=2012-09-27",
+                "applied": false
+            },
+            {
+                "name": "weekToDate",
+                "startDate": "2012-09-20",
+                "endDate": "2012-09-27",
+                "applyQuery": "ids=1947592%2C1655624&publishDateStart=2012-09-20&publishDateEnd=2012-09-27",
+                "applied": false
+            },
+            {
+                "name": "monthToDate",
+                "startDate": "2012-08-27",
+                "endDate": "2012-09-27",
+                "applyQuery": "ids=1947592%2C1655624&publishDateStart=2012-08-27&publishDateEnd=2012-09-27",
+                "applied": false
+            },
+            {
+                "name": "yearToDate",
+                "startDate": "2011-09-27",
+                "endDate": "2012-09-27",
+                "applyQuery": "ids=1947592%2C1655624&publishDateStart=2011-09-27&publishDateEnd=2012-09-27",
+                "applied": false
+            },
+            {
+                "custom": true,
+                "name": "customRange",
+                "applied": false,
+                "applyQuery": "ids=1947592%2C1655624"
+            }
+        ],
+        "rangeFilters": {
+            "bpm": {
+                "custom": true,
+                "rangeName": "bpm",
+                "applied": false,
+                "applyQuery": "ids=1947592%2C1655624"
+            }
+        },
+        "spellcheck": {
+            "suggestions": []
+        }
+    },
+    "results": [
+        {
+            "id": 1947592,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1947592",
+            "name": "2517",
+            "active": true,
+            "mixName": "Yapacc Remix",
+            "title": "2517 (Yapacc Remix)",
+            "slug": "2517-yapacc-remix",
+            "isrc": "GB7FY1100064",
+            "releaseDate": "2011-06-08",
+            "publishDate": "2011-06-08",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1947592.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume3/items/1000000/900000/40000/7000/500/90/1947592.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:12",
+            "bpm": 123,
+            "key": {
+                "standard": {
+                    "letter": "C",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 30501,
+                    "name": "Yapacc",
+                    "slug": "yapacc",
+                    "type": "remixer"
+                },
+                {
+                    "id": 153630,
+                    "name": "Maxim Buldakov",
+                    "slug": "maxim-buldakov",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 5,
+                    "name": "House",
+                    "slug": "house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 36600,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 36760,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 37912,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 37916,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 40449,
+                    "position": 5,
+                    "type": "chart"
+                },
+                {
+                    "id": 41841,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 46663,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 50545,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 70007,
+                    "position": 1,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 378030,
+                "name": "Kama EP",
+                "type": "release",
+                "slug": "kama-ep"
+            },
+            "label": {
+                "id": 14885,
+                "name": "Apparel Music",
+                "type": "label",
+                "slug": "apparel-music"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2898530.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2898530.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2898531.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2898531.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/2898532.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2898532.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2898546.png",
+                    "secureUrl": "https://media.beatport.com/image/2898546.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2898532.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2898546.png"
+                }
+            }
+        },
+        {
+            "id": 1655624,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1655624",
+            "name": "Lost In Naples",
+            "active": true,
+            "mixName": "Original Mix",
+            "title": "Lost In Naples (Original Mix)",
+            "slug": "lost-in-naples-original-mix",
+            "isrc": "GBKQU1029929",
+            "releaseDate": "2011-01-24",
+            "publishDate": "2011-01-24",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1655624.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume5/items/1000000/600000/50000/5000/600/20/1655624.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "6:35",
+            "bpm": 126,
+            "key": {
+                "standard": {
+                    "letter": "G",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "major"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 109736,
+                    "name": "D. Carbone",
+                    "slug": "d-carbone",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 6,
+                    "name": "Techno",
+                    "slug": "techno",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 32293,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 32452,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 32523,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 33098,
+                    "position": 9,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 323598,
+                "name": "Lost In Naples EP",
+                "type": "release",
+                "slug": "lost-in-naples-ep"
+            },
+            "label": {
+                "id": 11434,
+                "name": "Sleaze Records (UK)",
+                "type": "label",
+                "slug": "sleaze-records-uk"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/943259.jpg",
+                    "secureUrl": "https://media.beatport.com/image/943259.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/943260.jpg",
+                    "secureUrl": "https://media.beatport.com/image/943260.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/943261.jpg",
+                    "secureUrl": "https://media.beatport.com/image/943261.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1001962.png",
+                    "secureUrl": "https://media.beatport.com/image/1001962.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/943261.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1001962.png"
+                }
+            }
+        }
+    ]
+}

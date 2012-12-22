@@ -1,0 +1,1747 @@
+{
+    "metadata": {
+        "host": "api.beatport.com",
+        "path": "/catalog/search",
+        "query": "query=D-NOX&facets%5B0%5D=fieldType%3Atrack",
+        "page": 1,
+        "perPage": 10,
+        "count": 280,
+        "totalPages": 28,
+        "nextQuery": "query=D-NOX&facets%5B0%5D=fieldType%3Atrack&page=2",
+        "perPageOptions": [
+            {
+                "value": 50,
+                "applyQuery": "query=D-NOX&facets%5B0%5D=fieldType%3Atrack&perPage=50"
+            },
+            {
+                "value": 100,
+                "applyQuery": "query=D-NOX&facets%5B0%5D=fieldType%3Atrack&perPage=100"
+            },
+            {
+                "value": 150,
+                "applyQuery": "query=D-NOX&facets%5B0%5D=fieldType%3Atrack&perPage=150"
+            }
+        ],
+        "facets": {
+            "fields": []
+        },
+        "appliedFacets": [],
+        "spellcheck": {
+            "suggestions": []
+        }
+    },
+    "results": [
+        {
+            "id": 2006068,
+            "selected": false,
+            "type": "track",
+            "sku": "track-2006068",
+            "name": "Soy Como Soy feat. Cleydys Villalon",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "Soy Como Soy feat. Cleydys Villalon (D-Nox & Beckers Remix)",
+            "slug": "soy-como-soy-feat-cleydys-villalon-d-nox-and-beckers-remix",
+            "isrc": "DEN401128003",
+            "releaseDate": "2011-07-04",
+            "publishDate": "2011-07-04",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/2006068.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume1/items/2000000/0/0/6000/0/60/2006068.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:46",
+            "bpm": 125,
+            "key": {
+                "standard": {
+                    "letter": "A",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 26655,
+                    "name": "Makossa & Megablast",
+                    "slug": "makossa-and-megablast",
+                    "type": "artist"
+                },
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 203103,
+                    "name": "D-Nox and Beckers",
+                    "slug": "d-nox-and-beckers",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 11,
+                    "name": "Tech House",
+                    "slug": "tech-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 37855,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 37867,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 38789,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 39038,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 39181,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 40865,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 41110,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 41807,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 41813,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 41972,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 47224,
+                    "position": 5,
+                    "type": "chart"
+                },
+                {
+                    "id": 84734,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 101774,
+                    "position": 13,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 389587,
+                "name": "SoyComoSoy (Remixes)",
+                "type": "release",
+                "slug": "soycomosoy-remixes"
+            },
+            "label": {
+                "id": 636,
+                "name": "International DeeJay Gigolo Records",
+                "type": "label",
+                "slug": "international-deejay-gigolo-records"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2995461.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2995461.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2995462.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2995462.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/2995463.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2995463.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2996831.png",
+                    "secureUrl": "https://media.beatport.com/image/2996831.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2995463.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2996831.png"
+                }
+            }
+        },
+        {
+            "id": 3715427,
+            "selected": false,
+            "type": "track",
+            "sku": "track-3715427",
+            "name": "Mercy",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "Mercy (D-Nox & Beckers Remix)",
+            "slug": "mercy-d-nox-and-beckers-remix",
+            "isrc": "USA2P1224877",
+            "releaseDate": "2012-09-03",
+            "publishDate": "2012-09-03",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/3715427.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume2/items/3000000/700000/10000/5000/400/20/3715427.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 156
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "New Release",
+            "length": "8:09",
+            "bpm": 127,
+            "key": {
+                "standard": {
+                    "letter": "D",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 282588,
+                    "name": "Tokujoros",
+                    "slug": "tokujoros",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 15,
+                    "name": "Progressive House",
+                    "slug": "progressive-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 110250,
+                    "position": 1,
+                    "type": "chart"
+                },
+                {
+                    "id": 110586,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 111300,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 111588,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 112381,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 112635,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 113667,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 115542,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 116565,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 117580,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 117825,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 119062,
+                    "position": 8,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 953916,
+                "name": "Mercy",
+                "type": "release",
+                "slug": "mercy"
+            },
+            "label": {
+                "id": 1007,
+                "name": "HOMmega Productions",
+                "type": "label",
+                "slug": "hommega-productions"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/5842389.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5842389.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/5842390.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5842390.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5842391.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5842391.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/5844441.png",
+                    "secureUrl": "https://media.beatport.com/image/5844441.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/5842391.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/5844441.png"
+                }
+            }
+        },
+        {
+            "id": 3611755,
+            "selected": false,
+            "type": "track",
+            "sku": "track-3611755",
+            "name": "Technoir",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "Technoir (D-Nox & Beckers Remix)",
+            "slug": "technoir-d-nox-and-beckers-remix",
+            "isrc": "ES84B1210153",
+            "releaseDate": "2012-07-02",
+            "publishDate": "2012-07-02",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/3611755.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume7/items/3000000/600000/10000/1000/700/50/3611755.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:43",
+            "bpm": 125,
+            "key": {
+                "standard": {
+                    "letter": "D",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "major"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 39724,
+                    "name": "David Labeij",
+                    "slug": "david-labeij",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 11,
+                    "name": "Tech House",
+                    "slug": "tech-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 91699,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 92297,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 92425,
+                    "position": 4,
+                    "type": "chart"
+                },
+                {
+                    "id": 93355,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 93569,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 93797,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 94663,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 95069,
+                    "position": 4,
+                    "type": "chart"
+                },
+                {
+                    "id": 95333,
+                    "position": 4,
+                    "type": "chart"
+                },
+                {
+                    "id": 96300,
+                    "position": 1,
+                    "type": "chart"
+                },
+                {
+                    "id": 96740,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 96992,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 97321,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 97308,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 97724,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 96135,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 97986,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 98107,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 98418,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 99623,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 100069,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 100378,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 100835,
+                    "position": 5,
+                    "type": "chart"
+                },
+                {
+                    "id": 100856,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 100850,
+                    "position": 5,
+                    "type": "chart"
+                },
+                {
+                    "id": 101648,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 102189,
+                    "position": 5,
+                    "type": "chart"
+                },
+                {
+                    "id": 102344,
+                    "position": 2,
+                    "type": "chart"
+                },
+                {
+                    "id": 102755,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 102955,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 103112,
+                    "position": 4,
+                    "type": "chart"
+                },
+                {
+                    "id": 98160,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 105419,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 105918,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 106215,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 106308,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 106323,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 106397,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 106659,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 107713,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 107975,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 108946,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 108968,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 109166,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 109454,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 109995,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 110297,
+                    "position": 1,
+                    "type": "chart"
+                },
+                {
+                    "id": 110821,
+                    "position": 6,
+                    "type": "chart"
+                },
+                {
+                    "id": 111656,
+                    "position": 9,
+                    "type": "chart"
+                },
+                {
+                    "id": 113708,
+                    "position": 1,
+                    "type": "chart"
+                },
+                {
+                    "id": 114804,
+                    "position": 1,
+                    "type": "chart"
+                },
+                {
+                    "id": 117965,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 119794,
+                    "position": 3,
+                    "type": "chart"
+                },
+                {
+                    "id": 120104,
+                    "position": 7,
+                    "type": "chart"
+                },
+                {
+                    "id": 120320,
+                    "position": 6,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 933491,
+                "name": "Kitties On Remix",
+                "type": "release",
+                "slug": "kitties-on-remix"
+            },
+            "label": {
+                "id": 11133,
+                "name": "Suara",
+                "type": "label",
+                "slug": "suara"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/5642819.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5642819.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/5642820.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5642820.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5642821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5642821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/5645963.png",
+                    "secureUrl": "https://media.beatport.com/image/5645963.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/5642821.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/5645963.png"
+                }
+            }
+        },
+        {
+            "id": 3523787,
+            "selected": false,
+            "type": "track",
+            "sku": "track-3523787",
+            "name": "Mira Negra",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "Mira Negra (D-Nox & Beckers Remix)",
+            "slug": "mira-negra-d-nox-and-beckers-remix",
+            "isrc": "DEBH21000007",
+            "releaseDate": "2012-06-08",
+            "publishDate": "2012-06-08",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/3523787.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume1/items/3000000/500000/20000/3000/700/80/3523787.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "8:13",
+            "bpm": 126,
+            "key": {
+                "standard": {
+                    "letter": "C",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 142849,
+                    "name": "Xiaha Troden",
+                    "slug": "xiaha-troden",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 6,
+                    "name": "Techno",
+                    "slug": "techno",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 916083,
+                "name": "Ibiza Opening Fiesta 2012",
+                "type": "release",
+                "slug": "ibiza-opening-fiesta-2012"
+            },
+            "label": {
+                "id": 2217,
+                "name": "KNM",
+                "type": "label",
+                "slug": "knm"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/5467588.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5467588.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/5467589.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5467589.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5467590.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5467590.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/5469449.png",
+                    "secureUrl": "https://media.beatport.com/image/5469449.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/5467590.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/5469449.png"
+                }
+            }
+        },
+        {
+            "id": 1300908,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1300908",
+            "name": "333",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "333 (D-Nox & Beckers Remix)",
+            "slug": "333-d-nox-and-beckers-remix",
+            "isrc": "NLF711000981",
+            "releaseDate": "2010-07-16",
+            "publishDate": "2010-07-16",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1300908.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume7/items/1000000/300000/0/0/900/0/1300908.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "07:42",
+            "bpm": 128,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 34764,
+                    "name": "FM Radio Gods",
+                    "slug": "fm-radio-gods",
+                    "type": "artist"
+                },
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 15,
+                    "name": "Progressive House",
+                    "slug": "progressive-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 261208,
+                "name": "Tech House, Vol.ume 3",
+                "type": "release",
+                "slug": "tech-house-vol-ume-3"
+            },
+            "label": {
+                "id": 38,
+                "name": "Armada Music",
+                "type": "label",
+                "slug": "armada-music"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/730971.jpg",
+                    "secureUrl": "https://media.beatport.com/image/730971.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/730972.jpg",
+                    "secureUrl": "https://media.beatport.com/image/730972.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/730973.jpg",
+                    "secureUrl": "https://media.beatport.com/image/730973.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1833345.png",
+                    "secureUrl": "https://media.beatport.com/image/1833345.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/730973.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1833345.png"
+                }
+            }
+        },
+        {
+            "id": 1396066,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1396066",
+            "name": "333",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "333 (D-Nox & Beckers Remix)",
+            "slug": "333-d-nox-and-beckers-remix",
+            "isrc": "NLF711000981",
+            "releaseDate": "2010-09-10",
+            "publishDate": "2010-09-10",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1396066.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume7/items/1000000/300000/90000/6000/0/60/1396066.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "07:42",
+            "bpm": 128,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 34764,
+                    "name": "FM Radio Gods",
+                    "slug": "fm-radio-gods",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 5,
+                    "name": "House",
+                    "slug": "house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 277887,
+                "name": "Armada Ibiza Essentials 2010",
+                "type": "release",
+                "slug": "armada-ibiza-essentials-2010"
+            },
+            "label": {
+                "id": 38,
+                "name": "Armada Music",
+                "type": "label",
+                "slug": "armada-music"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/787100.jpg",
+                    "secureUrl": "https://media.beatport.com/image/787100.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/787101.jpg",
+                    "secureUrl": "https://media.beatport.com/image/787101.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/787102.jpg",
+                    "secureUrl": "https://media.beatport.com/image/787102.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1664098.png",
+                    "secureUrl": "https://media.beatport.com/image/1664098.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/787102.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1664098.png"
+                }
+            }
+        },
+        {
+            "id": 1413246,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1413246",
+            "name": "333",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "333 (D-Nox & Beckers Remix)",
+            "slug": "333-d-nox-and-beckers-remix",
+            "isrc": "NLF711000981",
+            "releaseDate": "2010-09-17",
+            "publishDate": "2010-09-17",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1413246.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume2/items/1000000/400000/10000/3000/200/40/1413246.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "07:42",
+            "bpm": 128,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 34764,
+                    "name": "FM Radio Gods",
+                    "slug": "fm-radio-gods",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 15,
+                    "name": "Progressive House",
+                    "slug": "progressive-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 103526,
+                    "position": 9,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 280707,
+                "name": "Ibiza Progressive Tunes 2010",
+                "type": "release",
+                "slug": "ibiza-progressive-tunes-2010"
+            },
+            "label": {
+                "id": 38,
+                "name": "Armada Music",
+                "type": "label",
+                "slug": "armada-music"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/797008.jpg",
+                    "secureUrl": "https://media.beatport.com/image/797008.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/797009.jpg",
+                    "secureUrl": "https://media.beatport.com/image/797009.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/797010.jpg",
+                    "secureUrl": "https://media.beatport.com/image/797010.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1633605.png",
+                    "secureUrl": "https://media.beatport.com/image/1633605.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/797010.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1633605.png"
+                }
+            }
+        },
+        {
+            "id": 1564950,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1564950",
+            "name": "A Pocket Full Of Prose",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "A Pocket Full Of Prose (D-Nox & Beckers Remix)",
+            "slug": "a-pocket-full-of-prose-d-nox-and-beckers-remix",
+            "isrc": null,
+            "releaseDate": "2010-11-22",
+            "publishDate": "2010-11-22",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1564950.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume2/items/1000000/500000/60000/4000/900/50/1564950.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "6:41",
+            "bpm": 125,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "major"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 2810,
+                    "name": "King Roc",
+                    "slug": "king-roc",
+                    "type": "artist"
+                },
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 15,
+                    "name": "Progressive House",
+                    "slug": "progressive-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 306797,
+                "name": "Polar",
+                "type": "release",
+                "slug": "polar"
+            },
+            "label": {
+                "id": 219,
+                "name": "Global Underground",
+                "type": "label",
+                "slug": "global-underground"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/885443.jpg",
+                    "secureUrl": "https://media.beatport.com/image/885443.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/885444.jpg",
+                    "secureUrl": "https://media.beatport.com/image/885444.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/885445.jpg",
+                    "secureUrl": "https://media.beatport.com/image/885445.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1366955.png",
+                    "secureUrl": "https://media.beatport.com/image/1366955.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/885445.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1366955.png"
+                }
+            }
+        },
+        {
+            "id": 1564957,
+            "selected": false,
+            "type": "track",
+            "sku": "track-1564957",
+            "name": "333",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "333 (D-Nox & Beckers Remix)",
+            "slug": "333-d-nox-and-beckers-remix",
+            "isrc": null,
+            "releaseDate": "2010-11-22",
+            "publishDate": "2010-11-22",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/1564957.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume2/items/1000000/500000/60000/4000/900/50/1564957.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:42",
+            "bpm": 128,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "albumOnly",
+            "artists": [
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                },
+                {
+                    "id": 34764,
+                    "name": "FM Radio Gods",
+                    "slug": "fm-radio-gods",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 11,
+                    "name": "Tech House",
+                    "slug": "tech-house",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 56041,
+                    "position": 1,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 306797,
+                "name": "Polar",
+                "type": "release",
+                "slug": "polar"
+            },
+            "label": {
+                "id": 219,
+                "name": "Global Underground",
+                "type": "label",
+                "slug": "global-underground"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/885443.jpg",
+                    "secureUrl": "https://media.beatport.com/image/885443.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/885444.jpg",
+                    "secureUrl": "https://media.beatport.com/image/885444.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/885445.jpg",
+                    "secureUrl": "https://media.beatport.com/image/885445.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1366799.png",
+                    "secureUrl": "https://media.beatport.com/image/1366799.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/885445.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1366799.png"
+                }
+            }
+        },
+        {
+            "id": 984791,
+            "selected": false,
+            "type": "track",
+            "sku": "track-984791",
+            "name": "Dogtown",
+            "active": true,
+            "mixName": "D-Nox & Beckers Remix",
+            "title": "Dogtown (D-Nox & Beckers Remix)",
+            "slug": "dogtown-d-nox-and-beckers-remix",
+            "isrc": "USQY50958175",
+            "releaseDate": "2009-10-27",
+            "publishDate": "2009-10-27",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/984791.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume3/items/0/900000/80000/4000/700/90/984791.LOFI",
+            "exclusive": false,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "07:13",
+            "bpm": 126,
+            "key": {
+                "standard": {
+                    "letter": "B",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1765,
+                    "name": "Infusion",
+                    "slug": "infusion",
+                    "type": "artist"
+                },
+                {
+                    "id": 9453,
+                    "name": "Beckers",
+                    "slug": "beckers",
+                    "type": "remixer"
+                },
+                {
+                    "id": 10607,
+                    "name": "D-Nox",
+                    "slug": "d-nox",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 6,
+                    "name": "Techno",
+                    "slug": "techno",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [
+                {
+                    "id": 19337,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 19538,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 20714,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 20765,
+                    "position": 4,
+                    "type": "chart"
+                },
+                {
+                    "id": 20895,
+                    "position": 10,
+                    "type": "chart"
+                },
+                {
+                    "id": 21018,
+                    "position": 4,
+                    "type": "chart"
+                },
+                {
+                    "id": 21688,
+                    "position": 8,
+                    "type": "chart"
+                },
+                {
+                    "id": 75793,
+                    "position": 6,
+                    "type": "chart"
+                }
+            ],
+            "release": {
+                "id": 198805,
+                "name": "Dogtown",
+                "type": "release",
+                "slug": "dogtown"
+            },
+            "label": {
+                "id": 829,
+                "name": "Omnis Recordings",
+                "type": "label",
+                "slug": "omnis-recordings"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/512382.jpg",
+                    "secureUrl": "https://media.beatport.com/image/512382.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/512383.jpg",
+                    "secureUrl": "https://media.beatport.com/image/512383.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/512384.jpg",
+                    "secureUrl": "https://media.beatport.com/image/512384.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/1633542.png",
+                    "secureUrl": "https://media.beatport.com/image/1633542.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/512384.jpg"
+                },
+                "waveform": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/1633542.png"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,1256 @@
+//http://api.beatport.com/catalog/3/tracks?query=Beckers,%20D-Nox,%20K-Pax%20Jet%20Lag%20Slave%20%28K-Pax%20Remix%29&facets[]=fieldType:track
+
+{
+    "metadata": {
+        "host": "api.beatport.com",
+        "path": "/catalog/tracks",
+        "query": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack",
+        "page": 1,
+        "perPage": 10,
+        "count": 2318675,
+        "totalPages": 231868,
+        "nextQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&page=2",
+        "perPageOptions": [
+            {
+                "value": 50,
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&perPage=50"
+            },
+            {
+                "value": 100,
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&perPage=100"
+            },
+            {
+                "value": 150,
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&perPage=150"
+            }
+        ],
+        "facets": {
+            "fields": []
+        },
+        "appliedFacets": [],
+        "dateFilters": [
+            {
+                "name": "today",
+                "startDate": "2012-10-15",
+                "endDate": "2012-10-15",
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&publishDateStart=2012-10-15&publishDateEnd=2012-10-15",
+                "applied": false
+            },
+            {
+                "name": "yesterday",
+                "startDate": "2012-10-14",
+                "endDate": "2012-10-15",
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&publishDateStart=2012-10-14&publishDateEnd=2012-10-15",
+                "applied": false
+            },
+            {
+                "name": "weekToDate",
+                "startDate": "2012-10-08",
+                "endDate": "2012-10-15",
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&publishDateStart=2012-10-08&publishDateEnd=2012-10-15",
+                "applied": false
+            },
+            {
+                "name": "monthToDate",
+                "startDate": "2012-09-15",
+                "endDate": "2012-10-15",
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&publishDateStart=2012-09-15&publishDateEnd=2012-10-15",
+                "applied": false
+            },
+            {
+                "name": "yearToDate",
+                "startDate": "2011-10-15",
+                "endDate": "2012-10-15",
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack&publishDateStart=2011-10-15&publishDateEnd=2012-10-15",
+                "applied": false
+            },
+            {
+                "custom": true,
+                "name": "customRange",
+                "applied": false,
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack"
+            }
+        ],
+        "rangeFilters": {
+            "bpm": {
+                "custom": true,
+                "rangeName": "bpm",
+                "applied": false,
+                "applyQuery": "query=Beckers%2C+D-Nox%2C+K-Pax+Jet+Lag+Slave+%28K-Pax+Remix%29&facets%5B0%5D=fieldType%3Atrack"
+            }
+        },
+        "spellcheck": {
+            "suggestions": []
+        }
+    },
+    "results": [
+        {
+            "id": 8360,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8360",
+            "name": "Don't Cross The Line",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Original Mix",
+            "title": "Don't Cross The Line (Original Mix)",
+            "slug": "dont-cross-the-line-original-mix",
+            "isrc": null,
+            "releaseDate": "2000-03-28",
+            "publishDate": "2000-03-28",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8360.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume2/items/0/0/0/8000/300/60/8360.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "6:39",
+            "bpm": 146,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 34,
+                "name": "Don't Cross The Line",
+                "type": "release",
+                "slug": "dont-cross-the-line"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501699.png",
+                    "secureUrl": "https://media.beatport.com/image/2501699.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8361,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8361",
+            "name": "Don't Cross The Line",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "UK Gold Remix",
+            "title": "Don't Cross The Line (UK Gold Remix)",
+            "slug": "dont-cross-the-line-uk-gold-remix",
+            "isrc": null,
+            "releaseDate": "2000-11-20",
+            "publishDate": "2000-11-20",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8361.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume3/items/0/0/0/8000/300/60/8361.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "8:10",
+            "bpm": 146,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "major"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1162,
+                    "name": "UK Gold",
+                    "slug": "uk-gold",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 35,
+                "name": "Don't Cross The LIne (Remixes)",
+                "type": "release",
+                "slug": "dont-cross-the-line-remixes"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501685.png",
+                    "secureUrl": "https://media.beatport.com/image/2501685.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8362,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8362",
+            "name": "Don't Cross The Line",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Paul Glazby Remix",
+            "title": "Don't Cross The Line (Paul Glazby Remix)",
+            "slug": "dont-cross-the-line-paul-glazby-remix",
+            "isrc": null,
+            "releaseDate": "2000-11-20",
+            "publishDate": "2000-11-20",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8362.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume4/items/0/0/0/8000/300/60/8362.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:43",
+            "bpm": 150,
+            "key": {
+                "standard": {
+                    "letter": "F",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "major"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1163,
+                    "name": "Paul Glazby",
+                    "slug": "paul-glazby",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 35,
+                "name": "Don't Cross The LIne (Remixes)",
+                "type": "release",
+                "slug": "dont-cross-the-line-remixes"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501666.png",
+                    "secureUrl": "https://media.beatport.com/image/2501666.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8366,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8366",
+            "name": "The Tumbler",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Ilogik Remix",
+            "title": "The Tumbler (Ilogik Remix)",
+            "slug": "the-tumbler-ilogik-remix",
+            "isrc": null,
+            "releaseDate": "2001-02-12",
+            "publishDate": "2001-02-12",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8366.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume1/items/0/0/0/8000/300/60/8366.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:24",
+            "bpm": 150,
+            "key": {
+                "standard": {
+                    "letter": "A",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1165,
+                    "name": "Ilogik",
+                    "slug": "ilogik",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 36,
+                "name": "The Tumbler Remixes",
+                "type": "release",
+                "slug": "the-tumbler-remixes"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501688.png",
+                    "secureUrl": "https://media.beatport.com/image/2501688.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8370,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8370",
+            "name": "The Tumbler",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Paul Glazby Remix",
+            "title": "The Tumbler (Paul Glazby Remix)",
+            "slug": "the-tumbler-paul-glazby-remix",
+            "isrc": null,
+            "releaseDate": "2001-02-12",
+            "publishDate": "2001-02-12",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8370.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume5/items/0/0/0/8000/300/70/8370.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:06",
+            "bpm": 150,
+            "key": {
+                "standard": {
+                    "letter": "A",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1163,
+                    "name": "Paul Glazby",
+                    "slug": "paul-glazby",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 36,
+                "name": "The Tumbler Remixes",
+                "type": "release",
+                "slug": "the-tumbler-remixes"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501711.png",
+                    "secureUrl": "https://media.beatport.com/image/2501711.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8373,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8373",
+            "name": "3 Turntables",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Paul Glazby Remix",
+            "title": "3 Turntables (Paul Glazby Remix)",
+            "slug": "3-turntables-paul-glazby-remix",
+            "isrc": null,
+            "releaseDate": "2001-03-19",
+            "publishDate": "2001-03-19",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8373.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume1/items/0/0/0/8000/300/70/8373.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:49",
+            "bpm": 148,
+            "key": {
+                "standard": {
+                    "letter": "B",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1163,
+                    "name": "Paul Glazby",
+                    "slug": "paul-glazby",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 37,
+                "name": "3 Turntables (Remixes)",
+                "type": "release",
+                "slug": "3-turntables-remixes"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501663.png",
+                    "secureUrl": "https://media.beatport.com/image/2501663.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8377,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8377",
+            "name": "Nine Beats To The Bar",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Johnny Dangerous & John Whiteman Remix",
+            "title": "Nine Beats To The Bar (Johnny Dangerous & John Whiteman Remix)",
+            "slug": "nine-beats-to-the-bar-johnny-dangerous-and-john-whiteman-remix",
+            "isrc": null,
+            "releaseDate": "2001-06-16",
+            "publishDate": "2001-06-16",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8377.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume5/items/0/0/0/8000/300/70/8377.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:50",
+            "bpm": 148,
+            "key": {
+                "standard": {
+                    "letter": "A",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1167,
+                    "name": "jOHNNYDANGEROUs",
+                    "slug": "johnnydangerous",
+                    "type": "remixer"
+                },
+                {
+                    "id": 1168,
+                    "name": "John Whiteman",
+                    "slug": "john-whiteman",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 38,
+                "name": "Nine Beats To The Bar Remix",
+                "type": "release",
+                "slug": "nine-beats-to-the-bar-remix"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501676.png",
+                    "secureUrl": "https://media.beatport.com/image/2501676.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8379,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8379",
+            "name": "Nine Beats To The Bar",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Paul Glazby Remix",
+            "title": "Nine Beats To The Bar (Paul Glazby Remix)",
+            "slug": "nine-beats-to-the-bar-paul-glazby-remix",
+            "isrc": null,
+            "releaseDate": "2001-06-16",
+            "publishDate": "2001-06-16",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8379.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume7/items/0/0/0/8000/300/70/8379.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "7:25",
+            "bpm": 148,
+            "key": {
+                "standard": {
+                    "letter": "A",
+                    "sharp": true,
+                    "flat": false,
+                    "chord": "major"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                },
+                {
+                    "id": 1163,
+                    "name": "Paul Glazby",
+                    "slug": "paul-glazby",
+                    "type": "remixer"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 38,
+                "name": "Nine Beats To The Bar Remix",
+                "type": "release",
+                "slug": "nine-beats-to-the-bar-remix"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501642.png",
+                    "secureUrl": "https://media.beatport.com/image/2501642.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8380,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8380",
+            "name": "50,000 Watts",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Original Mix",
+            "title": "50,000 Watts (Original Mix)",
+            "slug": "50-000-watts-original-mix",
+            "isrc": null,
+            "releaseDate": "2001-08-20",
+            "publishDate": "2001-08-20",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8380.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume1/items/0/0/0/8000/300/80/8380.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "6:36",
+            "bpm": 150,
+            "key": {
+                "standard": {
+                    "letter": "D",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 39,
+                "name": "50,000 Watts",
+                "type": "release",
+                "slug": "50-000-watts"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501687.png",
+                    "secureUrl": "https://media.beatport.com/image/2501687.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        },
+        {
+            "id": 8381,
+            "selected": false,
+            "type": "track",
+            "sku": "track-8381",
+            "name": "Attitude",
+            "trackNumber": 1,
+            "active": true,
+            "mixName": "Original Mix",
+            "title": "Attitude (Original Mix)",
+            "slug": "attitude-original-mix",
+            "isrc": null,
+            "releaseDate": "2001-08-20",
+            "publishDate": "2001-08-20",
+            "sampleUrl": "http://geo-samples.beatport.com/lofi/8381.LOFI.mp3",
+            "isPreviewAvailable": null,
+            "isAvailableForMix": true,
+            "rtmpStreamUrl": "rtmp://geo-rtmp-samples.beatport.com/beatport/_definst_/mp3:lofi_samples/items/volumes/volume2/items/0/0/0/8000/300/80/8381.LOFI",
+            "exclusive": false,
+            "isPromotable": null,
+            "price": {
+                "code": "eur",
+                "symbol": "€",
+                "value": 130
+            },
+            "audioFormatFee": {
+                "wav": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                },
+                "aiff": {
+                    "code": "eur",
+                    "symbol": "€",
+                    "value": 100
+                }
+            },
+            "losslessUpgradeFormatFee": [],
+            "currentStatus": "General Content",
+            "length": "6:54",
+            "bpm": 150,
+            "key": {
+                "standard": {
+                    "letter": "A",
+                    "sharp": false,
+                    "flat": false,
+                    "chord": "minor"
+                }
+            },
+            "saleType": "purchase",
+            "artists": [
+                {
+                    "id": 1,
+                    "name": "12 Inch Thumpers",
+                    "slug": "12-inch-thumpers",
+                    "type": "artist"
+                }
+            ],
+            "genres": [
+                {
+                    "id": 8,
+                    "name": "Hard Dance",
+                    "slug": "hard-dance",
+                    "type": "genre"
+                }
+            ],
+            "subGenres": [],
+            "charts": [],
+            "release": {
+                "id": 39,
+                "name": "50,000 Watts",
+                "type": "release",
+                "slug": "50-000-watts"
+            },
+            "label": {
+                "id": 3,
+                "name": "12 Inch Thumpers",
+                "type": "label",
+                "slug": "12-inch-thumpers"
+            },
+            "images": {
+                "small": {
+                    "width": 30,
+                    "height": 30,
+                    "url": "http://geo-media.beatport.com/image/2215.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2215.jpg"
+                },
+                "medium": {
+                    "width": 60,
+                    "height": 60,
+                    "url": "http://geo-media.beatport.com/image/2.jpg",
+                    "secureUrl": "https://media.beatport.com/image/2.jpg"
+                },
+                "large": {
+                    "width": 500,
+                    "height": 500,
+                    "url": "http://geo-media.beatport.com/image/5245821.jpg",
+                    "secureUrl": "https://media.beatport.com/image/5245821.jpg"
+                },
+                "waveform": {
+                    "width": 1500,
+                    "height": 250,
+                    "url": "http://geo-media.beatport.com/image/2501672.png",
+                    "secureUrl": "https://media.beatport.com/image/2501672.png"
+                }
+            },
+            "dynamicImages": {
+                "main": {
+                    "url": "//geo-media.beatport.com/image_size{hq}/{w}x{h}/2.jpg"
+                }
+            }
+        }
+    ]
+}

@@ -9,8 +9,5 @@ bin/
 *.user
 *.autosave
 
-# Local json exmple data's
-*.json
-
 # Graphic working directory
 resources/work/

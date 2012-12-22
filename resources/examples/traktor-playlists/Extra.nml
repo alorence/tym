@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<NML VERSION="15"><HEAD COMPANY="www.native-instruments.com" PROGRAM="Traktor"></HEAD>
+<MUSICFOLDERS></MUSICFOLDERS>
+<COLLECTION ENTRIES="8"><ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44771" AUDIO_ID="AZUSIiIiIjIiIiJGZmZmZmZmZmQ0d3d3d3d3dkRFaJiYiYmJiJiYd4mJmZmZqZl3d2NDMzM0RFVmZ4mIiId2eIiIiHdjM0iHh4h4eHiHhTWIiYiIiJiIiENoiIiHZ4mYiIVHmZmJiZmZqal2m7u6qqqru5iHiqu6qqqZmZiJdkIRAAAAARIzIjMzNEVpmId3dmeId4d2ZTM2mImJiZiYmZlUiqqqqZmqqqqpmqqqqpmaqqh2RZqaqqm5uqqJmaq6uqqqq6uqqJmqmpqaqamqmpmZiJiYh2VVVkM3l4h4eIiHh4Y0eHiIh4ZVVVVDSHd2ZmZmZmZjJHZmZmZmZmZmYA==" TITLE="Dreams (Louis Corleone Remix)" ARTIST="Ferty"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Ferty - Dreams (Louis Corleone Remix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="405" PLAYTIME_FLOAT="405" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="42370"></INFO>
+<TEMPO BPM="127.999" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0" PERCEIVED_DB="3.40081" ANALYZED_DB="3.40081"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="23.326" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44784" AUDIO_ID="AmIkREREREZURERERVZVVVVVVXd3dou8zrQjad7u7u7u7O7/7u7uzv/////p3//////s///////////9l2Z0IQAAAAEBERESIzr////////////9mO///////////////HdjIRI1d4d3mYiHd4iLqt+IiLqGQyIiIiNkREVWd4mqqrvM7/6FEB3////////////7me///////////////+7/7//+7//////+///////////////VMzNVVnrLuYiIiZupmZmZmbl2ZmVEQ0R+/////////////8z/////////////3f///////////////P//7P//zLqXdlVlUyEQAA==" TITLE="The Second Trip (Dj Scot Project Remix)" ARTIST="Hennes &amp; Cold"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Hennes &amp; Cold - The Second Trip (DJ Scot Project Remix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="610" PLAYTIME_FLOAT="609.853" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="73046"></INFO>
+<TEMPO BPM="140.013" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0" PERCEIVED_DB="-0.277782" ANALYZED_DB="-0.277782"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="211.953" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44790" AUDIO_ID="AUCf//////jv//////j///////////////2GUzMiMkciMjMzM2qXZoh3iImpqqq7y4d0KP/////////////8r////////P/////ozv////////////+6//////////////2s27qrqqqqqqqqqqzNqYh4mImIiIiJmZmZmaqaqruqqquru8zty8zMvNzNzc3d3dp2Qm///////////////8if/////////////////////////////6dlVUVEV3ZVZVVVr//////93/////94//////////////p8//////////////q///////6v//////zf//////////////0QAA==" TITLE="Refresh (Tom Piper Remix)" ARTIST="Itche &amp; Scratche"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="ItchE &amp; ScratchE - REfrEsh (Tom Piper Remix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="321" PLAYTIME_FLOAT="320.498" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="38290"></INFO>
+<TEMPO BPM="130" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0.298781" PERCEIVED_DB="-2.16646" ANALYZED_DB="-2.16646"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="32.3326" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44799" AUDIO_ID="AZUlRlZEZlNVZUZmRERURFZFR2WJy7q8q7u6usu8/cy8zMvcvLzM3/////6v/////v/////M/////9///////////////////////////////////////////////////////////////////////////////+q83/////////////////7///z///7/3//v////////7////v///+///v/////8IAj//////////////////////////////////////////////////////////////////+/v7+/+/v/v7//e/v7/7+/+7/7/yGhpd3eWhoh5mYd3p4aJeGmHqg==" TITLE="Exceeder (Original Mix)" ARTIST="Mason"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Mason - Exceeder (Original Mix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="406" PLAYTIME_FLOAT="405.386" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="46543"></INFO>
+<TEMPO BPM="127.999" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0.0905954" PERCEIVED_DB="-1.80068" ANALYZED_DB="-1.80068"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="132.458" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44804" AUDIO_ID="APM2Z4qZiJmby7vd/M28////////////////////////3t67/avP7pucmv6s/////////////////////////////4///////////////////f/////////////////3z/////////////////////n///3O28+7r/7Kusjfqv/////////////////////////////K//////////////////3//////////////////2//////////////////////////////////////////7LvLzN//2u7Lu7zL3d/4qqqbioqZuKm4qpmKimZWZmdlVGZmRWVmZURWUxEAAA==" TITLE="Scary Monsters And Nice Sprites (Original Mix)" ARTIST="Skrillex"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Skrillex - Scary Monsters And Nice Sprites (Original Mix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="244" PLAYTIME_FLOAT="243.354" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="30267"></INFO>
+<TEMPO BPM="140.001" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0" PERCEIVED_DB="-3.47933" ANALYZED_DB="-3.47933"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="73.7425" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44812" AUDIO_ID="AYVIUjaHi5iEed6aqZZEaXm3iESO+qn//+/f///5jP/+7////v//7av////////////73////+7M3u7////////9/t7v//3v//7/7c/8u//83P3Lv9yr76mf/rzP3qzpuL3d2//7jv/s7//v//7/////////////////7aZERFVWVWVmZ5mIm6qpqqqcebzLzv///////v/////////////v3//Jh2Zo//////////////////////////////////////////////////////////////////////////////7t//7c7///7+//3t//7ZMUZEMyMiIhEBAQERAAAA==" TITLE="With You Friends Long Drive (Original Mix)" ARTIST="Skrillex"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Skrillex - With You Friends Long Drive (Original Mix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="390" PLAYTIME_FLOAT="389.024" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="44724"></INFO>
+<TEMPO BPM="120.01" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0" PERCEIVED_DB="-2.58054" ANALYZED_DB="-2.58054"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="51.4488" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44821" AUDIO_ID="AZF7y7y7y7y8u8u8u8u8vLvLvL3WSszLy7y7y8y8y3zMzMzMzMzN7cdVVVVmZmd3iarO///////////6jv/////////////////////+qXjv///////////////////////7eJmZiIiIh4iId3d3d4eIeHh3hoiHZld2jd6WeHaKlmV3Z3eGZnhnd3d3ZmZnd3d3d4mZmZq8u5dCEAL////////////v///////////////////////qeO/////////////////////////JmIh4iIiHh4h2f///////////////////////////7//////+///8u7u7u7u8u8u5AA==" TITLE="Coma Cat (Round Table Knights Remix)" ARTIST="Tensnake"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Tensnake - Coma Cat (Round Table Knights Remix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="1411200" PLAYTIME="401" PLAYTIME_FLOAT="400.833" IMPORT_DATE="2012/12/22" FLAGS="12" FILESIZE="45444"></INFO>
+<TEMPO BPM="125" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0.258545" PERCEIVED_DB="0.266042" ANALYZED_DB="0.266042"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="27.7189" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2012/12/22" MODIFIED_TIME="44923" AUDIO_ID="AVAlRERENVZVNFNERGnLzMzcvszL283Mzt3M28297NzMzNzOtzMzVDNGdFdViYqa///////////////////////////////u7v////7u7v//////////////////////////////////7u7v//7+7u7////+7u/////u7u///9dmZ0REaGZVVmVEd1RURFRYZEREQ0Znd3d4d3d3Z3if/+2omZjO7du6qZq7vM///////////////////////////////u7u7//+7u7u////7u7v//7+7u7////tvLvc3M2ru7zczMyru9zczburu9zcyUREREREVEREQ0RGYgAAAA==" TITLE="I Think I Like It (Original Mix)" ARTIST="Fake Blood"><LOCATION DIR="/:Library/:FLAC/:Extra/:" FILE="Fake Blood - I Think I Like It (Original Mix).flac" VOLUME="E:" VOLUMEID="84ac5116"></LOCATION>
+<INFO BITRATE="926000" GENRE="genre" LABEL="label" REMIXER="remixer" KEY="key" PLAYTIME="336" PLAYTIME_FLOAT="335.8" IMPORT_DATE="2012/12/22" RELEASE_DATE="2012/1/1" FLAGS="12" FILESIZE="37922"></INFO>
+<TEMPO BPM="128" BPM_QUALITY="100"></TEMPO>
+<LOUDNESS PEAK_DB="0" PERCEIVED_DB="-1.90815" ANALYZED_DB="-1.90815"></LOUDNESS>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="200.331" LEN="0" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+</COLLECTION>
+<SETS ENTRIES="0"></SETS>
+<PLAYLISTS><NODE TYPE="FOLDER" NAME="$ROOT"><SUBNODES COUNT="1"><NODE TYPE="PLAYLIST" NAME="Extra"><PLAYLIST ENTRIES="8" TYPE="LIST"><ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Fake Blood - I Think I Like It (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Ferty - Dreams (Louis Corleone Remix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Hennes &amp; Cold - The Second Trip (DJ Scot Project Remix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:ItchE &amp; ScratchE - REfrEsh (Tom Piper Remix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Mason - Exceeder (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Skrillex - Scary Monsters And Nice Sprites (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Skrillex - With You Friends Long Drive (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="E:/:Library/:FLAC/:Extra/:Tensnake - Coma Cat (Round Table Knights Remix).flac"></PRIMARYKEY>
+</ENTRY>
+</PLAYLIST>
+</NODE>
+</SUBNODES>
+</NODE>
+</PLAYLISTS>
+</NML>
