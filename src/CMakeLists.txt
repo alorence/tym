@@ -21,6 +21,8 @@
 # For subdirectories, add src & libs folders to include path
 include_directories(${tymlibs_SOURCE_DIR} .)
 
+configure_file(version.h.in version.h)
+
 # Parse subdirectories
 add_subdirectory(dbaccess)
 add_subdirectory(network)

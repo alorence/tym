@@ -22,6 +22,7 @@
 #include "ui_mainwindow.h"
 #include "gui/mainwindow.h"
 #include "commons.h"
+#include "version.h"
 
 QTextEdit * console;
 
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
 
     a.setOrganizationName("Tag Your Music");
     a.setApplicationName("tym");
-    a.setApplicationVersion("0.0.0.1");
+    a.setApplicationVersion(TYM_VERSION);
 
     {
         // Initialize some mandatory software items
