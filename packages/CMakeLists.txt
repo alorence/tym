@@ -19,6 +19,7 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 if(WIN32)
+    set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
     configure_file(win/tym-setup.iss.in tym-setup.iss)
 
     add_custom_target(makesetup

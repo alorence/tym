@@ -1,4 +1,4 @@
-;
+﻿;
 ; Copyright 2012 Antoine Lorence. All right reserved.
 ;
 ; This file is part of TYM (Tag Your Music).
@@ -18,14 +18,16 @@
 ;
 
 [Setup]
+SourceDir=${TYM_SETUP_SOURCE_DIR}
 AppName=Tag Your Music
 AppVersion=${TYM_SHORT_VERSION}
 AppPublisher=Antoine Lorence
 AppPublisherURL=http://www.antoine-lorence.fr/
 ;AppSupportURL=www.tym.fr/issues
 ;AppUpdatesURL=www.tym.fr/updatesurl
+LicenseFile=GPL3licence.txt
 
-;ArchitecturesInstallIn64BitMode=x64 when program will be compiled for x64 systems
+;ArchitecturesInstallIn64BitMode=x64 if program is compiled for x64 systems
 DefaultDirName={pf}\TagYourMusic
 DefaultGroupName=Tag Your Music
 UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
@@ -46,11 +48,24 @@ VersionInfoVersion=${TYM_VERSION}
 Type: filesandordirs;                           Name: "{localappdata}\TagYourMusic"
 
 [Files]
-Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     DestDir: "{app}"
-Source: "${TYM_SETUP_TREE_PATH}/*.exe";         DestDir: "{app}"
-Source: "${TYM_SETUP_TREE_PATH}/Qt*.dll";       DestDir: "{app}"
-Source: "${QT_QSQLITE_PLUGIN_RELEASE}";         DestDir: "{app}/sqldrivers"
-Source: "${QT_QJPEG_PLUGIN_RELEASE}";           DestDir: "{app}/imageformats"
+Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     DestDir: {app}
+Source: "${TYM_SETUP_TREE_PATH}/*.exe";         DestDir: {app}
+Source: "${TYM_SETUP_TREE_PATH}/Qt*.dll";       DestDir: {app}
+Source: "${QT_QSQLITE_PLUGIN_RELEASE}";         DestDir: {app}/sqldrivers
+Source: "${QT_QJPEG_PLUGIN_RELEASE}";           DestDir: {app}/imageformats
+Source: "vcredist_x86.exe";                     DestDir: {tmp};                                             Flags: deleteafterinstall
+
+[CustomMessages]
+en.ApplicationName=Tag Your Music
+en.LaunchProgram=Start Tag Your Music
+en.VCRedistInstall=Installing Microsoft Visual Studio 2010 Redistributable
+fr.ApplicationName=Tag Your Music
+fr.LaunchProgram=Démarrer Tag Your Music
+fr.VCRedistInstall=Installation de Microsoft Visual Studio 2010 Redistributable
+
+[Run]
+Filename: "{tmp}\vcredist_x86.exe";             Parameters : /q                                             StatusMsg: {cm:VCRedistInstall}
+Filename: {app}/${TYM_EXECUTABLE_FILENAME}.exe; Description: {cm:LaunchProgram,{cm:ApplicationName}};       Flags: nowait postinstall skipifsilent
 
 [Icons]
 Name: "{group}\Tym";                            Filename: "{app}\${TYM_EXECUTABLE_FILENAME}.exe"
