@@ -13,11 +13,14 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QSplitter" name="splitter">
-     <property name="handleWidth">
-      <number>2</number>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
      </property>
      <widget class="QTreeWidget" name="menu">
       <property name="sizePolicy">
@@ -26,8 +29,14 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="autoExpandDelay">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="rootIsDecorated">
        <bool>true</bool>
@@ -53,15 +62,21 @@
      <widget class="QWidget" name="verticalWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>6</horstretch>
+        <horstretch>16</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
       </property>
       <layout class="QVBoxLayout" name="rightPanel" stretch="0,6">
        <item>
         <widget class="QStackedWidget" name="content">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="network">
           <layout class="QVBoxLayout" name="verticalLayout">
