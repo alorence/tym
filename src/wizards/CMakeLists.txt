@@ -22,14 +22,17 @@ project(tymwiz)
 
 set(wizards_HEADERS
     searchwizard.h
+    renamewizard.h
 )
 
 set(wizards_SOURCES
     searchwizard.cpp
+    renamewizard.cpp
 )
 
 set(wizards_UIS
     searchwizard.ui
+    renamewizard.ui
 )
 
 # Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
