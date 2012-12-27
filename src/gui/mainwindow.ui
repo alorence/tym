@@ -221,6 +221,7 @@
    <addaction name="actionSettings"/>
    <addaction name="separator"/>
    <addaction name="actionSearch"/>
+   <addaction name="actionRename"/>
   </widget>
   <action name="actionImport">
    <property name="icon">
@@ -324,6 +325,11 @@
    </property>
    <property name="text">
     <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionRename">
+   <property name="text">
+    <string>Rename</string>
    </property>
   </action>
  </widget>

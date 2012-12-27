@@ -25,11 +25,12 @@
 
 #include "ui_about.h"
 #include "settingsdialog.h"
-#include "wizards/searchwizard.h"
 #include "dbaccess/librarymodel.h"
 #include "dbaccess/searchresultsmodel.h"
 #include "dbaccess/bpdatabase.h"
 #include "network/searchprovider.h"
+#include "wizards/searchwizard.h"
+#include "wizards/renamewizard.h"
 #include "patterntool.h"
 
 namespace Ui {
@@ -58,19 +59,18 @@ private slots:
 
     void updateProgressBar();
 
-    void on_actionAbout_triggered();
-    void on_actionSearch_triggered();
-
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
+
     void on_actionImport_triggered();
     void on_actionLibraryDelete_triggered();
 
-
     void on_searchResultsView_customContextMenuRequested(const QPoint &pos);
     void on_actionSetDefaultResult_triggered();
-
-
     void on_actionSearchResultDelete_triggered();
+
+    void on_actionAbout_triggered();
+    void on_actionSearch_triggered();
+    void on_actionRename_triggered();
 
 private:
     bool defaultConsoleDisplaying;
