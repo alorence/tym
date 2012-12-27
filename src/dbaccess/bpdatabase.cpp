@@ -168,6 +168,22 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
     return query.record();
 }
 
+QSqlQuery BPDatabase::tracksInformations(QStringList &bpids)
+{
+    QString queryString = "SELECT * from TrackFullInfos WHERE " +
+            bpids.replaceInStrings(QRegExp("^(.*)$"), "bpid=\\1").join(" OR ");
+
+    QSqlQuery query(queryString, dbObject());
+
+    dbMutex->lock();
+    if( ! query.exec() ) {
+        qWarning() << tr("Unable to get tracks informations : %1").arg(query.lastError().text());
+    }
+    dbMutex->unlock();
+
+    return query;
+}
+
 void BPDatabase::deleteFromLibrary(QStringList uids)
 {
     QString queryLib = "DELETE FROM Library WHERE " +

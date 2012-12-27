@@ -45,6 +45,7 @@ public:
     static QSqlDatabase dbObject(const QString &dbId = THREAD_DB);
 
     QSqlRecord trackInformations(QVariant & bpid);
+    QSqlQuery tracksInformations(QStringList &bpids);
     void deleteFromLibrary(QStringList uids);
     void deleteSearchResult(QString libId, QString trackId);
 
