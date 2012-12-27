@@ -34,16 +34,16 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
 
         if(elt == "ID" || elt == "id") {
             regExpList << "([0-9]+)";
-            replacementMap[i+1] = "bpid";
+            inReplacementMap[i+1] = "bpid";
         } else if(elt == "ARTISTS" || elt == "artists") {
             regExpList << classicRexpPattern;
-            replacementMap[i+1] = "artists";
+            inReplacementMap[i+1] = "artists";
         } else if(elt == "TITLE" || elt == "title") {
             regExpList << classicRexpPattern;
-            replacementMap[i+1] = "title";
+            inReplacementMap[i+1] = "title";
         } else if(elt == "EXT" || elt == "ext") {
             regExpList << "([a-zA-Z0-9]{2,4})";
-            replacementMap[i+1] = "ext";
+            inReplacementMap[i+1] = "ext";
         } else if(elt == "OTHER" || elt == "other") {
             regExpList << "(.+)";
         } else {
@@ -53,16 +53,16 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
     regExpList.prepend("^");
     regExpList.append("$");
 
-    rexp = QRegExp(regExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
+    inRegExp = QRegExp(regExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
 }
 
 QMap<QString, QString> PatternTool::parseValues(QString &source, const QStringList & interestingKeys) const
 {
     QMap<QString, QString> result;
-    if(rexp.indexIn(source) != -1) {
-        foreach(int i, replacementMap.keys()) {
-            if(interestingKeys.contains(replacementMap[i])) {
-                result[replacementMap[i]] = rexp.cap(i);
+    if(inRegExp.indexIn(source) != -1) {
+        foreach(int i, inReplacementMap.keys()) {
+            if(interestingKeys.contains(inReplacementMap[i])) {
+                result[inReplacementMap[i]] = inRegExp.cap(i);
             }
         }
     }

@@ -21,7 +21,6 @@
 #define PATTERNTOOL_H
 
 #include <QtCore>
-#include "network/searchprovider.h"
 
 class PatternTool : public QObject
 {
@@ -37,9 +36,9 @@ public slots:
 
 private:
     QString pattern;
-    QMap<QString, QString> indexesMap;
-    QMap<int, QString> replacementMap;
-    QRegExp rexp;
+
+    QMap<int, QString> inReplacementMap;
+    QRegExp inRegExp;
     
 };
 
