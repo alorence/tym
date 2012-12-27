@@ -20,14 +20,38 @@
 #include "renamewizard.h"
 #include "ui_renamewizard.h"
 
-RenameWizard::RenameWizard(QWidget *parent) :
+RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::RenameWizard)
 {
     ui->setupUi(this);
+
+    on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
+
+    QPair<int, QSqlRecord> elt;
+    foreach(elt, selected) {
+        QSqlRecord record = elt.second;
+
+
+    }
 }
 
 RenameWizard::~RenameWizard()
 {
     delete ui;
+}
+
+void RenameWizard::on_patternSelection_currentIndexChanged(int index)
+{
+    switch(index) {
+    case 0:
+        ui->pattern->setText("%ARTISTS% - %NAME% (%MIXNAME%).%EXT%");
+        break;
+    case 1:
+        ui->pattern->setText("%ARTISTS% - %TITLE%.%EXT%");
+        break;
+    case 2:
+        ui->pattern->setText("%ARTISTS% (%LABEL) - %TITLE%.%EXT%");
+        break;
+    }
 }

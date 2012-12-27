@@ -315,4 +315,8 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
 void MainWindow::on_actionRename_triggered()
 {
+    RenameWizard wizard(_libraryModel->selectedRecords());
+    if(wizard.exec() == SearchWizard::Rejected) {
+        return;
+    }
 }

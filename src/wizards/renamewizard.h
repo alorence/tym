@@ -20,7 +20,9 @@
 #ifndef RENAMEWIZARD_H
 #define RENAMEWIZARD_H
 
-#include <QWizard>
+#include <QtCore>
+#include <QtGui>
+#include <QtSql>
 
 namespace Ui {
 class RenameWizard;
@@ -31,9 +33,12 @@ class RenameWizard : public QWizard
     Q_OBJECT
     
 public:
-    explicit RenameWizard(QWidget *parent = 0);
+    explicit RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent = 0);
     ~RenameWizard();
     
+private slots:
+    void on_patternSelection_currentIndexChanged(int index);
+
 private:
     Ui::RenameWizard *ui;
 };
