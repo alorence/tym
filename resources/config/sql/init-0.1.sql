@@ -39,14 +39,14 @@ FROM Library as l LEFT JOIN SearchResults as sr ON sr.libId = l.uid
 GROUP BY l.uid;
 
 # Simplify tracks infos reading
-CREATE VIEW TrackFullInfos as SELECT 
+CREATE VIEW TrackFullInfos as SELECT
 	(SELECT DISTINCT group_concat( art.name, ', ') FROM BPArtists as art
 		JOIN BPTracksArtistsLink as artl ON artl.artistId=art.bpid WHERE artl.trackId=tr.bpid) as artists,
 	(SELECT DISTINCT group_concat( rmx.name, ', ') FROM BPArtists as rmx
 		JOIN BPTracksRemixersLink as rmxl ON rmxl.artistId=rmx.bpid WHERE rmxl.trackId=tr.bpid) as remixers,
 	(SELECT DISTINCT group_concat( genre.name, ', ') FROM BPGenres as genre
 		JOIN BPTracksGenresLink as genrel ON genrel.genreId=genre.bpid WHERE genrel.trackId=tr.bpid) as genres,
-	l.name as labelName, tr.* FROM BPTracks as tr 
+	l.name as labelName, tr.* FROM BPTracks as tr
 		JOIN BPLabels as l ON l.bpid = tr.label;
 
 # Simplify search results displaying and library element <-> track join
