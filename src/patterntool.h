@@ -21,6 +21,8 @@
 #define PATTERNTOOL_H
 
 #include <QtCore>
+#include <QtSql>
+#include "commons.h"
 
 class PatternTool : public QObject
 {
@@ -29,6 +31,7 @@ public:
     explicit PatternTool(QString pattern, QObject *parent = 0);
 
     QMap<QString, QString> parseValues(QString& source, const QStringList &interestingKeys) const;
+    QString stringFromPattern(QSqlRecord &) const;
     
 signals:
     
