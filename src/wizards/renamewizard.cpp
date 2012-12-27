@@ -28,12 +28,35 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
 
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
+    ui->previewTable->setRowCount(selected.count());
+    ui->previewTable->setColumnCount(3);
+
+    QStringList bpids;
+
     QPair<int, QSqlRecord> elt;
+    int row = 0;
     foreach(elt, selected) {
         QSqlRecord record = elt.second;
 
+        QString filePath = record.value(LibraryIndexes::FilePath).toString();
+        QString fileName = filePath.split(QDir::separator()).last();
 
+        QString bpid = record.value(LibraryIndexes::Bpid).toString();;
+        bpids << bpid;
+
+        QTableWidgetItem *item = new QTableWidgetItem(bpid);
+        ui->previewTable->setItem(row, 0, item);
+
+        item = new QTableWidgetItem(fileName);
+        ui->previewTable->setItem(row, 1, item);
+        row++;
     }
+
+    QSqlQuery tracksInfos = BPDatabase::instance()->tracksInformations(bpids);
+    while(tracksInfos.next()) {
+        tracksInformations[tracksInfos.value(TrackFullInfosIndexes::Bpid).toString()] = tracksInfos.record();
+    }
+    updateRenamePreview();
 }
 
 RenameWizard::~RenameWizard()
@@ -41,17 +64,28 @@ RenameWizard::~RenameWizard()
     delete ui;
 }
 
+void RenameWizard::updateRenamePreview()
+{
+    PatternTool patternTool(ui->pattern->text());
+
+    for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
+        QTableWidgetItem *item = new QTableWidgetItem(patternTool.stringFromPattern(tracksInformations[ui->previewTable->item(row, 0)->text()]));
+        ui->previewTable->setItem(row, 2, item);
+    }
+}
+
 void RenameWizard::on_patternSelection_currentIndexChanged(int index)
 {
     switch(index) {
     case 0:
-        ui->pattern->setText("%ARTISTS% - %NAME% (%MIXNAME%).%EXT%");
+        ui->pattern->setText("%ARTISTS% - %NAME% (%MIXNAME%)");
         break;
     case 1:
-        ui->pattern->setText("%ARTISTS% - %TITLE%.%EXT%");
+        ui->pattern->setText("%ARTISTS% - %TITLE%");
         break;
     case 2:
-        ui->pattern->setText("%ARTISTS% (%LABEL) - %TITLE%.%EXT%");
+        ui->pattern->setText("%ARTISTS% (%LABEL%) - %TITLE%");
         break;
     }
+    updateRenamePreview();
 }

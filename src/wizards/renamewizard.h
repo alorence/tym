@@ -24,6 +24,10 @@
 #include <QtGui>
 #include <QtSql>
 
+#include "commons.h"
+#include "patterntool.h"
+#include "dbaccess/bpdatabase.h"
+
 namespace Ui {
 class RenameWizard;
 }
@@ -37,10 +41,12 @@ public:
     ~RenameWizard();
     
 private slots:
+    void updateRenamePreview();
     void on_patternSelection_currentIndexChanged(int index);
 
 private:
     Ui::RenameWizard *ui;
+    QMap<QString, QSqlRecord> tracksInformations;
 };
 
 #endif // RENAMEWIZARD_H
