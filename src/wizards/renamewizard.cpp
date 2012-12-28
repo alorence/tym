@@ -30,6 +30,7 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
 
     ui->previewTable->setRowCount(selected.count());
     ui->previewTable->setColumnCount(3);
+    ui->previewTable->hideColumn(0);
 
     QStringList bpids;
 
@@ -41,8 +42,10 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         QString filePath = record.value(LibraryIndexes::FilePath).toString();
         QString fileName = filePath.split(QDir::separator()).last();
 
-        QString bpid = record.value(LibraryIndexes::Bpid).toString();;
-        bpids << bpid;
+        QString bpid = record.value(LibraryIndexes::Bpid).toString();
+        if( ! bpid.isEmpty()) {
+            bpids << bpid;
+        }
 
         QTableWidgetItem *item = new QTableWidgetItem(bpid);
         ui->previewTable->setItem(row, 0, item);
@@ -69,8 +72,11 @@ void RenameWizard::updateRenamePreview()
     PatternTool patternTool(ui->pattern->text());
 
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-        QTableWidgetItem *item = new QTableWidgetItem(patternTool.stringFromPattern(tracksInformations[ui->previewTable->item(row, 0)->text()]));
-        ui->previewTable->setItem(row, 2, item);
+        QString bpid = ui->previewTable->item(row, 0)->text();
+        if( ! bpid.isEmpty()) {
+            QTableWidgetItem *item = new QTableWidgetItem(patternTool.stringFromPattern(tracksInformations[bpid]));
+            ui->previewTable->setItem(row, 2, item);
+        }
     }
 }
 
