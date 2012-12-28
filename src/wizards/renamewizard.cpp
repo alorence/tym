@@ -29,8 +29,9 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
     ui->previewTable->setRowCount(selected.count());
-    ui->previewTable->setColumnCount(3);
+    ui->previewTable->setColumnCount(4);
     ui->previewTable->hideColumn(0);
+    ui->previewTable->hideColumn(1);
 
     QStringList bpids;
 
@@ -38,9 +39,6 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
     int row = 0;
     foreach(elt, selected) {
         QSqlRecord record = elt.second;
-
-        QString filePath = record.value(LibraryIndexes::FilePath).toString();
-        QString fileName = filePath.split(QDir::separator()).last();
 
         QString bpid = record.value(LibraryIndexes::Bpid).toString();
         if( ! bpid.isEmpty()) {
@@ -50,8 +48,13 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         QTableWidgetItem *item = new QTableWidgetItem(bpid);
         ui->previewTable->setItem(row, 0, item);
 
-        item = new QTableWidgetItem(fileName);
+        QFileInfo file(record.value(LibraryIndexes::FilePath).toString());
+
+        item = new QTableWidgetItem(file.dir().canonicalPath());
         ui->previewTable->setItem(row, 1, item);
+
+        item = new QTableWidgetItem(file.fileName());
+        ui->previewTable->setItem(row, 2, item);
         row++;
     }
 
@@ -74,8 +77,10 @@ void RenameWizard::updateRenamePreview()
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
         QString bpid = ui->previewTable->item(row, 0)->text();
         if( ! bpid.isEmpty()) {
-            QTableWidgetItem *item = new QTableWidgetItem(patternTool.stringFromPattern(tracksInformations[bpid]));
-            ui->previewTable->setItem(row, 2, item);
+            QFileInfo file(ui->previewTable->item(row, 2)->text());
+            QString newBaseName = patternTool.stringFromPattern(tracksInformations[bpid]);
+            QTableWidgetItem *item = new QTableWidgetItem(newBaseName + '.' + file.suffix());
+            ui->previewTable->setItem(row, 3, item);
         }
     }
 }
@@ -94,4 +99,40 @@ void RenameWizard::on_patternSelection_currentIndexChanged(int index)
         break;
     }
     updateRenamePreview();
+}
+
+
+void RenameWizard::initializePage(int id)
+{
+    if(id == 1) {
+
+        for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
+            if( ! ui->previewTable->item(row, 0)->text().isEmpty()) {
+                QString dir = ui->previewTable->item(row, 1)->text();
+
+                // TODO : check that file exists
+                QFileInfo from(dir + QDir::separator() + ui->previewTable->item(row, 2)->text());
+                QString to = dir + QDir::separator() + ui->previewTable->item(row, 3)->text();
+
+                if(QFile::exists(to)) {
+                    qWarning() << tr("Error when renaming file %1, file %2 already exists.")
+                                  .arg(from.canonicalFilePath())
+                                  .arg(to);
+                    continue;
+                }
+
+                if(QFile::rename(from.canonicalFilePath(), to)) {
+                    qDebug() << tr("File %1 renamed to %2")
+                                .arg(from.canonicalFilePath())
+                                .arg(QFileInfo(to).fileName());
+                } else {
+                    qWarning() << tr("Error when renaming file %1 into %2")
+                                  .arg(from.canonicalFilePath())
+                                  .arg(to);
+                }
+
+                // TODO : update database
+            }
+        }
+    }
 }

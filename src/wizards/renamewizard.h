@@ -39,10 +39,14 @@ class RenameWizard : public QWizard
 public:
     explicit RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent = 0);
     ~RenameWizard();
+
+protected:
+    void initializePage(int id);
     
 private slots:
     void updateRenamePreview();
     void on_patternSelection_currentIndexChanged(int index);
+
 
 private:
     Ui::RenameWizard *ui;
