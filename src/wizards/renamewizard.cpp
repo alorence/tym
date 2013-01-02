@@ -48,12 +48,12 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         QTableWidgetItem *item = new QTableWidgetItem(bpid);
         ui->previewTable->setItem(row, 0, item);
 
-        QFileInfo file(record.value(LibraryIndexes::FilePath).toString());
+        QFileInfo original(record.value(LibraryIndexes::FilePath).toString());
 
-        item = new QTableWidgetItem(file.dir().canonicalPath());
+        item = new QTableWidgetItem(original.dir().canonicalPath());
         ui->previewTable->setItem(row, 1, item);
 
-        item = new QTableWidgetItem(file.fileName());
+        item = new QTableWidgetItem(original.fileName());
         ui->previewTable->setItem(row, 2, item);
         row++;
     }
@@ -76,12 +76,23 @@ void RenameWizard::updateRenamePreview()
 
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
         QString bpid = ui->previewTable->item(row, 0)->text();
+
+        QString itemText = "";
+
         if( ! bpid.isEmpty()) {
-            QFileInfo file(ui->previewTable->item(row, 2)->text());
+            QFileInfo original(ui->previewTable->item(row, 2)->text());
             QString newBaseName = patternTool.stringFromPattern(tracksInformations[bpid]);
-            QTableWidgetItem *item = new QTableWidgetItem(newBaseName + '.' + file.suffix());
-            ui->previewTable->setItem(row, 3, item);
+
+            if(newBaseName == original.baseName()) {
+                itemText = "<File already have the right name>";
+            } else {
+                itemText = newBaseName + '.' + original.suffix();
+            }
+        } else {
+            itemText = "<This file has no track attached>";
         }
+        QTableWidgetItem *item = new QTableWidgetItem(itemText);
+        ui->previewTable->setItem(row, 3, item);
     }
 }
 
@@ -105,13 +116,20 @@ void RenameWizard::on_patternSelection_currentIndexChanged(int index)
 void RenameWizard::initializePage(int id)
 {
     if(id == 1) {
+        QRegExp renameValidityCheck("^<.*>$");
 
         for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-            if( ! ui->previewTable->item(row, 0)->text().isEmpty()) {
+            // Rename only if the target filename is not "<...>"
+            if( ! renameValidityCheck.exactMatch(ui->previewTable->item(row, 0)->text())) {
                 QString dir = ui->previewTable->item(row, 1)->text();
 
-                // TODO : check that file exists
                 QFileInfo from(dir + QDir::separator() + ui->previewTable->item(row, 2)->text());
+                if( ! from.exists()) {
+                    qWarning() << tr("Error, file %1 does not exists, it can't be renamed.")
+                                  .arg(from.canonicalFilePath());
+                    continue;
+                }
+
                 QString to = dir + QDir::separator() + ui->previewTable->item(row, 3)->text();
 
                 if(QFile::exists(to)) {
@@ -121,6 +139,7 @@ void RenameWizard::initializePage(int id)
                     continue;
                 }
 
+                // TODO : Redirect messages to the renamePage's console with Logger
                 if(QFile::rename(from.canonicalFilePath(), to)) {
                     qDebug() << tr("File %1 renamed to %2")
                                 .arg(from.canonicalFilePath())
