@@ -22,6 +22,7 @@ if(WIN32)
     set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
     configure_file(win/tym-setup.iss.in tym-setup.iss)
 
+    # TODO : Copy debug version of dlls in Debug BUILD_TYPE
     add_custom_target(makesetup
 
         COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtCore4.dll ${TYM_SETUP_TREE_PATH}
@@ -34,7 +35,6 @@ if(WIN32)
         COMMENT "Building installer with Inno Setup compiler (iscc)."
         SOURCES win/tym-setup.iss.in
     )
-    add_dependencies(makesetup ${TYM_EXECUTABLE_FILENAME})
 else()
     # TBD
 endif()
