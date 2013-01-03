@@ -50,6 +50,28 @@ namespace BPTracksIndexes {
         ImagePath
     };
 }
+namespace TrackFullInfosIndexes {
+    enum Index {
+        Artists,
+        Remixers,
+        Genres,
+        LabelName,
+        Bpid,
+        TrackName,
+        MixName,
+        Title, // Full title, formatted as '%TrackName (%MixName)'
+        Label,
+        Key,
+        Bpm,
+        ReleaseDate,
+        PublishDate,
+        Price,
+        Length,
+        Release,
+        ImageUrl,
+        ImagePath
+    };
+}
 namespace SearchResultsIndexes {
     enum Index {
         LibId = 0,

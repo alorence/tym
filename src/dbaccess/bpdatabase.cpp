@@ -168,6 +168,22 @@ QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
     return query.record();
 }
 
+QSqlQuery BPDatabase::tracksInformations(QStringList &bpids)
+{
+    QString queryString = "SELECT * from TrackFullInfos WHERE " +
+            bpids.replaceInStrings(QRegExp("^(.*)$"), "bpid=\\1").join(" OR ");
+
+    QSqlQuery query(queryString, dbObject());
+
+    dbMutex->lock();
+    if( ! query.exec() ) {
+        qWarning() << tr("Unable to get tracks informations : %1").arg(query.lastError().text());
+    }
+    dbMutex->unlock();
+
+    return query;
+}
+
 void BPDatabase::deleteFromLibrary(QStringList uids)
 {
     QString queryLib = "DELETE FROM Library WHERE " +
@@ -205,6 +221,22 @@ void BPDatabase::deleteSearchResult(QString libId, QString trackId)
     }
     if( ! updadeLibQuery.exec()) {
         qWarning() << tr("Unable to update Library entry %1 to delete default bpid %2 : %3").arg(libId).arg(trackId).arg(updadeLibQuery.lastError().text());
+    }
+    dbMutex->unlock();
+}
+
+void BPDatabase::renameFile(QString &oldFileName, QString &newFileName)
+{
+    QSqlQuery renameQuery(dbObject(MAIN_DB));
+    renameQuery.prepare("UPDATE OR FAIL Library SET filePath=:new WHERE filePath=:old");
+    renameQuery.bindValue(":new", QDir::toNativeSeparators(newFileName));
+    renameQuery.bindValue(":old", QDir::toNativeSeparators(oldFileName));
+
+    dbMutex->lock();
+    if(renameQuery.exec()) {
+        qDebug() << tr("Track %1 renamed into %2").arg(oldFileName).arg((newFileName));
+    } else {
+        qWarning() << tr("Unable to rename track %1 : %2").arg(oldFileName).arg(renameQuery.lastError().text());
     }
     dbMutex->unlock();
 }
@@ -347,6 +379,10 @@ QString BPDatabase::storeTrack(const QVariant track)
 
 bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
 {
+    // FIXME : this method can be called from storeSearchResults() or manually from
+    // on_actionSetDefaultResult_triggered. These methods are not executed from the same
+    // thread. The right dbObject() need to be used in each case.
+
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
     query.bindValue(":uid", libUid);

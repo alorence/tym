@@ -24,7 +24,7 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
     pattern(pattern)
 {
     QStringList list = pattern.split('%', QString::SkipEmptyParts);
-    QStringList regExpList;
+    QStringList inRegExpList;
 
     for(int i = 0 ; i < list.count() ; ++i) {
 
@@ -32,39 +32,64 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
 
         QString classicRexpPattern = "(.+)";
 
-        if(elt == "ID" || elt == "id") {
-            regExpList << "([0-9]+)";
-            replacementMap[i+1] = "bpid";
-        } else if(elt == "ARTISTS" || elt == "artists") {
-            regExpList << classicRexpPattern;
-            replacementMap[i+1] = "artists";
-        } else if(elt == "TITLE" || elt == "title") {
-            regExpList << classicRexpPattern;
-            replacementMap[i+1] = "title";
-        } else if(elt == "EXT" || elt == "ext") {
-            regExpList << "([a-zA-Z0-9]{2,4})";
-            replacementMap[i+1] = "ext";
-        } else if(elt == "OTHER" || elt == "other") {
-            regExpList << "(.+)";
+        if(elt.toUpper() == "ID") {
+            inRegExpList << "([0-9]+)";
+            inReplacementMap[i+1] = "bpid";
+        } else if(elt.toUpper() == "ARTISTS") {
+            inRegExpList << classicRexpPattern;
+            inReplacementMap[i+1] = "artists";
+        } else if(elt.toUpper() == "TITLE") {
+            inRegExpList << classicRexpPattern;
+            inReplacementMap[i+1] = "title";
+        } else if(elt.toUpper() == "EXT") {
+            inRegExpList << "([a-zA-Z0-9]{2,4})";
+            inReplacementMap[i+1] = "ext";
+        } else if(elt.toUpper() == "OTHER") {
+            inRegExpList << "(.+)";
         } else {
-            regExpList << QString("(%1)").arg(elt.replace(".", "\\."));
+            inRegExpList << QString("(%1)").arg(elt.replace(".", "\\."));
         }
     }
-    regExpList.prepend("^");
-    regExpList.append("$");
+    inRegExpList.prepend("^");
+    inRegExpList.append("$");
 
-    rexp = QRegExp(regExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
+    inRegExp = QRegExp(inRegExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
 }
 
 QMap<QString, QString> PatternTool::parseValues(QString &source, const QStringList & interestingKeys) const
 {
     QMap<QString, QString> result;
-    if(rexp.indexIn(source) != -1) {
-        foreach(int i, replacementMap.keys()) {
-            if(interestingKeys.contains(replacementMap[i])) {
-                result[replacementMap[i]] = rexp.cap(i);
+    if(inRegExp.indexIn(source) != -1) {
+        foreach(int i, inReplacementMap.keys()) {
+            if(interestingKeys.contains(inReplacementMap[i])) {
+                result[inReplacementMap[i]] = inRegExp.cap(i);
             }
         }
     }
+    return result;
+}
+
+QString PatternTool::stringFromPattern(QSqlRecord &trackInfoRecord) const
+{
+    QStringList partList = pattern.split('%', QString::SkipEmptyParts);
+
+    QString result;
+
+    foreach(QString part, partList) {
+        if(part.toUpper() == "ARTISTS") {
+            result.append(trackInfoRecord.value(TrackFullInfosIndexes::Artists).toString());
+        } else if(part.toUpper() == "TITLE") {
+            result.append(trackInfoRecord.value(TrackFullInfosIndexes::Title).toString());
+        } else if(part.toUpper() == "NAME") {
+            result.append(trackInfoRecord.value(TrackFullInfosIndexes::TrackName).toString());
+        } else if(part.toUpper() == "MIXNAME") {
+            result.append(trackInfoRecord.value(TrackFullInfosIndexes::MixName).toString());
+        } else if(part.toUpper() == "LABEL") {
+            result.append(trackInfoRecord.value(TrackFullInfosIndexes::LabelName).toString());
+        } else {
+            result.append(part);
+        }
+    }
+
     return result;
 }

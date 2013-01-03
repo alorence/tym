@@ -17,32 +17,52 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PATTERNTOOL_H
-#define PATTERNTOOL_H
+#ifndef RENAMEWIZARD_H
+#define RENAMEWIZARD_H
 
 #include <QtCore>
+#include <QtGui>
 #include <QtSql>
-#include "commons.h"
 
-class PatternTool : public QObject
+#include "commons.h"
+#include "patterntool.h"
+#include "dbaccess/bpdatabase.h"
+
+namespace Ui {
+class RenameWizard;
+}
+
+class RenameWizard : public QWizard
 {
     Q_OBJECT
+    
 public:
-    explicit PatternTool(QString pattern, QObject *parent = 0);
+    explicit RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent = 0);
+    ~RenameWizard();
 
-    QMap<QString, QString> parseValues(QString& source, const QStringList &interestingKeys) const;
-    QString stringFromPattern(QSqlRecord &) const;
+protected:
+    void initializePage(int id);
     
-signals:
-    
-public slots:
+private slots:
+    void updateRenamePreview();
+    void on_patternSelection_currentIndexChanged(int index);
+
 
 private:
-    QString pattern;
+    Ui::RenameWizard *ui;
+    QMap<QString, QSqlRecord> tracksInformations;
 
-    QMap<int, QString> inReplacementMap;
-    QRegExp inRegExp;
-    
+    enum WizardPages {
+        PreviewPage = 0,
+        ResultPage
+    };
+
+    enum PreviewColumns {
+        Bpid = 0,
+        Directory,
+        OrigFileName,
+        TargetFileName
+    };
 };
 
-#endif // PATTERNTOOL_H
+#endif // RENAMEWIZARD_H

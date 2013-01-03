@@ -178,6 +178,7 @@ void MainWindow::updateLibraryActions()
 
     ui->actionLibraryDelete->setDisabled(numSel == 0);
     ui->actionSearch->setDisabled(numSel == 0);
+    ui->actionRename->setDisabled(numSel == 0);
 }
 
 void MainWindow::updateSearchResultsActions()
@@ -309,4 +310,13 @@ void MainWindow::on_actionSearchResultDelete_triggered()
     BPDatabase::instance()->deleteSearchResult(libId, trackId);
     _libraryModel->refresh();
     ui->searchResultsView->selectRow(row-1);
+}
+
+void MainWindow::on_actionRename_triggered()
+{
+    RenameWizard wizard(_libraryModel->selectedRecords());
+    if(wizard.exec() == SearchWizard::Rejected) {
+        return;
+    }
+    _libraryModel->refresh();
 }
