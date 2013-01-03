@@ -225,6 +225,22 @@ void BPDatabase::deleteSearchResult(QString libId, QString trackId)
     dbMutex->unlock();
 }
 
+void BPDatabase::renameFile(QString &oldFileName, QString &newFileName)
+{
+    QSqlQuery renameQuery(dbObject(MAIN_DB));
+    renameQuery.prepare("UPDATE OR FAIL Library SET filePath=:new WHERE filePath=:old");
+    renameQuery.bindValue(":new", QDir::toNativeSeparators(newFileName));
+    renameQuery.bindValue(":old", QDir::toNativeSeparators(oldFileName));
+
+    dbMutex->lock();
+    if(renameQuery.exec()) {
+        qDebug() << tr("Track %1 renamed into %2").arg(oldFileName).arg((newFileName));
+    } else {
+        qWarning() << tr("Unable to rename track %1 : %2").arg(oldFileName).arg(renameQuery.lastError().text());
+    }
+    dbMutex->unlock();
+}
+
 QString BPDatabase::storeTrack(const QVariant track)
 {
     QMap<QString, QVariant> trackMap = track.toMap();

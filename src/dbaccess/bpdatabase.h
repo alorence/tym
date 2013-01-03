@@ -49,6 +49,8 @@ public:
     void deleteFromLibrary(QStringList uids);
     void deleteSearchResult(QString libId, QString trackId);
 
+    void renameFile(QString &oldFileName, QString &newFileName);
+
     friend class LibraryModel;
 
 public slots:

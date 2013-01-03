@@ -319,4 +319,5 @@ void MainWindow::on_actionRename_triggered()
     if(wizard.exec() == SearchWizard::Rejected) {
         return;
     }
+    _libraryModel->refresh();
 }

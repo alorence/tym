@@ -48,9 +48,9 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         QTableWidgetItem *item = new QTableWidgetItem(bpid);
         ui->previewTable->setItem(row, 0, item);
 
-        QFileInfo original(record.value(LibraryIndexes::FilePath).toString());
+        QFileInfo original(QDir::toNativeSeparators(record.value(LibraryIndexes::FilePath).toString()));
 
-        item = new QTableWidgetItem(original.dir().canonicalPath());
+        item = new QTableWidgetItem(QDir::toNativeSeparators(original.dir().canonicalPath()));
         ui->previewTable->setItem(row, 1, item);
 
         item = new QTableWidgetItem(original.fileName());
@@ -151,7 +151,7 @@ void RenameWizard::initializePage(int id)
                                   .arg(to);
                 }
 
-                // TODO : update database
+                BPDatabase::instance()->renameFile(from.canonicalFilePath(), to);
             }
         }
     }
