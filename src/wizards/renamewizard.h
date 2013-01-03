@@ -51,6 +51,18 @@ private slots:
 private:
     Ui::RenameWizard *ui;
     QMap<QString, QSqlRecord> tracksInformations;
+
+    enum WizardPages {
+        PreviewPage = 0,
+        ResultPage
+    };
+
+    enum PreviewColumns {
+        Bpid = 0,
+        Directory,
+        OrigFileName,
+        TargetFileName
+    };
 };
 
 #endif // RENAMEWIZARD_H
