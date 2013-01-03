@@ -58,6 +58,7 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         row++;
     }
 
+    // FIXME : Default result set manually are not immediatly reachable with this call
     QSqlQuery tracksInfos = BPDatabase::instance()->tracksInformations(bpids);
     while(tracksInfos.next()) {
         tracksInformations[tracksInfos.value(TrackFullInfosIndexes::Bpid).toString()] = tracksInfos.record();

@@ -363,6 +363,10 @@ QString BPDatabase::storeTrack(const QVariant track)
 
 bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
 {
+    // FIXME : this method can be called from storeSearchResults() or manually from
+    // on_actionSetDefaultResult_triggered. These methods are not executed from the same
+    // thread. The right dbObject() need to be used in each case.
+
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
     query.bindValue(":uid", libUid);
