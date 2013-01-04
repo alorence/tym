@@ -19,7 +19,7 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 # For subdirectories, add src & libs folders to include path
-include_directories(${tymlibs_SOURCE_DIR} .)
+include_directories(.)
 
 configure_file(version.h.in version.h)
 

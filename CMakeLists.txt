@@ -74,7 +74,6 @@ file(GLOB TRANSLATIONS_FILES translations/*.ts)
 # TODO : Add a custom target to create / update ts files in transl. dir.
 
 # Parse subdirectories
-add_subdirectory(libs)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)

@@ -23,7 +23,6 @@
 #include <QtCore>
 #include <QtNetwork>
 
-#include "qt-json/json.h"
 #include "gui/settingsdialog.h"
 #include "commons.h"
 
