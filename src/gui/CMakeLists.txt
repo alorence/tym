@@ -40,9 +40,9 @@ set(gui_UIS
 )
 
 # Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
-qt4_wrap_ui(gui_UIS_HEADERS ${gui_UIS})
+qt5_wrap_ui(gui_UIS_HEADERS ${gui_UIS})
 # Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
 # These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
-qt4_wrap_cpp(gui_MOCS ${gui_HEADERS})
+qt5_wrap_cpp(gui_MOCS ${gui_HEADERS})
 
 add_library(gui OBJECT EXCLUDE_FROM_ALL ${gui_SOURCES} ${gui_MOCS} ${gui_UIS_HEADERS})

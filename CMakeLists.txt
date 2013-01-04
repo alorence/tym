@@ -19,21 +19,27 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 project(tym CXX)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.9)
 
 # Include some macros usable accross cmake projects
 include(resources/config/TymUsefulMacros.cmake)
 
-# Configure projects to use Qt4
-find_package(Qt4 REQUIRED)
+# Configure projects to use Qt5
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
+find_package(Qt5Network REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 
-SET(QT_USE_QTNETWORK TRUE)
-SET(QT_USE_QTSQL TRUE)
-if(${WIN32})
-    SET(QT_USE_QTMAIN TRUE)
-endif(${WIN32})
-
-include(${QT_USE_FILE})
+# The Qt5Widgets_INCLUDES also includes the include directories for
+# dependencies QtCore and QtGui
+include_directories(
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5Sql_INCLUDE_DIRS}
+    ${Qt5Network_INCLUDE_DIRS}
+    ${Qt5LinguistTools_INCLUDE_DIRS}
+)
 
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

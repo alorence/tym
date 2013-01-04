@@ -36,9 +36,9 @@ set(wizards_UIS
 )
 
 # Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
-qt4_wrap_ui(wizards_UIS_HEADERS ${wizards_UIS})
+qt5_wrap_ui(wizards_UIS_HEADERS ${wizards_UIS})
 # Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
 # These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
-qt4_wrap_cpp(wizards_MOCS ${wizards_HEADERS})
+qt5_wrap_cpp(wizards_MOCS ${wizards_HEADERS})
 
 add_library(wizards OBJECT EXCLUDE_FROM_ALL ${wizards_SOURCES} ${wizards_MOCS} ${wizards_UIS_HEADERS})

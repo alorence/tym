@@ -30,3 +30,6 @@ set(json_SOURCES
 
 add_library(json STATIC ${json_SOURCES})
 target_link_libraries(json ${QT_LIBRARIES})
+qt5_use_modules(json
+    Core
+)

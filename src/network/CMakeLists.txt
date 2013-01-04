@@ -30,6 +30,6 @@ set(network_SOURCES
 
 # Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
 # These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
-qt4_wrap_cpp(network_MOCS ${network_HEADERS})
+qt5_wrap_cpp(network_MOCS ${network_HEADERS})
 
 add_library(network OBJECT EXCLUDE_FROM_ALL ${network_SOURCES} ${network_MOCS})
