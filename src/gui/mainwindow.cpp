@@ -228,10 +228,9 @@ void MainWindow::on_actionSearch_triggered()
     foreach (entry, _libraryModel->selectedRecords()) {
         QSqlRecord record = entry.second;
 
-        QString filePath = record.value(Library::FilePath).toString();
-        QString fileName = filePath.split(QDir::separator()).last();
+        QFileInfo file(record.value(Library::FilePath).toString());
 
-        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(fileName, interestingKeys);
+        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(file.fileName(), interestingKeys);
     }
 
     ui->progress->setVisible(true);
