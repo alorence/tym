@@ -471,7 +471,7 @@ void BPDatabase::importFiles(const QStringList &pathList)
 
     QStringList values;
     foreach(QString path, pathList){
-        values << value.arg(path.replace("'", "''"));
+        values << value.arg(QDir::toNativeSeparators(path).replace("'", "''"));
     }
     dbMutex->lock();
     QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
@@ -487,7 +487,7 @@ void BPDatabase::importFile(QString path)
 {
     QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
-    query.bindValue(":path", path);
+    query.bindValue(":path", QDir::toNativeSeparators(path));
     query.bindValue(":status", Library::New);
 
     dbMutex->lock();
