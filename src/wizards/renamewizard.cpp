@@ -121,7 +121,7 @@ void RenameWizard::initializePage(int id)
 
         for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
             // Rename only if the target filename is not "<...>"
-            if( ! renameValidityCheck.exactMatch(ui->previewTable->item(row, Bpid)->text())) {
+            if( ! renameValidityCheck.exactMatch(ui->previewTable->item(row, TargetFileName)->text())) {
                 QString dir = ui->previewTable->item(row, Directory)->text();
 
                 QFileInfo from(dir + QDir::separator() + ui->previewTable->item(row, OrigFileName)->text());
@@ -149,6 +149,7 @@ void RenameWizard::initializePage(int id)
                     qWarning() << tr("Error when renaming file %1 into %2")
                                   .arg(from.canonicalFilePath())
                                   .arg(to);
+                    continue;
                 }
 
                 BPDatabase::instance()->renameFile(from.canonicalFilePath(), to);
