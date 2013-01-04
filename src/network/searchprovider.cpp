@@ -58,9 +58,9 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
     QUrl requestUrl = QUrl(apiUrl);
     requestUrl.setPath(tracksPath);
 
-    QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-    queryItems << QPair<QString, QString>("ids", QStringList(uidBpidMap->values()).join(","));
-    requestUrl.setQueryItems(queryItems);
+    QUrlQuery query;
+    query.addQueryItem("ids", QStringList(uidBpidMap->values()).join(","));
+    requestUrl.setQuery(query);
 
     QNetworkRequest request(requestUrl);
 
@@ -119,11 +119,11 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
         text = text.replace("]", "");
         text = text.replace("-", "");
 
-        QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-        queryItems << QPair<QString, QString>("query", text);
-        queryItems << QPair<QString, QString>("facets[]", "fieldType:track");
+        QUrlQuery query;
+        query.addQueryItem("query", text);
+        query.addQueryItem("facets[]", "fieldType:track");
 
-        requestUrl.setQueryItems(queryItems);
+        requestUrl.setQuery(query);
 
         QNetworkRequest request(requestUrl);
 
