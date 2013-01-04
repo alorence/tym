@@ -78,8 +78,8 @@ void SearchProvider::parseReplyForIdSearch()
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
     QMap<QString, QString> *uidBpidMap = replyMap.take(reply);
 
-    QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::parse(jsonResponse);
+    QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
+
 
     QMapIterator<QString, QString> req(*uidBpidMap);
     while(req.hasNext()) {
@@ -88,8 +88,8 @@ void SearchProvider::parseReplyForIdSearch()
         QString uid = req.key();
         QString bpid = req.value();
 
-        foreach(QVariant track, response.toMap()["results"].toList()) {
-            if(bpid == track.toMap()["id"].toString()) {
+        foreach(QJsonValue track, response.object()["results"].toArray()) {
+            if(bpid == track.toObject()["id"].toString()) {
                 emit searchResultAvailable(uid, track);
                 break;
             }
@@ -140,10 +140,9 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(uid));
 
-    QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::parse(jsonResponse);
+    QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
-    emit searchResultAvailable(uid, response.toMap()["results"].toList());
+    emit searchResultAvailable(uid, response.object()["results"]);
 
     reply->deleteLater();
 }

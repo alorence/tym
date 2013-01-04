@@ -35,7 +35,7 @@ public:
     ~SearchProvider();
     
 signals:
-    void searchResultAvailable(QString libId, QVariant result) const;
+    void searchResultAvailable(QString libId, QJsonValue result) const;
     void pictureDownloadFinished(QString picId) const;
 
 public slots:

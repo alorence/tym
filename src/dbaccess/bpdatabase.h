@@ -54,7 +54,7 @@ public:
     friend class LibraryModel;
 
 public slots:
-    void storeSearchResults(QString libId, QVariant result);
+    void storeSearchResults(QString libId, QJsonValue result);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
     void updateLibraryStatus(QString uid, Library::FileStatus status);
@@ -72,7 +72,7 @@ private :
 
     static BPDatabase * _instance;
 
-    QString storeTrack(const QVariant track);
+    QString storeTrack(const QJsonValue track);
 
     bool initTables();
     bool dbInitialized;

@@ -48,7 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _searchModel->select();
 
     ui->progress->setVisible(false);
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)), this, SLOT(updateProgressBar()));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
+            this, SLOT(updateProgressBar()));
 
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
@@ -110,8 +111,8 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * Actions
      */
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)),
-            BPDatabase::instance(), SLOT(storeSearchResults(QString,QVariant)));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
+            BPDatabase::instance(), SLOT(storeSearchResults(QString,QJsonValue)));
     connect(BPDatabase::instance(), SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
 
