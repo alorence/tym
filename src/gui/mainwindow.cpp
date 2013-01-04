@@ -239,16 +239,25 @@ void MainWindow::on_actionSearch_triggered()
     QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
         foreach(QString key, parsedValueMap.keys()) {
-            requestMap->insert(key, parsedValueMap[key]["bpid"]);
+            QString bpid = parsedValueMap[key]["bpid"];
+            if(bpid.isEmpty()) continue;
+
+            requestMap->insert(key, bpid);
         }
-        ui->progress->setMaximum(requestMap->size());
-        searchProvider.searchFromIds(requestMap);
+        if( ! requestMap->isEmpty()) {
+            ui->progress->setMaximum(requestMap->size());
+            searchProvider.searchFromIds(requestMap);
+        }
     } else {
         foreach(QString key, parsedValueMap.keys()) {
-            requestMap->insert(key, ((QStringList)parsedValueMap[key].values()).join(" "));
+            if(parsedValueMap[key].values().isEmpty()) continue;
+
+            requestMap->insert(key, ((QStringList) parsedValueMap[key].values()).join(" "));
         }
-        ui->progress->setMaximum(requestMap->size());
-        searchProvider.searchFromName(requestMap);
+        if( ! requestMap->isEmpty()) {
+            ui->progress->setMaximum(requestMap->size());
+            searchProvider.searchFromName(requestMap);
+        }
     }
 }
 
