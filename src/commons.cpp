@@ -26,7 +26,8 @@ const QString Constants::dynamicPictureUrl()
 
 const QString Constants::dataLocation()
 {
-    return QDesktopServices::storageLocation(QDesktopServices::DataLocation).replace(' ', "");
+    // FIXME : On windows XP, AppData path contains spaces. replace() at the end of line must be removed
+    return QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation).replace(' ', "");
 }
 
 const QString Constants::picturesLocation()
