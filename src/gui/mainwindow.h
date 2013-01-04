@@ -21,7 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui_about.h"
 #include "settingsdialog.h"

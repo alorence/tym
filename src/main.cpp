@@ -17,7 +17,7 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QTextEdit>
 #include "ui_mainwindow.h"
 #include "gui/mainwindow.h"

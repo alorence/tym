@@ -21,7 +21,7 @@
 #define RENAMEWIZARD_H
 
 #include <QtCore>
-#include <QtGui>
+#include <QtWidgets>
 #include <QtSql>
 
 #include "commons.h"

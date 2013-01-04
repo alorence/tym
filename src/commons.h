@@ -21,7 +21,6 @@
 #define COMMONS_H
 
 #include <QtCore>
-#include <QtGui>
 
 namespace Library {
     enum Indexes {

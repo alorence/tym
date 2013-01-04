@@ -20,7 +20,7 @@
 #ifndef TRACKINFOSVIEW_H
 #define TRACKINFOSVIEW_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtCore>
 #include <QtSql>
 
