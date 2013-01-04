@@ -88,7 +88,7 @@ void SearchProvider::parseReplyForIdSearch()
         QString bpid = req.value();
 
         foreach(QJsonValue track, response.object()["results"].toArray()) {
-            if(bpid == QString::number(track.toObject()["id"].toDouble())) {
+            if(bpid == track.toObject().value("id").toVariant().toString()) {
                 emit searchResultAvailable(uid, track);
                 break;
             }
