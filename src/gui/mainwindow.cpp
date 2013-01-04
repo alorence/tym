@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     // Configure view
     ui->libraryView->setModel(_libraryModel);
-    ui->libraryView->hideColumn(LibraryIndexes::Uid);
-    ui->libraryView->hideColumn(LibraryIndexes::Bpid);
+    ui->libraryView->hideColumn(Library::Uid);
+    ui->libraryView->hideColumn(Library::Bpid);
 
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
@@ -82,9 +82,9 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     // Configure view
     ui->searchResultsView->setModel(_searchModel);
-    ui->searchResultsView->hideColumn(SearchResultsIndexes::LibId);
-    ui->searchResultsView->hideColumn(SearchResultsIndexes::Bpid);
-    ui->searchResultsView->hideColumn(SearchResultsIndexes::DefaultFor);
+    ui->searchResultsView->hideColumn(SearchResults::LibId);
+    ui->searchResultsView->hideColumn(SearchResults::Bpid);
+    ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -146,14 +146,14 @@ void MainWindow::show()
 
     // Configure libraryView filePath column to take as space as possible
     QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
-    ui->libraryView->setColumnWidth(LibraryIndexes::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
 }
 
 
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), LibraryIndexes::Uid));
+    QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), Library::Uid));
     _searchModel->setFilter("libId=" + libId.toString());
 
     if( ! _searchModel->query().isActive()) {
@@ -165,7 +165,7 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
 void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
 {
     if(selected.isValid()) {
-        QVariant bpid = _searchModel->record(selected.row()).value(SearchResultsIndexes::Bpid);
+        QVariant bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid);
         ui->trackInfos->updateInfos(BPDatabase::instance()->trackInformations(bpid));
     } else {
         ui->trackInfos->clearData();
@@ -227,10 +227,10 @@ void MainWindow::on_actionSearch_triggered()
     foreach (entry, _libraryModel->selectedRecords()) {
         QSqlRecord record = entry.second;
 
-        QString filePath = record.value(LibraryIndexes::FilePath).toString();
+        QString filePath = record.value(Library::FilePath).toString();
         QString fileName = filePath.split(QDir::separator()).last();
 
-        parsedValueMap[record.value(LibraryIndexes::Uid).toString()] = pt.parseValues(fileName, interestingKeys);
+        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(fileName, interestingKeys);
     }
 
     ui->progress->setVisible(true);
@@ -277,7 +277,7 @@ void MainWindow::on_actionLibraryDelete_triggered()
     QPair<int, QSqlRecord> elt;
     foreach(elt, selecteds) {
         rows << elt.first;
-        uids << elt.second.value(LibraryIndexes::Uid).toString();
+        uids << elt.second.value(Library::Uid).toString();
     }
     BPDatabase::instance()->deleteFromLibrary(uids);
     _libraryModel->unselectRowsAndRefresh(rows);
@@ -294,8 +294,8 @@ void MainWindow::on_actionSetDefaultResult_triggered()
 {
     int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
 
-    QString libId = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::LibId)).toString();
-    QString bpid = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::Bpid)).toString();
+    QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
+    QString bpid = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
 
     BPDatabase::instance()->setLibraryTrackReference(libId, bpid);
     ui->searchResultsView->selectRow(row);
@@ -305,8 +305,8 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 {
     int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
 
-    QString libId = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::LibId)).toString();
-    QString trackId = _searchModel->data(_searchModel->index(row, SearchResultsIndexes::Bpid)).toString();
+    QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
+    QString trackId = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
     BPDatabase::instance()->deleteSearchResult(libId, trackId);
     _libraryModel->refresh();
     ui->searchResultsView->selectRow(row-1);

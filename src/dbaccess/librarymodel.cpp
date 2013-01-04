@@ -22,7 +22,7 @@
 LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db)
 {
-    columnWithCheckbox = LibraryIndexes::FilePath;
+    columnWithCheckbox = Library::FilePath;
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
@@ -30,8 +30,8 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
     Qt::ItemFlags flags = QSqlTableModel::flags(index);
     if(index.column() == columnWithCheckbox) {
         return flags | Qt::ItemIsUserCheckable;
-    } else if(index.column() == LibraryIndexes::Message){
-        return QSqlTableModel::flags(QAbstractTableModel::index(index.row(), LibraryIndexes::FilePath, index.parent()));
+    } else if(index.column() == Library::Message){
+        return QSqlTableModel::flags(QAbstractTableModel::index(index.row(), Library::FilePath, index.parent()));
     } else {
         return flags;
     }
@@ -51,7 +51,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
         } else if(role == Qt::ToolTipRole) {
             // Display only the folder (all text before the last dir separator)
-            QStringList pathElements = QSqlTableModel::data(QAbstractTableModel::index(ind.row(), LibraryIndexes::FilePath, ind.parent()), Qt::DisplayRole)
+            QStringList pathElements = QSqlTableModel::data(QAbstractTableModel::index(ind.row(), Library::FilePath, ind.parent()), Qt::DisplayRole)
                     .toString().split(QDir::separator());
             pathElements.removeLast();
 
@@ -60,38 +60,38 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return QVariant(tooltip);
 
         }
-    } else if (ind.column() == LibraryIndexes::Message && role == Qt::DisplayRole) {
+    } else if (ind.column() == Library::Message && role == Qt::DisplayRole) {
 
-        int status = QSqlTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
         int n = 0;
 
         switch(status) {
-        case FileStatus::New:
+        case Library::New:
             return tr("Recently imported, no result for now...");
         break;
-        case FileStatus::FileNotFound:
+        case Library::FileNotFound:
             return tr("Unable to find the file on your disk.");
         break;
-        case FileStatus::ResultsAvailable:
-            n = QSqlTableModel::data(index(ind.row(), LibraryIndexes::Message), Qt::DisplayRole).toInt();
+        case Library::ResultsAvailable:
+            n = QSqlTableModel::data(index(ind.row(), Library::Message), Qt::DisplayRole).toInt();
             return tr("%n result(s) available.", "Display number of results available for one library element", n);
         break;
         default:
             return "";
         }
 
-    } else if (ind.column() == LibraryIndexes::Status && role == Qt::DisplayRole) {
+    } else if (ind.column() == Library::Status && role == Qt::DisplayRole) {
 
-        int status = QSqlTableModel::data(index(ind.row(), LibraryIndexes::Status), Qt::DisplayRole).toInt();
+        int status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
 
         switch (status) {
-        case FileStatus::New:
+        case Library::New:
             return tr("New");
         break;
-        case FileStatus::FileNotFound:
+        case Library::FileNotFound:
             return tr("Missing");
         break;
-        case FileStatus::ResultsAvailable:
+        case Library::ResultsAvailable:
             return tr("Searched");
         break;
         default:
@@ -120,11 +120,11 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
 {
     if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch(section) {
-        case LibraryIndexes::Uid:           return tr("Uid");
-        case LibraryIndexes::FilePath:      return tr("File");
-        case LibraryIndexes::Status:        return tr("Status");
-        case LibraryIndexes::Message:       return tr("Comment");
-        case LibraryIndexes::Bpid:          return tr("Track Id");
+        case Library::Uid:           return tr("Uid");
+        case Library::FilePath:      return tr("File");
+        case Library::Status:        return tr("Status");
+        case Library::Message:       return tr("Comment");
+        case Library::Bpid:          return tr("Track Id");
         }
     }
     return QSqlTableModel::headerData(section, orientation, role);

@@ -40,7 +40,7 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
     foreach(elt, selected) {
         QSqlRecord record = elt.second;
 
-        QString bpid = record.value(LibraryIndexes::Bpid).toString();
+        QString bpid = record.value(Library::Bpid).toString();
         if( ! bpid.isEmpty()) {
             bpids << bpid;
         }
@@ -48,7 +48,7 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         QTableWidgetItem *item = new QTableWidgetItem(bpid);
         ui->previewTable->setItem(row, Bpid, item);
 
-        QFileInfo original(QDir::toNativeSeparators(record.value(LibraryIndexes::FilePath).toString()));
+        QFileInfo original(QDir::toNativeSeparators(record.value(Library::FilePath).toString()));
 
         item = new QTableWidgetItem(QDir::toNativeSeparators(original.dir().canonicalPath()));
         ui->previewTable->setItem(row, Directory, item);
@@ -61,7 +61,7 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
     // FIXME : Default result set manually are not immediatly reachable with this call
     QSqlQuery tracksInfos = BPDatabase::instance()->tracksInformations(bpids);
     while(tracksInfos.next()) {
-        tracksInformations[tracksInfos.value(TrackFullInfosIndexes::Bpid).toString()] = tracksInfos.record();
+        tracksInformations[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
     }
     updateRenamePreview();
 }

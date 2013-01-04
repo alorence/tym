@@ -23,17 +23,22 @@
 #include <QtCore>
 #include <QtGui>
 
-namespace LibraryIndexes {
-    enum Index {
+namespace Library {
+    enum Indexes {
         Uid = 0,
         FilePath,
         Bpid,
         Status,
         Message
     };
+    enum FileStatus {
+        New = 0,
+        ResultsAvailable = 1,
+        FileNotFound = 16
+    };
 }
-namespace BPTracksIndexes {
-    enum Index {
+namespace BPTracks {
+    enum Indexes {
         Bpid = 0,
         TrackName,
         MixName,
@@ -46,12 +51,11 @@ namespace BPTracksIndexes {
         Price,
         Length,
         Release,
-        ImageUrl,
-        ImagePath
+        PictureId
     };
 }
-namespace TrackFullInfosIndexes {
-    enum Index {
+namespace TrackFullInfos {
+    enum Indexes {
         Artists,
         Remixers,
         Genres,
@@ -68,30 +72,15 @@ namespace TrackFullInfosIndexes {
         Price,
         Length,
         Release,
-        ImageUrl,
-        ImagePath
+        PictureId
     };
 }
-namespace SearchResultsIndexes {
-    enum Index {
+namespace SearchResults {
+    enum Indexes {
         LibId = 0,
         Bpid,
         Track,
         DefaultFor
-    };
-}
-namespace TracksPicturesIndexes {
-    enum Index {
-        Bpid = 0,
-        Url = 1,
-        Path = 16
-    };
-}
-namespace FileStatus {
-    enum Status {
-        New = 0,
-        ResultsAvailable = 1,
-        FileNotFound = 16
     };
 }
 class Constants {

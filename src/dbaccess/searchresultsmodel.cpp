@@ -6,14 +6,14 @@ SearchResultsModel::SearchResultsModel(QObject *parent, QSqlDatabase db) :
     transp(QPixmap(tick.width(), tick.height()))
 {
     transp.fill(Qt::transparent);
-    columnWithTicker = SearchResultsIndexes::Track;
+    columnWithTicker = SearchResults::Track;
 }
 
 QVariant SearchResultsModel::data(const QModelIndex &item, int role) const
 {
     if(role == Qt::DecorationRole && item.column() == columnWithTicker) {
 
-        if(QSqlTableModel::data(index(item.row(), SearchResultsIndexes::DefaultFor, item.parent())).toBool()) {
+        if(QSqlTableModel::data(index(item.row(), SearchResults::DefaultFor, item.parent())).toBool()) {
             return tick;
         } else {
             return transp;

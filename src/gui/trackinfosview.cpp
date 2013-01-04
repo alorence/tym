@@ -34,26 +34,26 @@ TrackInfosView::~TrackInfosView()
 
 void TrackInfosView::updateInfos(QSqlRecord result)
 {
-    ui->d_artists->setText(result.value(0).toString());
-    ui->d_remixers->setText(result.value(1).toString());
-    //ui->d_genres->setText(query.value(2).toString());
-    ui->d_label->setText(result.value(3).toString());
-    // No BPID lineEdit for now ui->d_->setText(query.value(4).toString());
-    ui->d_name->setText(result.value(5).toString());
-    ui->d_mixname->setText(result.value(6).toString());
-    ui->d_title->setText(result.value(7).toString());
+    ui->d_artists->setText(result.value(TrackFullInfos::Artists).toString());
+    ui->d_remixers->setText(result.value(TrackFullInfos::Remixers).toString());
+    //ui->d_genres->setText(query.value(TrackFullInfosIndexes::Genres).toString());
+    ui->d_label->setText(result.value(TrackFullInfos::LabelName).toString());
+    // No BPID lineEdit for now ui->d_->setText(query.value(TrackFullInfosIndexes::Bpid).toString());
+    ui->d_name->setText(result.value(TrackFullInfos::TrackName).toString());
+    ui->d_mixname->setText(result.value(TrackFullInfos::MixName).toString());
+    ui->d_title->setText(result.value(TrackFullInfos::Title).toString());
     //ui->d_labelNumber->setText(query.value(8).toString());
-    ui->d_key->setText(result.value(9).toString());
-    ui->d_bpm->setText(result.value(10).toString());
-    QDateTime d = QDateTime::fromTime_t(result.value(11).toInt());
+    ui->d_key->setText(result.value(TrackFullInfos::Key).toString());
+    ui->d_bpm->setText(result.value(TrackFullInfos::Bpm).toString());
+    QDateTime d = QDateTime::fromTime_t(result.value(TrackFullInfos::ReleaseDate).toInt());
     ui->d_releaseDate->setText(d.toString(tr("yyyy-MM-dd")));
-    d = QDateTime::fromTime_t(result.value(12).toInt());
+    d = QDateTime::fromTime_t(result.value(TrackFullInfos::PublishDate).toInt());
     ui->d_publishdate->setText(d.toString(tr("yyyy-MM-dd")));
-    ui->d_price->setText(result.value(13).toString());
-    ui->d_length->setText(result.value(14).toString());
-    ui->d_release->setText(result.value(15).toString());
+    ui->d_price->setText(result.value(TrackFullInfos::Price).toString());
+    ui->d_length->setText(result.value(TrackFullInfos::Length).toString());
+    ui->d_release->setText(result.value(TrackFullInfos::Release).toString());
 
-    currentPictureId = result.value(16).toString();
+    currentPictureId = result.value(TrackFullInfos::PictureId).toString();
 
     QString picPath = Constants::picturesLocation() + QDir::separator() + currentPictureId + ".jpg";
     if( ! QFile(picPath).exists()) {

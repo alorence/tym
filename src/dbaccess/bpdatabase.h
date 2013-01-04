@@ -57,7 +57,7 @@ public slots:
     void storeSearchResults(QString libId, QVariant result);
     void importFile(QString filePath);
     void importFiles(const QStringList &);
-    void updateLibraryStatus(QString uid, FileStatus::Status status);
+    void updateLibraryStatus(QString uid, Library::FileStatus status);
     bool setLibraryTrackReference(QString libUid, QString bpid);
 
 signals:

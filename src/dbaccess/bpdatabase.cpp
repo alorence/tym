@@ -442,11 +442,11 @@ void BPDatabase::storeSearchResults(QString libUid, QVariant result)
     dbObject().exec("COMMIT");
     dbMutex->unlock();
 
-    updateLibraryStatus(libUid, FileStatus::ResultsAvailable);
+    updateLibraryStatus(libUid, Library::ResultsAvailable);
 }
 
 
-void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
+void BPDatabase::updateLibraryStatus(QString uid, Library::FileStatus status)
 {
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
@@ -467,7 +467,7 @@ void BPDatabase::updateLibraryStatus(QString uid, FileStatus::Status status)
 void BPDatabase::importFiles(const QStringList &pathList)
 {
     QString baseQuery = "INSERT OR IGNORE INTO Library (filePath, status) ";
-    QString value = QString("SELECT '%2', %1").arg(FileStatus::New);
+    QString value = QString("SELECT '%2', %1").arg(Library::New);
 
     QStringList values;
     foreach(QString path, pathList){
@@ -488,7 +488,7 @@ void BPDatabase::importFile(QString path)
     QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
     query.bindValue(":path", path);
-    query.bindValue(":status", FileStatus::New);
+    query.bindValue(":status", Library::New);
 
     dbMutex->lock();
     if( ! query.exec()){

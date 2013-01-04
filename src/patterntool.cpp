@@ -77,15 +77,15 @@ QString PatternTool::stringFromPattern(QSqlRecord &trackInfoRecord) const
 
     foreach(QString part, partList) {
         if(part.toUpper() == "ARTISTS") {
-            result.append(trackInfoRecord.value(TrackFullInfosIndexes::Artists).toString());
+            result.append(trackInfoRecord.value(TrackFullInfos::Artists).toString());
         } else if(part.toUpper() == "TITLE") {
-            result.append(trackInfoRecord.value(TrackFullInfosIndexes::Title).toString());
+            result.append(trackInfoRecord.value(TrackFullInfos::Title).toString());
         } else if(part.toUpper() == "NAME") {
-            result.append(trackInfoRecord.value(TrackFullInfosIndexes::TrackName).toString());
+            result.append(trackInfoRecord.value(TrackFullInfos::TrackName).toString());
         } else if(part.toUpper() == "MIXNAME") {
-            result.append(trackInfoRecord.value(TrackFullInfosIndexes::MixName).toString());
+            result.append(trackInfoRecord.value(TrackFullInfos::MixName).toString());
         } else if(part.toUpper() == "LABEL") {
-            result.append(trackInfoRecord.value(TrackFullInfosIndexes::LabelName).toString());
+            result.append(trackInfoRecord.value(TrackFullInfos::LabelName).toString());
         } else {
             result.append(part);
         }
