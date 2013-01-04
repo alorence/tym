@@ -244,7 +244,7 @@ void BPDatabase::renameFile(QString &oldFileName, QString &newFileName)
 QString BPDatabase::storeTrack(const QJsonValue track)
 {
     QJsonObject trackObject = track.toObject();
-    QString trackBpId = trackObject.value("id").toString();
+    QString trackBpId = QString::number(trackObject.value("id").toDouble());
 
     QSqlQuery isExisting(dbObject());
     isExisting.prepare("SELECT bpid, name FROM BPTracks WHERE bpid=:id");
@@ -262,7 +262,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
     QSqlQuery query(dbObject()), linkQuery(dbObject());
     query.prepare("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
     foreach (QJsonValue artist, trackObject.value("artists").toArray()) {
-        QString artistBpId = artist.toObject().value("id").toString();
+        QString artistBpId = QString::number(artist.toObject().value("id").toDouble());
 
         query.bindValue(":bpid", artistBpId);
         query.bindValue(":name", artist.toObject().value("name").toVariant());
@@ -290,7 +290,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
     query.prepare("INSERT OR IGNORE INTO BPGenres VALUES (:bpid,:name)");
     linkQuery.prepare("INSERT OR IGNORE INTO BPTracksGenresLink VALUES (:trackId,:genreId)");
     foreach (QJsonValue genre, trackObject.value("genres").toArray()) {
-        QString genreBpId = genre.toObject().value("id").toString();
+        QString genreBpId = QString::number(genre.toObject().value("id").toDouble());
 
         query.bindValue(":bpid", genreBpId);
         query.bindValue(":name", genre.toObject().value("name").toString());

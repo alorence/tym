@@ -80,7 +80,6 @@ void SearchProvider::parseReplyForIdSearch()
 
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
-
     QMapIterator<QString, QString> req(*uidBpidMap);
     while(req.hasNext()) {
         req.next();
@@ -89,7 +88,7 @@ void SearchProvider::parseReplyForIdSearch()
         QString bpid = req.value();
 
         foreach(QJsonValue track, response.object()["results"].toArray()) {
-            if(bpid == track.toObject()["id"].toString()) {
+            if(bpid == QString::number(track.toObject()["id"].toDouble())) {
                 emit searchResultAvailable(uid, track);
                 break;
             }
