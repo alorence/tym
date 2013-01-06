@@ -22,13 +22,23 @@ if(WIN32)
     set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
     configure_file(win/tym-setup.iss.in tym-setup.iss)
 
+    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+        set(CURRENT_CONFIGURATION DEBUG)
+    else(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+        set(CURRENT_CONFIGURATION RELEASE)
+    endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+
+    get_target_property(CoreDll     Qt5::Core       IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(WidgetsDll  Qt5::Widgets    IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(NetworkDll  Qt5::Network    IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(SqlDll      Qt5::Sql        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+
     # TODO : Copy debug version of dlls in Debug BUILD_TYPE
     add_custom_target(makesetup
-
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtCore4.dll ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtGui4.dll ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtSql4.dll ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_BINARY_DIR}/QtNetwork4.dll ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${CoreDll} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${WidgetsDll} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${NetworkDll} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${SqlDll} ${TYM_SETUP_TREE_PATH}
 
         COMMAND iscc ${CMAKE_CURRENT_BINARY_DIR}/tym-setup.iss
 
