@@ -31,8 +31,7 @@ find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
-# The Qt5Widgets_INCLUDES also includes the include directories for
-# dependencies QtCore and QtGui
+# Include Qt5 dirs used in this project
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
