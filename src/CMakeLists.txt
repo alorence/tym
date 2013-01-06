@@ -19,7 +19,7 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 # For subdirectories, add src & libs folders to include path
-include_directories(${tymlibs_SOURCE_DIR} .)
+include_directories(.)
 
 configure_file(version.h.in version.h)
 
@@ -30,7 +30,7 @@ add_subdirectory(wizards)
 add_subdirectory(gui)
 
 set(tym_HEADERS
-        # commons.h is not a QObject and MOC doesn't need to be applied on it
+    # commons.h is not a QObject and MOC doesn't need to be applied on it
     patterntool.h
 )
 
@@ -42,10 +42,10 @@ set(tym_SOURCES
 
 # Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
 # These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
-qt4_wrap_cpp(tym_MOCS ${tym_HEADERS})
+qt5_wrap_cpp(tym_MOCS ${tym_HEADERS})
 
 # Compile translations (*.ts) files
-qt4_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
+qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 
 # build/gui/ui_mainwindow.h must be accessible for main.cpp
 include_directories(${tymgui_BINARY_DIR})
@@ -68,17 +68,27 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
     ${TYM_TRANSLATIONS}
 )
 
-# Set dependency for final executable
-target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${QT_LIBRARIES} json)
+# Add Qt5 modules dependencies
+qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
+    Gui
+    Widgets
+    Sql
+    Network
+    LinguistTools
+)
 
-if(${MINGW})
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS "-mwindows")
-elseif(${MSVC})
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-    set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES MINSIZEREL "/SUBSYSTEM:WINDOWS")
-endif(${MINGW})
+if(WIN32)
+    # Ensure main() function is compatible with target platform
+    target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${Qt5Core_QTMAIN_LIBRARIES})
 
+    if(${MINGW})
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS "-mwindows")
+    elseif(${MSVC})
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES MINSIZEREL "/SUBSYSTEM:WINDOWS")
+    endif(${MINGW})
+endif(WIN32)

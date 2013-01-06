@@ -18,7 +18,7 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-qt4_add_resources(RCC_OBJ resources.qrc)
+qt5_add_resources(RCC_OBJ resources.qrc)
 
 set(resources
     logos/tym.rc

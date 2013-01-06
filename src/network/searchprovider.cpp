@@ -58,9 +58,9 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
     QUrl requestUrl = QUrl(apiUrl);
     requestUrl.setPath(tracksPath);
 
-    QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-    queryItems << QPair<QString, QString>("ids", QStringList(uidBpidMap->values()).join(","));
-    requestUrl.setQueryItems(queryItems);
+    QUrlQuery query;
+    query.addQueryItem("ids", QStringList(uidBpidMap->values()).join(","));
+    requestUrl.setQuery(query);
 
     QNetworkRequest request(requestUrl);
 
@@ -78,8 +78,7 @@ void SearchProvider::parseReplyForIdSearch()
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
     QMap<QString, QString> *uidBpidMap = replyMap.take(reply);
 
-    QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::parse(jsonResponse);
+    QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
     QMapIterator<QString, QString> req(*uidBpidMap);
     while(req.hasNext()) {
@@ -88,8 +87,8 @@ void SearchProvider::parseReplyForIdSearch()
         QString uid = req.key();
         QString bpid = req.value();
 
-        foreach(QVariant track, response.toMap()["results"].toList()) {
-            if(bpid == track.toMap()["id"].toString()) {
+        foreach(QJsonValue track, response.object()["results"].toArray()) {
+            if(bpid == track.toObject().value("id").toVariant().toString()) {
                 emit searchResultAvailable(uid, track);
                 break;
             }
@@ -119,11 +118,11 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
         text = text.replace("]", "");
         text = text.replace("-", "");
 
-        QList<QPair<QString, QString> > queryItems = QList<QPair<QString, QString> >();
-        queryItems << QPair<QString, QString>("query", text);
-        queryItems << QPair<QString, QString>("facets[]", "fieldType:track");
+        QUrlQuery query;
+        query.addQueryItem("query", text);
+        query.addQueryItem("facets[]", "fieldType:track");
 
-        requestUrl.setQueryItems(queryItems);
+        requestUrl.setQuery(query);
 
         QNetworkRequest request(requestUrl);
 
@@ -140,10 +139,9 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(uid));
 
-    QString jsonResponse(reply->readAll());
-    QVariant response = QtJson::parse(jsonResponse);
+    QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
-    emit searchResultAvailable(uid, response.toMap()["results"].toList());
+    emit searchResultAvailable(uid, response.object()["results"]);
 
     reply->deleteLater();
 }

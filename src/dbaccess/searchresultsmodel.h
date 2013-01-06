@@ -2,6 +2,7 @@
 #define SEARCHRESULTSMODEL_H
 
 #include <QtCore>
+#include <QtGui>
 #include <QtSql>
 
 #include "commons.h"

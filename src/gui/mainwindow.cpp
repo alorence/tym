@@ -48,7 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _searchModel->select();
 
     ui->progress->setVisible(false);
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)), this, SLOT(updateProgressBar()));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
+            this, SLOT(updateProgressBar()));
 
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
@@ -110,8 +111,8 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * Actions
      */
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QVariant)),
-            BPDatabase::instance(), SLOT(storeSearchResults(QString,QVariant)));
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
+            BPDatabase::instance(), SLOT(storeSearchResults(QString,QJsonValue)));
     connect(BPDatabase::instance(), SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
 
@@ -227,10 +228,9 @@ void MainWindow::on_actionSearch_triggered()
     foreach (entry, _libraryModel->selectedRecords()) {
         QSqlRecord record = entry.second;
 
-        QString filePath = record.value(Library::FilePath).toString();
-        QString fileName = filePath.split(QDir::separator()).last();
+        QFileInfo file(record.value(Library::FilePath).toString());
 
-        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(fileName, interestingKeys);
+        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(file.fileName(), interestingKeys);
     }
 
     ui->progress->setVisible(true);
@@ -239,16 +239,25 @@ void MainWindow::on_actionSearch_triggered()
     QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(wizard.searchType() == SearchWizard::FromId) {
         foreach(QString key, parsedValueMap.keys()) {
-            requestMap->insert(key, parsedValueMap[key]["bpid"]);
+            QString bpid = parsedValueMap[key]["bpid"];
+            if(bpid.isEmpty()) continue;
+
+            requestMap->insert(key, bpid);
         }
-        ui->progress->setMaximum(requestMap->size());
-        searchProvider.searchFromIds(requestMap);
+        if( ! requestMap->isEmpty()) {
+            ui->progress->setMaximum(requestMap->size());
+            searchProvider.searchFromIds(requestMap);
+        }
     } else {
         foreach(QString key, parsedValueMap.keys()) {
-            requestMap->insert(key, ((QStringList)parsedValueMap[key].values()).join(" "));
+            if(parsedValueMap[key].values().isEmpty()) continue;
+
+            requestMap->insert(key, ((QStringList) parsedValueMap[key].values()).join(" "));
         }
-        ui->progress->setMaximum(requestMap->size());
-        searchProvider.searchFromName(requestMap);
+        if( ! requestMap->isEmpty()) {
+            ui->progress->setMaximum(requestMap->size());
+            searchProvider.searchFromName(requestMap);
+        }
     }
 }
 
