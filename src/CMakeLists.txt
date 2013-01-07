@@ -79,7 +79,10 @@ qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
 
 if(WIN32)
     # Ensure main() function is compatible with target platform
-    target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${Qt5Core_QTMAIN_LIBRARIES})
+    target_link_libraries(${TYM_EXECUTABLE_FILENAME}
+        ${Qt5Core_QTMAIN_LIBRARIES}
+        Logger
+    )
 
     if(${MINGW})
         set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS "-mwindows")

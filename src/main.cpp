@@ -19,30 +19,16 @@
 
 #include <QtWidgets/QApplication>
 #include <QTextEdit>
+
+#include <Logger.h>
+#include <ConsoleAppender.h>
+
 #include "ui_mainwindow.h"
 #include "gui/mainwindow.h"
 #include "commons.h"
 #include "version.h"
 
 QTextEdit * console;
-
-void printConsoleMessage(QtMsgType type, const char *msg)
-{
-    switch (type) {
-    case QtDebugMsg:
-    console->append(msg);
-    break;
-    case QtWarningMsg:
-    console->append(QObject::tr("Warning: %1").arg(msg));
-    break;
-    case QtCriticalMsg:
-    console->append(QObject::tr("Critical: %1").arg(msg));
-    break;
-    case QtFatalMsg:
-    console->append(QObject::tr("Fatal: %1").arg(msg));
-    abort();
-    }
-}
 
 int main(int argc, char *argv[])
 {
@@ -62,8 +48,11 @@ int main(int argc, char *argv[])
         }
     }
 
+    ConsoleAppender* consoleAppender = new ConsoleAppender();
+    consoleAppender->setFormat("[%-7l] <%C> %m\n");
+    Logger::registerAppender(consoleAppender);
+
     console = new QTextEdit();
-//    qInstallMsgHandler(printConsoleMessage);
 
     qRegisterMetaType<QItemSelection>("QItemSelection");
 

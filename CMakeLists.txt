@@ -72,6 +72,9 @@ set(TYM_SETUP_FILENAME setup-tym-${TYM_SHORT_VERSION})
 file(GLOB TRANSLATIONS_FILES translations/*.ts)
 # TODO : Add a custom target to create / update ts files in transl. dir.
 
+include_directories(libs/cutelogger/include)
+add_subdirectory(libs/cutelogger)
+
 # Parse subdirectories
 add_subdirectory(resources)
 add_subdirectory(src)
