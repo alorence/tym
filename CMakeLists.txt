@@ -56,13 +56,16 @@ set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.
 set(TYM_EXECUTABLE_FILENAME tym)
 set(TYM_BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 if("" STREQUAL "${CMAKE_BUILD_TYPE}")
-    set(EXECUTABLE_OUTPUT_PATH "${TYM_BIN_DIR}/Default")
+    set(TYM_OUTPUT_PATH "${TYM_BIN_DIR}/Default")
 else()
-    set(EXECUTABLE_OUTPUT_PATH "${TYM_BIN_DIR}/${CMAKE_BUILD_TYPE}")
+    set(TYM_OUTPUT_PATH "${TYM_BIN_DIR}/${CMAKE_BUILD_TYPE}")
 endif()
 
+set(EXECUTABLE_OUTPUT_PATH ${TYM_OUTPUT_PATH})
+set(LIBRARY_OUTPUT_PATH ${TYM_OUTPUT_PATH})
+
 # Path where all dlls will be copied before compiling package
-set(TYM_SETUP_TREE_PATH ${EXECUTABLE_OUTPUT_PATH})
+set(TYM_SETUP_TREE_PATH ${TYM_OUTPUT_PATH})
 # Directory were resulting package will be generated
 set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
 # Resulting package filename

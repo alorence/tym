@@ -77,6 +77,10 @@ qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
     LinguistTools
 )
 
+set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${TYM_OUTPUT_PATH}
+)
+
 if(WIN32)
     # Ensure main() function is compatible with target platform
     target_link_libraries(${TYM_EXECUTABLE_FILENAME}
