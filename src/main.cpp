@@ -19,38 +19,36 @@
 
 #include <QtWidgets/QApplication>
 #include <QTextEdit>
+
+#include <Logger.h>
+#include <ConsoleAppender.h>
+
 #include "ui_mainwindow.h"
 #include "gui/mainwindow.h"
 #include "commons.h"
 #include "version.h"
 
+// TODO : implement a specific appender for Qt Widgets
 QTextEdit * console;
-
-void printConsoleMessage(QtMsgType type, const char *msg)
-{
-    switch (type) {
-    case QtDebugMsg:
-    console->append(msg);
-    break;
-    case QtWarningMsg:
-    console->append(QObject::tr("Warning: %1").arg(msg));
-    break;
-    case QtCriticalMsg:
-    console->append(QObject::tr("Critical: %1").arg(msg));
-    break;
-    case QtFatalMsg:
-    console->append(QObject::tr("Fatal: %1").arg(msg));
-    abort();
-    }
-}
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    a.setOrganizationName("Tag Your Music");
-    a.setApplicationName("tym");
+    ConsoleAppender* appender = new ConsoleAppender();
+    appender->setFormat("[%-7l] <%c> %m\n");
+#ifdef QT_DEBUG
+    appender->setDetailsLevel(Logger::Trace);
+#endif
+    Logger::registerAppender(appender);
+    console = new QTextEdit();
+
+    a.setApplicationName("TagYourMusic");
+    a.setApplicationDisplayName("Tag Your Music");
+    a.setOrganizationDomain("tagyourmusic.net");
     a.setApplicationVersion(TYM_VERSION);
+
+    LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName()).arg(a.applicationVersion()));
 
     {
         // Initialize some mandatory software items
@@ -60,14 +58,16 @@ int main(int argc, char *argv[])
         if( ! QDir(Constants::picturesLocation()).exists()) {
             QDir().mkpath(Constants::picturesLocation());
         }
+        LOG_TRACE(QObject::tr("data location : %1 - pictures location : %2")
+                  .arg(Constants::dataLocation())
+                  .arg(Constants::picturesLocation()));
     }
 
-    console = new QTextEdit();
-//    qInstallMsgHandler(printConsoleMessage);
 
     qRegisterMetaType<QItemSelection>("QItemSelection");
 
     MainWindow w;
+    // FIXME : if this method is not called, program stop with a bad return code
     w.registerConsole(console);
     w.show();
 

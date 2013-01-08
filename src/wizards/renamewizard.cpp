@@ -58,7 +58,7 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         row++;
     }
 
-    // FIXME : Default result set manually are not immediatly reachable with this call
+    // BUG : Default result set manually are not immediatly reachable with this call
     QSqlQuery tracksInfos = BPDatabase::instance()->tracksInformations(bpids);
     while(tracksInfos.next()) {
         tracksInformations[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
@@ -126,29 +126,29 @@ void RenameWizard::initializePage(int id)
 
                 QFileInfo from(dir + QDir::separator() + ui->previewTable->item(row, OrigFileName)->text());
                 if( ! from.exists()) {
-                    qWarning() << tr("Error, file %1 does not exists, it can't be renamed.")
-                                  .arg(from.canonicalFilePath());
+                    LOG_WARNING(tr("Error, file %1 does not exists, it can't be renamed.")
+                                .arg(from.canonicalFilePath()));
                     continue;
                 }
 
                 QString to = dir + QDir::separator() + ui->previewTable->item(row, TargetFileName)->text();
 
                 if(QFile::exists(to)) {
-                    qWarning() << tr("Error when renaming file %1, file %2 already exists.")
-                                  .arg(from.canonicalFilePath())
-                                  .arg(to);
+                    LOG_WARNING(tr("Error when renaming file %1, file %2 already exists.")
+                                .arg(from.canonicalFilePath())
+                                .arg(to));
                     continue;
                 }
 
                 // TODO : Redirect messages to the renamePage's console with Logger
                 if(QFile::rename(from.canonicalFilePath(), to)) {
-                    qDebug() << tr("File %1 renamed to %2")
-                                .arg(from.canonicalFilePath())
-                                .arg(QFileInfo(to).fileName());
+                    LOG_INFO(tr("File %1 renamed to %2")
+                             .arg(from.canonicalFilePath())
+                             .arg(QFileInfo(to).fileName()));
                 } else {
-                    qWarning() << tr("Error when renaming file %1 into %2")
-                                  .arg(from.canonicalFilePath())
-                                  .arg(to);
+                    LOG_WARNING(tr("Error when renaming file %1 into %2")
+                                .arg(from.canonicalFilePath())
+                                .arg(to));
                     continue;
                 }
 

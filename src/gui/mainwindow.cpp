@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
     if( ! BPDatabase::instance()->initialized()) {
-        qCritical() << tr("Impossible to connect with database...");
+        LOG_ERROR(tr("Impossible to connect with database..."));
         return;
     }
 
