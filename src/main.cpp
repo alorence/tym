@@ -28,6 +28,7 @@
 #include "commons.h"
 #include "version.h"
 
+// TODO : implement a specific appender for Qt Widgets
 QTextEdit * console;
 
 int main(int argc, char *argv[])
@@ -47,6 +48,8 @@ int main(int argc, char *argv[])
     a.setOrganizationDomain("tagyourmusic.net");
     a.setApplicationVersion(TYM_VERSION);
 
+    LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName()).arg(a.applicationVersion()));
+
     {
         // Initialize some mandatory software items
         if( ! QDir(Constants::dataLocation()).exists()) {
@@ -55,12 +58,16 @@ int main(int argc, char *argv[])
         if( ! QDir(Constants::picturesLocation()).exists()) {
             QDir().mkpath(Constants::picturesLocation());
         }
+        LOG_TRACE(QObject::tr("data location : %1 - pictures location : %2")
+                  .arg(Constants::dataLocation())
+                  .arg(Constants::picturesLocation()));
     }
 
 
     qRegisterMetaType<QItemSelection>("QItemSelection");
 
     MainWindow w;
+    // FIXME : if this method is not called, program stop with a bad return code
     w.registerConsole(console);
     w.show();
 
