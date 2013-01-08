@@ -336,10 +336,10 @@ QString BPDatabase::storeTrack(const QJsonValue track)
     QString key = stdKey.value("letter").toString();
     {
         if(stdKey.value("sharp").toBool()) {
-            key.append("#");
+            key.append("♯"); // ♯ is unicode char 266F, or L'\u266F' (in a c++ code)
         }
         if(stdKey.value("flat").toBool()) {
-            key.append("\u266D");
+            key.append('♭'); // ♭ is unicode char 266D, or L'\u266D' (in a c++ code)
         }
         key.append(" ");
         key.append(stdKey.value("chord").toString());
