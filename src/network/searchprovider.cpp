@@ -70,7 +70,7 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
 
     connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(getError(QNetworkReply::NetworkError)));
+            this, SLOT(requestError(QNetworkReply::NetworkError)));
 }
 
 void SearchProvider::parseReplyForIdSearch()
@@ -130,7 +130,7 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
         connect(reply, SIGNAL(finished()), textSearchMapper, SLOT(map()));
         textSearchMapper->setMapping(reply, libId);
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-                this, SLOT(getError(QNetworkReply::NetworkError)));
+                this, SLOT(requestError(QNetworkReply::NetworkError)));
     }
     delete rowNameMap;
 }
@@ -156,7 +156,7 @@ void SearchProvider::downloadTrackPicture(const QString & picId)
     downloadManagaer.insert(reply, picId);
     connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(getError(QNetworkReply::NetworkError)));
+            this, SLOT(requestError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(finished()), this, SLOT(pictureDownloaded()));
 }
 
@@ -179,12 +179,12 @@ void SearchProvider::pictureDownloaded()
     reply->deleteLater();
 }
 
-void SearchProvider::getError(QNetworkReply::NetworkError error)
+void SearchProvider::requestError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    qWarning() << QString(tr("Error on request %1 : %2"))
-                  .arg(reply->request().url().toString())
-                  .arg(error);
+    LOG_WARNING(tr("Error on request %1 : %2")
+                .arg(reply->request().url().toString())
+                .arg(error));
     reply->deleteLater();
 }
 

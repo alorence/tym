@@ -22,6 +22,7 @@
 
 #include <QtCore>
 #include <QtSql>
+#include <Logger.h>
 
 #include "commons.h"
 

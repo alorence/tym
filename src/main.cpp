@@ -34,8 +34,17 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    a.setOrganizationName("Tag Your Music");
-    a.setApplicationName("tym");
+    ConsoleAppender* appender = new ConsoleAppender();
+    appender->setFormat("[%-7l] <%c> %m\n");
+#ifdef QT_DEBUG
+    appender->setDetailsLevel(Logger::Trace);
+#endif
+    Logger::registerAppender(appender);
+    console = new QTextEdit();
+
+    a.setApplicationName("TagYourMusic");
+    a.setApplicationDisplayName("Tag Your Music");
+    a.setOrganizationDomain("tagyourmusic.net");
     a.setApplicationVersion(TYM_VERSION);
 
     {
@@ -48,11 +57,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    ConsoleAppender* consoleAppender = new ConsoleAppender();
-    consoleAppender->setFormat("[%-7l] <%C> %m\n");
-    Logger::registerAppender(consoleAppender);
-
-    console = new QTextEdit();
 
     qRegisterMetaType<QItemSelection>("QItemSelection");
 

@@ -22,6 +22,7 @@
 
 #include <QtCore>
 #include <QtNetwork>
+#include <Logger.h>
 
 #include "gui/settingsdialog.h"
 #include "commons.h"
@@ -47,7 +48,7 @@ private slots:
     void parseReplyForNameSearch(QString);
     void writeTrackPicture();
     void pictureDownloaded();
-    void getError(QNetworkReply::NetworkError);
+    void requestError(QNetworkReply::NetworkError);
 
 private :
     void initProxy();
