@@ -22,6 +22,7 @@
 
 #include <Logger.h>
 #include <ConsoleAppender.h>
+#include <WidgetAppender.h>
 
 #include "ui_mainwindow.h"
 #include "gui/mainwindow.h"
@@ -29,19 +30,23 @@
 #include "version.h"
 
 // TODO : implement a specific appender for Qt Widgets
-QTextEdit * console;
+QPlainTextEdit * console;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ConsoleAppender* appender = new ConsoleAppender();
-    appender->setFormat("[%-7l] <%c> %m\n");
+    ConsoleAppender* consoleAppender = new ConsoleAppender();
+    consoleAppender->setFormat("[%-7l] <%c> %m\n");
 #ifdef QT_DEBUG
-    appender->setDetailsLevel(Logger::Trace);
+    consoleAppender->setDetailsLevel(Logger::Trace);
 #endif
-    Logger::registerAppender(appender);
-    console = new QTextEdit();
+    Logger::registerAppender(consoleAppender);
+
+    console = new QPlainTextEdit();
+    WidgetAppender* widgetAppender = new WidgetAppender(console);
+    widgetAppender->setFormat("%m\n");
+    Logger::registerAppender(widgetAppender);
 
     a.setApplicationName("TagYourMusic");
     a.setApplicationDisplayName("Tag Your Music");
