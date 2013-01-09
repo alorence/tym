@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     a.setApplicationVersion(TYM_VERSION);
 
     LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName()).arg(a.applicationVersion()));
+    LOG_DEBUG(QObject::tr("Compiled with Qt %1, run with Qt library version %2").arg(QT_VERSION_STR).arg(qVersion()));
 
     {
         // Initialize some mandatory software items
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
         if( ! QDir(Constants::picturesLocation()).exists()) {
             QDir().mkpath(Constants::picturesLocation());
         }
-        LOG_TRACE(QObject::tr("data location : %1 - pictures location : %2")
+        LOG_DEBUG(QObject::tr("data location : %1 - pictures location : %2")
                   .arg(Constants::dataLocation())
                   .arg(Constants::picturesLocation()));
     }
@@ -70,6 +71,9 @@ int main(int argc, char *argv[])
     // FIXME : if this method is not called, program stop with a bad return code
     w.registerConsole(console);
     w.show();
+    int returnCode = a.exec();
 
-    return a.exec();
+    LOG_DEBUG(QObject::tr("Applciation ends with return code %1").arg(returnCode));
+
+    return returnCode;
 }
