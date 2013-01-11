@@ -31,6 +31,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
 
+    // Configure console message displaying
+    connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), ui->outputConsole, SLOT(setVisible(bool)));
+    ui->actionToggleConsole->setChecked(defaultConsoleDisplaying);
+    ui->outputConsole->setVisible(defaultConsoleDisplaying);
+
+    WidgetAppender* widgetAppender = new WidgetAppender(ui->outputConsole);
+    widgetAppender->setFormat("%m\n");
+    Logger::registerAppender(widgetAppender);
+
     if( ! BPDatabase::instance()->initialized()) {
         LOG_ERROR(tr("Impossible to connect with database..."));
         return;
@@ -126,19 +135,8 @@ MainWindow::~MainWindow()
     BPDatabase::instance()->deleteInstance();
     delete ui;
     delete generalMapper;
-    delete console;
     dbThread->wait();
     dbThread->deleteLater();
-}
-
-void MainWindow::registerConsole(QWidget *c)
-{
-    console = c;
-    ui->centralWidget->layout()->addWidget(c);
-    connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), console, SLOT(setVisible(bool)));
-
-    ui->actionToggleConsole->setChecked(defaultConsoleDisplaying);
-    console->setVisible(defaultConsoleDisplaying);
 }
 
 void MainWindow::show()

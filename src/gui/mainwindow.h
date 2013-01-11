@@ -23,6 +23,9 @@
 #include <QtSql>
 #include <QtWidgets>
 
+#include <Logger.h>
+#include <WidgetAppender.h>
+
 #include "ui_about.h"
 #include "settingsdialog.h"
 #include "dbaccess/librarymodel.h"
@@ -45,7 +48,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void registerConsole(QWidget * c);
     void show();
 
 signals:

@@ -158,6 +158,9 @@
       </widget>
      </widget>
     </item>
+    <item row="2" column="0">
+     <widget class="ConsoleWidget" name="outputConsole"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -340,6 +343,11 @@
    <extends>QWidget</extends>
    <header>gui/trackinfosview.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ConsoleWidget</class>
+   <extends>QPlainTextEdit</extends>
+   <header>gui/consolewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

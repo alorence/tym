@@ -22,15 +22,11 @@
 
 #include <Logger.h>
 #include <ConsoleAppender.h>
-#include <WidgetAppender.h>
 
 #include "ui_mainwindow.h"
 #include "gui/mainwindow.h"
 #include "commons.h"
 #include "version.h"
-
-// TODO : implement a specific appender for Qt Widgets
-QPlainTextEdit * console;
 
 int main(int argc, char *argv[])
 {
@@ -42,11 +38,6 @@ int main(int argc, char *argv[])
     consoleAppender->setDetailsLevel(Logger::Trace);
 #endif
     Logger::registerAppender(consoleAppender);
-
-    console = new QPlainTextEdit();
-    WidgetAppender* widgetAppender = new WidgetAppender(console);
-    widgetAppender->setFormat("%m\n");
-    Logger::registerAppender(widgetAppender);
 
     a.setApplicationName("TagYourMusic");
     a.setApplicationDisplayName("Tag Your Music");
@@ -73,8 +64,6 @@ int main(int argc, char *argv[])
     qRegisterMetaType<QItemSelection>("QItemSelection");
 
     MainWindow w;
-    // FIXME : if this method is not called, program stop with a bad return code
-    w.registerConsole(console);
     w.show();
     int returnCode = a.exec();
 

@@ -24,6 +24,7 @@ set(gui_HEADERS
     mainwindow.h
     settingsdialog.h
     trackinfosview.h
+    consolewidget.h
 )
 
 set(gui_SOURCES
@@ -37,6 +38,7 @@ set(gui_UIS
     mainwindow.ui
     settingsdialog.ui
     trackinfosview.ui
+    consolewidget.ui
 )
 
 # Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
