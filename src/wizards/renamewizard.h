@@ -25,7 +25,7 @@
 #include <QtSql>
 
 #include "commons.h"
-#include "patterntool.h"
+#include "tools/patterntool.h"
 #include "dbaccess/bpdatabase.h"
 
 namespace Ui {

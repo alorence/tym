@@ -23,26 +23,53 @@ include_directories(.)
 
 configure_file(version.h.in version.h)
 
-# Parse subdirectories
-add_subdirectory(dbaccess)
-add_subdirectory(network)
-add_subdirectory(wizards)
-add_subdirectory(gui)
-
 set(tym_HEADERS
     # commons.h is not a QObject and MOC doesn't need to be applied on it
-    patterntool.h
+    tools/patterntool.h
+    dbaccess/bpdatabase.h
+    dbaccess/librarymodel.h
+    dbaccess/searchresultsmodel.h
+    wizards/searchwizard.h
+    wizards/renamewizard.h
+    network/searchprovider.h
+    gui/mainwindow.h
+    gui/settingsdialog.h
+    gui/trackinfosview.h
+    gui/consolewidget.h
 )
 
 set(tym_SOURCES
     commons.cpp
     main.cpp
-    patterntool.cpp
+    tools/patterntool.cpp
+    dbaccess/bpdatabase.cpp
+    dbaccess/librarymodel.cpp
+    dbaccess/searchresultsmodel.cpp
+    wizards/searchwizard.cpp
+    wizards/renamewizard.cpp
+    network/searchprovider.cpp
+    gui/mainwindow.cpp
+    gui/settingsdialog.cpp
+    gui/trackinfosview.cpp
+)
+
+set(tym_UIS
+    wizards/searchwizard.ui
+    wizards/renamewizard.ui
+    gui/mainwindow.ui
+    gui/settingsdialog.ui
+    gui/trackinfosview.ui
+    gui/consolewidget.ui
+    gui/about.ui
 )
 
 # Process headers files (<filename>.h) with moc, generate corresponding moc_<filename>.cxx
 # These process converts specific Qt stuff (signals/slots, etc.) into valid c++ equivalent
 qt5_wrap_cpp(tym_MOCS ${tym_HEADERS})
+
+# Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
+qt5_wrap_ui(tym_UIS_HEADERS ${tym_UIS})
+
 
 # Compile translations (*.ts) files
 qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
@@ -59,13 +86,11 @@ endif(${WIN32})
 # Configure final executable building
 add_executable(${TYM_EXECUTABLE_FILENAME}
     ${GUI_FLAG}
-    ${tym_SOURCES} ${tym_MOCS}
-    $<TARGET_OBJECTS:dbaccess>
-    $<TARGET_OBJECTS:network>
-    $<TARGET_OBJECTS:gui>
-    $<TARGET_OBJECTS:wizards>
-    $<TARGET_OBJECTS:resources>
+    ${tym_SOURCES}
+    ${tym_MOCS}
+    ${tym_UIS_HEADERS}
     ${TYM_TRANSLATIONS}
+    $<TARGET_OBJECTS:resources>
 )
 
 # Add Qt5 modules dependencies

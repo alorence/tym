@@ -34,7 +34,7 @@
 #include "network/searchprovider.h"
 #include "wizards/searchwizard.h"
 #include "wizards/renamewizard.h"
-#include "patterntool.h"
+#include "tools/patterntool.h"
 
 namespace Ui {
 class MainWindow;
