@@ -113,47 +113,31 @@ void RenameWizard::on_patternSelection_currentIndexChanged(int index)
     updateRenamePreview();
 }
 
-
 void RenameWizard::initializePage(int id)
 {
     if(id == ResultPage) {
-        QRegExp renameValidityCheck("^<.*>$");
+
+
+        QHash<QString, QString> renameMap;
 
         for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-            // Rename only if the target filename is not "<...>"
-            if( ! renameValidityCheck.exactMatch(ui->previewTable->item(row, TargetFileName)->text())) {
-                QString dir = ui->previewTable->item(row, Directory)->text();
 
-                QFileInfo from(dir + QDir::separator() + ui->previewTable->item(row, OrigFileName)->text());
-                if( ! from.exists()) {
-                    LOG_WARNING(tr("Error, file %1 does not exists, it can't be renamed.")
-                                .arg(from.canonicalFilePath()));
-                    continue;
-                }
+            QString dir = ui->previewTable->item(row, Directory)->text();
+            QString from(dir + QDir::separator() + ui->previewTable->item(row, OrigFileName)->text());
+            QString to = dir + QDir::separator() + ui->previewTable->item(row, TargetFileName)->text();
 
-                QString to = dir + QDir::separator() + ui->previewTable->item(row, TargetFileName)->text();
-
-                if(QFile::exists(to)) {
-                    LOG_WARNING(tr("Error when renaming file %1, file %2 already exists.")
-                                .arg(from.canonicalFilePath())
-                                .arg(to));
-                    continue;
-                }
-
-                // TODO : Redirect messages to the renamePage's console with Logger
-                if(QFile::rename(from.canonicalFilePath(), to)) {
-                    LOG_INFO(tr("File %1 renamed to %2")
-                             .arg(from.canonicalFilePath())
-                             .arg(QFileInfo(to).fileName()));
-                } else {
-                    LOG_WARNING(tr("Error when renaming file %1 into %2")
-                                .arg(from.canonicalFilePath())
-                                .arg(to));
-                    continue;
-                }
-
-                BPDatabase::instance()->renameFile(from.canonicalFilePath(), to);
-            }
+            renameMap.insert(from, to);
         }
+
+        RenameThread *task = new RenameThread(renameMap);
+        connect(task, SIGNAL(finished()), this, SLOT(renameThreadFinished()));
+
+        task->start();
     }
+}
+
+void RenameWizard::renameThreadFinished()
+{
+    RenameThread *task = static_cast<RenameThread*>(sender());
+    task->deleteLater();
 }

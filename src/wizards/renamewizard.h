@@ -27,6 +27,7 @@
 #include "commons.h"
 #include "tools/patterntool.h"
 #include "dbaccess/bpdatabase.h"
+#include "concretetasks/renamethread.h"
 
 namespace Ui {
 class RenameWizard;
@@ -46,7 +47,7 @@ protected:
 private slots:
     void updateRenamePreview();
     void on_patternSelection_currentIndexChanged(int index);
-
+    void renameThreadFinished();
 
 private:
     Ui::RenameWizard *ui;
