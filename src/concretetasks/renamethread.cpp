@@ -61,7 +61,9 @@ void RenameThread::run()
                 continue;
             }
 
-            BPDatabase::instance()->renameFile(from.canonicalFilePath(), to);
+            // TODO : check références rules to understand why GCC can't automatically get reference
+            QString cannonPath(from.canonicalFilePath());
+            BPDatabase::instance()->renameFile(cannonPath, to);
         }
     }
 }

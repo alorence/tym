@@ -228,7 +228,8 @@ void MainWindow::on_actionSearch_triggered()
 
         QFileInfo file(record.value(Library::FilePath).toString());
 
-        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(file.fileName(), interestingKeys);
+        QString refFileName(file.fileName());
+        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(refFileName, interestingKeys);
     }
 
     ui->progress->setVisible(true);
