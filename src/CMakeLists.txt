@@ -72,12 +72,11 @@ qt5_wrap_cpp(tym_MOCS ${tym_HEADERS})
 # Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
 qt5_wrap_ui(tym_UIS_HEADERS ${tym_UIS})
 
-
 # Compile translations (*.ts) files
 qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 
 # build/gui/ui_mainwindow.h must be accessible for main.cpp
-include_directories(${tymgui_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/gui)
 
 if(${WIN32})
     set(GUI_FLAG WIN32)
@@ -95,6 +94,8 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
     $<TARGET_OBJECTS:resources>
 )
 
+target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger)
+
 # Add Qt5 modules dependencies
 qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
     Gui
@@ -104,16 +105,10 @@ qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
     LinguistTools
 )
 
-set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${TYM_OUTPUT_PATH}
-)
-
+# WIN32 specific flags and compiler options
 if(WIN32)
     # Ensure main() function is compatible with target platform
-    target_link_libraries(${TYM_EXECUTABLE_FILENAME}
-        ${Qt5Core_QTMAIN_LIBRARIES}
-        Logger
-    )
+    target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${Qt5Core_QTMAIN_LIBRARIES})
 
     if(${MINGW})
         set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS "-mwindows")
