@@ -82,10 +82,9 @@ private:
     SearchProvider searchProvider;
     QSignalMapper * generalMapper;
 
+    BPDatabase * _dbHelper;
     LibraryModel *_libraryModel;
     SearchResultsModel * _searchModel;
-
-    QThread * dbThread;
 
     QWidget * console;
 };

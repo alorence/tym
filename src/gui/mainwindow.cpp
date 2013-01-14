@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
     searchProvider(settings, this),
-    dbThread(new QThread(this))
+    _dbHelper(new BPDatabase)
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
@@ -40,19 +40,16 @@ MainWindow::MainWindow(QWidget *parent) :
     widgetAppender->setFormat("%m\n");
     Logger::registerAppender(widgetAppender);
 
-    if( ! BPDatabase::instance()->initialized()) {
+    if( ! _dbHelper->initialized()) {
         LOG_ERROR(tr("Impossible to connect with database..."));
         return;
     }
 
-    dbThread->start();
-    BPDatabase::instance()->moveToThread(dbThread);
-
-    _libraryModel = new LibraryModel(this, BPDatabase::instance()->dbObject(BPDatabase::MAIN_DB));
+    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
     _libraryModel->setTable("LibraryHelper");
     _libraryModel->select();
 
-    _searchModel = new SearchResultsModel(this, BPDatabase::instance()->dbObject(BPDatabase::MAIN_DB));
+    _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
     _searchModel->setTable("SearchResultsHelper");
     _searchModel->select();
 
@@ -110,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
             &searchProvider, SLOT(downloadTrackPicture(const QString&)));
     connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
-    connect(BPDatabase::instance(), SIGNAL(referenceForTrackUpdated(QString)),
+    connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
             _searchModel, SLOT(refresh(QString)));
 
     connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
@@ -121,8 +118,8 @@ MainWindow::MainWindow(QWidget *parent) :
      * Actions
      */
     connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
-            BPDatabase::instance(), SLOT(storeSearchResults(QString,QJsonValue)));
-    connect(BPDatabase::instance(), SIGNAL(libraryEntryUpdated(QString)),
+            _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
+    connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
 
     updateLibraryActions();
@@ -131,12 +128,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    dbThread->exit();
-    BPDatabase::instance()->deleteInstance();
+    _dbHelper->deleteLater();
     delete ui;
     delete generalMapper;
-    dbThread->wait();
-    dbThread->deleteLater();
 }
 
 void MainWindow::show()
@@ -165,7 +159,7 @@ void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
 {
     if(selected.isValid()) {
         QVariant bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid);
-        ui->trackInfos->updateInfos(BPDatabase::instance()->trackInformations(bpid));
+        ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
     } else {
         ui->trackInfos->clearData();
     }
@@ -273,7 +267,7 @@ void MainWindow::on_actionImport_triggered()
     QString filters = "Audio tracks (*.wav *.flac *.mp3)";
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/resources/examples/tracks", filters, 0, 0);
     if(! fileList.isEmpty()) {
-        BPDatabase::instance()->importFiles(fileList);
+        _dbHelper->importFiles(fileList);
     }
 }
 
@@ -287,7 +281,7 @@ void MainWindow::on_actionLibraryDelete_triggered()
         rows << elt.first;
         uids << elt.second.value(Library::Uid).toString();
     }
-    BPDatabase::instance()->deleteFromLibrary(uids);
+    _dbHelper->deleteFromLibrary(uids);
     _libraryModel->unselectRowsAndRefresh(rows);
 }
 
@@ -305,7 +299,7 @@ void MainWindow::on_actionSetDefaultResult_triggered()
     QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
     QString bpid = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
 
-    BPDatabase::instance()->setLibraryTrackReference(libId, bpid);
+    _dbHelper->setLibraryTrackReference(libId, bpid);
     ui->searchResultsView->selectRow(row);
 }
 
@@ -315,7 +309,7 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
     QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
     QString trackId = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
-    BPDatabase::instance()->deleteSearchResult(libId, trackId);
+    _dbHelper->deleteSearchResult(libId, trackId);
     _libraryModel->refresh();
     ui->searchResultsView->selectRow(row-1);
 }

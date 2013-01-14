@@ -58,10 +58,13 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
         row++;
     }
 
+    BPDatabase dbHelper("renameWizard");
     // BUG : Default result set manually are not immediatly reachable with this call
-    QSqlQuery tracksInfos = BPDatabase::instance()->tracksInformations(bpids);
-    while(tracksInfos.next()) {
-        tracksInformations[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
+    {
+        QSqlQuery tracksInfos = dbHelper.tracksInformations(bpids);
+        while(tracksInfos.next()) {
+            tracksInformations[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
+        }
     }
     updateRenamePreview();
 }

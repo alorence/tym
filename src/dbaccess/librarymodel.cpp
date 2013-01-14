@@ -132,7 +132,6 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
 
 bool LibraryModel::select()
 {
-    QMutexLocker locker(BPDatabase::instance()->dbMutex);
     return QSqlTableModel::select();
 }
 

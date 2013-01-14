@@ -26,6 +26,7 @@ RenameThread::RenameThread(QHash<QString, QString> renameMap, QObject *parent)
 
 void RenameThread::run()
 {
+    BPDatabase db("renameThread");
     QHashIterator<QString, QString> it(m_renameMap);
 
     QRegExp renameValidityCheck("<.*>$");
@@ -63,7 +64,7 @@ void RenameThread::run()
 
             // TODO : check références rules to understand why GCC can't automatically get reference
             QString cannonPath(from.canonicalFilePath());
-            BPDatabase::instance()->renameFile(cannonPath, to);
+            db.renameFile(cannonPath, to);
         }
     }
 }

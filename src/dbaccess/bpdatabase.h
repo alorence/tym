@@ -34,16 +34,12 @@ class BPDatabase : public QObject
     Q_OBJECT
 
 public:
-    static BPDatabase * instance();
-    static void deleteInstance();
-
-    static QString const MAIN_DB;
-    static QString const THREAD_DB;
+    explicit BPDatabase(QString connectionName = "defaultConnection", QObject *parent = 0);
+    ~BPDatabase();
 
     bool initialized();
-    bool initDB();
     QString version();
-    static QSqlDatabase dbObject(const QString &dbId = THREAD_DB);
+    QSqlDatabase dbObject();
 
     QSqlRecord trackInformations(QVariant & bpid);
     QSqlQuery tracksInformations(QStringList &bpids);
@@ -66,21 +62,15 @@ signals:
     void referenceForTrackUpdated(QString uid);
 
 private :
-    explicit BPDatabase(QObject *parent = 0);
-    BPDatabase(const BPDatabase &);
-    BPDatabase operator=(const BPDatabase &);
-    ~BPDatabase();
-
-    static BPDatabase * _instance;
-
+    QSqlDatabase _dbObject;
     QString storeTrack(const QJsonValue track);
 
     bool initTables();
-    bool dbInitialized;
+    bool _dbInitialized;
 
-    QMutex *dbMutex;
+    QMutex *_dbMutex;
 
-    QSqlRecord basicLibraryRecord;
+    QSqlRecord _basicLibraryRecord;
 };
 
 #endif // BPDATABASE_H
