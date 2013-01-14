@@ -41,7 +41,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     bool select();
 
-    QList<int> selectedIds() const;
+    QSet<int> selectedIds() const;
     QList<QPair<int, QSqlRecord> > selectedRecords() const;
 
 public slots:
@@ -50,7 +50,7 @@ public slots:
     void unselectRowsAndRefresh(QList<int> rows);
 
 private:
-    QList<int> checkedRows;
+    QSet<int> checkedRows;
     int columnWithCheckbox;
 
 signals:

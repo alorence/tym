@@ -106,9 +106,13 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
     if(ind.column() == columnWithCheckbox && role == Qt::CheckStateRole) {
         QItemSelectionModel::SelectionFlag selStatus;
         selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
-        QItemSelection line(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
-        emit rowCheckedOrUnchecked(line, selStatus);
-        emit rowCheckedOrUnchecked(index(ind.row(), columnWithCheckbox, ind.parent()), selStatus);
+
+        if(selStatus != data(ind, Qt::CheckStateRole)) {
+            QItemSelection line(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
+            emit rowCheckedOrUnchecked(line, selStatus);
+
+            emit rowCheckedOrUnchecked(index(ind.row(), columnWithCheckbox, ind.parent()), selStatus);
+        }
         return true;
     }
     else {
@@ -141,7 +145,7 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
     QItemSelectionRange range;
     foreach(range, deselected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
-            checkedRows.removeAll(i);
+            checkedRows.remove(i);
         }
         emit dataChanged(index(range.top(), columnWithCheckbox), index(range.bottom(), columnWithCheckbox));
     }
@@ -153,7 +157,7 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
     }
 }
 
-QList<int> LibraryModel::selectedIds() const
+QSet<int> LibraryModel::selectedIds() const
 {
     return checkedRows;
 }
@@ -169,17 +173,13 @@ QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
 
 void LibraryModel::refresh()
 {
-    QList<int> checkedCopy = checkedRows;
     select();
-    foreach(int row, checkedCopy) {
-        setData(index(row, columnWithCheckbox), Qt::Checked, Qt::CheckStateRole);
-    }
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
     foreach(int row, rows) {
-        checkedRows.removeAll(row);
+        checkedRows.remove(row);
     }
     refresh();
 }
