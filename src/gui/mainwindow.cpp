@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
-    searchProvider(settings, this),
+    searchProvider(QUrl(QString("http://%1").arg(settings->getSettingsValue("settings/network/beatport/apihost").toString())), this),
     _dbHelper(new BPDatabase)
 {
     ui->setupUi(this);
