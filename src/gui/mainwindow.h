@@ -54,8 +54,6 @@ private slots:
     void updateLibraryActions();
     void updateSearchResultsActions();
 
-    void updateProgressBar();
-
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
 
     void on_actionImport_triggered();

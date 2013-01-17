@@ -65,10 +65,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _searchModel->setTable("SearchResultsHelper");
     _searchModel->select();
 
-    ui->progress->setVisible(false);
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
-            this, SLOT(updateProgressBar()));
-
     // Used to transfer fixed parameters to some slots
     generalMapper = new QSignalMapper(this);
 
@@ -154,8 +150,6 @@ void MainWindow::show()
     ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
 }
 
-
-
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
     QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), Library::Uid));
@@ -194,15 +188,6 @@ void MainWindow::updateSearchResultsActions()
     ui->actionSearchResultDelete->setDisabled(numSel == 0);
 }
 
-void MainWindow::updateProgressBar()
-{int newValue = ui->progress->value() + 1;
-    ui->progress->setValue(newValue);
-
-    if(newValue == ui->progress->maximum()) {
-        ui->progress->setVisible(false);
-    }
-}
-
 void MainWindow::on_actionAbout_triggered()
 {
     QDialog * container = new QDialog(this);
@@ -214,53 +199,7 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionSearch_triggered()
 {
     SearchWizard wizard(_libraryModel->selectedRecords().values());
-    if(wizard.exec() == SearchWizard::Rejected) {
-        return;
-    }
-
-    PatternTool pt(wizard.pattern());
-    QMap<QString, QMap<QString, QString> > parsedValueMap;
-
-    QStringList interestingKeys;
-    if(wizard.searchType() == SearchWizard::FromId) {
-        interestingKeys << "bpid";
-    } else {
-        interestingKeys << "artists" << "title" << "remixers" << "name" << "mixname" << "label";
-    }
-
-    foreach (QSqlRecord record, _libraryModel->selectedRecords().values()) {
-        QFileInfo file(record.value(Library::FilePath).toString());
-
-        QString refFileName(file.fileName());
-        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(refFileName, interestingKeys);
-    }
-
-    ui->progress->setVisible(true);
-    ui->progress->setValue(ui->progress->minimum());
-
-    QMap<QString, QString> * requestMap = new QMap<QString, QString>();
-    if(wizard.searchType() == SearchWizard::FromId) {
-        foreach(QString key, parsedValueMap.keys()) {
-            QString bpid = parsedValueMap[key]["bpid"];
-            if(bpid.isEmpty()) continue;
-
-            requestMap->insert(key, bpid);
-        }
-        if( ! requestMap->isEmpty()) {
-            ui->progress->setMaximum(requestMap->size());
-            searchProvider.searchFromIds(requestMap);
-        }
-    } else {
-        foreach(QString key, parsedValueMap.keys()) {
-            if(parsedValueMap[key].values().isEmpty()) continue;
-
-            requestMap->insert(key, ((QStringList) parsedValueMap[key].values()).join(" "));
-        }
-        if( ! requestMap->isEmpty()) {
-            ui->progress->setMaximum(requestMap->size());
-            searchProvider.searchFromName(requestMap);
-        }
-    }
+    wizard.exec();
 }
 
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)

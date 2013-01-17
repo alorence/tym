@@ -123,7 +123,6 @@ void RenameWizard::initializePage(int id)
 {
     if(id == ResultPage) {
 
-
         QHash<QString, QString> renameMap;
 
         for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
