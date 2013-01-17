@@ -20,7 +20,7 @@
 #include "searchwizard.h"
 #include "ui_searchwizard.h"
 
-#include "concretetasks/searchthread.h"
+#include "concretetasks/searchtask.h"
 
 SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     QWizard(parent),
@@ -83,10 +83,14 @@ void SearchWizard::initializePage(int id)
 
 {
     if(id == ResultPage) {
-        SearchThread * task = new SearchThread(ui->pattern->text(), type, _selectedRecords);
-        connect(task, SIGNAL(finished()), this, SLOT(searchThreadFinished()));
+        QThread *thread = new QThread(this);
+        SearchTask * task = new SearchTask(ui->pattern->text(), type, _selectedRecords);
+        task->moveToThread(thread);
+        connect(thread, SIGNAL(started()), task, SLOT(run()));
+        connect(thread, SIGNAL(finished()), task, SLOT(deleteLater()));
+        connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
-        task->start();
+        thread->start();
     }
 }
 

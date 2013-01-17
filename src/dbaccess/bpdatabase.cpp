@@ -393,7 +393,7 @@ bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
 void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
 {
     _dbMutex->lock();
-    dbObject().exec("BEGIN TRANSACTION");
+    dbObject().transaction();
 
     QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
@@ -427,7 +427,7 @@ void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
             }
         }
     }
-    dbObject().exec("COMMIT");
+    dbObject().commit();
     _dbMutex->unlock();
 
     updateLibraryStatus(libUid, Library::ResultsAvailable);

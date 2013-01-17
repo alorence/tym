@@ -20,26 +20,29 @@
 #ifndef SEARCHTHREAD_H
 #define SEARCHTHREAD_H
 
-#include <QThread>
 #include <QSqlRecord>
-
+#include "task.h"
 #include "wizards/searchwizard.h"
 
-class SearchThread : public QThread
+class BPDatabase;
+class Task;
+
+class SearchTask : public Task
 {
     Q_OBJECT
+
 public:
-    explicit SearchThread(QString, SearchWizard::SearchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
-    void run();
-    
-signals:
-    
+    explicit SearchTask(QString, SearchWizard::SearchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
+    ~SearchTask();
+
 public slots:
+    void run();
 
 private:
     QString _searchPattern;
     SearchWizard::SearchType _searchType;
     QList<QSqlRecord> _selectedRecords;
+    BPDatabase* _dbHelper;
 };
 
 #endif // SEARCHTHREAD_H

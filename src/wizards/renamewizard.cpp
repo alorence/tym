@@ -23,7 +23,7 @@
 #include "commons.h"
 #include "tools/patterntool.h"
 #include "dbaccess/bpdatabase.h"
-#include "concretetasks/renamethread.h"
+#include "concretetasks/renametask.h"
 
 RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     QWizard(parent),

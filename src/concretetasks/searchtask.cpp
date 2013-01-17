@@ -17,21 +17,29 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "searchthread.h"
+#include "searchtask.h"
 
 #include "commons.h"
 #include "tools/patterntool.h"
 #include "network/searchprovider.h"
+#include "dbaccess/bpdatabase.h"
 
-SearchThread::SearchThread(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent) :
-    QThread(parent),
+SearchTask::SearchTask(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent) :
+    Task(parent),
     _searchPattern(searchPattern),
     _searchType(searchType),
-    _selectedRecords(selectedRecords)
+    _selectedRecords(selectedRecords),
+    _dbHelper(new BPDatabase("searchTask"))
 {
+//    connect(_dbHelper, SIGNAL());
 }
 
-void SearchThread::run()
+SearchTask::~SearchTask()
+{
+    delete _dbHelper;
+}
+
+void SearchTask::run()
 {
     PatternTool pt(_searchPattern);
     QMap<QString, QMap<QString, QString> > parsedValueMap;
@@ -50,11 +58,11 @@ void SearchThread::run()
         parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(refFileName, interestingKeys);
     }
 
-//    ui->progress->setVisible(true);
-//    ui->progress->setValue(ui->progress->minimum());
-
     // TODO : Get this value from settings
     SearchProvider searchProvider(QUrl("http://api.beatport.com"));
+
+    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
+            _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
 
     QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(_searchType == SearchWizard::FromId) {
@@ -65,7 +73,6 @@ void SearchThread::run()
             requestMap->insert(key, bpid);
         }
         if( ! requestMap->isEmpty()) {
-//            ui->progress->setMaximum(requestMap->size());
             searchProvider.searchFromIds(requestMap);
         }
     } else {
@@ -75,11 +82,8 @@ void SearchThread::run()
             requestMap->insert(key, ((QStringList) parsedValueMap[key].values()).join(" "));
         }
         if( ! requestMap->isEmpty()) {
-//            ui->progress->setMaximum(requestMap->size());
             searchProvider.searchFromName(requestMap);
         }
     }
-
-    // Run the event loop,
-    exec();
 }
+

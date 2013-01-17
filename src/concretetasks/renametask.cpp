@@ -17,7 +17,7 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "renamethread.h"
+#include "renametask.h"
 
 #include <Logger.h>
 
