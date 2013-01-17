@@ -24,9 +24,6 @@
 #include <QtNetwork>
 #include <Logger.h>
 
-#include "gui/settingsdialog.h"
-#include "commons.h"
-
 class SearchProvider : public QObject
 {
     Q_OBJECT

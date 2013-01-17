@@ -24,11 +24,6 @@
 #include <QtWidgets>
 #include <QtSql>
 
-#include "commons.h"
-#include "tools/patterntool.h"
-#include "dbaccess/bpdatabase.h"
-#include "concretetasks/renamethread.h"
-
 namespace Ui {
 class RenameWizard;
 }

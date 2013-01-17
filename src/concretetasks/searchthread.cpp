@@ -19,6 +19,10 @@
 
 #include "searchthread.h"
 
+#include "commons.h"
+#include "tools/patterntool.h"
+#include "network/searchprovider.h"
+
 SearchThread::SearchThread(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent) :
     QThread(parent),
     _searchPattern(searchPattern),

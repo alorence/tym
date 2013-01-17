@@ -19,6 +19,8 @@
 
 #include "bpdatabase.h"
 
+#include <Logger.h>
+
 BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
     QObject(parent),
     _dbInitialized(false),

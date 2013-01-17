@@ -20,6 +20,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <Logger.h>
+#include <WidgetAppender.h>
+
+#include "ui_about.h"
+#include "settingsdialog.h"
+#include "dbaccess/librarymodel.h"
+#include "dbaccess/searchresultsmodel.h"
+#include "dbaccess/bpdatabase.h"
+#include "wizards/searchwizard.h"
+#include "wizards/renamewizard.h"
+#include "tools/patterntool.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     defaultConsoleDisplaying(false),

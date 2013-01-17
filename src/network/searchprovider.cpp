@@ -19,6 +19,9 @@
 
 #include "searchprovider.h"
 
+#include "commons.h"
+#include "gui/settingsdialog.h"
+
 SearchProvider::SearchProvider(QUrl bpApiHost, QObject *parent) :
     QObject(parent),
     _manager(new QNetworkAccessManager(this)),

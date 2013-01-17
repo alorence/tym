@@ -20,6 +20,11 @@
 #include "renamewizard.h"
 #include "ui_renamewizard.h"
 
+#include "commons.h"
+#include "tools/patterntool.h"
+#include "dbaccess/bpdatabase.h"
+#include "concretetasks/renamethread.h"
+
 RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::RenameWizard)

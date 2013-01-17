@@ -20,6 +20,9 @@
 #include "trackinfosview.h"
 #include "ui_trackinfosview.h"
 
+#include "commons.h"
+#include "dbaccess/bpdatabase.h"
+
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TrackInfosView)

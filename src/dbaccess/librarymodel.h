@@ -21,11 +21,7 @@
 #define LIBRARYMODEL_H
 
 #include <QtCore>
-#include <QtWidgets>
 #include <QtSql>
-
-#include "commons.h"
-#include "bpdatabase.h"
 
 class LibraryModel : public QSqlTableModel
 {

@@ -19,6 +19,11 @@
 
 #include "librarymodel.h"
 
+#include <QtWidgets>
+
+#include "commons.h"
+#include "bpdatabase.h"
+
 LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db)
 {

@@ -21,9 +21,8 @@
 #define SEARCHTHREAD_H
 
 #include <QThread>
+#include <QSqlRecord>
 
-#include "tools/patterntool.h"
-#include "network/searchprovider.h"
 #include "wizards/searchwizard.h"
 
 class SearchThread : public QThread

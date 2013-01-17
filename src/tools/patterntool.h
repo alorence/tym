@@ -22,7 +22,6 @@
 
 #include <QtCore>
 #include <QtSql>
-#include "commons.h"
 
 // TODO : rewrite this class to have a nice code for all its uses
 class PatternTool : public QObject

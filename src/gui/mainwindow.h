@@ -23,18 +23,13 @@
 #include <QtSql>
 #include <QtWidgets>
 
-#include <Logger.h>
-#include <WidgetAppender.h>
-
-#include "ui_about.h"
-#include "settingsdialog.h"
-#include "dbaccess/librarymodel.h"
-#include "dbaccess/searchresultsmodel.h"
-#include "dbaccess/bpdatabase.h"
 #include "network/searchprovider.h"
-#include "wizards/searchwizard.h"
-#include "wizards/renamewizard.h"
-#include "tools/patterntool.h"
+
+class SettingsDialog;
+class SearchProvider;
+class BPDatabase;
+class LibraryModel;
+class SearchResultsModel;
 
 namespace Ui {
 class MainWindow;

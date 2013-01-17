@@ -21,9 +21,6 @@
 #define RENAMETHREAD_H
 
 #include <QtCore>
-#include <Logger.h>
-#include "dbaccess/bpdatabase.h"
-#include "commons.h"
 
 class RenameThread : public QThread
 {

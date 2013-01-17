@@ -20,6 +20,8 @@
 #include "searchwizard.h"
 #include "ui_searchwizard.h"
 
+#include "concretetasks/searchthread.h"
+
 SearchWizard::SearchWizard(QWidget *parent) :
     QWizard(parent),
     ui(new Ui::SearchWizard)
@@ -75,3 +77,4 @@ void SearchWizard::customSearchSelected(bool checked)
         type = Custom;
     }
 }
+

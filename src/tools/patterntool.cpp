@@ -19,6 +19,8 @@
 
 #include "patterntool.h"
 
+#include "commons.h"
+
 PatternTool::PatternTool(QString pattern, QObject *parent) :
     QObject(parent),
     pattern(pattern)

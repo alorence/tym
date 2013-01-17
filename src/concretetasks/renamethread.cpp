@@ -19,6 +19,11 @@
 
 #include "renamethread.h"
 
+#include <Logger.h>
+
+#include "commons.h"
+#include "dbaccess/bpdatabase.h"
+
 RenameThread::RenameThread(QHash<QString, QString> renameMap, QObject *parent)
 {
     m_renameMap = renameMap;
