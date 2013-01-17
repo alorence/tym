@@ -22,6 +22,7 @@
 
 #include <QWizard>
 #include <QtCore>
+#include <QSqlRecord>
 
 namespace Ui {
 class SearchWizard;
@@ -38,8 +39,10 @@ public:
         Custom
     };
 
-    explicit SearchWizard(QWidget *parent = 0);
+    explicit SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent = 0);
     ~SearchWizard();
+    void initializePage(int id);
+
     QString pattern() const;
     SearchType searchType() const;
 
@@ -51,9 +54,17 @@ private slots:
     void titleArtistSearchSelected(bool);
     void customSearchSelected(bool);
 
+    void searchThreadFinished();
+
 private:
     Ui::SearchWizard *ui;
     SearchType type;
+    QList<QSqlRecord> _selectedRecords;
+
+    enum WizardPages {
+        SelectPatternPage = 0,
+        ResultPage
+    };
 };
 
 #endif // SEARCHWIZARD_H

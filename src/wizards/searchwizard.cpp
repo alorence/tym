@@ -22,9 +22,10 @@
 
 #include "concretetasks/searchthread.h"
 
-SearchWizard::SearchWizard(QWidget *parent) :
+SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     QWizard(parent),
-    ui(new Ui::SearchWizard)
+    ui(new Ui::SearchWizard),
+    _selectedRecords(selectedRecords)
 {
     ui->setupUi(this);
 
@@ -76,5 +77,22 @@ void SearchWizard::customSearchSelected(bool checked)
     if(checked) {
         type = Custom;
     }
+}
+
+void SearchWizard::initializePage(int id)
+
+{
+    if(id == ResultPage) {
+        SearchThread * task = new SearchThread(ui->pattern->text(), type, _selectedRecords);
+        connect(task, SIGNAL(finished()), this, SLOT(searchThreadFinished()));
+
+        task->start();
+    }
+}
+
+void SearchWizard::searchThreadFinished()
+{
+    SearchThread *task = static_cast<SearchThread*>(sender());
+    task->deleteLater();
 }
 

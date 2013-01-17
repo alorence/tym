@@ -33,7 +33,7 @@ class RenameWizard : public QWizard
     Q_OBJECT
     
 public:
-    explicit RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent = 0);
+    explicit RenameWizard(QList<QSqlRecord> selected, QWidget *parent = 0);
     ~RenameWizard();
 
 protected:

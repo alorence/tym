@@ -38,7 +38,7 @@ public:
     bool select();
 
     QSet<int> selectedIds() const;
-    QList<QPair<int, QSqlRecord> > selectedRecords() const;
+    QHash<int, QSqlRecord> selectedRecords() const;
 
 public slots:
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);

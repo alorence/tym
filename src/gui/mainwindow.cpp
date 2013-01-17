@@ -213,7 +213,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SearchWizard wizard;
+    SearchWizard wizard(_libraryModel->selectedRecords().values());
     if(wizard.exec() == SearchWizard::Rejected) {
         return;
     }
@@ -228,10 +228,7 @@ void MainWindow::on_actionSearch_triggered()
         interestingKeys << "artists" << "title" << "remixers" << "name" << "mixname" << "label";
     }
 
-    QPair<int, QSqlRecord> entry;
-    foreach (entry, _libraryModel->selectedRecords()) {
-        QSqlRecord record = entry.second;
-
+    foreach (QSqlRecord record, _libraryModel->selectedRecords().values()) {
         QFileInfo file(record.value(Library::FilePath).toString());
 
         QString refFileName(file.fileName());
@@ -285,13 +282,14 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionLibraryDelete_triggered()
 {
-    QList<QPair<int, QSqlRecord> > selecteds = _libraryModel->selectedRecords();
+    QHash<int, QSqlRecord> selecteds = _libraryModel->selectedRecords();
     QList<int> rows;
     QStringList uids;
-    QPair<int, QSqlRecord> elt;
-    foreach(elt, selecteds) {
-        rows << elt.first;
-        uids << elt.second.value(Library::Uid).toString();
+
+    QHashIterator<int, QSqlRecord> it(selecteds);
+    while(it.hasNext()) {
+        rows << it.next().key();
+        uids << it.value().value(Library::Uid).toString();
     }
     _dbHelper->deleteFromLibrary(uids);
     _libraryModel->unselectRowsAndRefresh(rows);
@@ -328,7 +326,7 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
 void MainWindow::on_actionRename_triggered()
 {
-    RenameWizard wizard(_libraryModel->selectedRecords());
+    RenameWizard wizard(_libraryModel->selectedRecords().values());
     if(wizard.exec() == SearchWizard::Rejected) {
         return;
     }

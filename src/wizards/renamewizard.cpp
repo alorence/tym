@@ -25,7 +25,7 @@
 #include "dbaccess/bpdatabase.h"
 #include "concretetasks/renamethread.h"
 
-RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *parent) :
+RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::RenameWizard)
 {
@@ -40,10 +40,8 @@ RenameWizard::RenameWizard(QList<QPair<int, QSqlRecord> > selected, QWidget *par
 
     QStringList bpids;
 
-    QPair<int, QSqlRecord> elt;
     int row = 0;
-    foreach(elt, selected) {
-        QSqlRecord record = elt.second;
+    foreach(QSqlRecord record, selected) {
 
         QString bpid = record.value(Library::Bpid).toString();
         if( ! bpid.isEmpty()) {

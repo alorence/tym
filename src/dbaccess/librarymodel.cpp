@@ -167,11 +167,11 @@ QSet<int> LibraryModel::selectedIds() const
     return checkedRows;
 }
 
-QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
+QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
 {
-    QList<QPair<int, QSqlRecord> > result;
+    QHash<int, QSqlRecord> result;
     foreach(int index, checkedRows) {
-        result << QPair<int, QSqlRecord>(index, record(index));
+        result[index] = record(index);
     }
     return result;
 }
