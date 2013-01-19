@@ -200,6 +200,7 @@ void MainWindow::on_actionSearch_triggered()
 {
     SearchWizard wizard(_libraryModel->selectedRecords().values());
     wizard.exec();
+    _libraryModel->refresh();
 }
 
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
