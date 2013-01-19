@@ -43,10 +43,12 @@ include_directories(
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# qt5/qtbase/include/QtCore/qglobal.h:1765:4: error:
-# #error "You must build your code with position independent code if Qt was
-# built with -reduce-relocations. " "Compile your code with -fPIC or -fPIE."
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+if(UNIX)
+    # qt5/qtbase/include/QtCore/qglobal.h:1765:4: error:
+    # #error "You must build your code with position independent code if Qt was
+    # built with -reduce-relocations. " "Compile your code with -fPIC or -fPIE."
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif(UNIX)
 
 # Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
