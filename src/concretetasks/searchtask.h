@@ -17,24 +17,37 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENAMETHREAD_H
-#define RENAMETHREAD_H
+#ifndef SEARCHTHREAD_H
+#define SEARCHTHREAD_H
 
-#include <QtCore>
-#include <Logger.h>
-#include "dbaccess/bpdatabase.h"
-#include "commons.h"
+#include <QSqlRecord>
+#include "task.h"
+#include "wizards/searchwizard.h"
 
-class RenameThread : public QThread
+class Task;
+class BPDatabase;
+class SearchProvider;
+
+class SearchTask : public Task
 {
     Q_OBJECT
 
 public:
-    explicit RenameThread(QHash<QString, QString>, QObject *parent = 0);
+    explicit SearchTask(QString, SearchWizard::SearchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
+    ~SearchTask();
 
+public slots:
     void run();
+    void checkCoundResults();
+
 private:
-    QHash<QString, QString> m_renameMap;
+    QString _searchPattern;
+    SearchWizard::SearchType _searchType;
+    QList<QSqlRecord> _selectedRecords;
+    BPDatabase* _dbHelper;
+    SearchProvider* _search;
+
+    int _searchResultsCount;
 };
 
-#endif // RENAMETHREAD_H
+#endif // SEARCHTHREAD_H

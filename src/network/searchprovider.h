@@ -24,14 +24,11 @@
 #include <QtNetwork>
 #include <Logger.h>
 
-#include "gui/settingsdialog.h"
-#include "commons.h"
-
 class SearchProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit SearchProvider(SettingsDialog *sd, QObject *parent = 0);
+    explicit SearchProvider(QUrl bpApiHost, QObject *parent = 0);
     ~SearchProvider();
     
 signals:
@@ -53,15 +50,15 @@ private slots:
 private :
     void initProxy();
 
-    QNetworkAccessManager *manager;
-    SettingsDialog* settings;
-    QUrl apiUrl;
-    QString tracksPath;
-    QString searchPath;
+    QNetworkAccessManager *_manager;
 
-    QMap<QNetworkReply *, QMap<QString, QString>*> replyMap;
-    QSignalMapper *textSearchMapper;
-    QMap<QNetworkReply*, QString> downloadManagaer;
+    QUrl _apiUrl;
+    QString _tracksPath;
+    QString _searchPath;
+
+    QMap<QNetworkReply *, QMap<QString, QString>*> _replyMap;
+    QSignalMapper *_textSearchMapper;
+    QMap<QNetworkReply*, QString> _downloadManagaer;
 };
 
 #endif // SEARCHPROVIDER_H

@@ -21,11 +21,7 @@
 #define LIBRARYMODEL_H
 
 #include <QtCore>
-#include <QtWidgets>
 #include <QtSql>
-
-#include "commons.h"
-#include "bpdatabase.h"
 
 class LibraryModel : public QSqlTableModel
 {
@@ -41,8 +37,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     bool select();
 
-    QList<int> selectedIds() const;
-    QList<QPair<int, QSqlRecord> > selectedRecords() const;
+    QSet<int> selectedIds() const;
+    QHash<int, QSqlRecord> selectedRecords() const;
 
 public slots:
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
@@ -50,7 +46,7 @@ public slots:
     void unselectRowsAndRefresh(QList<int> rows);
 
 private:
-    QList<int> checkedRows;
+    QSet<int> checkedRows;
     int columnWithCheckbox;
 
 signals:

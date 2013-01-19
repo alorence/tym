@@ -23,18 +23,13 @@
 #include <QtSql>
 #include <QtWidgets>
 
-#include <Logger.h>
-#include <WidgetAppender.h>
-
-#include "ui_about.h"
-#include "settingsdialog.h"
-#include "dbaccess/librarymodel.h"
-#include "dbaccess/searchresultsmodel.h"
-#include "dbaccess/bpdatabase.h"
 #include "network/searchprovider.h"
-#include "wizards/searchwizard.h"
-#include "wizards/renamewizard.h"
-#include "tools/patterntool.h"
+
+class SettingsDialog;
+class SearchProvider;
+class BPDatabase;
+class LibraryModel;
+class SearchResultsModel;
 
 namespace Ui {
 class MainWindow;
@@ -59,8 +54,6 @@ private slots:
     void updateLibraryActions();
     void updateSearchResultsActions();
 
-    void updateProgressBar();
-
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
 
     void on_actionImport_triggered();
@@ -82,10 +75,9 @@ private:
     SearchProvider searchProvider;
     QSignalMapper * generalMapper;
 
+    BPDatabase * _dbHelper;
     LibraryModel *_libraryModel;
     SearchResultsModel * _searchModel;
-
-    QThread * dbThread;
 
     QWidget * console;
 };

@@ -19,26 +19,28 @@
 
 #include "searchprovider.h"
 
-SearchProvider::SearchProvider(SettingsDialog *sd, QObject *parent) :
-    QObject(parent),
-    manager(new QNetworkAccessManager(this)),
-    settings(sd),
-    replyMap(),
-    textSearchMapper(new QSignalMapper(this))
-{
-    apiUrl = QUrl(QString("http://%1").arg(settings->getSettingsValue("settings/network/beatport/apihost").toString()));
-    tracksPath = "/catalog/3/tracks";
-    searchPath = "/catalog/3/search";
+#include "commons.h"
+#include "gui/settingsdialog.h"
 
-    connect(textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
+SearchProvider::SearchProvider(QUrl bpApiHost, QObject *parent) :
+    QObject(parent),
+    _manager(new QNetworkAccessManager(this)),
+    _apiUrl(bpApiHost),
+    _replyMap(),
+    _textSearchMapper(new QSignalMapper(this))
+{
+    _tracksPath = "/catalog/3/tracks";
+    _searchPath = "/catalog/3/search";
+
+    connect(_textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
 }
 
 SearchProvider::~SearchProvider()
 {
-    foreach(QNetworkReply* reply, replyMap.keys())
-       delete replyMap.take(reply);
+    foreach(QNetworkReply* reply, _replyMap.keys())
+       delete _replyMap.take(reply);
 
-    delete textSearchMapper;
+    delete _textSearchMapper;
 }
 
 void SearchProvider::initProxy()
@@ -55,8 +57,8 @@ void SearchProvider::initProxy()
 
 void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
 {
-    QUrl requestUrl = QUrl(apiUrl);
-    requestUrl.setPath(tracksPath);
+    QUrl requestUrl(_apiUrl);
+    requestUrl.setPath(_tracksPath);
 
     QUrlQuery query;
     query.addQueryItem("ids", QStringList(uidBpidMap->values()).join(","));
@@ -64,9 +66,9 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
 
     QNetworkRequest request(requestUrl);
 
-    QNetworkReply *reply = manager->get(request);
+    QNetworkReply *reply = _manager->get(request);
 
-    replyMap.insert(reply, uidBpidMap);
+    _replyMap.insert(reply, uidBpidMap);
 
     connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -76,7 +78,7 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
 void SearchProvider::parseReplyForIdSearch()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QMap<QString, QString> *uidBpidMap = replyMap.take(reply);
+    QMap<QString, QString> *uidBpidMap = _replyMap.take(reply);
 
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
@@ -102,8 +104,8 @@ void SearchProvider::parseReplyForIdSearch()
 
 void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
 {
-    QUrl requestUrl = QUrl(apiUrl);
-    requestUrl.setPath(searchPath);
+    QUrl requestUrl(_apiUrl);
+    requestUrl.setPath(_searchPath);
 
     QMapIterator<QString, QString> searchList(*rowNameMap);
     while(searchList.hasNext()) {
@@ -126,9 +128,9 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
 
         QNetworkRequest request(requestUrl);
 
-        QNetworkReply *reply = manager->get(request);
-        connect(reply, SIGNAL(finished()), textSearchMapper, SLOT(map()));
-        textSearchMapper->setMapping(reply, libId);
+        QNetworkReply *reply = _manager->get(request);
+        connect(reply, SIGNAL(finished()), _textSearchMapper, SLOT(map()));
+        _textSearchMapper->setMapping(reply, libId);
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
     }
@@ -148,12 +150,12 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 
 void SearchProvider::downloadTrackPicture(const QString & picId)
 {
-    if(downloadManagaer.values().contains(picId)) return;
+    if(_downloadManagaer.values().contains(picId)) return;
 
     QNetworkRequest request(Constants::dynamicPictureUrl().arg(picId));
 
-    QNetworkReply *reply = manager->get(request);
-    downloadManagaer.insert(reply, picId);
+    QNetworkReply *reply = _manager->get(request);
+    _downloadManagaer.insert(reply, picId);
     connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(requestError(QNetworkReply::NetworkError)));
@@ -164,7 +166,7 @@ void SearchProvider::writeTrackPicture()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
 
-    QString imgName = downloadManagaer.value(reply) + ".jpg";
+    QString imgName = _downloadManagaer.value(reply) + ".jpg";
     QFile imgFile(Constants::picturesLocation() + QDir::separator() + imgName);
 
     imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
@@ -175,7 +177,7 @@ void SearchProvider::writeTrackPicture()
 void SearchProvider::pictureDownloaded()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    emit pictureDownloadFinished(downloadManagaer.take(reply));
+    emit pictureDownloadFinished(_downloadManagaer.take(reply));
     reply->deleteLater();
 }
 

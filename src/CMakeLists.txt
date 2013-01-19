@@ -25,7 +25,9 @@ configure_file(version.h.in version.h)
 
 set(tym_HEADERS
     # commons.h is not a QObject and MOC doesn't need to be applied on it
-    concretetasks/renamethread.h
+    concretetasks/task.h
+    concretetasks/renametask.h
+    concretetasks/searchtask.h
     tools/patterntool.h
     dbaccess/bpdatabase.h
     dbaccess/librarymodel.h
@@ -42,7 +44,9 @@ set(tym_HEADERS
 set(tym_SOURCES
     commons.cpp
     main.cpp
-    concretetasks/renamethread.cpp
+    concretetasks/task.cpp
+    concretetasks/renametask.cpp
+    concretetasks/searchtask.cpp
     tools/patterntool.cpp
     dbaccess/bpdatabase.cpp
     dbaccess/librarymodel.cpp

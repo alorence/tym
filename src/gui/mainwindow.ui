@@ -107,10 +107,10 @@
          <string>Search Results</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="0">
+         <item row="1" column="0">
           <widget class="TrackInfosView" name="trackInfos" native="true"/>
          </item>
-         <item row="1" column="0">
+         <item row="0" column="0">
           <widget class="QTableView" name="searchResultsView">
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
@@ -139,13 +139,6 @@
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QProgressBar" name="progress">
-           <property name="value">
-            <number>0</number>
-           </property>
           </widget>
          </item>
         </layout>
@@ -339,15 +332,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>ConsoleWidget</class>
+   <extends>QPlainTextEdit</extends>
+   <header>gui/consolewidget.h</header>
+  </customwidget>
+  <customwidget>
    <class>TrackInfosView</class>
    <extends>QWidget</extends>
    <header>gui/trackinfosview.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ConsoleWidget</class>
-   <extends>QPlainTextEdit</extends>
-   <header>gui/consolewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

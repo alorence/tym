@@ -17,51 +17,22 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENAMEWIZARD_H
-#define RENAMEWIZARD_H
+#ifndef RENAMETHREAD_H
+#define RENAMETHREAD_H
 
 #include <QtCore>
-#include <QtWidgets>
-#include <QtSql>
+#include "task.h"
 
-namespace Ui {
-class RenameWizard;
-}
-
-class WidgetAppender;
-
-class RenameWizard : public QWizard
+class RenameTask : public Task
 {
     Q_OBJECT
-    
+
 public:
-    explicit RenameWizard(QList<QSqlRecord> selected, QWidget *parent = 0);
-    ~RenameWizard();
+    explicit RenameTask(QHash<QString, QString>, QObject *parent = 0);
 
-protected:
-    void initializePage(int id);
-    
-private slots:
-    void updateRenamePreview();
-    void on_patternSelection_currentIndexChanged(int index);
-    void renameThreadFinished();
-
+    void run();
 private:
-    Ui::RenameWizard *ui;
-    QMap<QString, QSqlRecord> tracksInformations;
-
-    enum WizardPages {
-        PreviewPage = 0,
-        ResultPage
-    };
-
-    enum PreviewColumns {
-        Bpid = 0,
-        Directory,
-        OrigFileName,
-        TargetFileName
-    };
-    WidgetAppender* _widgetAppender;
+    QHash<QString, QString> m_renameMap;
 };
 
-#endif // RENAMEWIZARD_H
+#endif // RENAMETHREAD_H

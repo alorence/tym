@@ -1,5 +1,5 @@
 /**
-* Copyright 2012 Antoine Lorence. All right reserved.
+* Copyright 2013 Antoine Lorence. All right reserved.
 *
 * This file is part of TYM (Tag Your Music).
 *
@@ -17,32 +17,23 @@
 * along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PATTERNTOOL_H
-#define PATTERNTOOL_H
+#ifndef TASK_H
+#define TASK_H
 
-#include <QtCore>
-#include <QtSql>
+#include <QObject>
+#include <QRunnable>
 
-// TODO : rewrite this class to have a nice code for all its uses
-class PatternTool : public QObject
+class Task : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    explicit PatternTool(QString pattern, QObject *parent = 0);
+    explicit Task(QObject *parent = 0);
 
-    QMap<QString, QString> parseValues(QString& source, const QStringList &interestingKeys) const;
-    QString stringFromPattern(QSqlRecord &) const;
-    
 signals:
-    
+    void finished();
+
 public slots:
-
-private:
-    QString pattern;
-
-    QMap<int, QString> inReplacementMap;
-    QRegExp inRegExp;
-    
+    virtual void run() = 0;
 };
 
-#endif // PATTERNTOOL_H
+#endif // TASK_H

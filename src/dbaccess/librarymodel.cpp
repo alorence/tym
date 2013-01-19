@@ -19,6 +19,11 @@
 
 #include "librarymodel.h"
 
+#include <QtWidgets>
+
+#include "commons.h"
+#include "bpdatabase.h"
+
 LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db)
 {
@@ -106,9 +111,13 @@ bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int ro
     if(ind.column() == columnWithCheckbox && role == Qt::CheckStateRole) {
         QItemSelectionModel::SelectionFlag selStatus;
         selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
-        QItemSelection line(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
-        emit rowCheckedOrUnchecked(line, selStatus);
-        emit rowCheckedOrUnchecked(index(ind.row(), columnWithCheckbox, ind.parent()), selStatus);
+
+        if(selStatus != data(ind, Qt::CheckStateRole)) {
+            QItemSelection line(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
+            emit rowCheckedOrUnchecked(line, selStatus);
+
+            emit rowCheckedOrUnchecked(index(ind.row(), columnWithCheckbox, ind.parent()), selStatus);
+        }
         return true;
     }
     else {
@@ -132,7 +141,6 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
 
 bool LibraryModel::select()
 {
-    QMutexLocker locker(BPDatabase::instance()->dbMutex);
     return QSqlTableModel::select();
 }
 
@@ -142,7 +150,7 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
     QItemSelectionRange range;
     foreach(range, deselected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
-            checkedRows.removeAll(i);
+            checkedRows.remove(i);
         }
         emit dataChanged(index(range.top(), columnWithCheckbox), index(range.bottom(), columnWithCheckbox));
     }
@@ -154,33 +162,29 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
     }
 }
 
-QList<int> LibraryModel::selectedIds() const
+QSet<int> LibraryModel::selectedIds() const
 {
     return checkedRows;
 }
 
-QList<QPair<int, QSqlRecord> > LibraryModel::selectedRecords() const
+QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
 {
-    QList<QPair<int, QSqlRecord> > result;
+    QHash<int, QSqlRecord> result;
     foreach(int index, checkedRows) {
-        result << QPair<int, QSqlRecord>(index, record(index));
+        result[index] = record(index);
     }
     return result;
 }
 
 void LibraryModel::refresh()
 {
-    QList<int> checkedCopy = checkedRows;
     select();
-    foreach(int row, checkedCopy) {
-        setData(index(row, columnWithCheckbox), Qt::Checked, Qt::CheckStateRole);
-    }
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
     foreach(int row, rows) {
-        checkedRows.removeAll(row);
+        checkedRows.remove(row);
     }
     refresh();
 }
