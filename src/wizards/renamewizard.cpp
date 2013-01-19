@@ -148,9 +148,3 @@ void RenameWizard::initializePage(int id)
         QThreadPool::globalInstance()->tryStart(task);
     }
 }
-
-void RenameWizard::renameThreadFinished()
-{
-    RenameThread *task = static_cast<RenameThread*>(sender());
-    task->deleteLater();
-}

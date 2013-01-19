@@ -44,7 +44,6 @@ protected:
 private slots:
     void updateRenamePreview();
     void on_patternSelection_currentIndexChanged(int index);
-    void renameThreadFinished();
 
 private:
     Ui::RenameWizard *ui;
