@@ -29,18 +29,26 @@ SearchTask::SearchTask(QString searchPattern, SearchWizard::SearchType searchTyp
     _searchPattern(searchPattern),
     _searchType(searchType),
     _selectedRecords(selectedRecords),
-    _dbHelper(new BPDatabase("searchTask"))
+    _dbHelper(new BPDatabase("searchTask", this)),
+    // TODO : Get this value from settings
+    _search(new SearchProvider(QUrl("http://api.beatport.com"), this)),
+    _searchResultsCount(0)
 {
-//    connect(_dbHelper, SIGNAL());
+    connect(_search, SIGNAL(searchResultAvailable(QString,QJsonValue)),
+            _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
+
+    connect(_dbHelper, SIGNAL(searchResultStored(QString)), this, SLOT(checkCoundResults()));
 }
 
 SearchTask::~SearchTask()
 {
     delete _dbHelper;
+    delete _search;
 }
 
 void SearchTask::run()
 {
+    LOG_TRACE("Start search task");
     PatternTool pt(_searchPattern);
     QMap<QString, QMap<QString, QString> > parsedValueMap;
 
@@ -58,12 +66,6 @@ void SearchTask::run()
         parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(refFileName, interestingKeys);
     }
 
-    // TODO : Get this value from settings
-    SearchProvider searchProvider(QUrl("http://api.beatport.com"));
-
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
-            _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
-
     QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(_searchType == SearchWizard::FromId) {
         foreach(QString key, parsedValueMap.keys()) {
@@ -73,7 +75,8 @@ void SearchTask::run()
             requestMap->insert(key, bpid);
         }
         if( ! requestMap->isEmpty()) {
-            searchProvider.searchFromIds(requestMap);
+            _searchResultsCount = 1;
+            _search->searchFromIds(requestMap);
         }
     } else {
         foreach(QString key, parsedValueMap.keys()) {
@@ -82,8 +85,17 @@ void SearchTask::run()
             requestMap->insert(key, ((QStringList) parsedValueMap[key].values()).join(" "));
         }
         if( ! requestMap->isEmpty()) {
-            searchProvider.searchFromName(requestMap);
+            _searchResultsCount = requestMap->count();
+            _search->searchFromName(requestMap);
         }
+    }
+}
+
+void SearchTask::checkCoundResults()
+{
+    --_searchResultsCount;
+    if(_searchResultsCount <= 0) {
+        emit finished();
     }
 }
 

@@ -59,7 +59,7 @@ public slots:
 signals:
     void libraryEntryUpdated(QString uid);
     void referenceForTrackUpdated(QString uid);
-    void allResultsStored();
+    void searchResultStored(QString);
 
 private :
     QSqlDatabase _dbObject;

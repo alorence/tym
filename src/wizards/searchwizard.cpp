@@ -86,7 +86,10 @@ void SearchWizard::initializePage(int id)
         QThread *thread = new QThread(this);
         SearchTask * task = new SearchTask(ui->pattern->text(), type, _selectedRecords);
         task->moveToThread(thread);
+
         connect(thread, SIGNAL(started()), task, SLOT(run()));
+        connect(task, SIGNAL(finished()), thread, SLOT(quit()));
+
         connect(thread, SIGNAL(finished()), task, SLOT(deleteLater()));
         connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 

@@ -24,8 +24,9 @@
 #include "task.h"
 #include "wizards/searchwizard.h"
 
-class BPDatabase;
 class Task;
+class BPDatabase;
+class SearchProvider;
 
 class SearchTask : public Task
 {
@@ -37,12 +38,16 @@ public:
 
 public slots:
     void run();
+    void checkCoundResults();
 
 private:
     QString _searchPattern;
     SearchWizard::SearchType _searchType;
     QList<QSqlRecord> _selectedRecords;
     BPDatabase* _dbHelper;
+    SearchProvider* _search;
+
+    int _searchResultsCount;
 };
 
 #endif // SEARCHTHREAD_H
