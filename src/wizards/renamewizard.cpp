@@ -20,6 +20,9 @@
 #include "renamewizard.h"
 #include "ui_renamewizard.h"
 
+#include "Logger.h"
+#include "WidgetAppender.h"
+
 #include "commons.h"
 #include "tools/patterntool.h"
 #include "dbaccess/bpdatabase.h"
@@ -30,6 +33,9 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     ui(new Ui::RenameWizard)
 {
     ui->setupUi(this);
+
+    _widgetAppender = new WidgetAppender(ui->outputConsole);
+    _widgetAppender->setFormat("%m\n");
 
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
@@ -75,6 +81,8 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
 RenameWizard::~RenameWizard()
 {
     delete ui;
+    Logger::unRegisterAppender(_widgetAppender);
+    delete _widgetAppender;
 }
 
 void RenameWizard::updateRenamePreview()
@@ -133,6 +141,8 @@ void RenameWizard::initializePage(int id)
 
             renameMap.insert(from, to);
         }
+
+        Logger::registerAppender(_widgetAppender);
 
         RenameTask *task = new RenameTask(renameMap);
         QThreadPool::globalInstance()->tryStart(task);

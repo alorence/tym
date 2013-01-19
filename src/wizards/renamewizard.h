@@ -28,6 +28,8 @@ namespace Ui {
 class RenameWizard;
 }
 
+class WidgetAppender;
+
 class RenameWizard : public QWizard
 {
     Q_OBJECT
@@ -59,6 +61,7 @@ private:
         OrigFileName,
         TargetFileName
     };
+    WidgetAppender* _widgetAppender;
 };
 
 #endif // RENAMEWIZARD_H

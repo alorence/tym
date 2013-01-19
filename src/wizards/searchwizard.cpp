@@ -20,6 +20,9 @@
 #include "searchwizard.h"
 #include "ui_searchwizard.h"
 
+#include <Logger.h>
+#include <WidgetAppender.h>
+
 #include "concretetasks/searchtask.h"
 
 SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
@@ -28,6 +31,9 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     _selectedRecords(selectedRecords)
 {
     ui->setupUi(this);
+
+    _widgetAppender = new WidgetAppender(ui->outputConsole);
+    _widgetAppender->setFormat("%m\n");
 
     connect(ui->searchFromId, SIGNAL(toggled(bool)), this, SLOT(idSearchSelected(bool)));
     connect(ui->searchFromArtistTitle, SIGNAL(toggled(bool)), this, SLOT(titleArtistSearchSelected(bool)));
@@ -39,6 +45,8 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
 SearchWizard::~SearchWizard()
 {
     delete ui;
+    Logger::unRegisterAppender(_widgetAppender);
+    delete _widgetAppender;
 }
 
 QString SearchWizard::pattern() const
@@ -80,12 +88,14 @@ void SearchWizard::customSearchSelected(bool checked)
 }
 
 void SearchWizard::initializePage(int id)
-
 {
     if(id == ResultPage) {
+
         QThread *thread = new QThread(this);
         SearchTask * task = new SearchTask(ui->pattern->text(), type, _selectedRecords);
         task->moveToThread(thread);
+
+        Logger::registerAppender(_widgetAppender);
 
         connect(thread, SIGNAL(started()), task, SLOT(run()));
         connect(task, SIGNAL(finished()), thread, SLOT(quit()));
@@ -95,11 +105,5 @@ void SearchWizard::initializePage(int id)
 
         thread->start();
     }
-}
-
-void SearchWizard::searchThreadFinished()
-{
-    SearchThread *task = static_cast<SearchThread*>(sender());
-    task->deleteLater();
 }
 

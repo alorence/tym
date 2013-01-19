@@ -28,6 +28,8 @@ namespace Ui {
 class SearchWizard;
 }
 
+class WidgetAppender;
+
 class SearchWizard : public QWizard
 {
     Q_OBJECT
@@ -54,8 +56,6 @@ private slots:
     void titleArtistSearchSelected(bool);
     void customSearchSelected(bool);
 
-    void searchThreadFinished();
-
 private:
     Ui::SearchWizard *ui;
     SearchType type;
@@ -65,6 +65,7 @@ private:
         SelectPatternPage = 0,
         ResultPage
     };
+    WidgetAppender* _widgetAppender;
 };
 
 #endif // SEARCHWIZARD_H
