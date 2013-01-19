@@ -431,6 +431,7 @@ void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
     _dbMutex->unlock();
 
     updateLibraryStatus(libUid, Library::ResultsAvailable);
+    emit allResultsStored();
 }
 
 
