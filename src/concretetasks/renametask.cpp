@@ -24,12 +24,13 @@
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 
-RenameThread::RenameThread(QHash<QString, QString> renameMap, QObject *parent)
+RenameTask::RenameTask(QHash<QString, QString> renameMap, QObject *parent) :
+    Task(parent)
 {
     m_renameMap = renameMap;
 }
 
-void RenameThread::run()
+void RenameTask::run()
 {
     BPDatabase db("renameThread");
     QHashIterator<QString, QString> it(m_renameMap);
@@ -71,6 +72,8 @@ void RenameThread::run()
             QString cannonPath(from.canonicalFilePath());
             db.renameFile(cannonPath, to);
         }
+
+        emit finished();
     }
 }
 

@@ -134,10 +134,8 @@ void RenameWizard::initializePage(int id)
             renameMap.insert(from, to);
         }
 
-        RenameThread *task = new RenameThread(renameMap);
-        connect(task, SIGNAL(finished()), this, SLOT(renameThreadFinished()));
-
-        task->start();
+        RenameTask *task = new RenameTask(renameMap);
+        QThreadPool::globalInstance()->tryStart(task);
     }
 }
 

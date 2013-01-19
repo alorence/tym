@@ -21,13 +21,14 @@
 #define RENAMETHREAD_H
 
 #include <QtCore>
+#include "task.h"
 
-class RenameThread : public QThread
+class RenameTask : public Task
 {
     Q_OBJECT
 
 public:
-    explicit RenameThread(QHash<QString, QString>, QObject *parent = 0);
+    explicit RenameTask(QHash<QString, QString>, QObject *parent = 0);
 
     void run();
 private:
