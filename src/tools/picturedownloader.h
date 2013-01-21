@@ -28,6 +28,7 @@ class PictureDownloader : public QObject
     Q_OBJECT
 public:
     explicit PictureDownloader(QObject *parent = 0);
+    ~PictureDownloader();
 
 signals:
     void pictureDownloadFinished(QString picId) const;

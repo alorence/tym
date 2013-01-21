@@ -29,6 +29,11 @@ PictureDownloader::PictureDownloader(QObject *parent) :
 {
 }
 
+PictureDownloader::~PictureDownloader()
+{
+    delete _manager;
+}
+
 void PictureDownloader::downloadTrackPicture(const QString & picId)
 {
     if(_downloadManagaer.values().contains(picId)) return;

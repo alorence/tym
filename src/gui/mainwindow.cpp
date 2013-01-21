@@ -35,19 +35,19 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    defaultConsoleDisplaying(false),
+    _defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
-    settings(new SettingsDialog(this)),
+    _settings(new SettingsDialog(this)),
     _pictureDownloader(new PictureDownloader(this)),
     _dbHelper(new BPDatabase)
 {
     ui->setupUi(this);
-    connect(ui->actionSettings, SIGNAL(triggered()), settings, SLOT(open()));
+    connect(ui->actionSettings, SIGNAL(triggered()), _settings, SLOT(open()));
 
     // Configure console message displaying
     connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), ui->outputConsole, SLOT(setVisible(bool)));
-    ui->actionToggleConsole->setChecked(defaultConsoleDisplaying);
-    ui->outputConsole->setVisible(defaultConsoleDisplaying);
+    ui->actionToggleConsole->setChecked(_defaultConsoleDisplaying);
+    ui->outputConsole->setVisible(_defaultConsoleDisplaying);
 
     WidgetAppender* widgetAppender = new WidgetAppender(ui->outputConsole);
     widgetAppender->setFormat("%m\n");
@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _searchModel->select();
 
     // Used to transfer fixed parameters to some slots
-    generalMapper = new QSignalMapper(this);
+    _generalMapper = new QSignalMapper(this);
 
     /**
      * Library
@@ -104,10 +104,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            generalMapper, SLOT(map()));
+            _generalMapper, SLOT(map()));
     // The first row (0) must be selected :
-    generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
-    connect(generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
+    _generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
+    connect(_generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -137,11 +137,11 @@ MainWindow::~MainWindow()
 {
     _dbHelper->deleteLater();
     delete ui;
-    delete generalMapper;
+    delete _generalMapper;
     delete _libraryModel;
     delete _searchModel;
     delete _pictureDownloader;
-    delete settings;
+    delete _settings;
 }
 
 void MainWindow::show()

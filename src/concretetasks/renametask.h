@@ -32,7 +32,7 @@ public:
 
     void run();
 private:
-    QHash<QString, QString> m_renameMap;
+    QHash<QString, QString> _renameMap;
 };
 
 #endif // RENAMETHREAD_H

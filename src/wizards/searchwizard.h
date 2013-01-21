@@ -57,7 +57,7 @@ private slots:
     void customSearchSelected(bool);
 
 private:
-    Ui::SearchWizard *ui;
+    Ui::SearchWizard* ui;
     SearchType type;
     QList<QSqlRecord> _selectedRecords;
 

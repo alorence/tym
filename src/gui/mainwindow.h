@@ -44,9 +44,6 @@ public:
     ~MainWindow();
 
     void show();
-
-signals:
-    void importFilesToLibrary(const QStringList) const;
     
 private slots:
     void updateSearchResults(const QModelIndex & selected, const QModelIndex &);
@@ -68,16 +65,16 @@ private slots:
     void on_actionRename_triggered();
 
 private:
-    bool defaultConsoleDisplaying;
+    bool _defaultConsoleDisplaying;
 
     Ui::MainWindow* ui;
-    SettingsDialog* settings;
+    SettingsDialog* _settings;
     PictureDownloader* _pictureDownloader;
-    QSignalMapper * generalMapper;
+    QSignalMapper* _generalMapper;
 
-    BPDatabase * _dbHelper;
-    LibraryModel *_libraryModel;
-    SearchResultsModel * _searchModel;
+    BPDatabase* _dbHelper;
+    LibraryModel* _libraryModel;
+    SearchResultsModel* _searchModel;
 };
 
 #endif // MAINWINDOW_H

@@ -27,13 +27,13 @@
 RenameTask::RenameTask(QHash<QString, QString> renameMap, QObject *parent) :
     Task(parent)
 {
-    m_renameMap = renameMap;
+    _renameMap = renameMap;
 }
 
 void RenameTask::run()
 {
     BPDatabase db("renameThread");
-    QHashIterator<QString, QString> it(m_renameMap);
+    QHashIterator<QString, QString> it(_renameMap);
 
     QRegExp renameValidityCheck("<.*>$");
 

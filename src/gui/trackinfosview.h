@@ -47,7 +47,7 @@ signals:
 private:
     Ui::TrackInfosView *ui;
 
-    QString currentPictureId;
+    QString _currentPictureId;
 };
 
 #endif // TRACKINFOSVIEW_H

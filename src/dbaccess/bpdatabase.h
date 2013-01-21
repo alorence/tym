@@ -69,8 +69,6 @@ private :
     bool _dbInitialized;
 
     QMutex *_dbMutex;
-
-    QSqlRecord _basicLibraryRecord;
 };
 
 #endif // BPDATABASE_H

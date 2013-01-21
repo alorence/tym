@@ -46,8 +46,8 @@ private slots:
     void on_patternSelection_currentIndexChanged(int index);
 
 private:
-    Ui::RenameWizard *ui;
-    QMap<QString, QSqlRecord> tracksInformations;
+    Ui::RenameWizard* ui;
+    QMap<QString, QSqlRecord> _tracksInformations;
 
     enum WizardPages {
         PreviewPage = 0,

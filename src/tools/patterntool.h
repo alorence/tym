@@ -28,7 +28,7 @@ class PatternTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit PatternTool(QString pattern, QObject *parent = 0);
+    explicit PatternTool(QString _pattern, QObject *parent = 0);
 
     QMap<QString, QString> parseValues(QString& source, const QStringList &interestingKeys) const;
     QString stringFromPattern(QSqlRecord &) const;
@@ -38,10 +38,10 @@ signals:
 public slots:
 
 private:
-    QString pattern;
+    QString _pattern;
 
-    QMap<int, QString> inReplacementMap;
-    QRegExp inRegExp;
+    QMap<int, QString> _inReplacementMap;
+    QRegExp _inRegExp;
     
 };
 

@@ -72,7 +72,7 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     {
         QSqlQuery tracksInfos = dbHelper.tracksInformations(bpids);
         while(tracksInfos.next()) {
-            tracksInformations[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
+            _tracksInformations[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
         }
     }
     updateRenamePreview();
@@ -96,7 +96,7 @@ void RenameWizard::updateRenamePreview()
 
         if( ! bpid.isEmpty()) {
             QFileInfo original(ui->previewTable->item(row, OrigFileName)->text());
-            QString newBaseName = patternTool.stringFromPattern(tracksInformations[bpid]);
+            QString newBaseName = patternTool.stringFromPattern(_tracksInformations[bpid]);
 
             if(newBaseName == original.baseName()) {
                 itemText = "<File already have the right name>";

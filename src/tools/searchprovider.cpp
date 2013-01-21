@@ -41,6 +41,7 @@ SearchProvider::~SearchProvider()
        delete _replyMap.take(reply);
 
     delete _textSearchMapper;
+    delete _manager;
 }
 
 void SearchProvider::initProxy()

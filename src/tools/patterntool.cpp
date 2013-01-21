@@ -23,7 +23,7 @@
 
 PatternTool::PatternTool(QString pattern, QObject *parent) :
     QObject(parent),
-    pattern(pattern)
+    _pattern(pattern)
 {
     QStringList list = pattern.split('%', QString::SkipEmptyParts);
     QStringList inRegExpList;
@@ -36,16 +36,16 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
 
         if(elt.toUpper() == "ID") {
             inRegExpList << "([0-9]+)";
-            inReplacementMap[i+1] = "bpid";
+            _inReplacementMap[i+1] = "bpid";
         } else if(elt.toUpper() == "ARTISTS") {
             inRegExpList << classicRexpPattern;
-            inReplacementMap[i+1] = "artists";
+            _inReplacementMap[i+1] = "artists";
         } else if(elt.toUpper() == "TITLE") {
             inRegExpList << classicRexpPattern;
-            inReplacementMap[i+1] = "title";
+            _inReplacementMap[i+1] = "title";
         } else if(elt.toUpper() == "EXT") {
             inRegExpList << "([a-zA-Z0-9]{2,4})";
-            inReplacementMap[i+1] = "ext";
+            _inReplacementMap[i+1] = "ext";
         } else if(elt.toUpper() == "OTHER") {
             inRegExpList << "(.+)";
         } else {
@@ -55,16 +55,16 @@ PatternTool::PatternTool(QString pattern, QObject *parent) :
     inRegExpList.prepend("^");
     inRegExpList.append("$");
 
-    inRegExp = QRegExp(inRegExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
+    _inRegExp = QRegExp(inRegExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
 }
 
 QMap<QString, QString> PatternTool::parseValues(QString &source, const QStringList & interestingKeys) const
 {
     QMap<QString, QString> result;
-    if(inRegExp.indexIn(source) != -1) {
-        foreach(int i, inReplacementMap.keys()) {
-            if(interestingKeys.contains(inReplacementMap[i])) {
-                result[inReplacementMap[i]] = inRegExp.cap(i);
+    if(_inRegExp.indexIn(source) != -1) {
+        foreach(int i, _inReplacementMap.keys()) {
+            if(interestingKeys.contains(_inReplacementMap[i])) {
+                result[_inReplacementMap[i]] = _inRegExp.cap(i);
             }
         }
     }
@@ -73,7 +73,7 @@ QMap<QString, QString> PatternTool::parseValues(QString &source, const QStringLi
 
 QString PatternTool::stringFromPattern(QSqlRecord &trackInfoRecord) const
 {
-    QStringList partList = pattern.split('%', QString::SkipEmptyParts);
+    QStringList partList = _pattern.split('%', QString::SkipEmptyParts);
 
     QString result;
 

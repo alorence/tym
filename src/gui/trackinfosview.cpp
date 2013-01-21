@@ -37,6 +37,7 @@ TrackInfosView::~TrackInfosView()
 
 void TrackInfosView::updateInfos(QSqlRecord result)
 {
+    // TODO : Add unexisting fields to display informations
     ui->d_artists->setText(result.value(TrackFullInfos::Artists).toString());
     ui->d_remixers->setText(result.value(TrackFullInfos::Remixers).toString());
     //ui->d_genres->setText(query.value(TrackFullInfosIndexes::Genres).toString());
@@ -56,19 +57,19 @@ void TrackInfosView::updateInfos(QSqlRecord result)
     ui->d_length->setText(result.value(TrackFullInfos::Length).toString());
     ui->d_release->setText(result.value(TrackFullInfos::Release).toString());
 
-    currentPictureId = result.value(TrackFullInfos::PictureId).toString();
+    _currentPictureId = result.value(TrackFullInfos::PictureId).toString();
 
-    QString picPath = Constants::picturesLocation() + QDir::separator() + currentPictureId + ".jpg";
+    QString picPath = Constants::picturesLocation() + QDir::separator() + _currentPictureId + ".jpg";
     if( ! QFile(picPath).exists()) {
-        emit downloadPicture(currentPictureId);
+        emit downloadPicture(_currentPictureId);
     } else {
-        displayDownloadedPicture(currentPictureId);
+        displayDownloadedPicture(_currentPictureId);
     }
 }
 
 void TrackInfosView::displayDownloadedPicture(QString picId)
 {
-    if(picId == currentPictureId) {
+    if(picId == _currentPictureId) {
         QString path(Constants::picturesLocation() + QDir::separator() + picId + ".jpg");
         ui->imageArea->setPixmap(QPixmap(path));
     }
@@ -94,6 +95,6 @@ void TrackInfosView::clearData()
     ui->d_release->clear();
 
     ui->imageArea->clear();
-    currentPictureId = "";
+    _currentPictureId = "";
 }
 
