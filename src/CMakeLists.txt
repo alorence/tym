@@ -29,12 +29,12 @@ set(tym_HEADERS
     concretetasks/renametask.h
     concretetasks/searchtask.h
     tools/patterntool.h
+    tools/searchprovider.h
     dbaccess/bpdatabase.h
     dbaccess/librarymodel.h
     dbaccess/searchresultsmodel.h
     wizards/searchwizard.h
     wizards/renamewizard.h
-    network/searchprovider.h
     gui/mainwindow.h
     gui/settingsdialog.h
     gui/trackinfosview.h
@@ -48,12 +48,12 @@ set(tym_SOURCES
     concretetasks/renametask.cpp
     concretetasks/searchtask.cpp
     tools/patterntool.cpp
+    tools/searchprovider.cpp
     dbaccess/bpdatabase.cpp
     dbaccess/librarymodel.cpp
     dbaccess/searchresultsmodel.cpp
     wizards/searchwizard.cpp
     wizards/renamewizard.cpp
-    network/searchprovider.cpp
     gui/mainwindow.cpp
     gui/settingsdialog.cpp
     gui/trackinfosview.cpp

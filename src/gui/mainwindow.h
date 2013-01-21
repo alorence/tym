@@ -23,7 +23,7 @@
 #include <QtSql>
 #include <QtWidgets>
 
-#include "network/searchprovider.h"
+#include "tools/searchprovider.h"
 
 class SettingsDialog;
 class SearchProvider;

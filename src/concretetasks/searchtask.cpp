@@ -21,7 +21,7 @@
 
 #include "commons.h"
 #include "tools/patterntool.h"
-#include "network/searchprovider.h"
+#include "tools/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
 SearchTask::SearchTask(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent) :
