@@ -23,7 +23,7 @@
 #include <Logger.h>
 #include <WidgetAppender.h>
 
-#include "ui_about.h"
+#include "about.h"
 #include "settingsdialog.h"
 #include "dbaccess/librarymodel.h"
 #include "dbaccess/searchresultsmodel.h"
@@ -185,10 +185,8 @@ void MainWindow::updateSearchResultsActions()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QDialog * container = new QDialog(this);
-    Ui::AboutDialog about;
-    about.setupUi(container);
-    container->show();
+    About about;
+    about.show();
 }
 
 void MainWindow::on_actionSearch_triggered()

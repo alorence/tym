@@ -36,6 +36,7 @@ set(tym_HEADERS
     dbaccess/searchresultsmodel.h
     wizards/searchwizard.h
     wizards/renamewizard.h
+    gui/about.h
     gui/mainwindow.h
     gui/settingsdialog.h
     gui/trackinfosview.h
@@ -56,6 +57,7 @@ set(tym_SOURCES
     dbaccess/searchresultsmodel.cpp
     wizards/searchwizard.cpp
     wizards/renamewizard.cpp
+    gui/about.cpp
     gui/mainwindow.cpp
     gui/settingsdialog.cpp
     gui/trackinfosview.cpp
