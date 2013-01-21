@@ -56,7 +56,6 @@ void RenameTask::run()
                 continue;
             }
 
-            // TODO : Redirect messages to the renamePage's console with Logger
             if(QFile::rename(from.canonicalFilePath(), to)) {
                 LOG_INFO(tr("File %1 renamed to %2")
                          .arg(from.canonicalFilePath())
@@ -68,7 +67,7 @@ void RenameTask::run()
                 continue;
             }
 
-            // TODO : check références rules to understand why GCC can't automatically get reference
+            // TODO : check references rules to understand why GCC can't automatically get reference
             QString cannonPath(from.canonicalFilePath());
             db.renameFile(cannonPath, to);
         }

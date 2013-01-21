@@ -45,6 +45,10 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     ui->previewTable->hideColumn(Bpid);
     ui->previewTable->hideColumn(Directory);
 
+    QStringList headers;
+    headers << tr("ID") << tr("Directory") << tr("Original filename") << tr("New filename");
+    ui->previewTable->setHorizontalHeaderLabels(headers);
+
     QStringList bpids;
 
     int row = 0;
