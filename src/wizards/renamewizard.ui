@@ -2,24 +2,7 @@
 <ui version="4.0">
  <class>RenameWizard</class>
  <widget class="QWizard" name="RenameWizard">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>500</width>
-    <height>360</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Rename</string>
-  </property>
-  <property name="options">
-   <set>QWizard::HaveFinishButtonOnEarlyPages|QWizard::NoBackButtonOnLastPage|QWizard::NoBackButtonOnStartPage</set>
-  </property>
   <widget class="QWizardPage" name="previewPage">
-   <property name="subTitle">
-    <string>Rename options</string>
-   </property>
    <attribute name="pageId">
     <string notr="true">0</string>
    </attribute>
@@ -111,9 +94,6 @@
    </layout>
   </widget>
   <widget class="QWizardPage" name="renamePage">
-   <property name="subTitle">
-    <string>Rename</string>
-   </property>
    <attribute name="pageId">
     <string notr="true">1</string>
    </attribute>

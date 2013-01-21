@@ -2,25 +2,8 @@
 <ui version="4.0">
  <class>SearchWizard</class>
  <widget class="QWizard" name="SearchWizard">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>360</width>
-    <height>250</height>
-   </rect>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>500</width>
-    <height>400</height>
-   </size>
-  </property>
-  <property name="wizardStyle">
-   <enum>QWizard::ModernStyle</enum>
-  </property>
   <property name="options">
-   <set>QWizard::HelpButtonOnRight|QWizard::IgnoreSubTitles|QWizard::NoBackButtonOnStartPage</set>
+   <set>QWizard::HelpButtonOnRight|QWizard::NoBackButtonOnLastPage|QWizard::NoBackButtonOnStartPage</set>
   </property>
   <widget class="QWizardPage" name="searchTypePage">
    <property name="styleSheet">
