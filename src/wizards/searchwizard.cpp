@@ -34,6 +34,7 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
 
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%m\n");
+    Logger::registerAppender(_widgetAppender);
 
     connect(ui->searchFromId, SIGNAL(toggled(bool)), this, SLOT(idSearchSelected(bool)));
     connect(ui->searchFromArtistTitle, SIGNAL(toggled(bool)), this, SLOT(titleArtistSearchSelected(bool)));
@@ -94,8 +95,6 @@ void SearchWizard::initializePage(int id)
         QThread *thread = new QThread(this);
         SearchTask * task = new SearchTask(ui->pattern->text(), type, _selectedRecords);
         task->moveToThread(thread);
-
-        Logger::registerAppender(_widgetAppender);
 
         connect(thread, SIGNAL(started()), task, SLOT(run()));
         connect(task, SIGNAL(finished()), thread, SLOT(quit()));

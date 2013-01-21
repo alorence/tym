@@ -36,6 +36,7 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
 
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%m\n");
+    Logger::registerAppender(_widgetAppender);
 
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
@@ -141,8 +142,6 @@ void RenameWizard::initializePage(int id)
 
             renameMap.insert(from, to);
         }
-
-        Logger::registerAppender(_widgetAppender);
 
         RenameTask *task = new RenameTask(renameMap);
         QThreadPool::globalInstance()->tryStart(task);
