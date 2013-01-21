@@ -148,39 +148,6 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
     reply->deleteLater();
 }
 
-void SearchProvider::downloadTrackPicture(const QString & picId)
-{
-    if(_downloadManagaer.values().contains(picId)) return;
-
-    QNetworkRequest request(Constants::dynamicPictureUrl().arg(picId));
-
-    QNetworkReply *reply = _manager->get(request);
-    _downloadManagaer.insert(reply, picId);
-    connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
-    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(requestError(QNetworkReply::NetworkError)));
-    connect(reply, SIGNAL(finished()), this, SLOT(pictureDownloaded()));
-}
-
-void SearchProvider::writeTrackPicture()
-{
-    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-
-    QString imgName = _downloadManagaer.value(reply) + ".jpg";
-    QFile imgFile(Constants::picturesLocation() + QDir::separator() + imgName);
-
-    imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    imgFile.write(reply->readAll());
-    imgFile.close();
-}
-
-void SearchProvider::pictureDownloaded()
-{
-    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    emit pictureDownloadFinished(_downloadManagaer.take(reply));
-    reply->deleteLater();
-}
-
 void SearchProvider::requestError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());

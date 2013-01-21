@@ -31,13 +31,14 @@
 #include "wizards/searchwizard.h"
 #include "wizards/renamewizard.h"
 #include "tools/patterntool.h"
+#include "tools/picturedownloader.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     settings(new SettingsDialog(this)),
-    searchProvider(QUrl(QString("http://%1").arg(settings->getSettingsValue("settings/network/beatport/apihost").toString())), this),
+    _pictureDownloader(new PictureDownloader(this)),
     _dbHelper(new BPDatabase)
 {
     ui->setupUi(this);
@@ -111,22 +112,20 @@ MainWindow::MainWindow(QWidget *parent) :
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
-    connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&)),
-            &searchProvider, SLOT(downloadTrackPicture(const QString&)));
-    connect(&searchProvider, SIGNAL(pictureDownloadFinished(QString)),
-            ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
     connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
             _searchModel, SLOT(refresh(QString)));
 
     connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
             this, SLOT(updateSearchResultsActions()));
 
+    connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&)),
+            _pictureDownloader, SLOT(downloadTrackPicture(const QString&)));
+    connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
+            ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
 
     /**
      * Actions
      */
-    connect(&searchProvider, SIGNAL(searchResultAvailable(QString,QJsonValue)),
-            _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
     connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
 
@@ -139,6 +138,10 @@ MainWindow::~MainWindow()
     _dbHelper->deleteLater();
     delete ui;
     delete generalMapper;
+    delete _libraryModel;
+    delete _searchModel;
+    delete _pictureDownloader;
+    delete settings;
 }
 
 void MainWindow::show()

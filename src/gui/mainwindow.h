@@ -26,7 +26,7 @@
 #include "tools/searchprovider.h"
 
 class SettingsDialog;
-class SearchProvider;
+class PictureDownloader;
 class BPDatabase;
 class LibraryModel;
 class SearchResultsModel;
@@ -72,14 +72,12 @@ private:
 
     Ui::MainWindow* ui;
     SettingsDialog* settings;
-    SearchProvider searchProvider;
+    PictureDownloader* _pictureDownloader;
     QSignalMapper * generalMapper;
 
     BPDatabase * _dbHelper;
     LibraryModel *_libraryModel;
     SearchResultsModel * _searchModel;
-
-    QWidget * console;
 };
 
 #endif // MAINWINDOW_H
