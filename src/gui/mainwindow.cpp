@@ -58,24 +58,27 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
 
-    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
-    _libraryModel->setTable("LibraryHelper");
-    _libraryModel->select();
-
-    _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
-    _searchModel->setTable("SearchResultsHelper");
-    _searchModel->select();
-
     // Used to transfer fixed parameters to some slots
     _generalMapper = new QSignalMapper(this);
 
-    /**
-     * Library
-     */
+    // Configure Library Model
+    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
+    _libraryModel->setTable("LibraryHelper");
+    _libraryModel->select();
     // Configure view
     ui->libraryView->setModel(_libraryModel);
     ui->libraryView->hideColumn(Library::Uid);
     ui->libraryView->hideColumn(Library::Bpid);
+
+    // Configure Search Model
+    _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
+    _searchModel->setTable("SearchResultsHelper");
+    _searchModel->select();
+    // Configure view
+    ui->searchResultsView->setModel(_searchModel);
+    ui->searchResultsView->hideColumn(SearchResults::LibId);
+    ui->searchResultsView->hideColumn(SearchResults::Bpid);
+    ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
@@ -89,18 +92,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
-
+    // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
             this, SLOT(updateLibraryActions()));
-
-    /**
-     * Search Results View
-     */
-    // Configure view
-    ui->searchResultsView->setModel(_searchModel);
-    ui->searchResultsView->hideColumn(SearchResults::LibId);
-    ui->searchResultsView->hideColumn(SearchResults::Bpid);
-    ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
     // When the selection change in library view, the search results view should be reconfigured.
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -114,18 +108,17 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
     connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
             _searchModel, SLOT(refresh(QString)));
-
+    // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
             this, SLOT(updateSearchResultsActions()));
 
+    // Download pictures when needed
     connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&)),
             _pictureDownloader, SLOT(downloadTrackPicture(const QString&)));
     connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
 
-    /**
-     * Actions
-     */
+
     connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
 
@@ -162,7 +155,6 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
         _searchModel->select();
     }
 }
-
 
 void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
 {

@@ -37,8 +37,8 @@ BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
         QString dbPath = Constants::dataLocation() + QDir::separator() + "default.db3";
 
         _dbObject.setDatabaseName(dbPath);
-        _dbObject.open();
         LOG_TRACE(tr("Create connection %1").arg(connectionName));
+        _dbObject.open();
 
         if(connectionName == "defaultConnection"){
             if(version() == "-1") {
@@ -74,7 +74,6 @@ BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
 BPDatabase::~BPDatabase()
 {
     _dbObject.close();
-
     delete _dbMutex;
 }
 
