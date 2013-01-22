@@ -41,7 +41,8 @@ public:
     QSqlDatabase dbObject();
 
     QSqlRecord trackInformations(QString &bpid);
-    QSqlQuery tracksInformations(QStringList &bpids);
+    QSqlQuery tracksInformations(QStringList &bpids = QStringList());
+    QSqlQuery libraryInformations(QStringList &uids = QStringList());
     void deleteFromLibrary(QStringList uids);
     void deleteSearchResult(QString libId, QString trackId);
 

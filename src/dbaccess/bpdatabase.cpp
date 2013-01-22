@@ -158,8 +158,28 @@ QSqlRecord BPDatabase::trackInformations(QString &bpid)
 
 QSqlQuery BPDatabase::tracksInformations(QStringList &bpids)
 {
-    QString queryString = "SELECT * from TrackFullInfos WHERE " +
-            bpids.replaceInStrings(QRegExp("^(.*)$"), "bpid=\\1").join(" OR ");
+    QString queryString = "SELECT * FROM TrackFullInfos";
+    if( ! bpids.empty()) {
+        queryString.append(" WHERE " + bpids.replaceInStrings(QRegExp("^(.*)$"), "bpid=\\1").join(" OR "));
+    }
+
+    QSqlQuery query(queryString, dbObject());
+
+    _dbMutex->lock();
+    if( ! query.exec() ) {
+        LOG_ERROR(tr("Unable to get tracks informations: %1").arg(query.lastError().text()));
+    }
+    _dbMutex->unlock();
+
+    return query;
+}
+
+QSqlQuery BPDatabase::libraryInformations(QStringList &uids)
+{
+    QString queryString = "SELECT * FROM LibraryHelper";
+    if( ! uids.empty()) {
+        queryString.append(" WHERE " + uids.replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR "));
+    }
 
     QSqlQuery query(queryString, dbObject());
 
