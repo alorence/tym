@@ -40,7 +40,7 @@ public:
     QString version();
     QSqlDatabase dbObject();
 
-    QSqlRecord trackInformations(QVariant & bpid);
+    QSqlRecord trackInformations(QString &bpid);
     QSqlQuery tracksInformations(QStringList &bpids);
     void deleteFromLibrary(QStringList uids);
     void deleteSearchResult(QString libId, QString trackId);

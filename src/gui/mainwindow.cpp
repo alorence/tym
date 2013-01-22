@@ -159,7 +159,7 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
 void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
 {
     if(selected.isValid()) {
-        QVariant bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid);
+        QString bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid).toString();
         ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
     } else {
         ui->trackInfos->clearData();

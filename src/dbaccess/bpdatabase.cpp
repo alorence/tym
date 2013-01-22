@@ -139,7 +139,7 @@ QSqlDatabase BPDatabase::dbObject()
     return _dbObject;
 }
 
-QSqlRecord BPDatabase::trackInformations(QVariant &bpid)
+QSqlRecord BPDatabase::trackInformations(QString &bpid)
 {
     QSqlQuery query(dbObject());
 
