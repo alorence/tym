@@ -30,12 +30,14 @@ namespace Library {
         Status,
         Message
     };
-    enum FileStatus {
-        New = 0,
-        ResultsAvailable = 1,
-        FileNotFound = 16
+    enum FileStatuses {
+        New = 0x00,
+        ResultsAvailable = 0x01,
+        FileNotFound = 0x10
     };
+    Q_DECLARE_FLAGS(FileStatus, FileStatuses)
 }
+Q_DECLARE_OPERATORS_FOR_FLAGS(Library::FileStatus)
 namespace BPTracks {
     enum Indexes {
         Bpid = 0,
