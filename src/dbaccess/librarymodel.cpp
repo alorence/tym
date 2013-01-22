@@ -87,20 +87,16 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
     } else if (ind.column() == Library::Status && role == Qt::DisplayRole) {
 
-        int status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
+        Library::FileStatus status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
 
-        switch (status) {
-        case Library::New:
-            return tr("New");
-        break;
-        case Library::FileNotFound:
+        if(status.testFlag(Library::FileNotFound)) {
             return tr("Missing");
-        break;
-        case Library::ResultsAvailable:
+        } else if (status.testFlag(Library::New)) {
+            return tr("New");
+        } else if (status.testFlag(Library::ResultsAvailable)) {
             return tr("Searched");
-        break;
-        default:
-            return "";
+        } else {
+            return tr("Unknown");
         }
     }
     return QSqlTableModel::data(ind, role);
