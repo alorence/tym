@@ -28,6 +28,7 @@ set(tym_HEADERS
     concretetasks/task.h
     concretetasks/renametask.h
     concretetasks/searchtask.h
+    concretetasks/librarystatusupdater.h
     tools/patterntool.h
     tools/searchprovider.h
     tools/picturedownloader.h
@@ -49,6 +50,7 @@ set(tym_SOURCES
     concretetasks/task.cpp
     concretetasks/renametask.cpp
     concretetasks/searchtask.cpp
+    concretetasks/librarystatusupdater.cpp
     tools/patterntool.cpp
     tools/searchprovider.cpp
     tools/picturedownloader.cpp
