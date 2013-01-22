@@ -102,7 +102,7 @@ bool BPDatabase::initTables()
                 query = dbObject().exec(currentRequest.join(" "));
                 _dbMutex->unlock();
                 if( query.lastError().isValid()) {
-                    LOG_ERROR(tr("Unable to execute request : %1 (%2)").arg(currentRequest.join(" ")).arg(query.lastError().text()));
+                    LOG_ERROR(tr("Unable to execute request: %1 (%2)").arg(currentRequest.join(" ")).arg(query.lastError().text()));
                     return false;
                 } else {
                     currentRequest.clear();
@@ -111,7 +111,7 @@ bool BPDatabase::initTables()
         }
         initFile.close();
     } else {
-        LOG_ERROR(tr("Unable to open init file : %1").arg(initFile.errorString()));
+        LOG_ERROR(tr("Unable to open init file: %1").arg(initFile.errorString()));
         return false;
     }
     return true;
@@ -143,12 +143,12 @@ QSqlRecord BPDatabase::trackInformations(QString &bpid)
 {
     QSqlQuery query(dbObject());
 
-    query.prepare("SELECT * from TrackFullInfos WHERE bpid=:bpid");
+    query.prepare("SELECT * FROM TrackFullInfos WHERE bpid=:bpid");
     query.bindValue(":bpid", bpid);
 
     _dbMutex->lock();
     if( ! query.exec() ) {
-        LOG_ERROR(tr("Unable to get track informations : %1").arg(query.lastError().text()));
+        LOG_ERROR(tr("Unable to get track informations: %1").arg(query.lastError().text()));
     }
     _dbMutex->unlock();
 
@@ -185,7 +185,7 @@ QSqlQuery BPDatabase::libraryInformations(QStringList &uids)
 
     _dbMutex->lock();
     if( ! query.exec() ) {
-        LOG_ERROR(tr("Unable to get tracks informations : %1").arg(query.lastError().text()));
+        LOG_ERROR(tr("Unable to get library informations: %1").arg(query.lastError().text()));
     }
     _dbMutex->unlock();
 
@@ -203,10 +203,10 @@ void BPDatabase::deleteFromLibrary(QStringList uids)
     QSqlQuery delSRQuery(querySR, dbObject());
     _dbMutex->lock();
     if( ! delLibQuery.exec()) {
-        LOG_WARNING(tr("Unable to remove tracks from library : %1").arg(delLibQuery.lastError().text()));
+        LOG_WARNING(tr("Unable to remove tracks from library: %1").arg(delLibQuery.lastError().text()));
     }
     if( ! delSRQuery.exec()) {
-        LOG_WARNING(tr("Unable to delete search results : %1").arg(delSRQuery.lastError().text()));
+        LOG_WARNING(tr("Unable to delete search results: %1").arg(delSRQuery.lastError().text()));
     }
     _dbMutex->unlock();
 }
@@ -225,10 +225,10 @@ void BPDatabase::deleteSearchResult(QString libId, QString trackId)
 
     _dbMutex->lock();
     if( ! delQuery.exec()) {
-        LOG_WARNING(tr("Unable to remove search result %1 / %2 : %3").arg(libId).arg(trackId).arg(delQuery.lastError().text()));
+        LOG_WARNING(tr("Unable to remove search result %1 / %2: %3").arg(libId).arg(trackId).arg(delQuery.lastError().text()));
     }
     if( ! updadeLibQuery.exec()) {
-        LOG_WARNING(tr("Unable to update Library entry %1 to delete default bpid %2 : %3").arg(libId).arg(trackId).arg(updadeLibQuery.lastError().text()));
+        LOG_WARNING(tr("Unable to update Library entry %1 to delete default bpid %2: %3").arg(libId).arg(trackId).arg(updadeLibQuery.lastError().text()));
     }
     _dbMutex->unlock();
 }
@@ -242,7 +242,7 @@ void BPDatabase::renameFile(QString &oldFileName, QString &newFileName)
 
     _dbMutex->lock();
     if( ! renameQuery.exec()) {
-        LOG_WARNING(tr("Unable to rename filename %1 in database : %2").arg(oldFileName).arg(renameQuery.lastError().text()));
+        LOG_WARNING(tr("Unable to rename filename %1 in database: %2").arg(oldFileName).arg(renameQuery.lastError().text()));
     }
     _dbMutex->unlock();
 }
@@ -273,7 +273,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
         query.bindValue(":bpid", artistBpId);
         query.bindValue(":name", artist.toObject().value("name").toVariant());
         if( ! query.exec()) {
-            LOG_WARNING(tr("Unable to insert the artist %1 into the database : %2")
+            LOG_WARNING(tr("Unable to insert the artist %1 into the database: %2")
                           .arg(artist.toObject().value("name").toString())
                           .arg(query.lastError().text()));
         }
@@ -301,7 +301,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
         query.bindValue(":bpid", genreBpId);
         query.bindValue(":name", genre.toObject().value("name").toString());
         if(!query.exec()) {
-            LOG_WARNING(tr("Unable to insert the genre %1 into the database : %2")
+            LOG_WARNING(tr("Unable to insert the genre %1 into the database: %2")
                         .arg(query.boundValue(":name").toString())
                         .arg(query.lastError().text()));
         }
@@ -359,7 +359,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
         labelQuery.bindValue(":bpid", labelId);
         labelQuery.bindValue(":name", trackObject.value("label").toObject().value("name").toVariant());
         if( ! labelQuery.exec()){
-            LOG_WARNING(tr("Unable to insert the label %1 into database : %2")
+            LOG_WARNING(tr("Unable to insert the label %1 into database: %2")
                         .arg(labelQuery.boundValue(":name").toString())
                         .arg(labelQuery.lastError().text()));
             labelId = QVariant();
@@ -373,7 +373,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
     query.bindValue(":image", picId);
 
     if( ! query.exec()){
-        LOG_WARNING(tr("Unable to insert the track %1 - %2 into database : %3")
+        LOG_WARNING(tr("Unable to insert the track %1 - %2 into database: %3")
                     .arg(artists.join(", "), query.boundValue(":title").toString())
                     .arg(query.lastError().text()));
     } else {
@@ -386,7 +386,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
 
 bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
 {
-    /* FIXME : this method can be called from storeSearchResults() or manually from
+    /* FIXME: this method can be called from storeSearchResults() or manually from
     on_actionSetDefaultResult_triggered. These methods are not executed from the same
     thread. The right dbObject() need to be used in each case. */
 
@@ -398,7 +398,7 @@ bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
     _dbMutex->lock();
     if( ! query.exec()) {
         _dbMutex->unlock();
-        LOG_WARNING(tr("Unable to update library element %1 with the bpid %2 : %3")
+        LOG_WARNING(tr("Unable to update library element %1 with the bpid %2: %3")
                     .arg(libUid, bpid)
                     .arg(query.lastError().text()));
         return false;
@@ -427,7 +427,7 @@ void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
         query.bindValue(":trackId", bpid);
 
         if( ! query.exec()) {
-            LOG_WARNING(tr("Unable to register search result for track %1 : %2").arg(bpid)
+            LOG_WARNING(tr("Unable to register search result for track %1: %2").arg(bpid)
                         .arg(query.lastError().text()));
         }
 
@@ -441,7 +441,7 @@ void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
             query.bindValue(":libId", libUid);
             query.bindValue(":trackId", bpid);
             if( ! query.exec()) {
-                LOG_WARNING(tr("Unable to register search result for track %1 : %2").arg(bpid)
+                LOG_WARNING(tr("Unable to register search result for track %1: %2").arg(bpid)
                             .arg(query.lastError().text()));
             }
         }
@@ -460,12 +460,12 @@ void BPDatabase::updateLibraryStatus(QString uid, Library::FileStatus status)
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
     query.bindValue(":uid", uid);
-    query.bindValue(":status", status);
+    query.bindValue(":status", (int) status);
 
     _dbMutex->lock();
     if( ! query.exec()) {
         _dbMutex->unlock();
-        LOG_WARNING(tr("Unable to update library elements's %1 status : %2").arg(uid)
+        LOG_WARNING(tr("Unable to update library elements's %1 status: %2").arg(uid)
                     .arg(query.lastError().text()));
         return;
     }
@@ -486,7 +486,7 @@ void BPDatabase::importFiles(const QStringList &pathList)
     QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
     _dbMutex->unlock();
     if(query.lastError().isValid()){
-        LOG_WARNING(tr("Unable to import files : %2").arg(query.lastError().text()));
+        LOG_WARNING(tr("Unable to import files: %2").arg(query.lastError().text()));
     } else {
         emit libraryEntryUpdated(query.lastInsertId().toString());
     }
@@ -502,7 +502,7 @@ void BPDatabase::importFile(QString path)
     _dbMutex->lock();
     if( ! query.exec()){
         _dbMutex->unlock();
-        LOG_WARNING(tr("Unable to import file %1 : %2").arg(path).arg(query.lastError().text()));
+        LOG_WARNING(tr("Unable to import file %1: %2").arg(path).arg(query.lastError().text()));
     } else {
         _dbMutex->unlock();
         emit libraryEntryUpdated(query.lastInsertId().toString());
