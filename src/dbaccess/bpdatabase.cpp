@@ -475,6 +475,8 @@ void BPDatabase::updateLibraryStatus(QString uid, Library::FileStatus status)
 
 void BPDatabase::importFiles(const QStringList &pathList)
 {
+    if(pathList.isEmpty()) return;
+
     QString baseQuery = "INSERT OR IGNORE INTO Library (filePath, status) ";
     QString value = QString("SELECT '%2', %1").arg(Library::New);
 

@@ -24,6 +24,7 @@
 #include <WidgetAppender.h>
 
 #include "about.h"
+#include "commons.h"
 #include "settingsdialog.h"
 #include "dbaccess/librarymodel.h"
 #include "dbaccess/searchresultsmodel.h"
@@ -163,6 +164,35 @@ void MainWindow::show()
     ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
 }
 
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->mimeData()->hasUrls()) {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+
+    QFileInfoList files;
+    foreach(QUrl url, event->mimeData()->urls()) {
+
+        if(! url.isLocalFile()) continue;
+
+        QFileInfo entry(url.toLocalFile());
+        if( ! entry.exists()) continue;
+
+        files.append(filteredFileList(entry));
+    }
+
+    QStringList filteredFiles;
+    foreach(QFileInfo file, files) {
+        filteredFiles.append(file.absoluteFilePath());
+    }
+
+    _dbHelper->importFiles(filteredFiles);
+}
+
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
     QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), Library::Uid));
@@ -226,7 +256,9 @@ void MainWindow::on_actionImport_triggered()
     QString searchDir = settings.value("general/lastOpenedDir", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString();
 
     //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
-    QString filters = "Audio tracks (*.wav *.flac *.mp3)";
+    QString wildcards = Constants::fileSuffixesAccepted().join(" ");
+
+    QString filters = "Audio tracks ("+wildcards+")";
 
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", searchDir, filters, 0, 0);
     if(! fileList.isEmpty()) {
@@ -288,4 +320,24 @@ void MainWindow::on_actionRename_triggered()
         return;
     }
     _libraryModel->refresh();
+}
+
+QFileInfoList MainWindow::filteredFileList(QFileInfo entry)
+{
+    QFileInfoList result;
+
+    if(entry.isDir()) {
+        foreach(QFileInfo toto, QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+            result.append(filteredFileList(toto));
+        }
+
+    } else if(entry.isFile()) {
+        foreach(QString wildcard, Constants::fileSuffixesAccepted()) {
+            if(entry.fileName().contains(QRegExp(wildcard, Qt::CaseInsensitive, QRegExp::Wildcard))) {
+                result.append(entry);
+            }
+        }
+    }
+
+    return result;
 }

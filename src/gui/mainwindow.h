@@ -44,6 +44,9 @@ public:
     ~MainWindow();
 
     void show();
+
+    void dragEnterEvent(QDragEnterEvent *);
+    void dropEvent(QDropEvent *);
     
 private slots:
     void updateSearchResults(const QModelIndex & selected, const QModelIndex &);
@@ -65,6 +68,8 @@ private slots:
     void on_actionRename_triggered();
 
 private:
+    QFileInfoList filteredFileList(QFileInfo entry);
+
     bool _defaultConsoleDisplaying;
 
     Ui::MainWindow* ui;

@@ -89,5 +89,7 @@ public:
     static const QString dynamicPictureUrl();
     static const QString dataLocation();
     static const QString picturesLocation();
+    static const QStringList fileSuffixesAccepted();
+
 };
 #endif // COMMONS_H

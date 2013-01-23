@@ -33,3 +33,8 @@ const QString Constants::picturesLocation()
 {
     return dataLocation() + QDir::separator() + "albumarts";
 }
+
+const QStringList Constants::fileSuffixesAccepted()
+{
+    return QStringList() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg";
+}
