@@ -33,13 +33,16 @@
 #include "tools/patterntool.h"
 #include "tools/picturedownloader.h"
 
+#include "concretetasks/librarystatusupdater.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     _defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
     _settings(new SettingsDialog(this)),
     _pictureDownloader(new PictureDownloader(this)),
-    _dbHelper(new BPDatabase)
+    _dbHelper(new BPDatabase),
+    _libStatusUpdateThread(new QThread())
 {
     ui->setupUi(this);
     connect(ui->actionSettings, SIGNAL(triggered()), _settings, SLOT(open()));
@@ -122,12 +125,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh()));
 
+    // Configure thread to update library entries status
+    Task* libStatusUpdateTask = new LibraryStatusUpdater();
+    libStatusUpdateTask->moveToThread(_libStatusUpdateThread);
+    connect(_libStatusUpdateThread, SIGNAL(started()), libStatusUpdateTask, SLOT(run()));
+    connect(libStatusUpdateTask, SIGNAL(finished()), _libraryModel, SLOT(refresh()));
+    connect(_libStatusUpdateThread, SIGNAL(destroyed()), libStatusUpdateTask, SLOT(deleteLater()));
+
+    // Update library entries status (missing, etc.) at startup
+    _libStatusUpdateThread->start();
+
+    // Update actions status (disabled/enabled) at startup
     updateLibraryActions();
     updateSearchResultsActions();
 }
 
 MainWindow::~MainWindow()
 {
+    _libStatusUpdateThread->quit();
     _dbHelper->deleteLater();
     delete ui;
     delete _generalMapper;
@@ -135,6 +150,8 @@ MainWindow::~MainWindow()
     delete _searchModel;
     delete _pictureDownloader;
     delete _settings;
+    _libStatusUpdateThread->wait();
+    _libStatusUpdateThread->deleteLater();
 }
 
 void MainWindow::show()

@@ -75,6 +75,8 @@ private:
     BPDatabase* _dbHelper;
     LibraryModel* _libraryModel;
     SearchResultsModel* _searchModel;
+
+    QThread* _libStatusUpdateThread;
 };
 
 #endif // MAINWINDOW_H
