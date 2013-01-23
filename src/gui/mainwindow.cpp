@@ -222,11 +222,18 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 
 void MainWindow::on_actionImport_triggered()
 {
+    QSettings settings;
+    QString searchDir = settings.value("general/lastOpenedDir", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString();
+
     //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
     QString filters = "Audio tracks (*.wav *.flac *.mp3)";
-    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", "../tym/resources/examples/tracks", filters, 0, 0);
+
+    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", searchDir, filters, 0, 0);
     if(! fileList.isEmpty()) {
         _dbHelper->importFiles(fileList);
+
+        QFileInfo f(fileList.first());
+        settings.setValue("general/lastOpenedDir", f.absolutePath());
     }
 }
 
