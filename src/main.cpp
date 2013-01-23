@@ -41,9 +41,9 @@ int main(int argc, char *argv[])
 #endif
     Logger::registerAppender(consoleAppender);
 
-    a.setApplicationName("TagYourMusic");
+    a.setApplicationName("tagyourmusic");
     a.setApplicationDisplayName("Tag Your Music");
-    a.setOrganizationDomain("tagyourmusic.net");
+    a.setOrganizationDomain("tagyourmusic.org");
     a.setApplicationVersion(TYM_VERSION);
 
     LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName()).arg(a.applicationVersion()));
