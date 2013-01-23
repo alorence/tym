@@ -7,168 +7,345 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>450</height>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Infos</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="2" colspan="3">
-    <widget class="QLineEdit" name="d_name"/>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="9" column="0" colspan="2">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Publish Date</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="d_publishdate">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2" rowspan="7">
+      <widget class="QLabel" name="imageArea">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Release Date</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="d_releaseDate">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Price</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="d_price">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Tempo</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="d_bpm">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="d_length">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Key</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="d_key">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_15">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Beatport ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="d_bpid">
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item row="10" column="2">
-    <widget class="QLineEdit" name="d_publishdate"/>
-   </item>
-   <item row="5" column="2" colspan="3">
-    <widget class="QLineEdit" name="d_mixname"/>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="label_3">
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="d_title">
      <property name="text">
-      <string>Publish Date</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Mix Name</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>Release</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="2" colspan="3">
-    <widget class="QLineEdit" name="d_release"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Artist(s)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_11">
-     <property name="text">
-      <string>Remixer(s)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
     <widget class="QLabel" name="label_13">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>Full Title</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="2" colspan="3">
-    <widget class="QLineEdit" name="d_artists"/>
-   </item>
-   <item row="2" column="2" colspan="3">
-    <widget class="QLineEdit" name="d_remixers"/>
-   </item>
-   <item row="3" column="2" colspan="3">
-    <widget class="QLineEdit" name="d_title"/>
-   </item>
-   <item row="10" column="3" rowspan="7">
-    <widget class="QLabel" name="imageArea">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_4">
      <property name="minimumSize">
       <size>
-       <width>200</width>
-       <height>200</height>
+       <width>80</width>
+       <height>0</height>
       </size>
      </property>
-     <property name="maximumSize">
+     <property name="text">
+      <string>Mix Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="minimumSize">
       <size>
-       <width>210</width>
-       <height>210</height>
+       <width>80</width>
+       <height>0</height>
       </size>
      </property>
      <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <string>Name</string>
      </property>
     </widget>
    </item>
-   <item row="11" column="2">
-    <widget class="QLineEdit" name="d_releaseDate"/>
-   </item>
-   <item row="12" column="2">
-    <widget class="QLineEdit" name="d_label"/>
-   </item>
-   <item row="13" column="2">
-    <widget class="QLineEdit" name="d_price"/>
-   </item>
-   <item row="14" column="2">
-    <widget class="QLineEdit" name="d_bpm"/>
-   </item>
-   <item row="11" column="0">
-    <widget class="QLabel" name="label_10">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_11">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Release Date</string>
+      <string>Remixer(s)</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="0">
+   <item row="7" column="1">
+    <widget class="QLineEdit" name="d_genre">
+     <property name="text">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="label_14">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Genres</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
     <widget class="QLabel" name="label_9">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>Label</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="0">
-    <widget class="QLabel" name="label">
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="d_remixers">
      <property name="text">
-      <string>Price</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>
-   <item row="14" column="0">
-    <widget class="QLabel" name="label_12">
+   <item row="8" column="1">
+    <widget class="QLineEdit" name="d_release">
      <property name="text">
-      <string>BPM</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>
-   <item row="15" column="2">
-    <widget class="QLineEdit" name="d_length"/>
-   </item>
-   <item row="15" column="0">
-    <widget class="QLabel" name="label_2">
+   <item row="8" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Length</string>
+      <string>Release</string>
      </property>
     </widget>
    </item>
-   <item row="16" column="2">
-    <widget class="QLineEdit" name="d_key"/>
-   </item>
-   <item row="16" column="0">
-    <widget class="QLabel" name="label_8">
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="d_artists">
      <property name="text">
-      <string>Key</string>
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Artist(s)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="d_label">
+     <property name="text">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="d_mixname">
+     <property name="text">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="d_name">
+     <property name="text">
+      <string notr="true"/>
      </property>
     </widget>
    </item>
