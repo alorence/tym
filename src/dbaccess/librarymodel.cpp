@@ -35,7 +35,7 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
     Qt::ItemFlags flags = QSqlTableModel::flags(index);
     if(index.column() == columnWithCheckbox) {
         return flags | Qt::ItemIsUserCheckable;
-    } else if(index.column() == Library::Message){
+    } else if(index.column() == Library::NumResults){
         return QSqlTableModel::flags(QAbstractTableModel::index(index.row(), Library::FilePath, index.parent()));
     } else {
         return flags;
@@ -65,24 +65,27 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
             return QVariant(tooltip);
 
         }
-    } else if (ind.column() == Library::Message && role == Qt::DisplayRole) {
+    } else if (ind.column() == Library::NumResults && role == Qt::DisplayRole) {
 
-        int status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
-        int n = 0;
+        Library::FileStatus status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
 
-        switch(status) {
-        case Library::New:
-            return tr("Recently imported, no result for now...");
-        break;
-        case Library::FileNotFound:
-            return tr("Unable to find the file on your disk.");
-        break;
-        case Library::ResultsAvailable:
-            n = QSqlTableModel::data(index(ind.row(), Library::Message), Qt::DisplayRole).toInt();
-            return tr("%n result(s) available.", "Display number of results available for one library element", n);
-        break;
-        default:
-            return "";
+        QString trackLinked;
+        if( ! QSqlTableModel::data(index(ind.row(), Library::Bpid), Qt::DisplayRole).toString().isEmpty()) {
+            trackLinked = " Entry linked to a track.";
+        }
+
+        if(status.testFlag(Library::FileNotFound)) {
+            return tr("The file has been moved or renamed out of this software.%1").arg(trackLinked);
+        } else if (status.testFlag(Library::New)) {
+            return tr("No result for now...");
+        } else if (status.testFlag(Library::ResultsAvailable)) {
+            if(trackLinked.isEmpty()) {
+                return tr("Select the better result on the right");
+            } else {
+                return tr("A result has been linked to this track.");
+            }
+        } else {
+            return tr("");
         }
 
     } else if (ind.column() == Library::Status && role == Qt::DisplayRole) {
@@ -92,9 +95,10 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         if(status.testFlag(Library::FileNotFound)) {
             return tr("Missing");
         } else if (status.testFlag(Library::New)) {
-            return tr("New");
+            return tr("Freshly added");
         } else if (status.testFlag(Library::ResultsAvailable)) {
-            return tr("Searched");
+            int n = QSqlTableModel::data(index(ind.row(), Library::NumResults), Qt::DisplayRole).toInt();
+            return tr("%n result(s)", "Display number of results available for one library element", n);
         } else {
             return tr("Unknown");
         }
@@ -128,7 +132,7 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
         case Library::Uid:           return tr("Uid");
         case Library::FilePath:      return tr("File");
         case Library::Status:        return tr("Status");
-        case Library::Message:       return tr("Comment");
+        case Library::NumResults:       return tr("Comment");
         case Library::Bpid:          return tr("Track Id");
         }
     }

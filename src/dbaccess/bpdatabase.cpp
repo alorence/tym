@@ -377,7 +377,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
                     .arg(artists.join(", "), query.boundValue(":title").toString())
                     .arg(query.lastError().text()));
     } else {
-        LOG_INFO(tr("Track %1 - %2 has been correctly stored into database")
+        LOG_INFO(tr("Track \"%1 - %2\" stored")
                     .arg(artists.join(", "), query.boundValue(":title").toString()));
     }
 

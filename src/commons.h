@@ -28,7 +28,7 @@ namespace Library {
         FilePath,
         Bpid,
         Status,
-        Message
+        NumResults
     };
     enum FileStatuses {
         New = 0x00,
