@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>RenameWizard</class>
  <widget class="QWizard" name="RenameWizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
   <widget class="QWizardPage" name="previewPage">
    <attribute name="pageId">
     <string notr="true">0</string>
