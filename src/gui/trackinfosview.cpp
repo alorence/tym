@@ -37,16 +37,14 @@ TrackInfosView::~TrackInfosView()
 
 void TrackInfosView::updateInfos(QSqlRecord result)
 {
-    // TODO : Add unexisting fields to display informations
     ui->d_artists->setText(result.value(TrackFullInfos::Artists).toString());
     ui->d_remixers->setText(result.value(TrackFullInfos::Remixers).toString());
-    //ui->d_genres->setText(query.value(TrackFullInfosIndexes::Genres).toString());
+    ui->d_genres->setText(result.value(TrackFullInfos::Genres).toString());
     ui->d_label->setText(result.value(TrackFullInfos::LabelName).toString());
-    // No BPID lineEdit for now ui->d_->setText(query.value(TrackFullInfosIndexes::Bpid).toString());
+    ui->d_bpid->setText(result.value(TrackFullInfos::Bpid).toString());
     ui->d_name->setText(result.value(TrackFullInfos::TrackName).toString());
     ui->d_mixname->setText(result.value(TrackFullInfos::MixName).toString());
     ui->d_title->setText(result.value(TrackFullInfos::Title).toString());
-    //ui->d_labelNumber->setText(query.value(8).toString());
     ui->d_key->setText(result.value(TrackFullInfos::Key).toString());
     ui->d_bpm->setText(result.value(TrackFullInfos::Bpm).toString());
     QDateTime d = QDateTime::fromTime_t(result.value(TrackFullInfos::ReleaseDate).toInt());
@@ -79,13 +77,12 @@ void TrackInfosView::clearData()
 {
     ui->d_artists->clear();
     ui->d_remixers->clear();
-    //ui->d_genres->clear();
+    ui->d_genres->clear();
     ui->d_label->clear();
-    // No BPID lineEdit for now ui->d_->->clear();
+    ui->d_bpid->clear();
     ui->d_name->clear();
     ui->d_mixname->clear();
     ui->d_title->clear();
-    //ui->d_labelNumber->clear();
     ui->d_key->clear();
     ui->d_bpm->clear();
     ui->d_releaseDate->clear();
