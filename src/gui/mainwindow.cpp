@@ -85,8 +85,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
     // Check rows in model when selection change on the view
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            _libraryModel, SLOT(updateCheckedRows(const QItemSelection&,const QItemSelection&)));
+    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));
     // Select or deselect rows on the view when checkboxes are checked / unchecked
     connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
@@ -95,9 +95,9 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateSearchResults(const QModelIndex&,const QModelIndex&)));
+            this, SLOT(updateSearchResults(QModelIndex,QModelIndex)));
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(updateLibraryActions()));
 
     // When the selection change in library view, the search results view should be reconfigured.
@@ -113,12 +113,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
             _searchModel, SLOT(refresh(QString)));
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+    connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(updateSearchResultsActions()));
 
     // Download pictures when needed
-    connect(ui->trackInfos, SIGNAL(downloadPicture(const QString&)),
-            _pictureDownloader, SLOT(downloadTrackPicture(const QString&)));
+    connect(ui->trackInfos, SIGNAL(downloadPicture(QString)),
+            _pictureDownloader, SLOT(downloadTrackPicture(QString)));
     connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
 
@@ -155,7 +155,7 @@ MainWindow::~MainWindow()
     _libStatusUpdateThread->deleteLater();
 }
 
-void MainWindow::show()
+const void MainWindow::show()
 {
     QMainWindow::show();
 
@@ -174,7 +174,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 void MainWindow::dropEvent(QDropEvent *event)
 {
 
-    QFileInfoList files;
+    QStringList filteredFiles;
     foreach(QUrl url, event->mimeData()->urls()) {
 
         if(! url.isLocalFile()) continue;
@@ -182,12 +182,9 @@ void MainWindow::dropEvent(QDropEvent *event)
         QFileInfo entry(url.toLocalFile());
         if( ! entry.exists()) continue;
 
-        files.append(filteredFileList(entry));
-    }
-
-    QStringList filteredFiles;
-    foreach(QFileInfo file, files) {
-        filteredFiles.append(file.absoluteFilePath());
+        foreach(QFileInfo file, filteredFileList(entry)) {
+            filteredFiles.append(file.absoluteFilePath());
+        }
     }
 
     _dbHelper->importFiles(filteredFiles);
@@ -281,7 +278,7 @@ void MainWindow::on_actionLibraryDelete_triggered()
         rows << it.next().key();
         uids << it.value().value(Library::Uid).toString();
     }
-    _dbHelper->deleteFromLibrary(uids);
+    _dbHelper->deleteLibraryEntry(uids);
     _libraryModel->unselectRowsAndRefresh(rows);
 }
 
@@ -323,7 +320,7 @@ void MainWindow::on_actionRename_triggered()
     _libraryModel->refresh();
 }
 
-QFileInfoList MainWindow::filteredFileList(QFileInfo entry)
+const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 {
     QFileInfoList result;
 

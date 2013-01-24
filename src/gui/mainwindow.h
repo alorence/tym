@@ -43,7 +43,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void show();
+    const void show();
 
     void dragEnterEvent(QDragEnterEvent *);
     void dropEvent(QDropEvent *);
@@ -68,7 +68,7 @@ private slots:
     void on_actionRename_triggered();
 
 private:
-    QFileInfoList filteredFileList(QFileInfo entry);
+    const QFileInfoList filteredFileList(const QFileInfo &entry) const;
 
     bool _defaultConsoleDisplaying;
 
