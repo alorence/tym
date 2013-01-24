@@ -139,11 +139,6 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
     return QSqlTableModel::headerData(section, orientation, role);
 }
 
-bool LibraryModel::select()
-{
-    return QSqlTableModel::select();
-}
-
 void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
 {
     int i;
@@ -176,9 +171,27 @@ QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
     return result;
 }
 
-void LibraryModel::refresh()
+void LibraryModel::refresh(const QString &uid)
 {
-    select();
+    if(uid.isEmpty()) {
+        select();
+    } else {
+        QVariant vuid(uid);
+        for(int i = 0 ; i < rowCount() ; ++i) {
+            if(vuid == record(i).value(Library::Uid)) {
+                refresh(i);
+                return;
+            }
+        }
+    }
+}
+
+void LibraryModel::refresh(int row)
+{
+    // FIXME : does not work, because SQL view displayed by this TableModel
+    // has no primaryKey set
+    selectRow(row);
+    emit dataChanged(index(0, 0), index(0, columnCount()));
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)

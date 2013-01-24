@@ -84,15 +84,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->searchResultsView->hideColumn(SearchResults::Bpid);
     ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
-    // Check rows in model when selection change on the view
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));
     // Select or deselect rows on the view when checkboxes are checked / unchecked
     connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
     // Set current selection index to last modified row
     connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
+    // Check rows in model when selection change on the view
+    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateSearchResults(QModelIndex,QModelIndex)));
@@ -110,8 +110,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
+
+    // TODO: Maybe useless when LibraryModel::refresh(int row) will work
     connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
             _searchModel, SLOT(refresh(QString)));
+
     // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(updateSearchResultsActions()));
@@ -124,7 +127,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
-            _libraryModel, SLOT(refresh()));
+            _libraryModel, SLOT(refresh(QString)));
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();

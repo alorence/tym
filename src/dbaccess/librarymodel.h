@@ -35,23 +35,23 @@ public:
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &i, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    bool select();
 
     QSet<int> selectedIds() const;
     QHash<int, QSqlRecord> selectedRecords() const;
 
+signals:
+    void rowCheckedOrUnchecked(const QModelIndex&,QItemSelectionModel::SelectionFlags);
+    void rowCheckedOrUnchecked(const QItemSelection&,QItemSelectionModel::SelectionFlags);
+
 public slots:
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
-    void refresh();
+    void refresh(const QString &bpid = QString());
+    void refresh(int row);
     void unselectRowsAndRefresh(QList<int> rows);
 
 private:
     QSet<int> checkedRows;
     int columnWithCheckbox;
-
-signals:
-    void rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags);
-    void rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags);
 
 };
 

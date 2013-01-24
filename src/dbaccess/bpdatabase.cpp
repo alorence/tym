@@ -404,6 +404,9 @@ const bool BPDatabase::setLibraryTrackReference(const QString &libUid, const QSt
         return false;
     } else {
         _dbMutex->unlock();
+        // FIXME: see LibraryModel::refresh(int row)
+        // emit libraryEntryUpdated(libUid);
+        emit libraryEntryUpdated();
         emit referenceForTrackUpdated(libUid);
         return true;
     }
@@ -490,7 +493,7 @@ void BPDatabase::importFiles(const QStringList &pathList) const
     if(query.lastError().isValid()){
         LOG_WARNING(tr("Unable to import files: %2").arg(query.lastError().text()));
     } else {
-        emit libraryEntryUpdated(query.lastInsertId().toString());
+        emit libraryEntryUpdated();
     }
 }
 
@@ -507,6 +510,6 @@ void BPDatabase::importFile(const QString &path) const
         LOG_WARNING(tr("Unable to import file %1: %2").arg(path).arg(query.lastError().text()));
     } else {
         _dbMutex->unlock();
-        emit libraryEntryUpdated(query.lastInsertId().toString());
+        emit libraryEntryUpdated();
     }
 }

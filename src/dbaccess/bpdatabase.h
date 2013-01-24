@@ -58,7 +58,7 @@ public slots:
     const bool setLibraryTrackReference(const QString &libUid, const QString &bpid) const;
 
 signals:
-    void libraryEntryUpdated(const QString &uid) const;
+    void libraryEntryUpdated(const QString &uid = QString()) const;
     void referenceForTrackUpdated(const QString &uid) const;
     void searchResultStored(const QString& uid) const;
 
