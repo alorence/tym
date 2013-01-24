@@ -45,10 +45,10 @@ void PictureDownloader::downloadTrackPicture(const QString & picId)
     connect(reply, SIGNAL(readyRead()), this, SLOT(writeTrackPicture()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(requestError(QNetworkReply::NetworkError)));
-    connect(reply, SIGNAL(finished()), this, SLOT(pictureDownloaded()));
+    connect(reply, SIGNAL(finished()), this, SLOT(sendFinalNotification()));
 }
 
-void PictureDownloader::writeTrackPicture()
+void PictureDownloader::writeTrackPicture() const
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
 
@@ -60,7 +60,7 @@ void PictureDownloader::writeTrackPicture()
     imgFile.close();
 }
 
-void PictureDownloader::pictureDownloaded()
+void PictureDownloader::sendFinalNotification()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
     emit pictureDownloadFinished(_downloadManagaer.take(reply));
@@ -68,7 +68,7 @@ void PictureDownloader::pictureDownloaded()
 }
 
 
-void PictureDownloader::requestError(QNetworkReply::NetworkError error)
+void PictureDownloader::requestError(QNetworkReply::NetworkError error) const
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
     LOG_WARNING(tr("Error on request %1 : %2")

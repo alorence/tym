@@ -31,15 +31,15 @@ public:
     ~PictureDownloader();
 
 signals:
-    void pictureDownloadFinished(QString picId) const;
+    void pictureDownloadFinished(const QString &picId) const;
     
 public slots:
-    void downloadTrackPicture(const QString & picId);
+    void downloadTrackPicture(const QString &picId);
 
 private slots:
-    void writeTrackPicture();
-    void pictureDownloaded();
-    void requestError(QNetworkReply::NetworkError error);
+    void writeTrackPicture() const;
+    void sendFinalNotification();
+    void requestError(QNetworkReply::NetworkError error) const;
 
 private :
     QNetworkAccessManager * _manager;
