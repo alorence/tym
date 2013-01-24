@@ -67,7 +67,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         }
     } else if (ind.column() == Library::NumResults && role == Qt::DisplayRole) {
 
-        Library::FileStatus status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
+        Library::FileStatus status = (Library::FileStatus) QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
 
         QString trackLinked;
         if( ! QSqlTableModel::data(index(ind.row(), Library::Bpid), Qt::DisplayRole).toString().isEmpty()) {
@@ -90,7 +90,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
     } else if (ind.column() == Library::Status && role == Qt::DisplayRole) {
 
-        Library::FileStatus status = QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
+        Library::FileStatus status = (Library::FileStatus) QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
 
         if(status.testFlag(Library::FileNotFound)) {
             return tr("Missing");

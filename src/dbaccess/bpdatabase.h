@@ -36,37 +36,37 @@ public:
     explicit BPDatabase(QString connectionName = "defaultConnection", QObject *parent = 0);
     ~BPDatabase();
 
-    bool initialized();
-    QString version();
-    QSqlDatabase dbObject();
+    const bool initialized() const;
+    const QString version() const;
+    QSqlDatabase dbObject() const;
 
-    QSqlRecord trackInformations(QString &bpid);
-    QSqlQuery tracksInformations(QStringList &bpids = QStringList());
-    QSqlQuery libraryInformations(QStringList &uids = QStringList());
-    void deleteFromLibrary(QStringList uids);
-    void deleteSearchResult(QString libId, QString trackId);
+    const QSqlRecord trackInformations(const QString &bpid) const;
+    const QSqlQuery tracksInformations(const QStringList &bpids = QStringList());
+    const QSqlQuery libraryInformations(const QStringList &uids = QStringList());
+    void deleteLibraryEntry(QStringList uids) const;
+    void deleteSearchResult(const QString &libId, const QString &trackId) const;
 
-    void renameFile(QString &oldFileName, QString &newFileName);
+    void renameFile(const QString &oldFileName, const QString &newFileName) const;
 
     friend class LibraryModel;
 
 public slots:
-    void storeSearchResults(QString libId, QJsonValue result);
-    void importFile(QString filePath);
-    void importFiles(const QStringList &);
-    void updateLibraryStatus(QString uid, Library::FileStatus status);
-    bool setLibraryTrackReference(QString libUid, QString bpid);
+    void storeSearchResults(const QString &libId, const QJsonValue &result) const;
+    void importFile(const QString &filePath) const;
+    void importFiles(const QStringList &) const;
+    void updateLibraryStatus(const QString &uid, const Library::FileStatus &status) const;
+    const bool setLibraryTrackReference(const QString &libUid, const QString &bpid) const;
 
 signals:
-    void libraryEntryUpdated(QString uid);
-    void referenceForTrackUpdated(QString uid);
-    void searchResultStored(QString);
+    void libraryEntryUpdated(const QString &uid) const;
+    void referenceForTrackUpdated(const QString &uid) const;
+    void searchResultStored(const QString& uid) const;
 
 private :
     QSqlDatabase _dbObject;
-    QString storeTrack(const QJsonValue track);
+    const QString storeTrack(const QJsonValue &track) const;
 
-    bool initTables();
+    const bool initTables() const;
     bool _dbInitialized;
 
     QMutex *_dbMutex;

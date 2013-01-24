@@ -77,12 +77,12 @@ BPDatabase::~BPDatabase()
     delete _dbMutex;
 }
 
-bool BPDatabase::initialized()
+const bool BPDatabase::initialized() const
 {
     return _dbInitialized;
 }
 
-bool BPDatabase::initTables()
+const bool BPDatabase::initTables() const
 {
     QFile initFile(":/sql/init/0.1");
 
@@ -117,7 +117,7 @@ bool BPDatabase::initTables()
     return true;
 }
 
-QString BPDatabase::version()
+const QString BPDatabase::version() const
 {
     if( ! _dbObject.isOpen()) {
         return "-1";
@@ -134,12 +134,12 @@ QString BPDatabase::version()
     }
 }
 
-QSqlDatabase BPDatabase::dbObject()
+QSqlDatabase BPDatabase::dbObject() const
 {
     return _dbObject;
 }
 
-QSqlRecord BPDatabase::trackInformations(QString &bpid)
+const QSqlRecord BPDatabase::trackInformations(const QString &bpid) const
 {
     QSqlQuery query(dbObject());
 
@@ -156,11 +156,11 @@ QSqlRecord BPDatabase::trackInformations(QString &bpid)
     return query.record();
 }
 
-QSqlQuery BPDatabase::tracksInformations(QStringList &bpids)
+const QSqlQuery BPDatabase::tracksInformations(const QStringList &bpids)
 {
     QString queryString = "SELECT * FROM TrackFullInfos";
     if( ! bpids.empty()) {
-        queryString.append(" WHERE " + bpids.replaceInStrings(QRegExp("^(.*)$"), "bpid=\\1").join(" OR "));
+        queryString.append(" WHERE " + QStringList(bpids).replaceInStrings(QRegExp("^(.*)$"), "bpid=\\1").join(" OR "));
     }
 
     QSqlQuery query(queryString, dbObject());
@@ -174,11 +174,11 @@ QSqlQuery BPDatabase::tracksInformations(QStringList &bpids)
     return query;
 }
 
-QSqlQuery BPDatabase::libraryInformations(QStringList &uids)
+const QSqlQuery BPDatabase::libraryInformations(const QStringList &uids)
 {
     QString queryString = "SELECT * FROM LibraryHelper";
     if( ! uids.empty()) {
-        queryString.append(" WHERE " + uids.replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR "));
+        queryString.append(" WHERE " + QStringList(uids).replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR "));
     }
 
     QSqlQuery query(queryString, dbObject());
@@ -192,7 +192,7 @@ QSqlQuery BPDatabase::libraryInformations(QStringList &uids)
     return query;
 }
 
-void BPDatabase::deleteFromLibrary(QStringList uids)
+void BPDatabase::deleteLibraryEntry(QStringList uids) const
 {
     QString queryLib = "DELETE FROM Library WHERE " +
             uids.replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR ");
@@ -211,7 +211,7 @@ void BPDatabase::deleteFromLibrary(QStringList uids)
     _dbMutex->unlock();
 }
 
-void BPDatabase::deleteSearchResult(QString libId, QString trackId)
+void BPDatabase::deleteSearchResult(const QString &libId, const QString &trackId) const
 {
     QSqlQuery delQuery(dbObject());
     delQuery.prepare("DELETE FROM SearchResults WHERE libId=:libId AND trackId=:trackId");
@@ -233,7 +233,7 @@ void BPDatabase::deleteSearchResult(QString libId, QString trackId)
     _dbMutex->unlock();
 }
 
-void BPDatabase::renameFile(QString &oldFileName, QString &newFileName)
+void BPDatabase::renameFile(const QString &oldFileName, const QString &newFileName) const
 {
     QSqlQuery renameQuery(dbObject());
     renameQuery.prepare("UPDATE OR FAIL Library SET filePath=:new WHERE filePath=:old");
@@ -247,7 +247,7 @@ void BPDatabase::renameFile(QString &oldFileName, QString &newFileName)
     _dbMutex->unlock();
 }
 
-QString BPDatabase::storeTrack(const QJsonValue track)
+const QString BPDatabase::storeTrack(const QJsonValue &track) const
 {
     QJsonObject trackObject = track.toObject();
     QString trackBpId = trackObject.value("id").toVariant().toString();
@@ -384,7 +384,7 @@ QString BPDatabase::storeTrack(const QJsonValue track)
     return trackBpId;
 }
 
-bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
+const bool BPDatabase::setLibraryTrackReference(const QString &libUid, const QString &bpid) const
 {
     /* FIXME: this method can be called from storeSearchResults() or manually from
     on_actionSetDefaultResult_triggered. These methods are not executed from the same
@@ -409,7 +409,7 @@ bool BPDatabase::setLibraryTrackReference(QString libUid, QString bpid)
     }
 }
 
-void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
+void BPDatabase::storeSearchResults(const QString &libUid, const QJsonValue &result) const
 {
     _dbMutex->lock();
     dbObject().transaction();
@@ -455,7 +455,7 @@ void BPDatabase::storeSearchResults(QString libUid, QJsonValue result)
 }
 
 
-void BPDatabase::updateLibraryStatus(QString uid, Library::FileStatus status)
+void BPDatabase::updateLibraryStatus(const QString &uid, const Library::FileStatus &status) const
 {
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
@@ -473,7 +473,7 @@ void BPDatabase::updateLibraryStatus(QString uid, Library::FileStatus status)
     emit libraryEntryUpdated(uid);
 }
 
-void BPDatabase::importFiles(const QStringList &pathList)
+void BPDatabase::importFiles(const QStringList &pathList) const
 {
     if(pathList.isEmpty()) return;
 
@@ -494,7 +494,7 @@ void BPDatabase::importFiles(const QStringList &pathList)
     }
 }
 
-void BPDatabase::importFile(QString path)
+void BPDatabase::importFile(const QString &path) const
 {
     QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
