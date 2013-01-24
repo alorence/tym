@@ -171,27 +171,37 @@ QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
     return result;
 }
 
-void LibraryModel::refresh(const QString &uid)
+void LibraryModel::refresh(const QString &)
 {
-    if(uid.isEmpty()) {
-        select();
-    } else {
-        QVariant vuid(uid);
-        for(int i = 0 ; i < rowCount() ; ++i) {
-            if(vuid == record(i).value(Library::Uid)) {
-                refresh(i);
-                return;
-            }
-        }
+    // Code disbled since error explained in LibraryModel::refresh(int row)
+    // is not resolved
+//    if(uid.isEmpty()) {
+//        select();
+//    } else {
+//        QVariant vuid(uid);
+//        for(int i = 0 ; i < rowCount() ; ++i) {
+//            if(vuid == record(i).value(Library::Uid)) {
+//                refresh(i);
+//                return;
+//            }
+//        }
+//    }
+    select();
+
+    foreach(int row, checkedRows) {
+        QItemSelection line(index(row, 0), index(row, columnCount() - 1));
+        emit rowCheckedOrUnchecked(line, QItemSelectionModel::Select);
     }
 }
 
-void LibraryModel::refresh(int row)
+void LibraryModel::refresh(int)
 {
     // FIXME : does not work, because SQL view displayed by this TableModel
-    // has no primaryKey set
-    selectRow(row);
-    emit dataChanged(index(0, 0), index(0, columnCount()));
+    // has no primaryKey set. Additionaly, Qt5 maybe has a bug with the method
+    // QSqlTableModel::selectRow(int). This should be tested and fixed in future
+    // Qt versions (2013-01-24
+//    selectRow(row);
+    refresh();
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)

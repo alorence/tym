@@ -386,10 +386,6 @@ const QString BPDatabase::storeTrack(const QJsonValue &track) const
 
 const bool BPDatabase::setLibraryTrackReference(const QString &libUid, const QString &bpid) const
 {
-    /* FIXME: this method can be called from storeSearchResults() or manually from
-    on_actionSetDefaultResult_triggered. These methods are not executed from the same
-    thread. The right dbObject() need to be used in each case. */
-
     QSqlQuery query(dbObject());
     query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
     query.bindValue(":uid", libUid);
@@ -404,9 +400,7 @@ const bool BPDatabase::setLibraryTrackReference(const QString &libUid, const QSt
         return false;
     } else {
         _dbMutex->unlock();
-        // FIXME: see LibraryModel::refresh(int row)
-        // emit libraryEntryUpdated(libUid);
-        emit libraryEntryUpdated();
+        emit libraryEntryUpdated(libUid);
         emit referenceForTrackUpdated(libUid);
         return true;
     }
