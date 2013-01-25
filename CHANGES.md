@@ -14,4 +14,3 @@ Publish date : TBD
 #### Known bugs
  - Wizards have a too large title size. Qt 5.0.0 bug, should be resolved in a future version (see https://bugreports.qt-project.org/browse/QTBUG-28099)
  - If a wizard is closed before task is finished, a warning appear in console output
- - QSettings does not retrieve values stored previously on Ubuntu

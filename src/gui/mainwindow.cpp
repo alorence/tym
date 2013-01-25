@@ -253,7 +253,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_actionImport_triggered()
 {
     QSettings settings;
-    QString searchDir = settings.value("general/lastOpenedDir", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString();
+    QString searchDir = settings.value("lastOpenedDir", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString();
 
     //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
     QString wildcards = Constants::fileSuffixesAccepted().join(" ");
@@ -266,7 +266,7 @@ void MainWindow::on_actionImport_triggered()
         _dbHelper->importFiles(fileList);
 
         QFileInfo f(fileList.first());
-        settings.setValue("general/lastOpenedDir", f.absolutePath());
+        settings.setValue("lastOpenedDir", f.absolutePath());
     }
 }
 
