@@ -38,7 +38,7 @@ Some bugs are known, please read the [CHANGES.md](https://github.com/alorence/ty
 ### Features
 See [CHANGES.md](https://github.com/alorence/tym/blob/master/CHANGES.md "Tag Your Music CHangelog")
 
-Planned features (TODO)
+### Planned features (TODO)
 #### In short terms
  - Add a button widget to help user building a file pattern (for search or rename a track)
  - Add more options when searching tracks informations
