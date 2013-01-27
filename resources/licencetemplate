@@ -16,38 +16,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-
-#ifndef SEARCHTHREAD_H
-#define SEARCHTHREAD_H
-
-#include <QSqlRecord>
-#include "task.h"
-#include "wizards/searchwizard.h"
-
-class Task;
-class BPDatabase;
-class SearchProvider;
-
-class SearchTask : public Task
-{
-    Q_OBJECT
-
-public:
-    explicit SearchTask(QString, SearchWizard::SearchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
-    ~SearchTask();
-
-public slots:
-    void run();
-    void checkCoundResults();
-
-private:
-    QString _searchPattern;
-    SearchWizard::SearchType _searchType;
-    QList<QSqlRecord> _selectedRecords;
-    BPDatabase* _dbHelper;
-    SearchProvider* _search;
-
-    int _searchResultsCount;
-};
-
-#endif // SEARCHTHREAD_H
