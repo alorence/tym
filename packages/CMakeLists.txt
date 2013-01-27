@@ -34,7 +34,7 @@ if(WIN32)
     get_target_property(SqlDll      Qt5::Sql        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
 
     # TODO : Copy debug version of dlls in Debug BUILD_TYPE
-    add_custom_target(makesetup
+    add_custom_target(setup
         COMMAND ${CMAKE_COMMAND} -E copy ${CoreDll} ${TYM_SETUP_TREE_PATH}
         COMMAND ${CMAKE_COMMAND} -E copy ${WidgetsDll} ${TYM_SETUP_TREE_PATH}
         COMMAND ${CMAKE_COMMAND} -E copy ${NetworkDll} ${TYM_SETUP_TREE_PATH}

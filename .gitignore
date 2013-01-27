@@ -1,6 +1,9 @@
 # Executables are genrated here
 bin/
 
+# Documentation is genrated here
+docs/
+
 # Often used to generate CMake cache entries
 *build*/
 

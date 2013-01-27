@@ -89,3 +89,7 @@ add_subdirectory(libs/cutelogger)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)
+
+add_custom_target(docs
+    COMMAND doxygen Doxyfile
+)

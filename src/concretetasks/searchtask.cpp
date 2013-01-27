@@ -37,7 +37,7 @@ SearchTask::SearchTask(QString searchPattern, SearchWizard::SearchType searchTyp
     connect(_search, SIGNAL(searchResultAvailable(QString,QJsonValue)),
             _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
 
-    connect(_dbHelper, SIGNAL(searchResultStored(QString)), this, SLOT(checkCoundResults()));
+    connect(_dbHelper, SIGNAL(searchResultStored(QString)), this, SLOT(checkCountResults()));
 }
 
 SearchTask::~SearchTask()
@@ -91,7 +91,7 @@ void SearchTask::run()
     }
 }
 
-void SearchTask::checkCoundResults()
+void SearchTask::checkCountResults()
 {
     --_searchResultsCount;
     if(_searchResultsCount <= 0) {
