@@ -23,13 +23,30 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include "task.h"
 
+/*!
+ * \brief Rename files according to QMap gived as parameter.
+ *
+ * \sa RenameTask::run()
+ */
 class RenameTask : public Task
 {
     Q_OBJECT
 
 public:
-    explicit RenameTask(QHash<QString, QString>, QObject *parent = 0);
+    /*!
+     * \brief Construct a new RenameTask
+     * \param renameMap The map defining which track must be renamed with whioch name
+     * \param parent
+     * \sa RenameTask::run()
+     */
+    explicit RenameTask(QHash<QString, QString> renameMap, QObject *parent = 0);
 
+    /*!
+     * \brief Execute the rename task.
+     *
+     * According to the QMap<QString, QString> used to create the class, rename each @a key
+     * into @value and update database with new file names.
+     */
     void run();
 private:
     QHash<QString, QString> _renameMap;

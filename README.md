@@ -31,12 +31,13 @@ nmake makesetup
  - CMake 2.8.9 minimum
  - C++ compiler, g++ and msvc 2010 are ok, and others should also be
  - Inno Setup (Windows only)
+ - Doxygen and Graphviz (dot tool) to generate doc
 
 ### Bugs
-Some bugs are known, please read the [CHANGES.md](https://github.com/alorence/tym/blob/master/CHANGES.md "Tag Your Music CHangelog"). If you find new one, please leave an issue on [issue tracker](https://github.com/alorence/tym/issues "Tag Your Music issues").
+Some bugs are known, please read the [CHANGES.md](https://github.com/alorence/tym/blob/master/CHANGES.md "Tag Your Music Changelog"). If you find new one, please leave an issue on [issue tracker](https://github.com/alorence/tym/issues "Tag Your Music issues").
 
 ### Features
-See [CHANGES.md](https://github.com/alorence/tym/blob/master/CHANGES.md "Tag Your Music CHangelog")
+See [CHANGES.md](https://github.com/alorence/tym/blob/master/CHANGES.md "Tag Your Music Changelog")
 
 ### Planned features (TODO)
 #### In short terms

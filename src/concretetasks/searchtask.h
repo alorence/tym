@@ -28,17 +28,37 @@ class Task;
 class BPDatabase;
 class SearchProvider;
 
+/*!
+ * \brief Define a task to operate search on Beatport public API
+ */
 class SearchTask : public Task
 {
     Q_OBJECT
 
 public:
-    explicit SearchTask(QString, SearchWizard::SearchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
+    /*!
+     * \brief Construct the task
+     * \param searchPattern Format supposed to define filenames, used to extract informations used to build a search request
+     * \param searchType Type of search user selected
+     * \param selectedRecords List of QSqlRecord corresponding to Library entries user select before launching the search
+     * \param parent
+     */
+    explicit SearchTask(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
     ~SearchTask();
 
 public slots:
+    /*!
+     * \brief Extract informations from selected records and build 1 or more requests to send to Beatport API.
+     *
+     * This methodrun the network requests, and connect response to SearchTask::checkCountResults() to know when it
+     * have to emit the finished() signal. Network request's results are connected to BPDatabase::storeSearchResults()
+     * to store results into SQLite database.
+     */
     void run();
-    void checkCoundResults();
+    /*!
+     * \brief Used to check number of results received, and emit the finished() signal when last result has arrived.
+     */
+    void checkCountResults();
 
 private:
     QString _searchPattern;

@@ -16,6 +16,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+
+/*! \file
+ *
+ * Define the software entry point.
+ * \sa main()
+ */
+
+/*! \mainpage
+ *
+ * Tag Your Music is a software which can search for audio files meta-tags from Internet,
+ * store it and use it to operate some tasks :
+ *  - Rename tracks on the disk following a common pattern
+ *  - Output playlists files (nml format) to write all informations
+ *
+ * \sa SearchTask, RenameTask,
+ *
+ */
 #include <QtWidgets/QApplication>
 #include <QTextEdit>
 
@@ -27,6 +44,17 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include "version.h"
 
+/*!
+ * \brief Software entry point
+ *
+ * Configure logging tools, set some software propertie, initialize mandatory
+ * components, build the MainWindow and show it. This method use the QApplication::exec()
+ * method to launch the default Qt event loop
+ * \param argc
+ * \param argv
+ * \return 0 if program exited normally
+ * \sa MainWindow
+ */
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

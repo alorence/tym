@@ -23,16 +23,34 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QRunnable>
 
+/*!
+ * @brief Define an atomic task.
+ * This class is used as an interface to asynchronous tasks. It extends QRunnable
+ * to define run() method, and QObject to implements signals / slots mechanism.
+ *
+ * Taks can be launched directly in a QThread, or via a QThreadPool, depending on how
+ * it work and if it needs to launch a event loop or not.
+ */
 class Task : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
+    /*!
+     * @brief Task::Task construct a Task.
+     * @param parent
+     */
     explicit Task(QObject *parent = 0);
 
 signals:
+    /*!
+     * @brief Signal emitted when all work is done for the task.
+     */
     void finished();
 
 public slots:
+    /**
+     * @brief Concrete code to execute when task is launched.
+     */
     virtual void run() = 0;
 };
 
