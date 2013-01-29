@@ -23,26 +23,45 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QtSql>
 
-// TODO : rewrite this class to have a nice code for all its uses
+#include "commons.h"
+#include "patternelement.h"
+/*!
+ * \brief The PatternTool class
+ *
+ *
+ */
 class PatternTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit PatternTool(QString _pattern, QObject *parent = 0);
+    explicit PatternTool(const QString & pattern, QObject *parent = 0);
+    virtual const QMap<QString, PatternElement> & availablesPatterns() const = 0;
+    void setPattern(const QString & pattern);
 
-    QMap<QString, QString> parseValues(QString& source, const QStringList &interestingKeys) const;
-    QString stringFromPattern(QSqlRecord &) const;
-    
-signals:
-    
-public slots:
+protected:
+    QStringList _patternElts;
+    QMap<QString, PatternElement> _allowedPatterns;
+    QString _commonRegExpPattern;
+};
+
+class FileBasenameParser : public PatternTool
+{
+public:
+    FileBasenameParser(const QString &pattern = QString(), QObject *parent = 0);
+    const QMap<QString, PatternElement> & availablesPatterns() const;
+    QMap<TrackFullInfos::Indexes, QString> parse(const QString &basename) const;
 
 private:
-    QString _pattern;
+    QRegularExpression _parserRegularExpression;
+};
 
-    QMap<int, QString> _inReplacementMap;
-    QRegExp _inRegExp;
-    
+class FileBasenameFormatter : public PatternTool
+{
+public:
+    FileBasenameFormatter(const QString &pattern = QString(), QObject *parent = 0);
+    const QMap<QString, PatternElement> & availablesPatterns() const;
+    QString format(const QSqlRecord &) const;
+
 };
 
 #endif // PATTERNTOOL_H

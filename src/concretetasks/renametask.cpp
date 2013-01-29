@@ -35,14 +35,14 @@ void RenameTask::run()
     BPDatabase db("renameThread");
     QHashIterator<QString, QString> it(_renameMap);
 
-    QRegExp renameValidityCheck("<.*>$");
+    QRegularExpression renameValidityCheck("^<.*>$");
 
     while(it.hasNext()) {
         QFileInfo from(it.next().key());
         QString to = it.value();
 
         // Rename only if the target filename is not "<...>"
-        if( ! renameValidityCheck.exactMatch(to)) {
+        if( ! renameValidityCheck.match(to).hasMatch()) {
             if( ! from.exists()) {
                 LOG_WARNING(tr("Error, file %1 does not exists, it can't be renamed.")
                             .arg(from.canonicalFilePath()));

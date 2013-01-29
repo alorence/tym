@@ -68,7 +68,7 @@ void SearchWizard::setPattern(QString value)
 void SearchWizard::idSearchSelected(bool checked)
 {
     if(checked ){
-        setPattern("%ID%_%OTHER%.%EXT%");
+        setPattern("%ID%_%OTHER%");
         type = FromId;
     }
 }
@@ -76,7 +76,7 @@ void SearchWizard::idSearchSelected(bool checked)
 void SearchWizard::titleArtistSearchSelected(bool checked)
 {
     if(checked) {
-        setPattern("%ARTISTS% - %TITLE%.%EXT%");
+        setPattern("%ARTISTS% - %TITLE%");
         type = FromArtistTitle;
     }
 }

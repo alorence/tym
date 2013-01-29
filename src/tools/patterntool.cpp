@@ -18,78 +18,94 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
 #include "patterntool.h"
+#include <Logger.h>
 
-#include "commons.h"
-
-PatternTool::PatternTool(QString pattern, QObject *parent) :
-    QObject(parent),
-    _pattern(pattern)
+PatternTool::PatternTool(const QString &pattern, QObject *parent) :
+    QObject(parent)
 {
-    QStringList list = pattern.split('%', QString::SkipEmptyParts);
+    _commonRegExpPattern = ".+";
+
+    _allowedPatterns["ID"] = PatternElement("Id", "Beatport's unique identifier", "[0-9]+", TrackFullInfos::Bpid);
+    _allowedPatterns["NAME"] = PatternElement("Name", "Track's name", _commonRegExpPattern, TrackFullInfos::TrackName);
+    _allowedPatterns["MIXNAME"] = PatternElement("Mixname", "Track's mixname", _commonRegExpPattern, TrackFullInfos::MixName);
+    _allowedPatterns["TITLE"] = PatternElement("Title", "Track's title, usually correspond to %NAME% (%MIXNAME%)", _commonRegExpPattern, TrackFullInfos::Title);
+    _allowedPatterns["ARTISTS"] = PatternElement("Artists", "Track's artists list", _commonRegExpPattern, TrackFullInfos::Artists);
+    _allowedPatterns["REMIXERS"] = PatternElement("Remixers", "Track's remixers list", _commonRegExpPattern, TrackFullInfos::Remixers);
+    _allowedPatterns["LABEL"] = PatternElement("Label", "Track's label", _commonRegExpPattern, TrackFullInfos::Label);
+
+    setPattern(pattern);
+}
+
+void PatternTool::setPattern(const QString &pattern)
+{
+    _patternElts = pattern.split('%', QString::SkipEmptyParts);
+}
+
+FileBasenameParser::FileBasenameParser(const QString &pattern, QObject *parent) :
+    PatternTool(pattern, parent)
+{
+    _allowedPatterns["OTHER"] = PatternElement("Other", "Uninteresting text", _commonRegExpPattern);
+
     QStringList inRegExpList;
-
-    for(int i = 0 ; i < list.count() ; ++i) {
-
-        QString elt = list.at(i);
-
-        QString classicRexpPattern = "(.+)";
-
-        if(elt.toUpper() == "ID") {
-            inRegExpList << "([0-9]+)";
-            _inReplacementMap[i+1] = "bpid";
-        } else if(elt.toUpper() == "ARTISTS") {
-            inRegExpList << classicRexpPattern;
-            _inReplacementMap[i+1] = "artists";
-        } else if(elt.toUpper() == "TITLE") {
-            inRegExpList << classicRexpPattern;
-            _inReplacementMap[i+1] = "title";
-        } else if(elt.toUpper() == "EXT") {
-            inRegExpList << "([a-zA-Z0-9]{2,4})";
-            _inReplacementMap[i+1] = "ext";
-        } else if(elt.toUpper() == "OTHER") {
-            inRegExpList << "(.+)";
+    foreach(QString patternElt, _patternElts) {
+        QString capitalPatternElt = patternElt.toUpper();
+        if(availablesPatterns().contains(capitalPatternElt)) {
+            inRegExpList << QString("(?<%1>%2)").arg(capitalPatternElt).arg(availablesPatterns().value(capitalPatternElt).inRegExp());
         } else {
-            inRegExpList << QString("(%1)").arg(elt.replace(".", "\\."));
+            inRegExpList << QString("%1").arg(patternElt.replace(".", "\\."));
         }
     }
+
     inRegExpList.prepend("^");
     inRegExpList.append("$");
 
-    _inRegExp = QRegExp(inRegExpList.join(""), Qt::CaseInsensitive, QRegExp::RegExp2);
+    _parserRegularExpression = QRegularExpression(inRegExpList.join(""), QRegularExpression::CaseInsensitiveOption);
+
 }
 
-QMap<QString, QString> PatternTool::parseValues(QString &source, const QStringList & interestingKeys) const
+const QMap<QString, PatternElement> &FileBasenameParser::availablesPatterns() const
 {
-    QMap<QString, QString> result;
-    if(_inRegExp.indexIn(source) != -1) {
-        foreach(int i, _inReplacementMap.keys()) {
-            if(interestingKeys.contains(_inReplacementMap[i])) {
-                result[_inReplacementMap[i]] = _inRegExp.cap(i);
-            }
+    return _allowedPatterns;
+}
+
+QMap<TrackFullInfos::Indexes, QString> FileBasenameParser::parse(const QString &basename) const
+{
+    QRegularExpressionMatch matchResult = _parserRegularExpression.match(basename);
+
+    QMap<TrackFullInfos::Indexes, QString> result;
+    foreach(QString patternElt, _patternElts) {
+        QString capitalPatternElt = patternElt.toUpper();
+        if(availablesPatterns().contains(capitalPatternElt)
+                && availablesPatterns()[capitalPatternElt].sqlIndex() != TrackFullInfos::InvalidIndex) {
+
+            result[availablesPatterns().value(capitalPatternElt).sqlIndex()] = matchResult.captured(capitalPatternElt);
+            LOG_DEBUG(QString("Add result %1 for key %2").arg(matchResult.captured(capitalPatternElt)).arg(capitalPatternElt));
+
         }
     }
     return result;
 }
 
-QString PatternTool::stringFromPattern(QSqlRecord &trackInfoRecord) const
+FileBasenameFormatter::FileBasenameFormatter(const QString &pattern, QObject *parent) :
+    PatternTool(pattern, parent)
 {
-    QStringList partList = _pattern.split('%', QString::SkipEmptyParts);
+}
 
+const QMap<QString, PatternElement> &FileBasenameFormatter::availablesPatterns() const
+{
+    return _allowedPatterns;
+}
+
+QString FileBasenameFormatter::format(const QSqlRecord &trackInfoRecord) const
+{
     QString result;
 
-    foreach(QString part, partList) {
-        if(part.toUpper() == "ARTISTS") {
-            result.append(trackInfoRecord.value(TrackFullInfos::Artists).toString());
-        } else if(part.toUpper() == "TITLE") {
-            result.append(trackInfoRecord.value(TrackFullInfos::Title).toString());
-        } else if(part.toUpper() == "NAME") {
-            result.append(trackInfoRecord.value(TrackFullInfos::TrackName).toString());
-        } else if(part.toUpper() == "MIXNAME") {
-            result.append(trackInfoRecord.value(TrackFullInfos::MixName).toString());
-        } else if(part.toUpper() == "LABEL") {
-            result.append(trackInfoRecord.value(TrackFullInfos::LabelName).toString());
+    foreach(QString patternElt, _patternElts) {
+
+        if(availablesPatterns().contains(patternElt.toUpper())) {
+            result.append(trackInfoRecord.value(availablesPatterns().value(patternElt.toUpper()).sqlIndex()).toString());
         } else {
-            result.append(part);
+            result.append(patternElt);
         }
     }
 

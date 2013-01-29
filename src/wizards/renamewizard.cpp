@@ -40,6 +40,7 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
 
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
+    // TODO: Re-order table columns to hide only last
     ui->previewTable->setRowCount(selected.count());
     ui->previewTable->setColumnCount(sizeof(PreviewColumns));
     ui->previewTable->hideColumn(Bpid);
@@ -91,7 +92,7 @@ RenameWizard::~RenameWizard()
 
 void RenameWizard::updateRenamePreview()
 {
-    PatternTool patternTool(ui->pattern->text());
+    FileBasenameFormatter filenameFormatter(ui->pattern->text());
 
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
         QString bpid = ui->previewTable->item(row, Bpid)->text();
@@ -100,7 +101,7 @@ void RenameWizard::updateRenamePreview()
 
         if( ! bpid.isEmpty()) {
             QFileInfo original(ui->previewTable->item(row, OrigFileName)->text());
-            QString newBaseName = patternTool.stringFromPattern(_tracksInformations[bpid]);
+            QString newBaseName = filenameFormatter.format(_tracksInformations[bpid]);
 
             if(newBaseName == original.baseName()) {
                 itemText = "<File already have the right name>";

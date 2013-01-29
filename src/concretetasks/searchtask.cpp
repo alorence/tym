@@ -49,40 +49,34 @@ SearchTask::~SearchTask()
 void SearchTask::run()
 {
     LOG_TRACE("Start search task");
-    PatternTool pt(_searchPattern);
-    QMap<QString, QMap<QString, QString> > parsedValueMap;
+    QMap<QString, QMap<TrackFullInfos::Indexes, QString> > fileInformations;
 
-    QStringList interestingKeys;
-    if(_searchType == SearchWizard::FromId) {
-        interestingKeys << "bpid";
-    } else {
-        interestingKeys << "artists" << "title" << "remixers" << "name" << "mixname" << "label";
-    }
-
+    FileBasenameParser fileParser(_searchPattern);
     foreach (QSqlRecord record, _selectedRecords) {
         QFileInfo file(record.value(Library::FilePath).toString());
 
-        QString refFileName(file.fileName());
-        parsedValueMap[record.value(Library::Uid).toString()] = pt.parseValues(refFileName, interestingKeys);
+        fileInformations[record.value(Library::Uid).toString()] = fileParser.parse(file.baseName());
     }
 
     QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(_searchType == SearchWizard::FromId) {
-        foreach(QString key, parsedValueMap.keys()) {
-            QString bpid = parsedValueMap[key]["bpid"];
+        foreach(QString libUid, fileInformations.keys()) {
+            QString bpid = fileInformations[libUid][TrackFullInfos::Bpid];
             if(bpid.isEmpty()) continue;
 
-            requestMap->insert(key, bpid);
+            (*requestMap)[libUid] = bpid;
         }
         if( ! requestMap->isEmpty()) {
             _searchResultsCount = 1;
             _search->searchFromIds(requestMap);
         }
     } else {
-        foreach(QString key, parsedValueMap.keys()) {
-            if(parsedValueMap[key].values().isEmpty()) continue;
+        foreach(QString libUid, fileInformations.keys()) {
+            if(fileInformations[libUid].values().isEmpty()) continue;
 
-            requestMap->insert(key, ((QStringList) parsedValueMap[key].values()).join(" "));
+            // TODO: Add to requestMap only informations selected by user
+
+            (*requestMap)[libUid] = ((QStringList) fileInformations[libUid].values()).join(" ");
         }
         if( ! requestMap->isEmpty()) {
             _searchResultsCount = requestMap->count();
