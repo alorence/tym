@@ -24,6 +24,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QSqlRecord>
 
+#include "gui/patternbutton.h"
+
 namespace Ui {
 class SearchWizard;
 }
@@ -67,11 +69,14 @@ private slots:
     void idSearchSelected(bool);
     void titleArtistSearchSelected(bool);
     void customSearchSelected(bool);
+    void insertPatternText(const QString&);
 
 private:
     Ui::SearchWizard* ui;
-    SearchType type;
+    SearchType _type;
     QList<QSqlRecord> _selectedRecords;
+
+    PatternButton * _patternHelperButton;
 
     enum WizardPages {
         SelectPatternPage = 0,

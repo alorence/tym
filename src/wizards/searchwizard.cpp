@@ -24,11 +24,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <WidgetAppender.h>
 
 #include "concretetasks/searchtask.h"
+#include "tools/patterntool.h"
 
 SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::SearchWizard),
-    _selectedRecords(selectedRecords)
+    _selectedRecords(selectedRecords),
+    _patternHelperButton(new PatternButton(FileBasenameParser(), this))
 {
     ui->setupUi(this);
 
@@ -41,6 +43,10 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     connect(ui->customSearch, SIGNAL(toggled(bool)), this, SLOT(customSearchSelected(bool)));
 
     ui->searchFromId->setChecked(true);
+
+    ui->patternHorizLayout->addWidget(_patternHelperButton);
+    _patternHelperButton->hide();
+    connect(_patternHelperButton, SIGNAL(patternSelected(QString)), this, SLOT(insertPatternText(QString)));
 }
 
 SearchWizard::~SearchWizard()
@@ -48,6 +54,7 @@ SearchWizard::~SearchWizard()
     delete ui;
     Logger::unRegisterAppender(_widgetAppender);
     delete _widgetAppender;
+    delete _patternHelperButton;
 }
 
 QString SearchWizard::pattern() const
@@ -57,7 +64,7 @@ QString SearchWizard::pattern() const
 
 SearchWizard::SearchType SearchWizard::searchType() const
 {
-    return type;
+    return _type;
 }
 
 void SearchWizard::setPattern(QString value)
@@ -69,7 +76,7 @@ void SearchWizard::idSearchSelected(bool checked)
 {
     if(checked ){
         setPattern("%ID%_%OTHER%");
-        type = FromId;
+        _type = FromId;
     }
 }
 
@@ -77,15 +84,23 @@ void SearchWizard::titleArtistSearchSelected(bool checked)
 {
     if(checked) {
         setPattern("%ARTISTS% - %TITLE%");
-        type = FromArtistTitle;
+        _type = FromArtistTitle;
     }
 }
 
 void SearchWizard::customSearchSelected(bool checked)
 {
     if(checked) {
-        type = Custom;
+        _type = Custom;
+        _patternHelperButton->show();
+    } else {
+        _patternHelperButton->hide();
     }
+}
+
+void SearchWizard::insertPatternText(const QString & patternText)
+{
+    ui->pattern->insert(patternText);
 }
 
 void SearchWizard::initializePage(int id)
@@ -93,7 +108,7 @@ void SearchWizard::initializePage(int id)
     if(id == ResultPage) {
 
         QThread *thread = new QThread(this);
-        SearchTask * task = new SearchTask(ui->pattern->text(), type, _selectedRecords);
+        SearchTask * task = new SearchTask(ui->pattern->text(), _type, _selectedRecords);
         task->moveToThread(thread);
 
         connect(thread, SIGNAL(started()), task, SLOT(run()));

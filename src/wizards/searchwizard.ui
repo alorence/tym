@@ -81,7 +81,7 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
     <item row="13" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="patternHorizLayout">
       <item>
        <widget class="QLabel" name="labelResult">
         <property name="text">
