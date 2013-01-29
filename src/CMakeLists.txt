@@ -43,6 +43,7 @@ set(tym_HEADERS
     gui/settingsdialog.h
     gui/trackinfosview.h
     gui/consolewidget.h
+    gui/patternbutton.h
 )
 
 set(tym_SOURCES
@@ -65,6 +66,7 @@ set(tym_SOURCES
     gui/mainwindow.cpp
     gui/settingsdialog.cpp
     gui/trackinfosview.cpp
+    gui/patternbutton.cpp
 )
 
 set(tym_UIS
