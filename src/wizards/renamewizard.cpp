@@ -24,19 +24,25 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "WidgetAppender.h"
 
 #include "commons.h"
-#include "tools/patterntool.h"
 #include "dbaccess/bpdatabase.h"
 #include "concretetasks/renametask.h"
 
 RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     QWizard(parent),
-    ui(new Ui::RenameWizard)
+    ui(new Ui::RenameWizard),
+    _filenameFormatter()
 {
     ui->setupUi(this);
+
+    _patternHelperButton = new PatternButton(_filenameFormatter, this);
 
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%m\n");
     Logger::registerAppender(_widgetAppender);
+
+    ui->patternHorizLayout->addWidget(_patternHelperButton);
+    _patternHelperButton->hide();
+    connect(_patternHelperButton, SIGNAL(patternSelected(QString)), this, SLOT(insertPatternText(QString)));
 
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
@@ -92,8 +98,6 @@ RenameWizard::~RenameWizard()
 
 void RenameWizard::updateRenamePreview()
 {
-    FileBasenameFormatter filenameFormatter(ui->pattern->text());
-
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
         QString bpid = ui->previewTable->item(row, Bpid)->text();
 
@@ -101,7 +105,7 @@ void RenameWizard::updateRenamePreview()
 
         if( ! bpid.isEmpty()) {
             QFileInfo original(ui->previewTable->item(row, OrigFileName)->text());
-            QString newBaseName = filenameFormatter.format(_tracksInformations[bpid]);
+            QString newBaseName = _filenameFormatter.format(_tracksInformations[bpid]);
 
             if(newBaseName == original.baseName()) {
                 itemText = "<File already have the right name>";
@@ -114,6 +118,11 @@ void RenameWizard::updateRenamePreview()
         QTableWidgetItem *item = new QTableWidgetItem(itemText);
         ui->previewTable->setItem(row, TargetFileName, item);
     }
+}
+
+void RenameWizard::insertPatternText(const QString & patternText)
+{
+    ui->pattern->insert(patternText);
 }
 
 void RenameWizard::on_patternSelection_currentIndexChanged(int index)
@@ -130,11 +139,19 @@ void RenameWizard::on_patternSelection_currentIndexChanged(int index)
         break;
     }
     updateRenamePreview();
+
+    if(index == 3) { // Custom
+        _patternHelperButton->show();
+    } else {
+        _patternHelperButton->hide();
+    }
 }
 
 void RenameWizard::initializePage(int id)
 {
     if(id == ResultPage) {
+
+        _filenameFormatter.setPattern(ui->pattern->text());
 
         QHash<QString, QString> renameMap;
 

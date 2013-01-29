@@ -51,7 +51,7 @@
      </widget>
     </item>
     <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="patternHorizLayout">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">

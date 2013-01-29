@@ -24,6 +24,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include <QtSql>
 
+#include "gui/patternbutton.h"
+#include "tools/patterntool.h"
+
 namespace Ui {
 class RenameWizard;
 }
@@ -43,11 +46,15 @@ protected:
     
 private slots:
     void updateRenamePreview();
+    void insertPatternText(const QString&);
     void on_patternSelection_currentIndexChanged(int index);
 
 private:
     Ui::RenameWizard* ui;
     QMap<QString, QSqlRecord> _tracksInformations;
+
+    FileBasenameFormatter _filenameFormatter;
+    PatternButton * _patternHelperButton;
 
     enum WizardPages {
         PreviewPage = 0,
