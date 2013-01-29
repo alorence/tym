@@ -31,6 +31,7 @@ const QString Constants::dataLocation()
 
 const QString Constants::picturesLocation()
 {
+    //TODO: replace all native separators by /, to unify paths in all the program
     return dataLocation() + QDir::separator() + "albumarts";
 }
 

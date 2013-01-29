@@ -73,7 +73,8 @@ namespace TrackFullInfos {
         Price,
         Length,
         Release,
-        PictureId
+        PictureId,
+        InvalidIndex = 256
     };
 }
 namespace SearchResults {
