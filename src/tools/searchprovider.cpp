@@ -113,13 +113,13 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
         searchList.next();
         QString libId = searchList.key();
         QString text = searchList.value();
-        text = text.replace(", ", " ");
-        text = text.replace(",", " ");
-        text = text.replace("(", "");
-        text = text.replace(")", "");
-        text = text.replace("[", "");
-        text = text.replace("]", "");
-        text = text.replace("-", "");
+
+        // Remove occurences of - [ ] ( ) and , characters from search parameters
+        text.remove(QRegularExpression("[-\\[\\](),&']"));
+        // Convert _ into spaces
+        text.replace('_', ' ');
+        // Simplify multiple spaces
+        text.replace(QRegularExpression("\\s{2,}"), " ");
 
         QUrlQuery query;
         query.addQueryItem("query", text);
@@ -134,6 +134,8 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
         _textSearchMapper->setMapping(reply, libId);
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
+
+        LOG_DEBUG(tr("Send request: %1").arg(request.url().toString()));
     }
     delete rowNameMap;
 }
