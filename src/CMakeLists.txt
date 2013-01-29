@@ -30,6 +30,7 @@ set(tym_HEADERS
     concretetasks/searchtask.h
     concretetasks/librarystatusupdater.h
     tools/patterntool.h
+    tools/patternelement.h
     tools/searchprovider.h
     tools/picturedownloader.h
     dbaccess/bpdatabase.h
@@ -52,6 +53,7 @@ set(tym_SOURCES
     concretetasks/searchtask.cpp
     concretetasks/librarystatusupdater.cpp
     tools/patterntool.cpp
+    tools/patternelement.cpp
     tools/searchprovider.cpp
     tools/picturedownloader.cpp
     dbaccess/bpdatabase.cpp
