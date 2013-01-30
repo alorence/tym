@@ -62,9 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
 
-    // Used to transfer fixed parameters to some slots
-    _generalMapper = new QSignalMapper(this);
-
     // Configure Library Model
     _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
     _libraryModel->setTable("LibraryHelper");
@@ -77,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Configure Search Model
     _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
     _searchModel->setTable("SearchResultsHelper");
+    _searchModel->setFilter("libId=NULL");
     _searchModel->select();
     // Configure view
     ui->searchResultsView->setModel(_searchModel);
@@ -93,22 +91,17 @@ MainWindow::MainWindow(QWidget *parent) :
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));
-    // Update search results view when selecting something in the library view
-    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateSearchResults(QModelIndex,QModelIndex)));
+
     // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(updateLibraryActions()));
 
-    // When the selection change in library view, the search results view should be reconfigured.
+    // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            _generalMapper, SLOT(map()));
-    // The first row (0) must be selected :
-    _generalMapper->setMapping(ui->libraryView->selectionModel(), 0);
-    connect(_generalMapper, SIGNAL(mapped(int)), ui->searchResultsView, SLOT(selectRow(int)));
+            this, SLOT(updateSearchResults(QModelIndex,QModelIndex)));
 
     // Display informations about a track when selecting it in the view
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
 
     // TODO: Maybe useless when LibraryModel::refresh(int row) will work
@@ -149,7 +142,6 @@ MainWindow::~MainWindow()
     _libStatusUpdateThread->quit();
     _dbHelper->deleteLater();
     delete ui;
-    delete _generalMapper;
     delete _libraryModel;
     delete _searchModel;
     delete _pictureDownloader;
@@ -158,8 +150,9 @@ MainWindow::~MainWindow()
     _libStatusUpdateThread->deleteLater();
 }
 
-const void MainWindow::show()
+void MainWindow::show()
 {
+    //TODO: is this awful hack still necessary ?
     QMainWindow::show();
 
     // Configure libraryView filePath column to take as space as possible
@@ -195,22 +188,22 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    QVariant libId = _libraryModel->data(_libraryModel->index(selected.row(), Library::Uid));
-    _searchModel->setFilter("libId=" + libId.toString());
+    QString libId = _libraryModel->data(_libraryModel->index(selected.row(), Library::Uid)).toString();
+    _searchModel->setFilter("libId=" + libId);
 
-    if( ! _searchModel->query().isActive()) {
-        _searchModel->select();
+    if(_searchModel->rowCount()) {
+        //TODO: Select linked result if exists
+        ui->searchResultsView->selectRow(0);
+    } else {
+        //When no more results are displayed, we must clear the track infos widget
+        ui->trackInfos->clearData();
     }
 }
 
-void MainWindow::updateTrackInfos(const QModelIndex selected, const QModelIndex)
+void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex&)
 {
-    if(selected.isValid()) {
-        QString bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid).toString();
-        ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
-    } else {
-        ui->trackInfos->clearData();
-    }
+    QString bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid).toString();
+    ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
 }
 
 void MainWindow::updateLibraryActions()

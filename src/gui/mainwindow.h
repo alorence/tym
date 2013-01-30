@@ -34,23 +34,69 @@ class SearchResultsModel;
 namespace Ui {
 class MainWindow;
 }
-
+/*!
+ * \brief Define the main application window
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
     
 public:
+    /*!
+     * \brief Build the main window.
+     * Initialize all widgets and classes it will use during the execution. Connect all
+     * signals / slots used, launch a LibraryStatusUpdater in a QThread.
+     * \param parent
+     * \sa LibraryStatusUpdater
+     * \sa QThread
+     * \sa LibraryModel
+     * \sa SearchResultsModel
+     * \sa TrackInfosView
+     */
     explicit MainWindow(QWidget *parent = 0);
+    /*!
+     * \brief Destruct the windows and all children which need.
+     */
     ~MainWindow();
 
-    const void show();
-
+    /*!
+     * \brief Define if elements dragged to this windows can or not be accepted.
+     * \sa QWidget::dragEnterEvent()
+     */
     void dragEnterEvent(QDragEnterEvent *);
+    /*!
+     * \brief Launch the right action when user drop elements to this window.
+     * \sa QWidget::dropEvent()
+     */
     void dropEvent(QDropEvent *);
-    
+
+public slots:
+    /*!
+     * \brief Display the window.
+     * Reimplemented from QMainWindow to configure some little things in the views.
+     * \deprecated Could be better to find another solution
+     */
+    void show();
+
+
 private slots:
-    void updateSearchResults(const QModelIndex & selected, const QModelIndex &);
-    void updateTrackInfos(const QModelIndex, const QModelIndex);
+    /*!
+     * \brief Update results list in the search results view.
+     * Called when user change the item selected in the library view. Connected to the
+     * library view's selectionModel(), when it emits its currentRowChanged() signal.
+     * \param selected the new selected element in library view
+     * \param deselected the unselected element in library view
+     * \sa QItemSelectionModel::currentRowChanged()
+     */
+    void updateSearchResults(const QModelIndex &selected, const QModelIndex &deselected);
+    /*!
+     * \brief Update informations displayed in the TrackInfosView widget.
+     * Called when search results view's selectionModel() emit its currentRowChanged() signal.
+     * \param selected the new selected elements in search result view
+     * \param deselected the unselected elements in search result view
+     * \sa QItemSelectionModel::currentRowChanged()
+     */
+    void updateTrackInfos(const QModelIndex &selected, const QModelIndex &deselected);
     void updateLibraryActions();
     void updateSearchResultsActions();
 
@@ -75,13 +121,13 @@ private:
     Ui::MainWindow* ui;
     SettingsDialog* _settings;
     PictureDownloader* _pictureDownloader;
-    QSignalMapper* _generalMapper;
 
     BPDatabase* _dbHelper;
     LibraryModel* _libraryModel;
     SearchResultsModel* _searchModel;
 
     QThread* _libStatusUpdateThread;
+
 };
 
 #endif // MAINWINDOW_H
