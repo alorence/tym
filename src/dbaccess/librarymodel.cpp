@@ -28,6 +28,15 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db)
 {
     columnWithCheckbox = Library::FilePath;
+
+    _newFileColor = QColor(Qt::blue);
+    _newFileColor.setAlpha(30);
+    _missingColor = QColor(Qt::red);
+    _missingColor.setAlpha(60);
+    _resultsAvailableColor = QColor(Qt::yellow);
+    _resultsAvailableColor.setAlpha(50);
+    _trackLinkedColor = QColor(Qt::green);
+    _trackLinkedColor.setAlpha(50);
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
@@ -44,6 +53,26 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 {
+    // Set BG color for each row
+    if(role == Qt::BackgroundRole) {
+
+        Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
+
+        if(status.testFlag(Library::FileNotFound)) {
+            return QBrush(_missingColor);
+        } else {
+            QString bpid = record(ind.row()).value(Library::Bpid).toString();
+            if( ! bpid.isEmpty()) {
+                return QBrush(_trackLinkedColor);
+            } else if(status.testFlag(Library::ResultsAvailable)) {
+                return QBrush(_resultsAvailableColor);
+            } else {
+                return QBrush(_newFileColor);
+            }
+        }
+
+    }
+
     if(ind.column() == columnWithCheckbox) {
         if(role == Qt::CheckStateRole) {
 

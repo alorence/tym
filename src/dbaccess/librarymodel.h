@@ -53,6 +53,10 @@ private:
     QSet<int> checkedRows;
     int columnWithCheckbox;
 
+    QColor _missingColor;
+    QColor _newFileColor;
+    QColor _resultsAvailableColor;
+    QColor _trackLinkedColor;
 };
 
 #endif // LIBRARYMODEL_H
