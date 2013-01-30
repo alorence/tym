@@ -54,6 +54,7 @@ public:
 
 
 signals:
+    //TODO: Split these 2 signatures into 2 distinct signals, they shoult not used in the same cases
     void rowCheckedOrUnchecked(const QModelIndex&,QItemSelectionModel::SelectionFlags);
     void rowCheckedOrUnchecked(const QItemSelection&,QItemSelectionModel::SelectionFlags);
 

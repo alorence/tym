@@ -159,7 +159,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::show()
 {
-    //TODO: is this awful hack still necessary ?
+    //TODO: Is this awful hack still necessary ?
     QMainWindow::show();
 
     // Configure libraryView filePath column to take as space as possible
@@ -268,7 +268,7 @@ void MainWindow::on_actionImport_triggered()
 
     QString filters = "Audio tracks ("+wildcards+")";
 
-    // TODO: implements a specific class to open both files and dirctories
+    // TODO: Implements a specific class to open both files and dirctories
     QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", searchDir, filters, 0, 0);
     if(! fileList.isEmpty()) {
         _dbHelper->importFiles(fileList);

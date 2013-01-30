@@ -249,6 +249,8 @@ void LibraryModel::refresh(const QString &)
     select();
 
     foreach(int row, checkedRows) {
+        // NOTE: It should be more efficient to build 1 QItemSelection with all items,
+        // but it force to use another kind of container, QSet is unordered
         QItemSelection line(index(row, 0), index(row, columnCount() - 1));
         emit rowCheckedOrUnchecked(line, QItemSelectionModel::Select);
     }
@@ -256,10 +258,9 @@ void LibraryModel::refresh(const QString &)
 
 void LibraryModel::refresh(int)
 {
-    // FIXME : does not work, because SQL view displayed by this TableModel
-    // has no primaryKey set. Additionaly, Qt5 maybe has a bug with the method
-    // QSqlTableModel::selectRow(int). This should be tested and fixed in future
-    // Qt versions (2013-01-24
+    // FIXME: Does not work, because SQL view displayed by this TableModel has no primaryKey set.
+    // Additionaly, Qt5 maybe has a bug with the method QSqlTableModel::selectRow(int). This should
+    // be tested and fixed in future Qt versions (2013-01-24)
 //    selectRow(row);
     refresh();
 }

@@ -80,7 +80,7 @@ set(TYM_SETUP_FILENAME setup-tym-${TYM_SHORT_VERSION})
 
 # Set the list of translations (*.ts) files to compile them in src directory
 file(GLOB TRANSLATIONS_FILES translations/*.ts)
-# TODO : Add a custom target to create / update ts files in transl. dir.
+# TODO: Add a custom target to create / update ts files in transl. dir.
 
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)

@@ -30,7 +30,7 @@ SearchTask::SearchTask(QString searchPattern, SearchWizard::SearchType searchTyp
     _searchType(searchType),
     _selectedRecords(selectedRecords),
     _dbHelper(new BPDatabase("searchTask", this)),
-    // TODO : Get this value from settings
+    // TODO: Get this value from settings
     _search(new SearchProvider(QUrl("http://api.beatport.com"), this)),
     _searchResultsCount(0)
 {

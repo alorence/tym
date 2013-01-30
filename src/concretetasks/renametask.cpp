@@ -67,9 +67,7 @@ void RenameTask::run()
                 continue;
             }
 
-            // TODO : check references rules to understand why GCC can't automatically get reference
-            QString cannonPath(from.canonicalFilePath());
-            db.renameFile(cannonPath, to);
+            db.renameFile(from.canonicalFilePath(), to);
         }
 
         emit finished();
