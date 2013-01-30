@@ -41,8 +41,7 @@ See [CHANGES.md](https://github.com/alorence/tym/blob/master/CHANGES.md "Tag You
 
 ### Planned features (TODO)
 #### In short terms
- - Add a button widget to help user building a file pattern (for search or rename a track)
- - Add more options when searching tracks informations
+ - Add more options when searching tracks informations (sorting, etc)
  - Produce *.nml playlist files (NI Traktor Pro) and append all tracks informations inside
  - Implements a full settings dialog to save user preferences
  - Implements the About dialog

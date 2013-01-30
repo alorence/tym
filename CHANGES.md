@@ -5,7 +5,7 @@ Publish date : TBD
 #### Features
  - Import audio files (*.wav, *.mp3, *.ogg, *.flac) into internal library
  - Search for associated content on Beatport with public api (http://api.beatport.com)
-    - All kinds of informations can be retrieved (artsis, remixers, title, lable, genres, publish & release date, tempo, key, etc.)
+    - All kinds of informations can be retrieved (artists, remixers, title, label, genres, publish & release date, tempo, key, etc.)
  - Link each track with one search result
  - Rename tracks according to result linked
     - Some simple patterns are predefined
