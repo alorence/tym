@@ -98,6 +98,8 @@ RenameWizard::~RenameWizard()
 
 void RenameWizard::updateRenamePreview()
 {
+    _filenameFormatter.setPattern(ui->pattern->text());
+
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
         QString bpid = ui->previewTable->item(row, Bpid)->text();
 
@@ -150,8 +152,6 @@ void RenameWizard::on_patternSelection_currentIndexChanged(int index)
 void RenameWizard::initializePage(int id)
 {
     if(id == ResultPage) {
-
-        _filenameFormatter.setPattern(ui->pattern->text());
 
         QHash<QString, QString> renameMap;
 
