@@ -118,9 +118,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
 
-
     connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh(QString)));
+
+    ui->selectionCombo->addItem("", -1);
+    ui->selectionCombo->addItem("All", LibraryModel::AllTracks);
+    ui->selectionCombo->addItem("Missing", LibraryModel::MissingTracks);
+    ui->selectionCombo->addItem("New", LibraryModel::NewTracks);
+    ui->selectionCombo->addItem("Linked", LibraryModel::LinkedTracks);
+    connect(ui->selectionCombo, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(selectSpecificLibraryElements(int)));
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
@@ -221,6 +228,14 @@ void MainWindow::updateSearchResultsActions()
 
     ui->actionSetDefaultResult->setDisabled(numSel == 0);
     ui->actionSearchResultDelete->setDisabled(numSel == 0);
+}
+
+void MainWindow::selectSpecificLibraryElements(int comboIndex)
+{
+    if(comboIndex != -1) {
+        LibraryModel::GroupSelection group = (LibraryModel::GroupSelection) ui->selectionCombo->itemData(comboIndex).toInt();
+        _libraryModel->selectSpecificGroup(group);
+    }
 }
 
 void MainWindow::on_actionAbout_triggered()

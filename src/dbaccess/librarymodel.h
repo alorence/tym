@@ -39,6 +39,20 @@ public:
     QSet<int> selectedIds() const;
     QHash<int, QSqlRecord> selectedRecords() const;
 
+    enum GroupSelection {
+        AllTracks,
+        NewTracks,
+        MissingTracks,
+        LinkedTracks
+    };
+
+    /*!
+     * \brief Select a particular group of elements, depending on their status
+     * \param group Kind of elements which must be selected
+     */
+    void selectSpecificGroup(LibraryModel::GroupSelection group);
+
+
 signals:
     void rowCheckedOrUnchecked(const QModelIndex&,QItemSelectionModel::SelectionFlags);
     void rowCheckedOrUnchecked(const QItemSelection&,QItemSelectionModel::SelectionFlags);

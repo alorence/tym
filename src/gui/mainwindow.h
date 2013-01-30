@@ -100,6 +100,13 @@ private slots:
     void updateLibraryActions();
     void updateSearchResultsActions();
 
+    /*!
+     * \brief Select library elements.
+     *
+     * \param comboIndex index of the combo element selected
+     */
+    void selectSpecificLibraryElements(int comboIndex);
+
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
 
     void on_actionImport_triggered();

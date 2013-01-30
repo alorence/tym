@@ -160,7 +160,7 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
         case Library::Uid:           return tr("Uid");
         case Library::FilePath:      return tr("File");
         case Library::Status:        return tr("Status");
-        case Library::NumResults:       return tr("Comment");
+        case Library::NumResults:    return tr("Comment");
         case Library::Bpid:          return tr("Track Id");
         }
     }
@@ -197,6 +197,38 @@ QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
         result[index] = record(index);
     }
     return result;
+}
+
+void LibraryModel::selectSpecificGroup(LibraryModel::GroupSelection group)
+{
+    if(group == AllTracks) {
+        QItemSelection entire(index(0, 0), index(rowCount() - 1, columnCount() - 1));
+        emit rowCheckedOrUnchecked(entire, QItemSelectionModel::Select);
+    } else if (group == MissingTracks) {
+        QItemSelection missing;
+        for (int i = 0 ; i < rowCount() - 1 ; ++i) {
+            if( ((Library::FileStatus) record(i).value(Library::Status).toInt()).testFlag(Library::FileNotFound)) {
+                missing.select(index(i, 0), index(i, columnCount() - 1));
+            }
+        }
+        emit rowCheckedOrUnchecked(missing, QItemSelectionModel::ClearAndSelect);
+    } else if (group == NewTracks) {
+        QItemSelection news;
+        for (int i = 0 ; i < rowCount() - 1 ; ++i) {
+            if( ( (Library::FileStatus) record(i).value(Library::Status).toInt()).testFlag(Library::New)) {
+                news.select(index(i, 0), index(i, columnCount() - 1));
+            }
+        }
+        emit rowCheckedOrUnchecked(news, QItemSelectionModel::ClearAndSelect);
+    } else if (group == LinkedTracks) {
+        QItemSelection linked;
+        for (int i = 0 ; i < rowCount() - 1 ; ++i) {
+            if( ! record(i).value(Library::Bpid).toString().isEmpty()) {
+                linked.select(index(i, 0), index(i, columnCount() - 1));
+            }
+        }
+        emit rowCheckedOrUnchecked(linked, QItemSelectionModel::ClearAndSelect);
+    }
 }
 
 void LibraryModel::refresh(const QString &)
