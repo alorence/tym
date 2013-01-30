@@ -24,13 +24,13 @@ include_directories(.)
 configure_file(version.h.in version.h)
 
 set(tym_HEADERS
-    # commons.h is not a QObject and MOC doesn't need to be applied on it
+    # commons.h # Not a QObject and MOC doesn't need to be applied on it
     concretetasks/task.h
     concretetasks/renametask.h
     concretetasks/searchtask.h
     concretetasks/librarystatusupdater.h
     tools/patterntool.h
-    tools/patternelement.h
+    # tools/patternelement.h # Not a QObject
     tools/searchprovider.h
     tools/picturedownloader.h
     dbaccess/bpdatabase.h
