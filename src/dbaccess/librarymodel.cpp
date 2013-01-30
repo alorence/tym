@@ -29,12 +29,11 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
 {
     columnWithCheckbox = Library::FilePath;
 
-    _newFileColor = QColor(Qt::blue);
+    _newFileColor = QColor(Qt::gray);
     _newFileColor.setAlpha(30);
     _missingColor = QColor(Qt::red);
     _missingColor.setAlpha(60);
-    _resultsAvailableColor = QColor(Qt::yellow);
-    _resultsAvailableColor.setAlpha(50);
+    _resultsAvailableColor = QColor(254, 183, 11, 50);
     _trackLinkedColor = QColor(Qt::green);
     _trackLinkedColor.setAlpha(50);
 }
