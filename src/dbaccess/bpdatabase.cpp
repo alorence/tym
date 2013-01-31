@@ -195,7 +195,7 @@ const QSqlQuery BPDatabase::libraryInformations(const QStringList &uids)
 void BPDatabase::deleteLibraryEntry(QStringList uids) const
 {
     QString queryLib = "DELETE FROM Library WHERE " +
-            uids.replaceInStrings(QRegExp("^(.*)$"), "uid=\\1").join(" OR ");
+            uids.replaceInStrings(QRegularExpression("^(.*)$"), "uid=\\1").join(" OR ");
     QString querySR = "DELETE FROM SearchResults WHERE " +
             uids.replaceInStrings("uid=", "libId=").join(" OR ");
 

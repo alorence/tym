@@ -43,7 +43,17 @@ public:
     const QSqlRecord trackInformations(const QString &bpid) const;
     const QSqlQuery tracksInformations(const QStringList &bpids = QStringList());
     const QSqlQuery libraryInformations(const QStringList &uids = QStringList());
+    /*!
+     * \brief Delete entry from library.
+     * Additionnaly, delete all the search results associated with all uids.
+     * \param uids List of library uids to delete
+     */
     void deleteLibraryEntry(QStringList uids) const;
+    /*!
+     * \brief Delete the search result associated with the library uid and the track bpid.
+     * \param libId Library Id
+     * \param trackId BPTracks entry's bpid
+     */
     void deleteSearchResult(const QString &libId, const QString &trackId) const;
 
     void renameFile(const QString &oldFileName, const QString &newFileName) const;
