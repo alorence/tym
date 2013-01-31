@@ -82,6 +82,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->searchResultsView->hideColumn(SearchResults::Bpid);
     ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
+    // Ensure both library and search results view are always focused together
+    ui->libraryView->setFocusProxy(ui->searchResultsView);
+
     // Select or deselect rows on the view when checkboxes are checked / unchecked
     connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
@@ -127,6 +130,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->selectionCombo->addItem("New", LibraryModel::NewTracks);
     ui->selectionCombo->addItem("Linked", LibraryModel::LinkedTracks);
     connect(ui->selectionCombo, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(selectSpecificLibraryElements(int)));
+    connect(ui->selectionCombo, SIGNAL(activated(int)),
             this, SLOT(selectSpecificLibraryElements(int)));
 
     // Configure thread to update library entries status
@@ -236,6 +241,7 @@ void MainWindow::selectSpecificLibraryElements(int comboIndex)
         LibraryModel::GroupSelection group = (LibraryModel::GroupSelection) ui->selectionCombo->itemData(comboIndex).toInt();
         _libraryModel->selectSpecificGroup(group);
     }
+    ui->libraryView->setFocus();
 }
 
 void MainWindow::on_actionAbout_triggered()
