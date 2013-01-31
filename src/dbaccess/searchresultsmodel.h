@@ -31,6 +31,16 @@ public:
     explicit SearchResultsModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
 
+public slots:
+    /*!
+     * \brief Refresh the search result model content, if necessary.
+     * Read current filter() to check if results displayed are for this ID. If yes, the content is refreshed.
+     * \param libId Library ID of element which has just been updated
+     * \sa QSqlTableModel::select()
+     * \sa QSqlTableModel::filter()
+     */
+    void refresh(const QString & libId);
+
 private:
     int columnWithTicker;
 
