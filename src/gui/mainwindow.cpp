@@ -86,11 +86,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->libraryView->setFocusProxy(ui->searchResultsView);
 
     // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QItemSelection,QItemSelectionModel::SelectionFlags)),
+    connect(_libraryModel, SIGNAL(requestSelectRows(QItemSelection,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
+
     // Set current selection index to last modified row
-    connect(_libraryModel, SIGNAL(rowCheckedOrUnchecked(QModelIndex,QItemSelectionModel::SelectionFlags)),
+    connect(_libraryModel, SIGNAL(requestChangeCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
+
     // Check rows in model when selection change on the view
     connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));

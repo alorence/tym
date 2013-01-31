@@ -27,7 +27,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db)
 {
-    columnWithCheckbox = Library::FilePath;
+    _columnWithCheckbox = Library::FilePath;
 
     _newFileColor = QColor(Qt::gray);
     _newFileColor.setAlpha(30);
@@ -41,7 +41,7 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags flags = QSqlTableModel::flags(index);
-    if(index.column() == columnWithCheckbox) {
+    if(index.column() == _columnWithCheckbox) {
         return flags | Qt::ItemIsUserCheckable;
     } else if(index.column() == Library::NumResults){
         return QSqlTableModel::flags(QAbstractTableModel::index(index.row(), Library::FilePath, index.parent()));
@@ -69,36 +69,25 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
                 return QBrush(_newFileColor);
             }
         }
-
     }
 
-    if(ind.column() == columnWithCheckbox) {
+    if(ind.column() == _columnWithCheckbox) {
         if(role == Qt::CheckStateRole) {
-
-            return checkedRows.contains(ind.row()) ? Qt::Checked : Qt::Unchecked;
-
+            return _checkedRows.contains(ind.row()) ? Qt::Checked : Qt::Unchecked;
         } else if (role == Qt::DisplayRole) {
-
-            QString filePath = QSqlTableModel::data(ind, role).toString();
-            return QVariant(filePath.split(QDir::separator()).last());
-
+            QFileInfo file = record(ind.row()).value(Library::FilePath).toString();
+            return QVariant(file.fileName());
         } else if(role == Qt::ToolTipRole) {
             // Display only the folder (all text before the last dir separator)
-            QStringList pathElements = QSqlTableModel::data(QAbstractTableModel::index(ind.row(), Library::FilePath, ind.parent()), Qt::DisplayRole)
-                    .toString().split(QDir::separator());
-            pathElements.removeLast();
-
-            QString tooltip = tr("In directory ");
-            tooltip.append(pathElements.join(QDir::separator()));
-            return QVariant(tooltip);
-
+            QFileInfo file = record(ind.row()).value(Library::FilePath).toString();
+            return QVariant(tr("In directory %1").arg(file.absolutePath()));
         }
     } else if (ind.column() == Library::NumResults && role == Qt::DisplayRole) {
 
-        Library::FileStatus status = (Library::FileStatus) QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
+        Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
 
         QString trackLinked;
-        if( ! QSqlTableModel::data(index(ind.row(), Library::Bpid), Qt::DisplayRole).toString().isEmpty()) {
+        if( ! record(ind.row()).value(Library::Bpid).toString().isEmpty()) {
             trackLinked = " Entry linked to a track.";
         }
 
@@ -118,7 +107,7 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
     } else if (ind.column() == Library::Status && role == Qt::DisplayRole) {
 
-        Library::FileStatus status = (Library::FileStatus) QSqlTableModel::data(index(ind.row(), Library::Status), Qt::DisplayRole).toInt();
+        Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
 
         if(status.testFlag(Library::FileNotFound)) {
             return tr("Missing");
@@ -136,15 +125,15 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 
 bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int role)
 {
-    if(ind.column() == columnWithCheckbox && role == Qt::CheckStateRole) {
+    if(ind.column() == _columnWithCheckbox && role == Qt::CheckStateRole) {
         QItemSelectionModel::SelectionFlag selStatus;
         selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
 
         if(selStatus != data(ind, Qt::CheckStateRole)) {
-            QItemSelection line(index(ind.row(), 0, ind.parent()), index(ind.row(), columnCount() - 1, ind.parent()));
-            emit rowCheckedOrUnchecked(line, selStatus);
+            QItemSelection item(ind, ind);
+            emit requestSelectRows(item, selStatus | QItemSelectionModel::Rows);
 
-            emit rowCheckedOrUnchecked(index(ind.row(), columnWithCheckbox, ind.parent()), selStatus);
+            emit requestChangeCurrentIndex(ind, selStatus | QItemSelectionModel::Rows);
         }
         return true;
     }
@@ -173,27 +162,27 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
     QItemSelectionRange range;
     foreach(range, deselected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
-            checkedRows.remove(i);
+            _checkedRows.remove(i);
         }
-        emit dataChanged(index(range.top(), columnWithCheckbox), index(range.bottom(), columnWithCheckbox));
+        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox));
     }
     foreach(range, selected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
-            checkedRows << i;
+            _checkedRows << i;
         }
-        emit dataChanged(index(range.top(), columnWithCheckbox), index(range.bottom(), columnWithCheckbox));
+        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox));
     }
 }
 
 QSet<int> LibraryModel::selectedIds() const
 {
-    return checkedRows;
+    return _checkedRows;
 }
 
 QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
 {
     QHash<int, QSqlRecord> result;
-    foreach(int index, checkedRows) {
+    foreach(int index, _checkedRows) {
         result[index] = record(index);
     }
     return result;
@@ -202,32 +191,35 @@ QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
 void LibraryModel::selectSpecificGroup(LibraryModel::GroupSelection group)
 {
     if(group == AllTracks) {
-        QItemSelection entire(index(0, 0), index(rowCount() - 1, columnCount() - 1));
-        emit rowCheckedOrUnchecked(entire, QItemSelectionModel::Select);
+        QItemSelection entire(index(0, _columnWithCheckbox), index(rowCount() -1, _columnWithCheckbox));
+        emit requestSelectRows(entire, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     } else if (group == MissingTracks) {
         QItemSelection missing;
         for (int i = 0 ; i < rowCount() - 1 ; ++i) {
             if( ((Library::FileStatus) record(i).value(Library::Status).toInt()).testFlag(Library::FileNotFound)) {
-                missing.select(index(i, 0), index(i, columnCount() - 1));
+                QModelIndex ind = index(i, _columnWithCheckbox);
+                missing.select(ind, ind);
             }
         }
-        emit rowCheckedOrUnchecked(missing, QItemSelectionModel::ClearAndSelect);
+        emit requestSelectRows(missing, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     } else if (group == NewTracks) {
         QItemSelection news;
         for (int i = 0 ; i < rowCount() - 1 ; ++i) {
             if( ( (Library::FileStatus) record(i).value(Library::Status).toInt()).testFlag(Library::New)) {
-                news.select(index(i, 0), index(i, columnCount() - 1));
+                QModelIndex ind = index(i, _columnWithCheckbox);
+                news.select(ind, ind);
             }
         }
-        emit rowCheckedOrUnchecked(news, QItemSelectionModel::ClearAndSelect);
+        emit requestSelectRows(news, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     } else if (group == LinkedTracks) {
         QItemSelection linked;
         for (int i = 0 ; i < rowCount() - 1 ; ++i) {
             if( ! record(i).value(Library::Bpid).toString().isEmpty()) {
-                linked.select(index(i, 0), index(i, columnCount() - 1));
+                QModelIndex ind = index(i, _columnWithCheckbox);
+                linked.select(ind, ind);
             }
         }
-        emit rowCheckedOrUnchecked(linked, QItemSelectionModel::ClearAndSelect);
+        emit requestSelectRows(linked, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     }
 }
 
@@ -248,12 +240,16 @@ void LibraryModel::refresh(const QString &)
 //    }
     select();
 
-    foreach(int row, checkedRows) {
-        // NOTE: It should be more efficient to build 1 QItemSelection with all items,
-        // but it force to use another kind of container, QSet is unordered
-        QItemSelection line(index(row, 0), index(row, columnCount() - 1));
-        emit rowCheckedOrUnchecked(line, QItemSelectionModel::Select);
+    QModelIndex ind;
+    QItemSelection selection;
+    foreach(int row, _checkedRows) {
+        ind = index(row, _columnWithCheckbox);
+        selection.select(ind, ind);
     }
+
+    emit requestSelectRows(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    // TODO: Ensure new current index is the last row, i.e. checkedRows is sorted (remove QSet)
+    emit requestChangeCurrentIndex(ind, QItemSelectionModel::NoUpdate);
 }
 
 void LibraryModel::refresh(int)
@@ -268,7 +264,7 @@ void LibraryModel::refresh(int)
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
     foreach(int row, rows) {
-        checkedRows.remove(row);
+        _checkedRows.remove(row);
     }
     refresh();
 }

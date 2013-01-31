@@ -52,11 +52,9 @@ public:
      */
     void selectSpecificGroup(LibraryModel::GroupSelection group);
 
-
 signals:
-    //TODO: Split these 2 signatures into 2 distinct signals, they shoult not used in the same cases
-    void rowCheckedOrUnchecked(const QModelIndex&,QItemSelectionModel::SelectionFlags);
-    void rowCheckedOrUnchecked(const QItemSelection&,QItemSelectionModel::SelectionFlags);
+    void requestChangeCurrentIndex(const QModelIndex&,QItemSelectionModel::SelectionFlags);
+    void requestSelectRows(const QItemSelection&,QItemSelectionModel::SelectionFlags);
 
 public slots:
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
@@ -65,8 +63,8 @@ public slots:
     void unselectRowsAndRefresh(QList<int> rows);
 
 private:
-    QSet<int> checkedRows;
-    int columnWithCheckbox;
+    QSet<int> _checkedRows;
+    int _columnWithCheckbox;
 
     QColor _missingColor;
     QColor _newFileColor;

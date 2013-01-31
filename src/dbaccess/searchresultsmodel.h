@@ -24,11 +24,24 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui>
 #include <QtSql>
 
+/*!
+ * \brief A simple inherited QSqlTableModel, which display images on 1 row.
+ */
 class SearchResultsModel : public QSqlTableModel
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief Create the model.
+     * This constructor initialize images (ticker) returned to the view.
+     * \param parent
+     * \param db
+     */
     explicit SearchResultsModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
+    /*!
+     * \brief Reimplemented from QSqlTableModel::data() to display an image on a result linked
+     * \sa QSqlTableModel::data()
+     */
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
 
 public slots:
@@ -42,10 +55,10 @@ public slots:
     void refresh(const QString & libId);
 
 private:
-    int columnWithTicker;
+    int _columnWithTicker;
 
-    QPixmap tick;
-    QPixmap transp;
+    QPixmap _tick;
+    QPixmap _transp;
 };
 
 #endif // SEARCHRESULTSMODEL_H

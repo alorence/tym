@@ -23,21 +23,21 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 SearchResultsModel::SearchResultsModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db),
-    tick(QPixmap(":/img/actions/tick")),
-    transp(QPixmap(tick.width(), tick.height()))
+    _tick(QPixmap(":/img/actions/tick")),
+    _transp(QPixmap(_tick.width(), _tick.height()))
 {
-    transp.fill(Qt::transparent);
-    columnWithTicker = SearchResults::Track;
+    _transp.fill(Qt::transparent);
+    _columnWithTicker = SearchResults::Track;
 }
 
 QVariant SearchResultsModel::data(const QModelIndex &item, int role) const
 {
-    if(role == Qt::DecorationRole && item.column() == columnWithTicker) {
+    if(role == Qt::DecorationRole && item.column() == _columnWithTicker) {
 
         if(QSqlTableModel::data(index(item.row(), SearchResults::DefaultFor, item.parent())).toBool()) {
-            return tick;
+            return _tick;
         } else {
-            return transp;
+            return _transp;
         }
     }
     return QSqlTableModel::data(item, role);

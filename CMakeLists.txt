@@ -91,5 +91,5 @@ add_subdirectory(src)
 add_subdirectory(packages)
 
 add_custom_target(docs
-    COMMAND doxygen Doxyfile
+    COMMAND doxygen ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
 )
