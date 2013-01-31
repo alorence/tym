@@ -24,11 +24,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 
 #include "tools/searchprovider.h"
+#include "dbaccess/librarymodel.h"
 
 class SettingsDialog;
 class PictureDownloader;
 class BPDatabase;
-class LibraryModel;
 class SearchResultsModel;
 
 namespace Ui {
@@ -135,6 +135,9 @@ private:
 
     QThread* _libStatusUpdateThread;
 
+    QMap<LibraryModel::GroupSelection,QString> _selectionActions;
+    QSignalMapper _selectionMapper;
+    QList<QAction*> _selectActionsList;
 };
 
 #endif // MAINWINDOW_H

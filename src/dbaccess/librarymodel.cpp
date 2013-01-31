@@ -188,7 +188,7 @@ QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
     return result;
 }
 
-void LibraryModel::selectSpecificGroup(LibraryModel::GroupSelection group)
+void LibraryModel::selectSpecificGroup(int group)
 {
     if(group == AllTracks) {
         QItemSelection entire(index(0, _columnWithCheckbox), index(rowCount() -1, _columnWithCheckbox));

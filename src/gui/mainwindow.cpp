@@ -26,7 +26,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "about.h"
 #include "commons.h"
 #include "settingsdialog.h"
-#include "dbaccess/librarymodel.h"
 #include "dbaccess/searchresultsmodel.h"
 #include "dbaccess/bpdatabase.h"
 #include "wizards/searchwizard.h"
@@ -126,15 +125,33 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
             _libraryModel, SLOT(refresh(QString)));
 
+    // Configure actions for selecting groups in library
+    _selectionActions[LibraryModel::AllTracks] = "All tracks";
+    _selectionActions[LibraryModel::NewTracks] = "New";
+    _selectionActions[LibraryModel::MissingTracks] = "Missing";
+    _selectionActions[LibraryModel::LinkedTracks] = "Linked to a result";
+
+    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectionActions);
+
     ui->selectionCombo->addItem("", -1);
-    ui->selectionCombo->addItem("All", LibraryModel::AllTracks);
-    ui->selectionCombo->addItem("Missing", LibraryModel::MissingTracks);
-    ui->selectionCombo->addItem("New", LibraryModel::NewTracks);
-    ui->selectionCombo->addItem("Linked", LibraryModel::LinkedTracks);
-    connect(ui->selectionCombo, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(selectSpecificLibraryElements(int)));
+    while(it.hasNext()) {
+        LibraryModel::GroupSelection id = it.next().key();
+        QString label = it.value();
+
+        ui->selectionCombo->addItem(label, id);
+
+        QAction * action = new QAction(label, ui->libraryView);
+        _selectionMapper.setMapping(action, id);
+        connect(action, SIGNAL(triggered()), &_selectionMapper, SLOT(map()));
+
+        _selectActionsList << action;
+    }
+    // Connect combobox to the slot
     connect(ui->selectionCombo, SIGNAL(activated(int)),
             this, SLOT(selectSpecificLibraryElements(int)));
+    // Connect context menu, via the QSignalMapper
+    connect(&_selectionMapper, SIGNAL(mapped(int)),
+            _libraryModel, SLOT(selectSpecificGroup(int)));
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
@@ -162,6 +179,9 @@ MainWindow::~MainWindow()
     delete _settings;
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
+    foreach(QAction *action, _selectActionsList) {
+        action->deleteLater();
+    }
 }
 
 void MainWindow::show()
@@ -237,10 +257,10 @@ void MainWindow::updateSearchResultsActions()
     ui->actionSearchResultDelete->setDisabled(numSel == 0);
 }
 
-void MainWindow::selectSpecificLibraryElements(int comboIndex)
+void MainWindow::selectSpecificLibraryElements(int index)
 {
-    if(comboIndex != -1) {
-        LibraryModel::GroupSelection group = (LibraryModel::GroupSelection) ui->selectionCombo->itemData(comboIndex).toInt();
+    int group = ui->selectionCombo->itemData(index).toInt();
+    if(group != -1) {
         _libraryModel->selectSpecificGroup(group);
     }
     ui->libraryView->setFocus();
@@ -262,6 +282,12 @@ void MainWindow::on_actionSearch_triggered()
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
+    QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
+    foreach(QAction *selectAction, _selectActionsList) {
+        selectMenu->addAction(selectAction);
+    }
+
+    contextMenu.addSeparator();
     contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionLibraryDelete);
     contextMenu.exec(ui->libraryView->mapToGlobal(pos));
 }

@@ -46,12 +46,6 @@ public:
         LinkedTracks
     };
 
-    /*!
-     * \brief Select a particular group of elements, depending on their status
-     * \param group Kind of elements which must be selected
-     */
-    void selectSpecificGroup(LibraryModel::GroupSelection group);
-
 signals:
     void requestChangeCurrentIndex(const QModelIndex&,QItemSelectionModel::SelectionFlags);
     void requestSelectRows(const QItemSelection&,QItemSelectionModel::SelectionFlags);
@@ -61,6 +55,12 @@ public slots:
     void refresh(const QString &bpid = QString());
     void refresh(int row);
     void unselectRowsAndRefresh(QList<int> rows);
+    /*!
+     * \brief Select a particular group of elements, depending on their status
+     * \param group Kind of elements which must be selected
+     */
+    void selectSpecificGroup(int group);
+
 
 private:
     QSet<int> _checkedRows;
