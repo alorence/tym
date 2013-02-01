@@ -156,6 +156,12 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
     return QSqlTableModel::headerData(section, orientation, role);
 }
 
+void LibraryModel::sort(int column, Qt::SortOrder order)
+{
+    _checkedRows.clear();
+    QSqlTableModel::sort(column, order);
+}
+
 void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
 {
     int i;

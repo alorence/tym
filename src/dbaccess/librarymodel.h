@@ -36,6 +36,8 @@ public:
     bool setData(const QModelIndex &i, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
+    void sort(int column, Qt::SortOrder order);
+
     QSet<int> selectedIds() const;
     QHash<int, QSqlRecord> selectedRecords() const;
 
