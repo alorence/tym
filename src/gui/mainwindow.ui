@@ -28,6 +28,21 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <property name="leftMargin">
+     <number>6</number>
+    </property>
+    <property name="topMargin">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>6</number>
+    </property>
+    <property name="bottomMargin">
+     <number>6</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
     <item row="0" column="0">
      <widget class="QSplitter" name="verticalSplitter">
       <property name="orientation">
@@ -51,16 +66,9 @@
        </property>
        <widget class="QWidget" name="layoutWidget">
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Select:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="selectionCombo"/>
-         </item>
+         <property name="spacing">
+          <number>2</number>
+         </property>
          <item row="0" column="2">
           <spacer name="horizontalSpacer">
            <property name="orientation">
@@ -73,6 +81,9 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="selectionCombo"/>
          </item>
          <item row="1" column="0" colspan="3">
           <widget class="QTableView" name="libraryView">
@@ -123,12 +134,22 @@
            </attribute>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Select:</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="ConsoleWidget" name="outputConsole"/>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QWidget" name="layoutWidget1">
        <layout class="QGridLayout" name="rightPanel">
+        <property name="spacing">
+         <number>2</number>
+        </property>
         <item row="1" column="0">
          <widget class="TrackInfosView" name="trackInfos" native="true">
           <property name="sizePolicy">
@@ -153,12 +174,6 @@
           <property name="selectionBehavior">
            <enum>QAbstractItemView::SelectRows</enum>
           </property>
-          <property name="showGrid">
-           <bool>false</bool>
-          </property>
-          <property name="sortingEnabled">
-           <bool>true</bool>
-          </property>
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -182,7 +197,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -247,6 +262,7 @@
    <addaction name="separator"/>
    <addaction name="actionSearch"/>
    <addaction name="actionRename"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionImport">
    <property name="icon">
