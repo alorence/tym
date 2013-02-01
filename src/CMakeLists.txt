@@ -33,6 +33,7 @@ set(tym_HEADERS
     # tools/patternelement.h # Not a QObject
     tools/searchprovider.h
     tools/picturedownloader.h
+    tools/widgetchangesobserver.h
     dbaccess/bpdatabase.h
     dbaccess/librarymodel.h
     dbaccess/searchresultsmodel.h
@@ -57,6 +58,7 @@ set(tym_SOURCES
     tools/patternelement.cpp
     tools/searchprovider.cpp
     tools/picturedownloader.cpp
+    tools/widgetchangesobserver.cpp
     dbaccess/bpdatabase.cpp
     dbaccess/librarymodel.cpp
     dbaccess/searchresultsmodel.cpp
