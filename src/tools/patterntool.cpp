@@ -79,7 +79,7 @@ QMap<TrackFullInfos::Indexes, QString> FileBasenameParser::parse(const QString &
                 && availablesPatterns()[capitalPatternElt].sqlIndex() != TrackFullInfos::InvalidIndex) {
 
             result[availablesPatterns().value(capitalPatternElt).sqlIndex()] = matchResult.captured(capitalPatternElt);
-            LOG_DEBUG(QString("Add result %1 for key %2").arg(matchResult.captured(capitalPatternElt)).arg(capitalPatternElt));
+            LOG_DEBUG(QString("%1: %2").arg(capitalPatternElt).arg(matchResult.captured(capitalPatternElt)));
         }
     }
     return result;
@@ -106,7 +106,6 @@ QString FileBasenameFormatter::format(const QSqlRecord &trackInfoRecord) const
         } else {
             result.append(patternElt);
         }
-
     }
 
     return result;
