@@ -44,8 +44,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Network
      ********************************/
-    _widgetObservers << new LineEditChangesObserver(TYM_PATH_API_HOST,
-                                                    ui->bpApiHost, TYM_DEFAULT_API_HOST, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_API_URL,
+                                                    ui->bpApiHost, TYM_DEFAULT_API_URL, this);
     _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_HOST,
                                                     ui->proxyHost, TYM_DEFAULT_PROXY_HOST, this);
     _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_USER,

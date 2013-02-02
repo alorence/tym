@@ -29,8 +29,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_PATH_DISPLAY_CHECKBOXES "settings/interface/library/checkboxes"
 #define TYM_DEFAULT_DISPLAY_CHECKBOXES true
 
-#define TYM_PATH_API_HOST "settings/network/beatport/apihost"
-#define TYM_DEFAULT_API_HOST "api.beatport.com"
+#define TYM_PATH_API_URL "settings/network/beatport/apihost"
+#define TYM_DEFAULT_API_URL "http://api.beatport.com"
 #define TYM_PATH_PROXY_HOST "settings/network/proxy/host"
 #define TYM_DEFAULT_PROXY_HOST ""
 #define TYM_PATH_PROXY_USER "settings/network/proxy/user"

@@ -34,7 +34,7 @@ SearchProvider::SearchProvider(QObject *parent) :
     connect(_textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
 
     QSettings settings;
-    _apiUrl = settings.value(TYM_PATH_API_HOST, TYM_DEFAULT_API_HOST).toString();
+    _apiUrl = settings.value(TYM_PATH_API_URL, TYM_DEFAULT_API_URL).toString();
 }
 
 SearchProvider::~SearchProvider()
