@@ -89,4 +89,16 @@ private:
     QCheckBox * _widget;
 };
 
+class CheckableGroupBoxObserver : public WidgetChangesObserver
+{
+    Q_OBJECT
+public:
+    CheckableGroupBoxObserver(const QString &settingsKey, QGroupBox *groupbox, const QVariant &defaultValue, QObject *parent = 0);
+    QVariant getWidgetValue() const;
+    void setWidgetValue(const QVariant &value);
+
+private:
+    QGroupBox * _widget;
+};
+
 #endif // WIDGETCHANGESOBSERVER_H

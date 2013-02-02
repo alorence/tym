@@ -91,3 +91,26 @@ void CheckBoxChangesObserver::setWidgetValue(const QVariant &value)
         LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QCheckbox %2").arg(value.toString()).arg(_widget->objectName()));
     }
 }
+
+CheckableGroupBoxObserver::CheckableGroupBoxObserver(const QString &settingsKey, QGroupBox *groupbox, const QVariant &defaultValue, QObject *parent) :
+    WidgetChangesObserver(settingsKey, defaultValue, parent),
+    _widget(groupbox)
+{
+    if( ! groupbox->isCheckable()) {
+        LOG_WARNING(tr("Try to observe a non-checkable QGroupBox state (%1)").arg(_widget->objectName()));
+    }
+}
+
+QVariant CheckableGroupBoxObserver::getWidgetValue() const
+{
+    return _widget->isChecked();
+}
+
+void CheckableGroupBoxObserver::setWidgetValue(const QVariant &value)
+{
+    if(value.canConvert<bool>()) {
+        _widget->setChecked(value.toBool());
+    } else {
+        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QGroupBox %2").arg(value.toString()).arg(_widget->objectName()));
+    }
+}
