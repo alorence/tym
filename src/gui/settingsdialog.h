@@ -23,6 +23,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QtWidgets>
 
+#include "tools/widgetchangesobserver.h"
+
 namespace Ui {
 class SettingsDialog;
 }
@@ -35,23 +37,35 @@ public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
-    QVariant getSettingsValue(const QString &key) const;
+protected:
+    /*!
+     * \brief Initialize all registered widgets to the right state.
+     * Try to load QSettings value, or the default one if widget state has never been modified.
+     * \sa WidgetChangesObserver::init()
+     */
+    void showEvent(QShowEvent *);
     
 private slots:
-    void on_buttons_accepted();
-    void on_buttons_rejected();
-
+    /*!
+     * \brief Load the setting page corresponding to the current selected item in the menu
+     */
     void changeDisplayedStack();
 
+    /*!
+     * \brief Save the new widget's state into QSettings, if necessary, and close the dialog.
+     */
+    void on_buttons_accepted();
+
 private:
+    /*!
+     * \brief Initialize the menu entries, and link them to their corresponding setting page.
+     */
     void initMenu();
-    void initDefaultValues();
-    void initWidgetValues();
 
     Ui::SettingsDialog *ui;
-    QMap<QString, QWidget*> pages;
-    QMap<QString, QVariant> settingsValues;
-    QMap<QString, QVariant> defaultValues;
+    QMap<QTreeWidgetItem*, QWidget*> _menuPagesMap;
+
+    QSet<WidgetChangesObserver*> _widgetObservers;
 };
 
 #endif // SETTINGSDIALOG_H

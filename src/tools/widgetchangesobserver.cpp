@@ -18,49 +18,76 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
 #include <QSettings>
+#include <Logger.h>
 #include "widgetchangesobserver.h"
 
-WidgetChangesObserver::WidgetChangesObserver(const QString &settingsKey, QObject *parent) :
+WidgetChangesObserver::WidgetChangesObserver(const QString &settingsKey, const QVariant &defaultValue, QObject *parent) :
     QObject(parent),
-    _settingsKey(settingsKey)
+    _settingsKey(settingsKey),
+    _defaultValue(defaultValue)
 {
+}
+
+void WidgetChangesObserver::init()
+{
+    QSettings settings;
+    QVariant newValue = settings.value(_settingsKey, _defaultValue);
+
+    setWidgetValue(newValue);
+    _registeredValue = newValue;
 }
 
 void WidgetChangesObserver::commit()
 {
     if(widgetValueChanged()) {
         QSettings settings;
-        settings.setValue(_settingsKey, getValue());
+        settings.setValue(_settingsKey, getWidgetValue());
 
-        _registeredValue = getValue();
+        _registeredValue = getWidgetValue();
     }
 }
 
 bool WidgetChangesObserver::widgetValueChanged() const
 {
-    return _registeredValue != getValue();
+    return _registeredValue != getWidgetValue();
 }
 
-LineEditChangesObserver::LineEditChangesObserver(const QString &settingsKey, QLineEdit *lineEdit, QObject *parent) :
-    WidgetChangesObserver(settingsKey, parent),
+LineEditChangesObserver::LineEditChangesObserver(const QString &settingsKey, QLineEdit *lineEdit, const QVariant &defaultValue, QObject *parent) :
+    WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widget(lineEdit)
 {
-    _registeredValue = lineEdit->text();
 }
 
-QVariant LineEditChangesObserver::getValue() const
+QVariant LineEditChangesObserver::getWidgetValue() const
 {
     return _widget->text();
 }
 
-CheckBoxChangesObserver::CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, QObject *parent):
-    WidgetChangesObserver(settingsKey, parent),
-    _widget(checkbox)
+void LineEditChangesObserver::setWidgetValue(const QVariant &value)
 {
-    _registeredValue = checkbox->isChecked();
+    if(value.canConvert<QString>()) {
+        _widget->setText(value.toString());
+    } else {
+        LOG_WARNING(tr("Try to assign a non-string value (%1) to the QLineEdit %2").arg(value.toString()).arg(_widget->objectName()));
+    }
 }
 
-QVariant CheckBoxChangesObserver::getValue() const
+CheckBoxChangesObserver::CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, const QVariant &defaultValue, QObject *parent):
+    WidgetChangesObserver(settingsKey, defaultValue, parent),
+    _widget(checkbox)
+{
+}
+
+QVariant CheckBoxChangesObserver::getWidgetValue() const
 {
     return _widget->isChecked();
+}
+
+void CheckBoxChangesObserver::setWidgetValue(const QVariant &value)
+{
+    if(value.canConvert<bool>()) {
+        _widget->setChecked(value.toBool());
+    } else {
+        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QCheckbox %2").arg(value.toString()).arg(_widget->objectName()));
+    }
 }

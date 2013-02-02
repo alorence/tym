@@ -22,6 +22,16 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore>
 
+#define TYM_DEFAULT_DISPLAY_FULLPATHS false
+#define TYM_DEFAULT_DISPLAY_COLORS true
+#define TYM_DEFAULT_DISPLAY_CHECKBOXES true
+
+#define TYM_DEFAULT_API_HOST "api.beatport.com"
+#define TYM_DEFAULT_PROXY_HOST ""
+#define TYM_DEFAULT_PROXY_USER ""
+#define TYM_DEFAULT_PROXY_PWD ""
+
+
 namespace Library {
     enum Indexes {
         Uid = 0,

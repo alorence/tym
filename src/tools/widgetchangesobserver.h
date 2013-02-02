@@ -27,23 +27,51 @@ class WidgetChangesObserver : public QObject
 {
     Q_OBJECT
 public:
-    explicit WidgetChangesObserver(const QString &settingsKey, QObject *parent = 0);
+    explicit WidgetChangesObserver(const QString &settingsKey, const QVariant &defaultValue, QObject *parent = 0);
 
+    /*!
+     * \brief Initialize the wiget's internal state.
+     * Get the initial widget value in QSettings, and use _defaultValue if it doeas not exists.
+     */
+    void init();
+
+    /*!
+     * \brief Save the value displayed by the widget in the QSettings.
+     * This method reset the state of the observer. After a call to \a commit(),
+     * \a widgetValueChanged() will return false.
+     */
     void commit();
-    bool widgetValueChanged() const;
-    virtual QVariant getValue() const = 0;
 
 protected:
+    /*!
+     * \brief Return a boolean value representing the current state of the widget.
+     * If it state has beem modified and is different from its stae at the initialisation,
+     * return true. Otherwise return false.
+     */
+    bool widgetValueChanged() const;
+    /*!
+     * \brief Return the value currently displayed by the widget, according to his type.
+     * \return A \l QVariant containing the value
+     */
+    virtual QVariant getWidgetValue() const = 0;
+    /*!
+     * \brief Modify the state of the widget with the value in parameter.
+     * \param value
+     */
+    virtual void setWidgetValue(const QVariant &value) = 0;
+
     QString _settingsKey;
     QVariant _registeredValue;
+    QVariant _defaultValue;
 };
 
 class LineEditChangesObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
-    LineEditChangesObserver(const QString &settingsKey, QLineEdit * lineEdit, QObject *parent = 0);
-    QVariant getValue() const;
+    LineEditChangesObserver(const QString &settingsKey, QLineEdit * lineEdit, const QVariant &defaultValue, QObject *parent = 0);
+    QVariant getWidgetValue() const;
+    void setWidgetValue(const QVariant &value);
 
 private:
     QLineEdit * _widget;
@@ -53,8 +81,9 @@ class CheckBoxChangesObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
-    CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, QObject *parent = 0);
-    QVariant getValue() const;
+    CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, const QVariant &defaultValue, QObject *parent = 0);
+    QVariant getWidgetValue() const;
+    void setWidgetValue(const QVariant &value);
 
 private:
     QCheckBox * _widget;
