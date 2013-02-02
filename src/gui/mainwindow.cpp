@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _libStatusUpdateThread(new QThread())
 {
     ui->setupUi(this);
-    connect(ui->actionSettings, SIGNAL(triggered()), _settings, SLOT(open()));
 
     // Configure console message displaying
     connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), ui->outputConsole, SLOT(setVisible(bool)));
@@ -152,6 +151,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Connect context menu, via the QSignalMapper
     connect(&_selectionMapper, SIGNAL(mapped(int)),
             _libraryModel, SLOT(selectSpecificGroup(int)));
+
+    // Configure settings management
+    connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
+    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();

@@ -35,22 +35,22 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Interface
      ********************************/
-    _widgetObservers << new CheckBoxChangesObserver("settings/interface/library/fullpaths",
+    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_FULLPATHS,
                                                     ui->libFullPaths, TYM_DEFAULT_DISPLAY_FULLPATHS, this);
-    _widgetObservers << new CheckBoxChangesObserver("settings/interface/library/colors",
+    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_COLORS,
                                                     ui->libColors, TYM_DEFAULT_DISPLAY_COLORS, this);
-    _widgetObservers << new CheckBoxChangesObserver("settings/interface/library/checkboxes",
+    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_CHECKBOXES,
                                                     ui->libCheckboxes, TYM_DEFAULT_DISPLAY_CHECKBOXES, this);
     /********************************
      * Network
      ********************************/
-    _widgetObservers << new LineEditChangesObserver("settings/network/beatport/apihost",
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_API_HOST,
                                                     ui->bpApiHost, TYM_DEFAULT_API_HOST, this);
-    _widgetObservers << new LineEditChangesObserver("settings/network/proxy/host",
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_HOST,
                                                     ui->proxyHost, TYM_DEFAULT_PROXY_HOST, this);
-    _widgetObservers << new LineEditChangesObserver("settings/network/proxy/user",
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_USER,
                                                     ui->proxyUser, TYM_DEFAULT_PROXY_USER, this);
-    _widgetObservers << new LineEditChangesObserver("settings/network/proxy/password",
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PWD,
                                                     ui->proxyPwd, TYM_DEFAULT_PROXY_PWD, this);
 
 }

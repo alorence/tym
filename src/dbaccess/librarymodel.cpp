@@ -41,10 +41,8 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags flags = QSqlTableModel::flags(index);
-    if(index.column() == _columnWithCheckbox) {
+    if(_checkboxesEnabled && index.column() == _columnWithCheckbox) {
         return flags | Qt::ItemIsUserCheckable;
-    } else if(index.column() == Library::NumResults){
-        return QSqlTableModel::flags(QAbstractTableModel::index(index.row(), Library::FilePath, index.parent()));
     } else {
         return flags;
     }
@@ -52,9 +50,8 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &ind, int role) const
 {
-    // Set BG color for each row
-    if(role == Qt::BackgroundRole) {
-
+    if(_colorsEnabled && role == Qt::BackgroundRole) {
+        // Set BG color for each row
         Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
 
         if(status.testFlag(Library::FileNotFound)) {
@@ -71,10 +68,10 @@ QVariant LibraryModel::data(const QModelIndex &ind, int role) const
         }
     }
 
-    if(ind.column() == _columnWithCheckbox) {
-        if(role == Qt::CheckStateRole) {
-            return _checkedRows.contains(ind.row()) ? Qt::Checked : Qt::Unchecked;
-        } else if (role == Qt::DisplayRole) {
+    if(ind.column() == _columnWithCheckbox && role == Qt::CheckStateRole && _checkboxesEnabled) {
+        return _checkedRows.contains(ind.row()) ? Qt::Checked : Qt::Unchecked;
+    } else if (ind.column() == Library::FilePath && !_displayFullPaths){
+        if(role == Qt::DisplayRole) {
             QFileInfo file = record(ind.row()).value(Library::FilePath).toString();
             return QVariant(file.fileName());
         } else if(role == Qt::ToolTipRole) {
@@ -229,6 +226,14 @@ void LibraryModel::selectSpecificGroup(int group)
     }
 }
 
+void LibraryModel::updateSettings()
+{
+    QSettings settings;
+    _colorsEnabled = settings.value(TYM_PATH_DISPLAY_COLORS, TYM_DEFAULT_DISPLAY_COLORS).toBool();
+    _checkboxesEnabled = settings.value(TYM_PATH_DISPLAY_CHECKBOXES, TYM_DEFAULT_DISPLAY_CHECKBOXES).toBool();
+    _displayFullPaths = settings.value(TYM_PATH_DISPLAY_FULLPATHS, TYM_DEFAULT_DISPLAY_FULLPATHS).toBool();
+}
+
 void LibraryModel::refresh(const QString &)
 {
     // Code disbled since error explained in LibraryModel::refresh(int row)
@@ -245,6 +250,8 @@ void LibraryModel::refresh(const QString &)
 //        }
 //    }
     select();
+
+    updateSettings();
 
     QModelIndex ind;
     QItemSelection selection;

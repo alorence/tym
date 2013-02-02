@@ -22,10 +22,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include "gui/settingsdialog.h"
 
-SearchProvider::SearchProvider(QUrl bpApiHost, QObject *parent) :
+SearchProvider::SearchProvider(QObject *parent) :
     QObject(parent),
     _manager(new QNetworkAccessManager(this)),
-    _apiUrl(bpApiHost),
     _replyMap(),
     _textSearchMapper(new QSignalMapper(this))
 {
@@ -33,6 +32,9 @@ SearchProvider::SearchProvider(QUrl bpApiHost, QObject *parent) :
     _searchPath = "/catalog/3/search";
 
     connect(_textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
+
+    QSettings settings;
+    _apiUrl = settings.value(TYM_PATH_API_HOST, TYM_DEFAULT_API_HOST).toString();
 }
 
 SearchProvider::~SearchProvider()
@@ -42,18 +44,6 @@ SearchProvider::~SearchProvider()
 
     delete _textSearchMapper;
     delete _manager;
-}
-
-void SearchProvider::initProxy()
-{
-    /*
-    QString h = settings.value("network/proxy/host").toString();
-    qint16 p = settings.value("network/proxy/port").toInt();
-    QString u = settings.value("network/proxy/user").toString();
-    QString pwd = settings.value("network/proxy/pass").toString();
-    QNetworkProxy proxy(QNetworkProxy::DefaultProxy, h, p, u, pwd);
-    QNetworkProxy::setApplicationProxy(proxy);
-    */
 }
 
 void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)

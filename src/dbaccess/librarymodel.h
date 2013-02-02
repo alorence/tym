@@ -53,6 +53,10 @@ signals:
     void requestSelectRows(const QItemSelection&,QItemSelectionModel::SelectionFlags);
 
 public slots:
+    /*!
+     * \brief Update settings specific to this model
+     */
+    void updateSettings();
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
     void refresh(const QString &bpid = QString());
     void refresh(int row);
@@ -72,6 +76,10 @@ private:
     QColor _newFileColor;
     QColor _resultsAvailableColor;
     QColor _trackLinkedColor;
+
+    bool _checkboxesEnabled;
+    bool _colorsEnabled;
+    bool _displayFullPaths;
 };
 
 #endif // LIBRARYMODEL_H
