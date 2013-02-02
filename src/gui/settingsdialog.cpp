@@ -44,6 +44,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Network
      ********************************/
+    _widgetObservers << new CheckableGroupBoxObserver(TYM_PATH_PROXY_ENABLED,
+                                                      ui->proxyGroup, TYM_DEFAULT_PROXY_ENABLED, this);
     _widgetObservers << new LineEditChangesObserver(TYM_PATH_API_URL,
                                                     ui->bpApiHost, TYM_DEFAULT_API_URL, this);
     _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_HOST,
@@ -52,6 +54,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
                                                     ui->proxyUser, TYM_DEFAULT_PROXY_USER, this);
     _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PWD,
                                                     ui->proxyPwd, TYM_DEFAULT_PROXY_PWD, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PORT,
+                                                    ui->proxyPort, TYM_DEFAULT_PROXY_PORT, this);
 
 }
 

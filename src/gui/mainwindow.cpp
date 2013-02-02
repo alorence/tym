@@ -154,6 +154,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Configure settings management
     connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
+    connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
     connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
 
     // Configure thread to update library entries status
@@ -195,6 +196,25 @@ void MainWindow::show()
     // Configure libraryView filePath column to take as space as possible
     QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
     ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+}
+
+void MainWindow::updateSettings()
+{
+    QSettings settings;
+    bool proxyEnabled = settings.value(TYM_PATH_PROXY_ENABLED, TYM_DEFAULT_PROXY_ENABLED).toBool();
+    if(proxyEnabled) {
+
+        QString proxyHost = settings.value(TYM_PATH_PROXY_HOST, TYM_DEFAULT_PROXY_HOST).toString();
+        quint16 proxyPort = settings.value(TYM_PATH_PROXY_PORT, TYM_DEFAULT_PROXY_PORT).toUInt();
+        QString proxyUser = settings.value(TYM_PATH_PROXY_USER, TYM_DEFAULT_PROXY_USER).toString();
+        QString proxyPass = settings.value(TYM_PATH_PROXY_PWD, TYM_DEFAULT_PROXY_PWD).toString();
+
+        QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, proxyHost, proxyPort, proxyUser, proxyPass);
+        QNetworkProxy::setApplicationProxy(proxy);
+    } else if(QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy) {
+        QNetworkProxy proxy(QNetworkProxy::NoProxy);
+        QNetworkProxy::setApplicationProxy(proxy);
+    }
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
