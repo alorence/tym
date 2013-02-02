@@ -36,6 +36,8 @@ LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
     _resultsAvailableColor = QColor(254, 183, 11, 50);
     _trackLinkedColor = QColor(Qt::green);
     _trackLinkedColor.setAlpha(50);
+
+    updateSettings();
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
@@ -163,17 +165,19 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
 {
     int i;
     QItemSelectionRange range;
+    QVector<int> checkRole;
+    checkRole << Qt::CheckStateRole;
     foreach(range, deselected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
             _checkedRows.remove(i);
         }
-        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox));
+        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox), checkRole);
     }
     foreach(range, selected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
             _checkedRows << i;
         }
-        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox));
+        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox), checkRole);
     }
 }
 
@@ -229,29 +233,32 @@ void LibraryModel::selectSpecificGroup(int group)
 void LibraryModel::updateSettings()
 {
     QSettings settings;
-    _colorsEnabled = settings.value(TYM_PATH_DISPLAY_COLORS, TYM_DEFAULT_DISPLAY_COLORS).toBool();
-    _checkboxesEnabled = settings.value(TYM_PATH_DISPLAY_CHECKBOXES, TYM_DEFAULT_DISPLAY_CHECKBOXES).toBool();
-    _displayFullPaths = settings.value(TYM_PATH_DISPLAY_FULLPATHS, TYM_DEFAULT_DISPLAY_FULLPATHS).toBool();
+    bool colorsEnabled = settings.value(TYM_PATH_DISPLAY_COLORS, TYM_DEFAULT_DISPLAY_COLORS).toBool();
+    bool checkboxesEnabled = settings.value(TYM_PATH_DISPLAY_CHECKBOXES, TYM_DEFAULT_DISPLAY_CHECKBOXES).toBool();
+    bool displayFullPaths = settings.value(TYM_PATH_DISPLAY_FULLPATHS, TYM_DEFAULT_DISPLAY_FULLPATHS).toBool();
+
+    QVector<int> changes;
+    if(colorsEnabled != _colorsEnabled)
+        changes << Qt::BackgroundColorRole;
+    if(checkboxesEnabled != _checkboxesEnabled)
+        changes << Qt::CheckStateRole;
+    if(displayFullPaths != _displayFullPaths)
+        changes << Qt::DisplayRole;
+
+    _colorsEnabled = colorsEnabled;
+    _checkboxesEnabled = checkboxesEnabled;
+    _displayFullPaths = displayFullPaths;
+
+    qDebug() << changes;
+
+    if( ! changes.isEmpty()) {
+        emit dataChanged(index(0, columnCount() - 1), index(rowCount() - 1, columnCount() - 1), changes);
+    }
 }
 
-void LibraryModel::refresh(const QString &)
+void LibraryModel::refresh()
 {
-    // Code disbled since error explained in LibraryModel::refresh(int row)
-    // is not resolved
-//    if(uid.isEmpty()) {
-//        select();
-//    } else {
-//        QVariant vuid(uid);
-//        for(int i = 0 ; i < rowCount() ; ++i) {
-//            if(vuid == record(i).value(Library::Uid)) {
-//                refresh(i);
-//                return;
-//            }
-//        }
-//    }
     select();
-
-    updateSettings();
 
     QModelIndex ind;
     QItemSelection selection;
@@ -263,15 +270,6 @@ void LibraryModel::refresh(const QString &)
     emit requestSelectRows(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     // TODO: Ensure new current index is the last row, i.e. checkedRows is sorted (remove QSet)
     emit requestChangeCurrentIndex(ind, QItemSelectionModel::NoUpdate);
-}
-
-void LibraryModel::refresh(int)
-{
-    // FIXME: Does not work, because SQL view displayed by this TableModel has no primaryKey set.
-    // Additionaly, Qt5 maybe has a bug with the method QSqlTableModel::selectRow(int). This should
-    // be tested and fixed in future Qt versions (2013-01-24)
-//    selectRow(row);
-    refresh();
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)

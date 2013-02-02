@@ -58,8 +58,7 @@ public slots:
      */
     void updateSettings();
     void updateCheckedRows(const QItemSelection &, const QItemSelection &);
-    void refresh(const QString &bpid = QString());
-    void refresh(int row);
+    void refresh();
     void unselectRowsAndRefresh(QList<int> rows);
     /*!
      * \brief Select a particular group of elements, depending on their status
