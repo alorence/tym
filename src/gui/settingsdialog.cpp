@@ -20,6 +20,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
+#include "commons.h"
+
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
@@ -27,8 +29,34 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     initMenu();
-    initDefaultValues();
-    initWidgetValues();
+
+    connect(ui->buttons, &QDialogButtonBox::rejected, this, &SettingsDialog::close);
+
+    /********************************
+     * Interface
+     ********************************/
+    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_FULLPATHS,
+                                                    ui->libFullPaths, TYM_DEFAULT_DISPLAY_FULLPATHS, this);
+    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_COLORS,
+                                                    ui->libColors, TYM_DEFAULT_DISPLAY_COLORS, this);
+    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_CHECKBOXES,
+                                                    ui->libCheckboxes, TYM_DEFAULT_DISPLAY_CHECKBOXES, this);
+    /********************************
+     * Network
+     ********************************/
+    _widgetObservers << new CheckableGroupBoxObserver(TYM_PATH_PROXY_ENABLED,
+                                                      ui->proxyGroup, TYM_DEFAULT_PROXY_ENABLED, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_API_URL,
+                                                    ui->bpApiHost, TYM_DEFAULT_API_URL, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_HOST,
+                                                    ui->proxyHost, TYM_DEFAULT_PROXY_HOST, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_USER,
+                                                    ui->proxyUser, TYM_DEFAULT_PROXY_USER, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PWD,
+                                                    ui->proxyPwd, TYM_DEFAULT_PROXY_PWD, this);
+    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PORT,
+                                                    ui->proxyPort, TYM_DEFAULT_PROXY_PORT, this);
+
 }
 
 SettingsDialog::~SettingsDialog()
@@ -36,64 +64,37 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
-void SettingsDialog::initMenu()
+void SettingsDialog::showEvent(QShowEvent *)
 {
-    connect(ui->menu, SIGNAL(itemSelectionChanged()), SLOT(changeDisplayedStack()));
-
-    QTreeWidgetItem * general = new QTreeWidgetItem(ui->menu, QStringList()<<"General");
-    general->setData(0, Qt::UserRole, QVariant("general"));
-    pages.insert("general", ui->general);
-
-    QTreeWidgetItem * textIn = new QTreeWidgetItem(general, QStringList()<<"Text input");
-    textIn->setData(0, Qt::UserRole, QVariant("textIn"));
-    pages.insert("textIn", ui->textIn);
-
-    QTreeWidgetItem * textOut = new QTreeWidgetItem(general, QStringList()<<"Text output");
-    textOut->setData(0, Qt::UserRole, QVariant("textOut"));
-    pages.insert("textOut", ui->textOut);
-
-    QTreeWidgetItem * network = new QTreeWidgetItem(ui->menu, QStringList()<<"Network");
-    network->setData(0, Qt::UserRole, QVariant("network"));
-    pages.insert("network", ui->network);
-
-    QTreeWidgetItem * beatport = new QTreeWidgetItem(network, QStringList()<<"Beatport");
-    beatport->setData(0, Qt::UserRole, QVariant("beatport"));
-    pages.insert("beatport", ui->beatport);
-}
-
-void SettingsDialog::initDefaultValues()
-{
-    defaultValues["settings/network/beatport/apihost"] = QVariant("api.beatport.com");
-}
-
-void SettingsDialog::initWidgetValues()
-{
-    ui->apiHost->setText(getSettingsValue("settings/network/beatport/apihost").toString());
-}
-
-QVariant SettingsDialog::getSettingsValue(const QString &key) const
-{
-    QSettings settings;
-    return settings.value(key, defaultValues.value(key));
-}
-
-void SettingsDialog::on_buttons_accepted()
-{
-    QSettings settings;
-    settings.setValue("settings/network/beatport/apihost", QVariant(ui->apiHost->text()));
-
-    close();
-}
-
-void SettingsDialog::on_buttons_rejected()
-{
-    close();
+    foreach(WidgetChangesObserver *observer, _widgetObservers) {
+        observer->init();
+    }
 }
 
 void SettingsDialog::changeDisplayedStack()
 {
-    QList<QTreeWidgetItem*> items = ui->menu->selectedItems();
-    QString key = items.at(0)->data(0, Qt::UserRole).toString();
-    ui->content->setCurrentIndex(ui->content->indexOf(pages[key]));
+    ui->content->setCurrentWidget(_menuPagesMap[ui->menu->selectedItems().first()]);
+}
+
+void SettingsDialog::on_buttons_accepted()
+{
+    foreach(WidgetChangesObserver *observer, _widgetObservers) {
+        observer->commit();
+    }
+
+    accept();
+}
+
+void SettingsDialog::initMenu()
+{
+    connect(ui->menu, SIGNAL(itemSelectionChanged()), SLOT(changeDisplayedStack()));
+
+    QTreeWidgetItem * interfaceItem = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Interface"));
+    _menuPagesMap[interfaceItem] = ui->interfacePage;
+
+    QTreeWidgetItem * networkItem = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Network"));
+    _menuPagesMap[networkItem] = ui->networkPage;
+
+    ui->content->setCurrentWidget(ui->interfacePage);
 }
 

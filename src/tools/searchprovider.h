@@ -28,7 +28,7 @@ class SearchProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit SearchProvider(QUrl bpApiHost, QObject *parent = 0);
+    explicit SearchProvider(QObject *parent = 0);
     ~SearchProvider();
     
 signals:
@@ -44,8 +44,6 @@ private slots:
     void requestError(QNetworkReply::NetworkError);
 
 private :
-    void initProxy();
-
     QNetworkAccessManager *_manager;
 
     QUrl _apiUrl;

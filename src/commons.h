@@ -22,6 +22,26 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore>
 
+#define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
+#define TYM_DEFAULT_DISPLAY_FULLPATHS false
+#define TYM_PATH_DISPLAY_COLORS "settings/interface/library/colors"
+#define TYM_DEFAULT_DISPLAY_COLORS true
+#define TYM_PATH_DISPLAY_CHECKBOXES "settings/interface/library/checkboxes"
+#define TYM_DEFAULT_DISPLAY_CHECKBOXES true
+
+#define TYM_PATH_API_URL "settings/network/beatport/apihost"
+#define TYM_DEFAULT_API_URL "http://api.beatport.com"
+#define TYM_PATH_PROXY_ENABLED "settings/network/proxy/enabled"
+#define TYM_DEFAULT_PROXY_ENABLED false
+#define TYM_PATH_PROXY_HOST "settings/network/proxy/host"
+#define TYM_DEFAULT_PROXY_HOST ""
+#define TYM_PATH_PROXY_USER "settings/network/proxy/user"
+#define TYM_DEFAULT_PROXY_USER ""
+#define TYM_PATH_PROXY_PWD "settings/network/proxy/password"
+#define TYM_DEFAULT_PROXY_PWD ""
+#define TYM_PATH_PROXY_PORT "settings/network/proxy/port"
+#define TYM_DEFAULT_PROXY_PORT ""
+
 namespace Library {
     enum Indexes {
         Uid = 0,

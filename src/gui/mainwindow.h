@@ -81,6 +81,10 @@ public slots:
 
 private slots:
     /*!
+     * \brief Update the general settings for the application.
+     */
+    void updateSettings();
+    /*!
      * \brief Update results list in the search results view.
      * Called when user change the item selected in the library view. Connected to the
      * library view's selectionModel(), when it emits its currentRowChanged() signal.
