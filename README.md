@@ -43,7 +43,6 @@ See [CHANGES.md](CHANGES.md "Tag Your Music Changelog")
 #### In short terms
  - Add more options when searching tracks informations (sorting, etc)
  - Produce *.nml playlist files (NI Traktor Pro) and append all tracks informations inside
- - Implements a full settings dialog to save user preferences
  - Implements the About dialog
 
 #### In long terms
