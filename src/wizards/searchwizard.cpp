@@ -42,6 +42,7 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     connect(ui->searchFromArtistTitle, SIGNAL(toggled(bool)), this, SLOT(titleArtistSearchSelected(bool)));
     connect(ui->customSearch, SIGNAL(toggled(bool)), this, SLOT(customSearchSelected(bool)));
 
+    ui->pattern->setReadOnly(true);
     ui->searchFromId->setChecked(true);
 
     ui->patternHorizLayout->addWidget(_patternHelperButton);
@@ -93,8 +94,10 @@ void SearchWizard::customSearchSelected(bool checked)
     if(checked) {
         _type = Custom;
         _patternHelperButton->show();
+        ui->pattern->setReadOnly(false);
     } else {
         _patternHelperButton->hide();
+        ui->pattern->setReadOnly(true);
     }
 }
 
