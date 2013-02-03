@@ -101,7 +101,13 @@ private slots:
      * \sa QItemSelectionModel::currentRowChanged()
      */
     void updateTrackInfos(const QModelIndex &selected, const QModelIndex &deselected);
+    /*!
+     * \brief Enable or disable actions according to number of library elements currently selected
+     */
     void updateLibraryActions();
+    /*!
+     * \brief Enable or disable actions according to number of search results displayed an,d selected
+     */
     void updateSearchResultsActions();
 
     /*!
@@ -111,22 +117,63 @@ private slots:
      */
     void selectSpecificLibraryElements(int comboIndex);
 
+    /*!
+     * \brief Open the context menu on library table view
+     * \param pos Global mouse position
+     */
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
 
+    /*!
+     * \brief Open the import dialog and import files in database
+     */
     void on_actionImport_triggered();
+    /*!
+     * \brief Delete a library entry in database
+     */
     void on_actionLibraryDelete_triggered();
 
+    /*!
+     * \brief Open the context menu on search result table view
+     * \param pos Global mouse position
+     */
     void on_searchResultsView_customContextMenuRequested(const QPoint &pos);
+    /*!
+     * \brief Link a result to a track in library
+     */
     void on_actionSetDefaultResult_triggered();
+    /*!
+     * \brief Delete a selected search result from the database
+     */
     void on_actionSearchResultDelete_triggered();
 
+    /*!
+     * \brief Open the About dialog
+     */
     void on_actionAbout_triggered();
+    /*!
+     * \brief Open the search wizard
+     */
     void on_actionSearch_triggered();
+    /*!
+     * \brief Open the rename wizard
+     */
     void on_actionRename_triggered();
 
 private:
+    /*!
+     * \brief Return a list of files supported by the application
+     * If \a entry represents a directory, return a list of files inside it and all its subirectories.
+     * If \a represents a file, return the QFileInfo encapsulated in a QList.
+     *
+     * In both cases, resulting list contains only files supported by the application.
+     * \param A QFileInfo representing a file or a directory
+     * \return List of QFileInfo pointing to files supported by this application
+     */
     const QFileInfoList filteredFileList(const QFileInfo &entry) const;
 
+    /*!
+     * \brief Set to true to show console by default
+     */
     bool _defaultConsoleDisplaying;
 
     Ui::MainWindow* ui;
