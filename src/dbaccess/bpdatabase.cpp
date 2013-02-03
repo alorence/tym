@@ -82,41 +82,6 @@ const bool BPDatabase::initialized() const
     return _dbInitialized;
 }
 
-const bool BPDatabase::initTables() const
-{
-    QFile initFile(":/sql/init/0.1");
-
-    if(initFile.open(QFile::ReadOnly)) {
-        QTextStream in(&initFile);
-        QString line;
-        QSqlQuery query(dbObject());
-        QStringList currentRequest;
-        while ( ! in.atEnd()) {
-            line = in.readLine().trimmed();
-
-            if (line.isEmpty() || line.startsWith('#')) continue;
-            else currentRequest << line;
-
-            if(currentRequest.last().endsWith(';')) {
-                _dbMutex->lock();
-                query = dbObject().exec(currentRequest.join(" "));
-                _dbMutex->unlock();
-                if( query.lastError().isValid()) {
-                    LOG_ERROR(tr("Unable to execute request: %1 (%2)").arg(currentRequest.join(" ")).arg(query.lastError().text()));
-                    return false;
-                } else {
-                    currentRequest.clear();
-                }
-            }
-        }
-        initFile.close();
-    } else {
-        LOG_ERROR(tr("Unable to open init file: %1").arg(initFile.errorString()));
-        return false;
-    }
-    return true;
-}
-
 const QString BPDatabase::version() const
 {
     if( ! _dbObject.isOpen()) {
@@ -156,7 +121,7 @@ const QSqlRecord BPDatabase::trackInformations(const QString &bpid) const
     return query.record();
 }
 
-const QSqlQuery BPDatabase::tracksInformations(const QStringList &bpids)
+const QSqlQuery BPDatabase::tracksInformations(const QStringList &bpids) const
 {
     QString queryString = "SELECT * FROM TrackFullInfos";
     if( ! bpids.empty()) {
@@ -174,7 +139,7 @@ const QSqlQuery BPDatabase::tracksInformations(const QStringList &bpids)
     return query;
 }
 
-const QSqlQuery BPDatabase::libraryInformations(const QStringList &uids)
+const QSqlQuery BPDatabase::libraryInformations(const QStringList &uids) const
 {
     QString queryString = "SELECT * FROM LibraryHelper";
     if( ! uids.empty()) {
@@ -233,18 +198,173 @@ void BPDatabase::deleteSearchResult(const QString &libId, const QString &trackId
     _dbMutex->unlock();
 }
 
-void BPDatabase::renameFile(const QString &oldFileName, const QString &newFileName) const
+void BPDatabase::renameFile(const QString &oldFilePath, const QString &newFilePath) const
 {
     QSqlQuery renameQuery(dbObject());
     renameQuery.prepare("UPDATE OR FAIL Library SET filePath=:new WHERE filePath=:old");
-    renameQuery.bindValue(":new", newFileName);
-    renameQuery.bindValue(":old", oldFileName);
+    renameQuery.bindValue(":new", newFilePath);
+    renameQuery.bindValue(":old", oldFilePath);
 
     _dbMutex->lock();
     if( ! renameQuery.exec()) {
-        LOG_WARNING(tr("Unable to rename filename %1 in database: %2").arg(oldFileName).arg(renameQuery.lastError().text()));
+        LOG_WARNING(tr("Unable to rename filename %1 in database: %2").arg(oldFilePath).arg(renameQuery.lastError().text()));
     }
     _dbMutex->unlock();
+}
+
+
+void BPDatabase::storeSearchResults(const QString &libUid, const QJsonValue &result) const
+{
+    _dbMutex->lock();
+
+    QSqlQuery query(dbObject());
+    query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
+
+    // 1 result for each library row
+    if(result.isObject() && ! result.toObject().empty()) {
+        QString bpid = storeTrack(result);
+
+        setLibraryTrackReference(libUid, bpid);
+
+        query.bindValue(":libId", libUid);
+        query.bindValue(":trackId", bpid);
+
+        if( ! query.exec()) {
+            LOG_WARNING(tr("Unable to register search result for track %1: %2").arg(bpid)
+                        .arg(query.lastError().text()));
+        }
+
+    } else
+    // Many results per library row
+    if (result.isArray() && ! result.toArray().empty()) {
+
+        foreach(QJsonValue track, result.toArray()) {
+            QString bpid = storeTrack(track);
+
+            query.bindValue(":libId", libUid);
+            query.bindValue(":trackId", bpid);
+            if( ! query.exec()) {
+                LOG_WARNING(tr("Unable to register search result for track %1: %2").arg(bpid)
+                            .arg(query.lastError().text()));
+            }
+        }
+    }
+    _dbMutex->unlock();
+
+    updateLibraryStatus(libUid, Library::ResultsAvailable);
+
+    emit searchResultStored(libUid);
+}
+
+void BPDatabase::importFile(const QString &path) const
+{
+    QSqlQuery query(dbObject());
+    query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
+    query.bindValue(":path", path);
+    query.bindValue(":status", Library::New);
+
+    _dbMutex->lock();
+    if( ! query.exec()){
+        _dbMutex->unlock();
+        LOG_WARNING(tr("Unable to import file %1: %2").arg(path).arg(query.lastError().text()));
+    } else {
+        _dbMutex->unlock();
+        emit libraryEntryUpdated();
+    }
+}
+
+void BPDatabase::importFiles(const QStringList &pathList) const
+{
+    if(pathList.isEmpty()) return;
+
+    QString baseQuery = "INSERT OR IGNORE INTO Library (filePath, status) ";
+    QString value = QString("SELECT '%2', %1").arg(Library::New);
+
+    QStringList values;
+    foreach(QString path, pathList){
+        values << value.arg(path.replace("'", "''"));
+    }
+    _dbMutex->lock();
+    QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
+    _dbMutex->unlock();
+    if(query.lastError().isValid()){
+        LOG_WARNING(tr("Unable to import files: %2").arg(query.lastError().text()));
+    } else {
+        emit libraryEntryUpdated();
+    }
+}
+
+void BPDatabase::updateLibraryStatus(const QString &uid, const Library::FileStatus &status) const
+{
+    QSqlQuery query(dbObject());
+    query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
+    query.bindValue(":uid", uid);
+    query.bindValue(":status", (int) status);
+
+    _dbMutex->lock();
+    if( ! query.exec()) {
+        _dbMutex->unlock();
+        LOG_WARNING(tr("Unable to update library elements's %1 status: %2").arg(uid)
+                    .arg(query.lastError().text()));
+        return;
+    }
+    _dbMutex->unlock();
+    emit libraryEntryUpdated(uid);
+}
+
+void BPDatabase::setLibraryTrackReference(const QString &libUid, const QString &bpid) const
+{
+    QSqlQuery query(dbObject());
+    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
+    query.bindValue(":uid", libUid);
+    query.bindValue(":bpid", bpid);
+
+    _dbMutex->lock();
+    if( ! query.exec()) {
+        _dbMutex->unlock();
+        LOG_WARNING(tr("Unable to update library element %1 with the bpid %2: %3")
+                    .arg(libUid, bpid)
+                    .arg(query.lastError().text()));
+    } else {
+        _dbMutex->unlock();
+        emit libraryEntryUpdated(libUid);
+        emit referenceForTrackUpdated(libUid);
+    }
+}
+
+const bool BPDatabase::initTables() const
+{
+    QFile initFile(":/sql/init/0.1");
+
+    if(initFile.open(QFile::ReadOnly)) {
+        QTextStream in(&initFile);
+        QString line;
+        QSqlQuery query(dbObject());
+        QStringList currentRequest;
+        while ( ! in.atEnd()) {
+            line = in.readLine().trimmed();
+
+            if (line.isEmpty() || line.startsWith('#')) continue;
+            else currentRequest << line;
+
+            if(currentRequest.last().endsWith(';')) {
+                _dbMutex->lock();
+                query = dbObject().exec(currentRequest.join(" "));
+                _dbMutex->unlock();
+                if( query.lastError().isValid()) {
+                    LOG_ERROR(tr("Unable to execute request: %1 (%2)").arg(currentRequest.join(" ")).arg(query.lastError().text()));
+                    return false;
+                } else {
+                    currentRequest.clear();
+                }
+            }
+        }
+        initFile.close();
+    } else {
+        LOG_ERROR(tr("Unable to open init file: %1").arg(initFile.errorString()));
+        return false;
+    }
+    return true;
 }
 
 const QString BPDatabase::storeTrack(const QJsonValue &track) const
@@ -384,126 +504,3 @@ const QString BPDatabase::storeTrack(const QJsonValue &track) const
     return trackBpId;
 }
 
-const bool BPDatabase::setLibraryTrackReference(const QString &libUid, const QString &bpid) const
-{
-    QSqlQuery query(dbObject());
-    query.prepare("UPDATE OR FAIL Library SET bpid=:bpid WHERE uid=:uid");
-    query.bindValue(":uid", libUid);
-    query.bindValue(":bpid", bpid);
-
-    _dbMutex->lock();
-    if( ! query.exec()) {
-        _dbMutex->unlock();
-        LOG_WARNING(tr("Unable to update library element %1 with the bpid %2: %3")
-                    .arg(libUid, bpid)
-                    .arg(query.lastError().text()));
-        return false;
-    } else {
-        _dbMutex->unlock();
-        emit libraryEntryUpdated(libUid);
-        emit referenceForTrackUpdated(libUid);
-        return true;
-    }
-}
-
-void BPDatabase::storeSearchResults(const QString &libUid, const QJsonValue &result) const
-{
-    _dbMutex->lock();
-    dbObject().transaction();
-
-    QSqlQuery query(dbObject());
-    query.prepare("INSERT OR IGNORE INTO SearchResults VALUES (:libId,:trackId)");
-
-    // 1 result for each library row
-    if(result.isObject() && ! result.toObject().empty()) {
-        QString bpid = storeTrack(result);
-
-        setLibraryTrackReference(libUid, bpid);
-
-        query.bindValue(":libId", libUid);
-        query.bindValue(":trackId", bpid);
-
-        if( ! query.exec()) {
-            LOG_WARNING(tr("Unable to register search result for track %1: %2").arg(bpid)
-                        .arg(query.lastError().text()));
-        }
-
-    } else
-    // Many results per library row
-    if (result.isArray() && ! result.toArray().empty()) {
-
-        foreach(QJsonValue track, result.toArray()) {
-            QString bpid = storeTrack(track);
-
-            query.bindValue(":libId", libUid);
-            query.bindValue(":trackId", bpid);
-            if( ! query.exec()) {
-                LOG_WARNING(tr("Unable to register search result for track %1: %2").arg(bpid)
-                            .arg(query.lastError().text()));
-            }
-        }
-    }
-    dbObject().commit();
-    _dbMutex->unlock();
-
-    updateLibraryStatus(libUid, Library::ResultsAvailable);
-
-    emit searchResultStored(libUid);
-}
-
-
-void BPDatabase::updateLibraryStatus(const QString &uid, const Library::FileStatus &status) const
-{
-    QSqlQuery query(dbObject());
-    query.prepare("UPDATE OR FAIL Library SET status=:status WHERE uid=:uid");
-    query.bindValue(":uid", uid);
-    query.bindValue(":status", (int) status);
-
-    _dbMutex->lock();
-    if( ! query.exec()) {
-        _dbMutex->unlock();
-        LOG_WARNING(tr("Unable to update library elements's %1 status: %2").arg(uid)
-                    .arg(query.lastError().text()));
-        return;
-    }
-    _dbMutex->unlock();
-    emit libraryEntryUpdated(uid);
-}
-
-void BPDatabase::importFiles(const QStringList &pathList) const
-{
-    if(pathList.isEmpty()) return;
-
-    QString baseQuery = "INSERT OR IGNORE INTO Library (filePath, status) ";
-    QString value = QString("SELECT '%2', %1").arg(Library::New);
-
-    QStringList values;
-    foreach(QString path, pathList){
-        values << value.arg(path.replace("'", "''"));
-    }
-    _dbMutex->lock();
-    QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
-    _dbMutex->unlock();
-    if(query.lastError().isValid()){
-        LOG_WARNING(tr("Unable to import files: %2").arg(query.lastError().text()));
-    } else {
-        emit libraryEntryUpdated();
-    }
-}
-
-void BPDatabase::importFile(const QString &path) const
-{
-    QSqlQuery query(dbObject());
-    query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
-    query.bindValue(":path", path);
-    query.bindValue(":status", Library::New);
-
-    _dbMutex->lock();
-    if( ! query.exec()){
-        _dbMutex->unlock();
-        LOG_WARNING(tr("Unable to import file %1: %2").arg(path).arg(query.lastError().text()));
-    } else {
-        _dbMutex->unlock();
-        emit libraryEntryUpdated();
-    }
-}
