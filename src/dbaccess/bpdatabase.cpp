@@ -237,8 +237,8 @@ void BPDatabase::renameFile(const QString &oldFileName, const QString &newFileNa
 {
     QSqlQuery renameQuery(dbObject());
     renameQuery.prepare("UPDATE OR FAIL Library SET filePath=:new WHERE filePath=:old");
-    renameQuery.bindValue(":new", QDir::toNativeSeparators(newFileName));
-    renameQuery.bindValue(":old", QDir::toNativeSeparators(oldFileName));
+    renameQuery.bindValue(":new", newFileName);
+    renameQuery.bindValue(":old", oldFileName);
 
     _dbMutex->lock();
     if( ! renameQuery.exec()) {
@@ -479,7 +479,7 @@ void BPDatabase::importFiles(const QStringList &pathList) const
 
     QStringList values;
     foreach(QString path, pathList){
-        values << value.arg(QDir::toNativeSeparators(path).replace("'", "''"));
+        values << value.arg(path.replace("'", "''"));
     }
     _dbMutex->lock();
     QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
@@ -495,7 +495,7 @@ void BPDatabase::importFile(const QString &path) const
 {
     QSqlQuery query(dbObject());
     query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
-    query.bindValue(":path", QDir::toNativeSeparators(path));
+    query.bindValue(":path", path);
     query.bindValue(":status", Library::New);
 
     _dbMutex->lock();

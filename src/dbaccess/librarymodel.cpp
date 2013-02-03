@@ -249,8 +249,6 @@ void LibraryModel::updateSettings()
     _checkboxesEnabled = checkboxesEnabled;
     _displayFullPaths = displayFullPaths;
 
-    qDebug() << changes;
-
     if( ! changes.isEmpty()) {
         emit dataChanged(index(0, columnCount() - 1), index(rowCount() - 1, columnCount() - 1), changes);
     }

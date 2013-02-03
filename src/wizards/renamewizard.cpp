@@ -69,9 +69,9 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
         QTableWidgetItem *item = new QTableWidgetItem(bpid);
         ui->previewTable->setItem(row, Bpid, item);
 
-        QFileInfo original(QDir::toNativeSeparators(record.value(Library::FilePath).toString()));
+        QFileInfo original(record.value(Library::FilePath).toString());
 
-        item = new QTableWidgetItem(QDir::toNativeSeparators(original.dir().canonicalPath()));
+        item = new QTableWidgetItem(original.dir().canonicalPath());
         ui->previewTable->setItem(row, Directory, item);
 
         item = new QTableWidgetItem(original.fileName());
@@ -158,8 +158,8 @@ void RenameWizard::initializePage(int id)
         for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
 
             QString dir = ui->previewTable->item(row, Directory)->text();
-            QString from(dir + QDir::separator() + ui->previewTable->item(row, OrigFileName)->text());
-            QString to = dir + QDir::separator() + ui->previewTable->item(row, TargetFileName)->text();
+            QString from(dir + '/' + ui->previewTable->item(row, OrigFileName)->text());
+            QString to = dir + '/' + ui->previewTable->item(row, TargetFileName)->text();
 
             renameMap.insert(from, to);
         }
