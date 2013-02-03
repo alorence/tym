@@ -57,6 +57,7 @@ void SearchTask::run()
         fileInformations[record.value(Library::Uid).toString()] = fileParser.parse(file.baseName());
     }
 
+    _dbHelper->dbObject().transaction();
     QMap<QString, QString> * requestMap = new QMap<QString, QString>();
     if(_searchType == SearchWizard::FromId) {
         foreach(QString libUid, fileInformations.keys()) {
@@ -88,6 +89,7 @@ void SearchTask::checkCountResults()
 {
     --_searchResultsCount;
     if(_searchResultsCount <= 0) {
+        _dbHelper->dbObject().commit();
         emit finished();
     }
 }
