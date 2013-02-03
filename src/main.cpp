@@ -89,7 +89,6 @@ int main(int argc, char *argv[])
                   .arg(TYM_ALBUMARTS_LOCATION));
     }
 
-
     qRegisterMetaType<QItemSelection>("QItemSelection");
 
     MainWindow w;

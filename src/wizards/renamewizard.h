@@ -51,10 +51,12 @@ private slots:
 
 private:
     Ui::RenameWizard* ui;
-    QMap<QString, QSqlRecord> _tracksInformations;
 
     FileBasenameFormatter _filenameFormatter;
     PatternButton * _patternHelperButton;
+
+    QMap<QString, QSqlRecord> _tracksInformations;
+    QMap<int, QFileInfo> _fileInfosList;
 
     enum WizardPages {
         PreviewPage = 0,
@@ -62,8 +64,6 @@ private:
     };
 
     enum PreviewColumns {
-        Bpid = 0,
-        Directory,
         OrigFileName,
         TargetFileName
     };

@@ -34,26 +34,25 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    _patternHelperButton = new PatternButton(_filenameFormatter, this);
-
+    // Configure console
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%m\n");
     Logger::registerAppender(_widgetAppender);
 
+    // Configure pattern button
+    _patternHelperButton = new PatternButton(_filenameFormatter, this);
     ui->patternHorizLayout->addWidget(_patternHelperButton);
     _patternHelperButton->hide();
     connect(_patternHelperButton, SIGNAL(patternSelected(QString)), this, SLOT(insertPatternText(QString)));
 
+    // Initilize preview table
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
 
-    // TODO: Re-order table columns to hide only last
     ui->previewTable->setRowCount(selected.count());
-    ui->previewTable->setColumnCount(sizeof(PreviewColumns));
-    ui->previewTable->hideColumn(Bpid);
-    ui->previewTable->hideColumn(Directory);
+    ui->previewTable->setColumnCount(2);
 
     QStringList headers;
-    headers << tr("ID") << tr("Directory") << tr("Original filename") << tr("New filename");
+    headers << tr("Original filename") << tr("New filename");
     ui->previewTable->setHorizontalHeaderLabels(headers);
 
     QStringList bpids;
@@ -61,21 +60,20 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     int row = 0;
     foreach(QSqlRecord record, selected) {
 
+        QFileInfo original(record.value(Library::FilePath).toString());
+        _fileInfosList[row] = original;
+
         QString bpid = record.value(Library::Bpid).toString();
         if( ! bpid.isEmpty()) {
             bpids << bpid;
         }
 
-        QTableWidgetItem *item = new QTableWidgetItem(bpid);
-        ui->previewTable->setItem(row, Bpid, item);
-
-        QFileInfo original(record.value(Library::FilePath).toString());
-
-        item = new QTableWidgetItem(original.dir().canonicalPath());
-        ui->previewTable->setItem(row, Directory, item);
-
-        item = new QTableWidgetItem(original.fileName());
+        QTableWidgetItem * item = new QTableWidgetItem(original.fileName());
+        item->setData(Qt::UserRole, bpid);
+        // Ensure original filename can't be edited
+        item->setFlags( item->flags() & ~Qt::ItemIsEditable);
         ui->previewTable->setItem(row, OrigFileName, item);
+
         row++;
     }
 
@@ -100,24 +98,30 @@ void RenameWizard::updateRenamePreview()
 {
     _filenameFormatter.setPattern(ui->pattern->text());
 
-    for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-        QString bpid = ui->previewTable->item(row, Bpid)->text();
+    for(int row = 0 ; row < _fileInfosList.size() ; ++row) {
+
+        QString bpid = ui->previewTable->item(row, OrigFileName)->data(Qt::UserRole).toString();
 
         QString itemText = "";
+        bool shouldBeUsed = false;
 
-        if( ! bpid.isEmpty()) {
-            QFileInfo original(ui->previewTable->item(row, OrigFileName)->text());
+        QFileInfo original = _fileInfosList.value(row);
+        if( ! original.exists()) {
+            itemText = "<Original file not found>";
+        } else if( ! bpid.isEmpty()) {
             QString newBaseName = _filenameFormatter.format(_tracksInformations[bpid]);
 
             if(newBaseName == original.baseName()) {
-                itemText = "<File already have the right name>";
+                itemText = "<File already have the good name>";
             } else {
                 itemText = newBaseName + '.' + original.suffix();
+                shouldBeUsed = true;
             }
         } else {
             itemText = "<This file has no track attached>";
         }
         QTableWidgetItem *item = new QTableWidgetItem(itemText);
+        item->setData(Qt::UserRole, shouldBeUsed);
         ui->previewTable->setItem(row, TargetFileName, item);
     }
 }
@@ -143,28 +147,30 @@ void RenameWizard::on_patternSelection_currentIndexChanged(int index)
     updateRenamePreview();
 
     if(index == 3) { // Custom
+        ui->pattern->setReadOnly(false);
+        connect(ui->pattern, &QLineEdit::textEdited, this, &RenameWizard::updateRenamePreview);
         _patternHelperButton->show();
     } else {
+        ui->pattern->setReadOnly(true);
         _patternHelperButton->hide();
+        disconnect(ui->pattern, &QLineEdit::textEdited, this, &RenameWizard::updateRenamePreview);
     }
 }
 
 void RenameWizard::initializePage(int id)
 {
     if(id == ResultPage) {
-
-        QHash<QString, QString> renameMap;
+        // Rename map is built only now, because user can edit target file name manually
+        QList<QPair<QFileInfo, QString> > renameList;
 
         for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-
-            QString dir = ui->previewTable->item(row, Directory)->text();
-            QString from(dir + '/' + ui->previewTable->item(row, OrigFileName)->text());
-            QString to = dir + '/' + ui->previewTable->item(row, TargetFileName)->text();
-
-            renameMap.insert(from, to);
+            QTableWidgetItem *item = ui->previewTable->item(row, TargetFileName);
+            if(item->data(Qt::UserRole).toBool()) {
+                renameList << QPair<QFileInfo, QString>(_fileInfosList.value(row), item->text());
+            }
         }
 
-        RenameTask *task = new RenameTask(renameMap);
+        RenameTask *task = new RenameTask(renameList);
         QThreadPool::globalInstance()->tryStart(task);
     }
 }

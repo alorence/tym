@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 
-RenameTask::RenameTask(QHash<QString, QString> renameMap, QObject *parent) :
+RenameTask::RenameTask(QList<QPair<QFileInfo, QString> > renameMap, QObject *parent) :
     Task(parent)
 {
     _renameMap = renameMap;
@@ -33,44 +33,39 @@ RenameTask::RenameTask(QHash<QString, QString> renameMap, QObject *parent) :
 void RenameTask::run()
 {
     BPDatabase db("renameThread");
-    QHashIterator<QString, QString> it(_renameMap);
 
-    QRegularExpression renameValidityCheck("^<.*>$");
+    QPair<QFileInfo,QString> pair;
+    foreach(pair, _renameMap) {
+        QFileInfo from(pair.first);
+        QString to = from.canonicalPath() + '/' + pair.second;
 
-    while(it.hasNext()) {
-        QFileInfo from(it.next().key());
-        QString to = it.value();
-
-        // Rename only if the target filename is not "<...>"
-        if( ! renameValidityCheck.match(to).hasMatch()) {
-            if( ! from.exists()) {
-                LOG_WARNING(tr("Error, file %1 does not exists, it can't be renamed.")
-                            .arg(from.canonicalFilePath()));
-                continue;
-            }
-
-            if(QFile::exists(to)) {
-                LOG_WARNING(tr("Error when renaming file %1, file %2 already exists.")
-                            .arg(from.canonicalFilePath())
-                            .arg(to));
-                continue;
-            }
-
-            if(QFile::rename(from.canonicalFilePath(), to)) {
-                LOG_INFO(tr("File %1 renamed to %2")
-                         .arg(from.canonicalFilePath())
-                         .arg(QFileInfo(to).fileName()));
-            } else {
-                LOG_WARNING(tr("Error when renaming file %1 into %2")
-                            .arg(from.canonicalFilePath())
-                            .arg(to));
-                continue;
-            }
-
-            db.renameFile(from.canonicalFilePath(), to);
+        if( ! from.exists()) {
+            LOG_WARNING(tr("Error, file %1 does not exists, it can't be renamed.")
+                        .arg(from.canonicalFilePath()));
+            continue;
         }
 
-        emit finished();
+        if(QFile::exists(to)) {
+            LOG_WARNING(tr("Error when renaming file %1, file %2 already exists.")
+                        .arg(from.canonicalFilePath())
+                        .arg(to));
+            continue;
+        }
+
+        if(QFile::rename(from.canonicalFilePath(), to)) {
+            LOG_INFO(tr("File %1 renamed to %2")
+                     .arg(from.canonicalFilePath())
+                     .arg(QFileInfo(to).fileName()));
+        } else {
+            LOG_WARNING(tr("Error when renaming file %1 into %2")
+                        .arg(from.canonicalFilePath())
+                        .arg(to));
+            continue;
+        }
+
+        db.renameFile(from.canonicalFilePath(), to);
+
     }
+    emit finished();
 }
 

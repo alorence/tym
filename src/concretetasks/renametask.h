@@ -39,7 +39,7 @@ public:
      * \param parent
      * \sa RenameTask::run()
      */
-    explicit RenameTask(QHash<QString, QString> renameMap, QObject *parent = 0);
+    explicit RenameTask(QList<QPair<QFileInfo, QString> > renameMap, QObject *parent = 0);
 
     /*!
      * \brief Execute the rename task.
@@ -49,7 +49,7 @@ public:
      */
     void run();
 private:
-    QHash<QString, QString> _renameMap;
+    QList<QPair<QFileInfo, QString> > _renameMap;
 };
 
 #endif // RENAMETHREAD_H
