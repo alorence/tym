@@ -22,11 +22,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore>
 
+// General
 #define TYM_PICTURE_URL_DOWNLOAD "http://geo-media.beatport.com/image_size/200x200/%1.jpg"
 #define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
 #define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
 #define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg")
 
+// Settings - interface
 #define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
 #define TYM_DEFAULT_DISPLAY_FULLPATHS false
 #define TYM_PATH_DISPLAY_COLORS "settings/interface/library/colors"
@@ -34,6 +36,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_PATH_DISPLAY_CHECKBOXES "settings/interface/library/checkboxes"
 #define TYM_DEFAULT_DISPLAY_CHECKBOXES true
 
+// Settings - network
 #define TYM_PATH_API_URL "settings/network/beatport/apihost"
 #define TYM_DEFAULT_API_URL "http://api.beatport.com"
 #define TYM_PATH_PROXY_ENABLED "settings/network/proxy/enabled"

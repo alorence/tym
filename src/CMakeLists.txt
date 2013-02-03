@@ -48,6 +48,7 @@ set(tym_HEADERS
 )
 
 set(tym_SOURCES
+    commons.h # ensure the file will appear in Qt Creator project view
     main.cpp
     concretetasks/task.cpp
     concretetasks/renametask.cpp
