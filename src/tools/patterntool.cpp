@@ -31,7 +31,7 @@ PatternTool::PatternTool(const QString &pattern, QObject *parent) :
     _allowedPatterns["TITLE"] = PatternElement("Title", "Track's title, usually correspond to %NAME% (%MIXNAME%)", _commonRegExpPattern, TrackFullInfos::Title);
     _allowedPatterns["ARTISTS"] = PatternElement("Artists", "Track's artists list", _commonRegExpPattern, TrackFullInfos::Artists);
     _allowedPatterns["REMIXERS"] = PatternElement("Remixers", "Track's remixers list", _commonRegExpPattern, TrackFullInfos::Remixers);
-    _allowedPatterns["LABEL"] = PatternElement("Label", "Track's label", _commonRegExpPattern, TrackFullInfos::Label);
+    _allowedPatterns["LABEL"] = PatternElement("Label", "Track's label", _commonRegExpPattern, TrackFullInfos::LabelName);
 
     setPattern(pattern);
 }
