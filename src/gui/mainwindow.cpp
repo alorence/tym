@@ -245,12 +245,23 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    QString libId = _libraryModel->data(_libraryModel->index(selected.row(), Library::Uid)).toString();
+    QSqlRecord current = _libraryModel->record(selected.row());
+    QString libId = current.value(Library::Uid).toString();
     _searchModel->setFilter("libId=" + libId);
 
     if(_searchModel->rowCount()) {
-        //TODO: Select linked result if exists
-        ui->searchResultsView->selectRow(0);
+        QString bpid = current.value(Library::Bpid).toString();
+        if( ! bpid.isEmpty()) {
+            for(int i = 0 ; i < _searchModel->rowCount() ; ++i) {
+                if(_searchModel->record(i).value(SearchResults::Bpid).toString() == bpid) {
+                    ui->searchResultsView->selectRow(i);
+                    break;
+                }
+            }
+        } else {
+            ui->searchResultsView->selectRow(0);
+        }
+
     } else {
         //When no more results are displayed, we must clear the track infos widget
         ui->trackInfos->clearData();
