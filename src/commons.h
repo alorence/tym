@@ -22,6 +22,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore>
 
+#define TYM_PICTURE_URL_DOWNLOAD "http://geo-media.beatport.com/image_size/200x200/%1.jpg"
+#define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+#define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
+#define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg")
+
 #define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
 #define TYM_DEFAULT_DISPLAY_FULLPATHS false
 #define TYM_PATH_DISPLAY_COLORS "settings/interface/library/colors"
@@ -105,12 +110,5 @@ namespace SearchResults {
         DefaultFor
     };
 }
-class Constants {
-public:
-    static const QString dynamicPictureUrl();
-    static const QString dataLocation();
-    static const QString picturesLocation();
-    static const QStringList fileSuffixesAccepted();
 
-};
 #endif // COMMONS_H

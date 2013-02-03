@@ -48,7 +48,6 @@ set(tym_HEADERS
 )
 
 set(tym_SOURCES
-    commons.cpp
     main.cpp
     concretetasks/task.cpp
     concretetasks/renametask.cpp

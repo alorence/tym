@@ -57,7 +57,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
 
     _currentPictureId = result.value(TrackFullInfos::PictureId).toString();
 
-    QString picPath = Constants::picturesLocation() + QDir::separator() + _currentPictureId + ".jpg";
+    QString picPath = TYM_ALBUMARTS_LOCATION + '/' + _currentPictureId + ".jpg";
     if( ! QFile(picPath).exists()) {
         emit downloadPicture(_currentPictureId);
     } else {
@@ -68,7 +68,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
 void TrackInfosView::displayDownloadedPicture(QString picId)
 {
     if(picId == _currentPictureId) {
-        QString path(Constants::picturesLocation() + QDir::separator() + picId + ".jpg");
+        QString path(TYM_ALBUMARTS_LOCATION + '/' + picId + ".jpg");
         ui->imageArea->setPixmap(QPixmap(path));
     }
 }

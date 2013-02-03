@@ -38,7 +38,7 @@ void PictureDownloader::downloadTrackPicture(const QString & picId)
 {
     if(_downloadManagaer.values().contains(picId)) return;
 
-    QNetworkRequest request(Constants::dynamicPictureUrl().arg(picId));
+    QNetworkRequest request(QString(TYM_PICTURE_URL_DOWNLOAD).arg(picId));
 
     QNetworkReply *reply = _manager->get(request);
     _downloadManagaer.insert(reply, picId);
@@ -53,7 +53,7 @@ void PictureDownloader::writeTrackPicture() const
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
 
     QString imgName = _downloadManagaer.value(reply) + ".jpg";
-    QFile imgFile(Constants::picturesLocation() + QDir::separator() + imgName);
+    QFile imgFile(TYM_ALBUMARTS_LOCATION + '/' + imgName);
 
     imgFile.open(QIODevice::WriteOnly | QIODevice::Append);
     imgFile.write(reply->readAll());

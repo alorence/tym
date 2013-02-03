@@ -78,15 +78,15 @@ int main(int argc, char *argv[])
 
     {
         // Initialize some mandatory software items
-        if( ! QDir(Constants::dataLocation()).exists()) {
-            QDir().mkpath(Constants::dataLocation());
+        if( ! QDir(TYM_DATA_LOCATION).exists()) {
+            QDir().mkpath(TYM_DATA_LOCATION);
         }
-        if( ! QDir(Constants::picturesLocation()).exists()) {
-            QDir().mkpath(Constants::picturesLocation());
+        if( ! QDir(TYM_ALBUMARTS_LOCATION).exists()) {
+            QDir().mkpath(TYM_ALBUMARTS_LOCATION);
         }
         LOG_DEBUG(QObject::tr("data location : %1 - pictures location : %2")
-                  .arg(Constants::dataLocation())
-                  .arg(Constants::picturesLocation()));
+                  .arg(TYM_DATA_LOCATION)
+                  .arg(TYM_ALBUMARTS_LOCATION));
     }
 
 

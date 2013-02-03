@@ -34,7 +34,7 @@ BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
     } else {
         _dbObject = QSqlDatabase::addDatabase("QSQLITE", connectionName);
 
-        QString dbPath = Constants::dataLocation() + QDir::separator() + "default.db3";
+        QString dbPath = TYM_DATA_LOCATION + "/default.db3";
 
         _dbObject.setDatabaseName(dbPath);
         LOG_TRACE(tr("Create connection %1").arg(connectionName));

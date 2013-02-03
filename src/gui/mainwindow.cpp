@@ -321,7 +321,7 @@ void MainWindow::on_actionImport_triggered()
     QString searchDir = settings.value("lastOpenedDir", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString();
 
     //QString filters = "Audio tracks (*.wav *.flac *.mp3);;Playlists [not implemented] (*.nml *.m3u)";
-    QString wildcards = Constants::fileSuffixesAccepted().join(" ");
+    QString wildcards = TYM_SUPPORTED_SUFFIXES.join(" ");
 
     QString filters = "Audio tracks ("+wildcards+")";
 
@@ -398,7 +398,7 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
         }
 
     } else if(entry.isFile()) {
-        foreach(QString wildcard, Constants::fileSuffixesAccepted()) {
+        foreach(QString wildcard, TYM_SUPPORTED_SUFFIXES) {
             if(entry.fileName().contains(QRegExp(wildcard, Qt::CaseInsensitive, QRegExp::Wildcard))) {
                 result.append(entry);
             }
