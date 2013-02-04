@@ -23,14 +23,23 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QtWidgets>
 
+/*!
+ * \brief Base class for monitoring whenges performed by user on some widgets' state
+ */
 class WidgetChangesObserver : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief Initialize members. Can't be called directly, since the class is abstract
+     * \param settingsKey \link QSettings key for the value monitored
+     * \param defaultValue Default value of the widget
+     * \param parent
+     */
     explicit WidgetChangesObserver(const QString &settingsKey, const QVariant &defaultValue, QObject *parent = 0);
 
     /*!
-     * \brief Initialize the wiget's internal state.
+     * \brief Initialize the widget's internal state.
      * Get the initial widget value in QSettings, and use _defaultValue if it doeas not exists.
      */
     void init();
@@ -51,7 +60,7 @@ protected:
     bool widgetValueChanged() const;
     /*!
      * \brief Return the value currently displayed by the widget, according to his type.
-     * \return A \l QVariant containing the value
+     * \return A \link QVariant containing the value
      */
     virtual QVariant getWidgetValue() const = 0;
     /*!
@@ -65,36 +74,75 @@ protected:
     QVariant _defaultValue;
 };
 
+/*!
+ * \brief Monitor changes performed on a \link QLineEdit text
+ */
 class LineEditChangesObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a \link QLineEdit
+     */
     LineEditChangesObserver(const QString &settingsKey, QLineEdit * lineEdit, const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
     QVariant getWidgetValue() const;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
     void setWidgetValue(const QVariant &value);
 
 private:
     QLineEdit * _widget;
 };
 
+/*!
+ * \brief Monitor changes performed on a \link QCheckBox
+ */
 class CheckBoxChangesObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a \link QCheckBox
+     */
     CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
     QVariant getWidgetValue() const;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
     void setWidgetValue(const QVariant &value);
 
 private:
     QCheckBox * _widget;
 };
 
+/*!
+ * \brief Monitor changes performed on a chackable \link QGroupBox
+ */
 class CheckableGroupBoxObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a chackable \link QGroupBox
+     */
     CheckableGroupBoxObserver(const QString &settingsKey, QGroupBox *groupbox, const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
     QVariant getWidgetValue() const;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
     void setWidgetValue(const QVariant &value);
 
 private:
