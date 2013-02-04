@@ -188,16 +188,6 @@ MainWindow::~MainWindow()
     }
 }
 
-void MainWindow::show()
-{
-    //TODO: Is this awful hack still necessary ?
-    QMainWindow::show();
-
-    // Configure libraryView filePath column to take as space as possible
-    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
-    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
-}
-
 void MainWindow::updateSettings()
 {
     QSettings settings;
@@ -241,6 +231,14 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
 
     _dbHelper->importFiles(filteredFiles);
+}
+
+void MainWindow::showEvent(QShowEvent *)
+{
+    // Configure libraryView filePath column to take as space as possible
+    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
+    // Ensure 2 last colums have the default section size
+    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
 }
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)

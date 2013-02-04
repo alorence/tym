@@ -72,11 +72,10 @@ public:
 
 public slots:
     /*!
-     * \brief Display the window.
+     * \brief Called when windows is displayed.
      * Reimplemented from QMainWindow to configure some little things in the views.
-     * \deprecated Could be better to find another solution
      */
-    void show();
+    void showEvent(QShowEvent *);
 
 
 private slots:
