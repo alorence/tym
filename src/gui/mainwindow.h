@@ -69,14 +69,14 @@ public:
      * \sa QWidget::dropEvent()
      */
     void dropEvent(QDropEvent *);
-
-public slots:
     /*!
      * \brief Called when windows is displayed.
-     * Reimplemented from QMainWindow to configure some little things in the views.
+     * Reimplemented from QMainWindow to configure some little things in the views. Some options need to be set
+     * while the window has start to be rendered. For example, configuring the size of QTableView column using
+     * the total with of the widget can be done only in this function, because QHeaderView::width() has a valid
+     * result only here.
      */
     void showEvent(QShowEvent *);
-
 
 private slots:
     /*!
