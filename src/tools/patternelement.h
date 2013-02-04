@@ -22,24 +22,60 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "commons.h"
 
+/*!
+ * \brief Encapsulate all informations about a pattern element.
+ * Used by \link PatternTool class, a pattern (formatted as %PATTERN%) is used to parse
+ * or build filename. It needs to have some informations attached, as a corresponding
+ * regular expression, human readable informations or sql index.
+ * \sa PatternTool
+ * \sa FileBasenameParser
+ * \sa FileBasenameFormatter
+ */
 class PatternElement
 {
 public:
+    /*!
+     * \brief Build an empty pattern elemnt
+     */
     PatternElement();
+    /*!
+     * \brief Build a complete pattern element
+     * \param displayName Human readable name
+     * \param description Human readable description
+     * \param inRegExp RegularExpression associated with the pattern, to parse filenames
+     * \param sqlIndex Corresponding index in TrackFullInfos table
+     */
     PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::Indexes sqlIndex = TrackFullInfos::InvalidIndex);
-
+    /*!
+     * \link _displayName
+     */
     const QString &displayName() const { return _displayName; }
+    /*!
+     * \link _description
+     */
     const QString &description() const { return _description; }
     const QString &inRegExp() const { return _regExp; }
     TrackFullInfos::Indexes sqlIndex() const { return _sqlIndex; }
 
+    /*!
+     * \link _displayName
+     */
     void setDisplayName(const QString& displayName) { _displayName = displayName; }
+    /*!
+     * \link _description
+     */
     void setDescription(const QString& description) { _description = description; }
     void setRegExp(const QString& inRegExp) { _regExp = inRegExp; }
     void setSqlIndex(TrackFullInfos::Indexes index) { _sqlIndex = index; }
 
 private:
+    /*!
+     * \brief The human readable name of the pattern element
+     */
     QString _displayName;
+    /*!
+     * \brief The human readable description of the pattern element
+     */
     QString _description;
     QString _regExp;
     TrackFullInfos::Indexes _sqlIndex;

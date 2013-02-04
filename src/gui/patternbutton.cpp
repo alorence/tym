@@ -32,9 +32,12 @@ PatternButton::PatternButton(const PatternTool &patterntool, QWidget *parent) :
 
 
     QMenu * menu = new QMenu(this);
-    foreach(QString patternString, patterntool.availablesPatterns().keys()) {
 
-        PatternElement pe = patterntool.availablesPatterns()[patternString];
+    QMapIterator<QString, PatternElement> it(patterntool.availablesPatterns());
+    while(it.hasNext()) {
+
+        QString patternString = it.next().key();
+        PatternElement pe = it.value();
 
         QString text = QString("%1 (%%2%)").arg(pe.displayName()).arg(patternString);
 

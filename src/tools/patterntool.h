@@ -26,16 +26,23 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include "patternelement.h"
 /*!
- * \brief The PatternTool class
- *
- *
+ * \brief The PatternTool class is the base class for pattern manipulation.
  */
 class PatternTool : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief Build a PatternTool from \a pattern argument
+     * \param pattern
+     * \param parent
+     */
     explicit PatternTool(const QString & pattern, QObject *parent = 0);
-    virtual const QMap<QString, PatternElement> & availablesPatterns() const = 0;
+    /*!
+     * \brief Return available pattern for a specific usage
+     * \return
+     */
+    const QMap<QString, PatternElement> & availablesPatterns() const;
     void setPattern(const QString & pattern);
 
 protected:
@@ -43,24 +50,47 @@ protected:
     QMap<QString, PatternElement> _allowedPatterns;
     QString _commonRegExpPattern;
 };
-
+/*!
+ * \brief Define a parser for reading file name and extract some informations from it.
+ */
 class FileBasenameParser : public PatternTool
 {
 public:
+    /*!
+     * \copydoc PatternTool::PatternTool
+     * \param pattern
+     * \param parent
+     */
     FileBasenameParser(const QString &pattern = QString(), QObject *parent = 0);
-    const QMap<QString, PatternElement> & availablesPatterns() const;
+    /*!
+     * \brief Extract informations from file basename
+     * \param basename File name (without suffix)
+     * \return Results as map, indexed by TrackFullInfos::Indexes
+     */
     QMap<TrackFullInfos::Indexes, QString> parse(const QString &basename) const;
 
 private:
     QRegularExpression _parserRegularExpression;
 };
 
+/*!
+ * \brief Define a generator which produce file basenames according to pattern.
+ */
 class FileBasenameFormatter : public PatternTool
 {
 public:
+    /*!
+     * \copydoc PatternTool::PatternTool
+     * \param pattern
+     * \param parent
+     */
     FileBasenameFormatter(const QString &pattern = QString(), QObject *parent = 0);
-    const QMap<QString, PatternElement> & availablesPatterns() const;
-    QString format(const QSqlRecord &) const;
+    /*!
+     * \brief Format a file basename from \a pattern and \a infos in argument
+     * \param infos QSqlRecord containg all informations about a track
+     * \return A formatted basename (without suffix)
+     */
+    QString format(const QSqlRecord &infos) const;
 
 };
 

@@ -19,18 +19,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "patternelement.h"
 
-PatternElement::PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::Indexes sqlIndex) :
-    _displayName(displayName),
-    _description(description),
-    _regExp(inRegExp),
-    _sqlIndex(sqlIndex)
-{
-}
-
 PatternElement::PatternElement() :
     _displayName(""),
     _description(""),
     _regExp(""),
     _sqlIndex(TrackFullInfos::InvalidIndex)
+{
+}
+
+PatternElement::PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::Indexes sqlIndex) :
+    _displayName(displayName),
+    _description(description),
+    _regExp(inRegExp),
+    _sqlIndex(sqlIndex)
 {
 }

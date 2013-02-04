@@ -36,6 +36,11 @@ PatternTool::PatternTool(const QString &pattern, QObject *parent) :
     setPattern(pattern);
 }
 
+const QMap<QString, PatternElement> &PatternTool::availablesPatterns() const
+{
+    return _allowedPatterns;
+}
+
 void PatternTool::setPattern(const QString &pattern)
 {
     _patternElts = pattern.split('%', QString::SkipEmptyParts);
@@ -63,11 +68,6 @@ FileBasenameParser::FileBasenameParser(const QString &pattern, QObject *parent) 
 
 }
 
-const QMap<QString, PatternElement> &FileBasenameParser::availablesPatterns() const
-{
-    return _allowedPatterns;
-}
-
 QMap<TrackFullInfos::Indexes, QString> FileBasenameParser::parse(const QString &basename) const
 {
     QRegularExpressionMatch matchResult = _parserRegularExpression.match(basename);
@@ -88,11 +88,6 @@ QMap<TrackFullInfos::Indexes, QString> FileBasenameParser::parse(const QString &
 FileBasenameFormatter::FileBasenameFormatter(const QString &pattern, QObject *parent) :
     PatternTool(pattern, parent)
 {
-}
-
-const QMap<QString, PatternElement> &FileBasenameFormatter::availablesPatterns() const
-{
-    return _allowedPatterns;
 }
 
 QString FileBasenameFormatter::format(const QSqlRecord &trackInfoRecord) const
