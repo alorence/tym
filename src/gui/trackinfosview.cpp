@@ -25,7 +25,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TrackInfosView)
+    ui(new Ui::TrackInfosView),
+    _defaultAlbumArt(":/img/general/noalbum")
 {
     ui->setupUi(this);
 }
@@ -60,6 +61,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
     QString picPath = TYM_ALBUMARTS_LOCATION + '/' + _currentPictureId + ".jpg";
     if( ! QFile(picPath).exists()) {
         emit downloadPicture(_currentPictureId);
+        ui->imageArea->setPixmap(_defaultAlbumArt);
     } else {
         displayDownloadedPicture(_currentPictureId);
     }
@@ -91,7 +93,7 @@ void TrackInfosView::clearData()
     ui->d_length->clear();
     ui->d_release->clear();
 
-    ui->imageArea->clear();
+    ui->imageArea->setPixmap(_defaultAlbumArt);
     _currentPictureId = "";
 }
 

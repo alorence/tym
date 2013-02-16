@@ -48,6 +48,7 @@ private:
     Ui::TrackInfosView *ui;
 
     QString _currentPictureId;
+    QPixmap _defaultAlbumArt;
 };
 
 #endif // TRACKINFOSVIEW_H

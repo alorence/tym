@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>TrackInfosView</class>
  <widget class="QWidget" name="TrackInfosView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>421</width>
+    <height>428</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
     <horstretch>0</horstretch>
@@ -198,14 +206,8 @@
          <height>200</height>
         </size>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="text">
-        <string/>
+       <property name="pixmap">
+        <pixmap resource="../../resources/resources.qrc">:/img/general/noalbum</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -324,7 +326,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources/resources.qrc"/>
+ </resources>
  <connections/>
  <designerdata>
   <property name="gridDeltaX">

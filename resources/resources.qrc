@@ -23,4 +23,7 @@
     <qresource prefix="/sql/init">
         <file alias="0.1">config/sql/init-0.1.sql</file>
     </qresource>
+    <qresource prefix="/img/general">
+        <file alias="noalbum">noalbum.png</file>
+    </qresource>
 </RCC>
