@@ -171,6 +171,6 @@ void RenameWizard::initializePage(int id)
         }
 
         RenameTask *task = new RenameTask(renameList);
-        QThreadPool::globalInstance()->tryStart(task);
+        QThreadPool::globalInstance()->start(task);
     }
 }

@@ -30,7 +30,8 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::SearchWizard),
     _selectedRecords(selectedRecords),
-    _patternHelperButton(new PatternButton(FileBasenameParser(), this))
+    _patternHelperButton(new PatternButton(FileBasenameParser(), this)),
+    _thread(NULL)
 {
     ui->setupUi(this);
 
@@ -110,17 +111,17 @@ void SearchWizard::initializePage(int id)
 {
     if(id == ResultPage) {
 
-        QThread *thread = new QThread(this);
+        _thread = new QThread();
         SearchTask * task = new SearchTask(ui->pattern->text(), _type, _selectedRecords);
-        task->moveToThread(thread);
+        task->moveToThread(_thread);
 
-        connect(thread, SIGNAL(started()), task, SLOT(run()));
-        connect(task, SIGNAL(finished()), thread, SLOT(quit()));
+        connect(_thread, SIGNAL(started()), task, SLOT(run()));
+        connect(task, SIGNAL(finished()), _thread, SLOT(quit()));
 
-        connect(thread, SIGNAL(finished()), task, SLOT(deleteLater()));
-        connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+        connect(_thread, SIGNAL(finished()), task, SLOT(deleteLater()));
+        connect(_thread, SIGNAL(finished()), _thread, SLOT(deleteLater()));
 
-        thread->start();
+        _thread->start();
     }
 }
 

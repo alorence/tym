@@ -62,9 +62,6 @@ public:
     QString pattern() const;
     SearchType searchType() const;
 
-public slots:
-    void setPattern(QString value);
-
 private slots:
     void idSearchSelected(bool);
     void titleArtistSearchSelected(bool);
@@ -72,16 +69,17 @@ private slots:
     void insertPatternText(const QString&);
 
 private:
+    void setPattern(QString value);
+    enum WizardPages {
+        SelectPatternPage = 0,
+        ResultPage
+    };
     Ui::SearchWizard* ui;
     SearchType _type;
     QList<QSqlRecord> _selectedRecords;
 
     PatternButton * _patternHelperButton;
-
-    enum WizardPages {
-        SelectPatternPage = 0,
-        ResultPage
-    };
+    QThread * _thread;
     WidgetAppender* _widgetAppender;
 };
 
