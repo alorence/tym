@@ -316,7 +316,9 @@ void MainWindow::selectSpecificLibraryElements(int index)
 void MainWindow::on_actionSearch_triggered()
 {
     SearchWizard wizard(_libraryModel->selectedRecords().values());
-    wizard.exec();
+    if(wizard.exec() == QWizard::Rejected) {
+        return;
+    }
     _libraryModel->refresh();
 }
 
@@ -400,7 +402,7 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 void MainWindow::on_actionRename_triggered()
 {
     RenameWizard wizard(_libraryModel->selectedRecords().values());
-    if(wizard.exec() == SearchWizard::Rejected) {
+    if(wizard.exec() == QWizard::Rejected) {
         return;
     }
     _libraryModel->refresh();
