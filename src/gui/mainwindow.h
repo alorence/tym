@@ -80,6 +80,11 @@ public:
 
 private slots:
     /*!
+     * \brief Show or hide console in window
+     */
+    void toggleConsoleDisplaying(bool show) const;
+
+    /*!
      * \brief Update the general settings for the application.
      */
     void updateSettings();

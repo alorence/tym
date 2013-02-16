@@ -15,6 +15,14 @@
         <file alias="about">fugues-icons-3.5/icons/question.png</file>
         <file alias="help">fugues-icons-3.5/icons/book-question.png</file>
         <file alias="tick">fugues-icons-3.5/icons/tick.png</file>
+        <file alias="rename">fugues-icons-3.5/icons-shadowless/blue-document-rename.png</file>
+        <file>fugues-icons-3.5/icons/folder-open-document-music.png</file>
+        <file>fugues-icons-3.5/icons/folder-open-document-music-playlist.png</file>
+        <file>fugues-icons-3.5/icons/document-music.png</file>
+        <file>fugues-icons-3.5/icons/document-music-playlist.png</file>
+        <file>fugues-icons-3.5/icons/blue-document-music.png</file>
+        <file>fugues-icons-3.5/icons/blue-document-music-playlist.png</file>
+        <file alias="terminal">fugues-icons-3.5/icons/terminal.png</file>
     </qresource>
     <qresource prefix="/img/logos">
         <file alias="gpl3">logos/gplv3-88x31.png</file>

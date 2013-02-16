@@ -46,10 +46,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
+
     // Configure console message displaying
-    connect(ui->actionToggleConsole, SIGNAL(toggled(bool)), ui->outputConsole, SLOT(setVisible(bool)));
+    connect(ui->actionToggleConsole, &QAction::toggled, this, &MainWindow::toggleConsoleDisplaying);
     ui->actionToggleConsole->setChecked(_defaultConsoleDisplaying);
-    ui->outputConsole->setVisible(_defaultConsoleDisplaying);
+    toggleConsoleDisplaying(_defaultConsoleDisplaying);
 
     WidgetAppender* widgetAppender = new WidgetAppender(ui->outputConsole);
     widgetAppender->setFormat("%m\n");
@@ -239,6 +241,17 @@ void MainWindow::showEvent(QShowEvent *)
     QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
     // Ensure 2 last colums have the default section size
     ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+}
+
+void MainWindow::toggleConsoleDisplaying(bool show) const
+{
+    if(show) {
+        ui->actionToggleConsole->setText(tr("Hide console"));
+    } else {
+        ui->actionToggleConsole->setText(tr("Show console"));
+    }
+
+    ui->outputConsole->setVisible(show);
 }
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
