@@ -42,11 +42,13 @@ MainWindow::MainWindow(QWidget *parent) :
     _settings(new SettingsDialog(this)),
     _pictureDownloader(new PictureDownloader(this)),
     _dbHelper(new BPDatabase),
-    _libStatusUpdateThread(new QThread())
+    _libStatusUpdateThread(new QThread()),
+    _aboutDialog(new About(this))
 {
     ui->setupUi(this);
 
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
+    connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
 
     // Configure console message displaying
     connect(ui->actionToggleConsole, &QAction::toggled, this, &MainWindow::toggleConsoleDisplaying);
@@ -309,12 +311,6 @@ void MainWindow::selectSpecificLibraryElements(int index)
         _libraryModel->selectSpecificGroup(group);
     }
     ui->libraryView->setFocus();
-}
-
-void MainWindow::on_actionAbout_triggered()
-{
-    About about;
-    about.show();
 }
 
 void MainWindow::on_actionSearch_triggered()

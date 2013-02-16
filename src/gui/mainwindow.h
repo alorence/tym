@@ -26,6 +26,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/searchprovider.h"
 #include "dbaccess/librarymodel.h"
 
+class About;
 class SettingsDialog;
 class PictureDownloader;
 class BPDatabase;
@@ -151,10 +152,6 @@ private slots:
     void on_actionSearchResultDelete_triggered();
 
     /*!
-     * \brief Open the About dialog
-     */
-    void on_actionAbout_triggered();
-    /*!
      * \brief Open the search wizard
      */
     void on_actionSearch_triggered();
@@ -181,6 +178,7 @@ private:
     bool _defaultConsoleDisplaying;
 
     Ui::MainWindow* ui;
+    About * _aboutDialog;
     SettingsDialog* _settings;
     PictureDownloader* _pictureDownloader;
 
