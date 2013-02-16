@@ -107,6 +107,11 @@ void SearchWizard::insertPatternText(const QString & patternText)
     ui->pattern->insert(patternText);
 }
 
+void SearchWizard::printEndText()
+{
+    ui->outputConsole->appendPlainText(tr("Finished successfully"));
+}
+
 void SearchWizard::initializePage(int id)
 {
     if(id == ResultPage) {
@@ -115,11 +120,12 @@ void SearchWizard::initializePage(int id)
         SearchTask * task = new SearchTask(ui->pattern->text(), _type, _selectedRecords);
         task->moveToThread(_thread);
 
-        connect(_thread, SIGNAL(started()), task, SLOT(run()));
-        connect(task, SIGNAL(finished()), _thread, SLOT(quit()));
+        connect(_thread, &QThread::started, task, &SearchTask::run);
+        connect(task, &SearchTask::finished, this, &SearchWizard::printEndText);
+        connect(task, &SearchTask::finished, _thread, &QThread::quit);
 
-        connect(_thread, SIGNAL(finished()), task, SLOT(deleteLater()));
-        connect(_thread, SIGNAL(finished()), _thread, SLOT(deleteLater()));
+        connect(_thread, &QThread::finished, task, &SearchWizard::deleteLater);
+        connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
 
         _thread->start();
     }

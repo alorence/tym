@@ -131,6 +131,11 @@ void RenameWizard::insertPatternText(const QString & patternText)
     ui->pattern->insert(patternText);
 }
 
+void RenameWizard::printEndText() const
+{
+    ui->outputConsole->appendPlainText(tr("Finished successfully"));
+}
+
 void RenameWizard::on_patternSelection_currentIndexChanged(int index)
 {
     switch(index) {
@@ -171,6 +176,8 @@ void RenameWizard::initializePage(int id)
         }
 
         RenameTask *task = new RenameTask(renameList);
+        connect(task, &RenameTask::finished, this, &RenameWizard::printEndText);
+
         QThreadPool::globalInstance()->start(task);
     }
 }

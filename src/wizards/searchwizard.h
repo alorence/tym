@@ -67,6 +67,7 @@ private slots:
     void titleArtistSearchSelected(bool);
     void customSearchSelected(bool);
     void insertPatternText(const QString&);
+    void printEndText();
 
 private:
     void setPattern(QString value);
