@@ -10,6 +10,9 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="options">
+   <set>QWizard::HelpButtonOnRight|QWizard::NoBackButtonOnLastPage|QWizard::NoBackButtonOnStartPage</set>
+  </property>
   <widget class="QWizardPage" name="previewPage">
    <attribute name="pageId">
     <string notr="true">0</string>
@@ -123,7 +126,7 @@
   <customwidget>
    <class>ConsoleWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>gui/consolewidget.h</header>
+   <header>gui\consolewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
