@@ -114,3 +114,22 @@ void CheckableGroupBoxObserver::setWidgetValue(const QVariant &value)
         LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QGroupBox %2").arg(value.toString()).arg(_widget->objectName()));
     }
 }
+
+RadioButtonListObserver::RadioButtonListObserver(const QString &settingsKey, QList<QRadioButton *> radioButtonList, const QVariant &defaultValue, QObject *parent) :
+    WidgetChangesObserver(settingsKey, defaultValue, parent),
+    _widgets(radioButtonList)
+{
+}
+
+QVariant RadioButtonListObserver::getWidgetValue() const
+{
+    for(int i = 0 ; i < _widgets.size() ; ++i) {
+        if(_widgets.value(i)->isChecked()) return i;
+    }
+    return -1;
+}
+
+void RadioButtonListObserver::setWidgetValue(const QVariant &value)
+{
+    _widgets.value(value.toInt())->setChecked(true);
+}

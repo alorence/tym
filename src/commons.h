@@ -28,6 +28,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
 #define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg")
 
+namespace Settings {
+    enum KeyStyle {
+        Beatport = 0,
+        MixedInKey
+    };
+}
+
 // Settings - interface
 #define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
 #define TYM_DEFAULT_DISPLAY_FULLPATHS false
@@ -35,6 +42,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_DEFAULT_DISPLAY_COLORS true
 #define TYM_PATH_DISPLAY_CHECKBOXES "settings/interface/library/checkboxes"
 #define TYM_DEFAULT_DISPLAY_CHECKBOXES true
+#define TYM_PATH_KEY_STYLE "settings/interface/keystyle"
+#define TYM_DEFAULT_KEY_STYLE Settings::Beatport
 
 // Settings - network
 #define TYM_PATH_API_URL "settings/network/beatport/apihost"

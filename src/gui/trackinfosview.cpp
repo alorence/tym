@@ -22,6 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
+#include "tools/utils.h"
 
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
@@ -38,6 +39,8 @@ TrackInfosView::~TrackInfosView()
 
 void TrackInfosView::updateInfos(QSqlRecord result)
 {
+    QSettings settings;
+
     ui->d_artists->setText(result.value(TrackFullInfos::Artists).toString());
     ui->d_remixers->setText(result.value(TrackFullInfos::Remixers).toString());
     ui->d_genres->setText(result.value(TrackFullInfos::Genres).toString());
@@ -46,7 +49,16 @@ void TrackInfosView::updateInfos(QSqlRecord result)
     ui->d_name->setText(result.value(TrackFullInfos::TrackName).toString());
     ui->d_mixname->setText(result.value(TrackFullInfos::MixName).toString());
     ui->d_title->setText(result.value(TrackFullInfos::Title).toString());
-    ui->d_key->setText(result.value(TrackFullInfos::Key).toString());
+
+    Settings::KeyStyle keyStyle = (Settings::KeyStyle) settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
+    QString trackKey = result.value(TrackFullInfos::Key).toString();
+    qDebug() << keyStyle;
+    if(keyStyle == Settings::MixedInKey) {
+        trackKey = Utils::convertKeyToMixedInKeyStyle(trackKey);
+        qDebug() << trackKey;
+    }
+    ui->d_key->setText(trackKey);
+
     ui->d_bpm->setText(result.value(TrackFullInfos::Bpm).toString());
     QDateTime d = QDateTime::fromTime_t(result.value(TrackFullInfos::ReleaseDate).toInt());
     ui->d_releaseDate->setText(d.toString(tr("yyyy-MM-dd")));

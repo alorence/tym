@@ -149,4 +149,27 @@ private:
     QGroupBox * _widget;
 };
 
+
+class RadioButtonListObserver : public WidgetChangesObserver
+{
+    Q_OBJECT
+public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a list of \l QRadioButton
+     */
+    RadioButtonListObserver(const QString &settingsKey, QList<QRadioButton*> radioButtonList, const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
+    QVariant getWidgetValue() const;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
+    void setWidgetValue(const QVariant &value);
+
+private:
+    QList<QRadioButton*> _widgets;
+};
+
 #endif // WIDGETCHANGESOBSERVER_H
