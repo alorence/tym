@@ -4,7 +4,7 @@
 A simple tool to get meta-informations on music tracks bought from Internet, working on MacOS, Windows and GNU/Linux. This is an open source software, under GPL v3. PLease read the LICENCE.html file to get more informations.
 
 ### Status
-This project is under development, and not available to download for now. You can fork it or clone sources and try to compile your own version.
+A first version of this project has been released. It can be downloaded on [Tag Your Music website](http://www.tagyourmusic.org "Tag Your Music") for tests.
 
 ### Compile
 To compile, run the classic commands

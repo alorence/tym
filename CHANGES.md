@@ -1,7 +1,7 @@
 # Tag Your Music: Changelog
 
 ## 0.1.0 First release
-Publish date : TBD
+Publish date : 2013-02-17
 #### Features
  - Import audio files (*.wav, *.mp3, *.ogg, *.flac) into internal library
  - Search for associated content on Beatport with public api (http://api.beatport.com)
