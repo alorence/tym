@@ -28,17 +28,27 @@ if(WIN32)
         set(CURRENT_CONFIGURATION RELEASE)
     endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
 
-    get_target_property(CoreDll     Qt5::Core       IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(WidgetsDll  Qt5::Widgets    IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(NetworkDll  Qt5::Network    IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(SqlDll      Qt5::Sql        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(CoreDll         Qt5::Core           IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(WidgetsDll      Qt5::Widgets        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(GuiDll          Qt5::Gui            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(NetworkDll      Qt5::Network        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(SqlDll          Qt5::Sql            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+
+    find_file(qSqllitePlugin qsqlite.dll PATHS "${Qt5Core_DIR}/../../../plugins/sqldrivers")
+    find_file(qJpegPlugin qjpeg.dll PATHS "${Qt5Core_DIR}/../../../plugins/imageformats")
 
     # TODO : Copy debug version of dlls in Debug BUILD_TYPE
     add_custom_target(setup
-        COMMAND ${CMAKE_COMMAND} -E copy ${CoreDll} ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${WidgetsDll} ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${NetworkDll} ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${SqlDll} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${CoreDll}     ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${WidgetsDll}  ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${GuiDll}      ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${NetworkDll}  ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${SqlDll}      ${TYM_SETUP_TREE_PATH}
+
+        COMMAND ${CMAKE_COMMAND} -E make_directory              "${TYM_SETUP_TREE_PATH}/sqldrivers"
+        COMMAND ${CMAKE_COMMAND} -E copy ${qSqllitePlugin}      "${TYM_SETUP_TREE_PATH}/sqldrivers/"
+        COMMAND ${CMAKE_COMMAND} -E make_directory              "${TYM_SETUP_TREE_PATH}/imageformats"
+        COMMAND ${CMAKE_COMMAND} -E copy ${qJpegPlugin}         "${TYM_SETUP_TREE_PATH}/imageformats/"
 
         COMMAND iscc ${CMAKE_CURRENT_BINARY_DIR}/tym-setup.iss
 

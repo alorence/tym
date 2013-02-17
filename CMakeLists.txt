@@ -76,7 +76,7 @@ set(TYM_SETUP_TREE_PATH ${TYM_OUTPUT_PATH})
 # Directory were resulting package will be generated
 set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
 # Resulting package filename
-set(TYM_SETUP_FILENAME setup-tym-${TYM_SHORT_VERSION})
+set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
 
 # Set the list of translations (*.ts) files to compile them in src directory
 file(GLOB TRANSLATIONS_FILES translations/*.ts)

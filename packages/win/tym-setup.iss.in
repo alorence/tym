@@ -23,8 +23,8 @@ AppName=Tag Your Music
 AppVersion=${TYM_SHORT_VERSION}
 AppPublisher=Antoine Lorence
 AppPublisherURL=http://www.antoine-lorence.fr/
-;AppSupportURL=www.tym.fr/issues
-;AppUpdatesURL=www.tym.fr/updatesurl
+AppSupportURL=https://github.com/alorence/tym/issues
+AppUpdatesURL=http://www.tagyourmusic.org
 LicenseFile=GPL3licence.txt
 
 ;ArchitecturesInstallIn64BitMode=x64 if program is compiled for x64 systems
@@ -36,24 +36,20 @@ UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
 ;WizardImageFile=myimage.bmp
 ;WizardSmallImageFile=mysmallimage.bmp
 ;WizardImageStretch=yes|no
-MinVersion=0,5.1
+MinVersion=0,5.0
 ShowLanguageDialog=auto
 
 OutputDir=${TYM_SETUP_OUTPUT_PATH}
 OutputBaseFilename=${TYM_SETUP_FILENAME}
 VersionInfoVersion=${TYM_VERSION}
 
-[UninstallDelete]
-; TODO : Do not release with this option. Used only for BETA
-Type: filesandordirs;                           Name: "{localappdata}\TagYourMusic"
-
 [Files]
-Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     DestDir: {app}
-Source: "${TYM_SETUP_TREE_PATH}/*.exe";         DestDir: {app}
-Source: "${TYM_SETUP_TREE_PATH}/Qt*.dll";       DestDir: {app}
-Source: "${QT_QSQLITE_PLUGIN_RELEASE}";         DestDir: {app}/sqldrivers
-Source: "${QT_QJPEG_PLUGIN_RELEASE}";           DestDir: {app}/imageformats
-Source: "vcredist_x86.exe";                     DestDir: {tmp};                                             Flags: deleteafterinstall
+Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     	DestDir: {app}
+Source: "${TYM_SETUP_TREE_PATH}/*.exe";         	DestDir: {app}
+Source: "${TYM_SETUP_TREE_PATH}/*.dll";       		DestDir: {app}
+Source: "${TYM_SETUP_TREE_PATH}/sqldrivers/*";  	DestDir: {app}/sqldrivers
+Source: "${TYM_SETUP_TREE_PATH}/imageformats/*";	DestDir: {app}/imageformats
+Source: "vcredist_x86.exe";                     	DestDir: {tmp};                                         Flags: deleteafterinstall
 
 [CustomMessages]
 en.ApplicationName=Tag Your Music
@@ -68,8 +64,8 @@ Filename: "{tmp}\vcredist_x86.exe";             Parameters : /q                 
 Filename: {app}/${TYM_EXECUTABLE_FILENAME}.exe; Description: {cm:LaunchProgram,{cm:ApplicationName}};       Flags: nowait postinstall skipifsilent
 
 [Icons]
-Name: "{group}\Tym";                            Filename: "{app}\${TYM_EXECUTABLE_FILENAME}.exe"
-Name: "{group}\Uninstall Tym";                  Filename: "{uninstallexe}"
+Name: "{group}\Tag Your Music";                 Filename: "{app}\${TYM_EXECUTABLE_FILENAME}.exe"
+Name: "{group}\Uninstall Tag Your Music";       Filename: "{uninstallexe}"
 
 [Types]
 Name: "full";                                   Description: "Full installation"
