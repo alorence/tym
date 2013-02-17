@@ -272,9 +272,14 @@ void LibraryModel::refresh()
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
+    QModelIndex ind;
+    QItemSelection selection;
     foreach(int row, rows) {
         _checkedRows.remove(row);
+        ind = index(row, _columnWithCheckbox);
+        selection.select(ind, ind);
     }
+    emit requestSelectRows(selection, QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
     refresh();
 }
 
