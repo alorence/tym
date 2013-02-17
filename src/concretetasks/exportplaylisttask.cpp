@@ -77,8 +77,7 @@ void ExportPlaylistTask::run()
     xmlDoc.writeStartElement("SUBNODES");
     xmlDoc.writeAttribute("COUNT", "1");
     xmlDoc.writeStartElement("NODE");
-    // TODO: Write a good name
-    xmlDoc.writeAttribute("NAME", "o_O");
+    xmlDoc.writeAttribute("NAME", QFileInfo(_outputFile).baseName());
     xmlDoc.writeAttribute("TYPE", "PLAYLIST");
     xmlDoc.writeStartElement("PLAYLIST");
     xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
