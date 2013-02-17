@@ -10,6 +10,7 @@ Publish date : TBD
  - Rename tracks according to result linked
     - Some simple patterns are predefined
     - Simple replacement for platform dependent non-supported characters
+ - Export informations as *.nml playlist(s) to display some informations in Traktor pro 2.6
 
 #### Known bugs
  - Wizards have a too large title size. Qt 5.0.0 bug, should be resolved in a future version (see https://bugreports.qt-project.org/browse/QTBUG-28099)

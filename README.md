@@ -42,7 +42,6 @@ See [CHANGES.md](CHANGES.md "Tag Your Music Changelog")
 ### Planned features (TODO)
 #### In short terms
  - Add more options when searching tracks informations (sorting, etc)
- - Produce *.nml playlist files (NI Traktor Pro) and append all tracks informations inside
  - Implements the About dialog
 
 #### In long terms
