@@ -38,6 +38,7 @@ ExportPlaylistWizard::ExportPlaylistWizard(const QList<QSqlRecord> &selected, QW
     // Configure console
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%m\n");
+    _widgetAppender->setDetailsLevel(Logger::Info);
     Logger::registerAppender(_widgetAppender);
 
     connect(ui->multiPlaylist, &QRadioButton::toggled, this, &ExportPlaylistWizard::updateMainOptionElements);

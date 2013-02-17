@@ -37,6 +37,7 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
 
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%m\n");
+    _widgetAppender->setDetailsLevel(Logger::Info);
     Logger::registerAppender(_widgetAppender);
 
     connect(ui->searchFromId, SIGNAL(toggled(bool)), this, SLOT(idSearchSelected(bool)));
