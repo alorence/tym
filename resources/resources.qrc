@@ -19,7 +19,7 @@
         <file>fugues-icons-3.5/icons/folder-open-document-music.png</file>
         <file>fugues-icons-3.5/icons/folder-open-document-music-playlist.png</file>
         <file>fugues-icons-3.5/icons/document-music.png</file>
-        <file>fugues-icons-3.5/icons/document-music-playlist.png</file>
+        <file alias="playlist">fugues-icons-3.5/icons/document-music-playlist.png</file>
         <file>fugues-icons-3.5/icons/blue-document-music.png</file>
         <file>fugues-icons-3.5/icons/blue-document-music-playlist.png</file>
         <file alias="terminal">fugues-icons-3.5/icons/terminal.png</file>

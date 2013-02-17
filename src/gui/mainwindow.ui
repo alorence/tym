@@ -246,6 +246,7 @@
    <addaction name="separator"/>
    <addaction name="actionSearch"/>
    <addaction name="actionRename"/>
+   <addaction name="actionExport"/>
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
   </widget>
@@ -367,6 +368,18 @@
    </property>
    <property name="text">
     <string>Rename</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/img/actions/export</normaloff>:/img/actions/export</iconset>
+   </property>
+   <property name="text">
+    <string>Export</string>
+   </property>
+   <property name="toolTip">
+    <string>Export selected tracks as playlist</string>
    </property>
   </action>
  </widget>

@@ -30,6 +30,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/bpdatabase.h"
 #include "wizards/searchwizard.h"
 #include "wizards/renamewizard.h"
+#include "wizards/exportplaylistwizard.h"
 #include "tools/patterntool.h"
 #include "tools/picturedownloader.h"
 
@@ -294,6 +295,7 @@ void MainWindow::updateLibraryActions()
     ui->actionLibraryDelete->setDisabled(numSel == 0);
     ui->actionSearch->setDisabled(numSel == 0);
     ui->actionRename->setDisabled(numSel == 0);
+    ui->actionExport->setDisabled(numSel == 0);
 }
 
 void MainWindow::updateSearchResultsActions()
@@ -426,4 +428,10 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
     }
 
     return result;
+}
+
+void MainWindow::on_actionExport_triggered()
+{
+    ExportPlaylistWizard wizard(_libraryModel->selectedRecords().values());
+    wizard.exec();
 }

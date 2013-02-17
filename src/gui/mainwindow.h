@@ -160,6 +160,11 @@ private slots:
      */
     void on_actionRename_triggered();
 
+    /*!
+     * \brief Open the export playlist wizard
+     */
+    void on_actionExport_triggered();
+
 private:
     /*!
      * \brief Return a list of files supported by the application

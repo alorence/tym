@@ -26,6 +26,7 @@ configure_file(version.h.in version.h)
 set(tym_HEADERS
     # commons.h # Not a QObject and MOC doesn't need to be applied on it
     concretetasks/task.h
+    concretetasks/exportplaylisttask.h
     concretetasks/renametask.h
     concretetasks/searchtask.h
     concretetasks/librarystatusupdater.h
@@ -39,6 +40,7 @@ set(tym_HEADERS
     dbaccess/searchresultsmodel.h
     wizards/searchwizard.h
     wizards/renamewizard.h
+    wizards/exportplaylistwizard.h
     gui/about.h
     gui/mainwindow.h
     gui/settingsdialog.h
@@ -51,6 +53,7 @@ set(tym_SOURCES
     commons.h # ensure the file will appear in Qt Creator project view
     main.cpp
     concretetasks/task.cpp
+    concretetasks/exportplaylisttask.cpp
     concretetasks/renametask.cpp
     concretetasks/searchtask.cpp
     concretetasks/librarystatusupdater.cpp
@@ -64,6 +67,7 @@ set(tym_SOURCES
     dbaccess/searchresultsmodel.cpp
     wizards/searchwizard.cpp
     wizards/renamewizard.cpp
+    wizards/exportplaylistwizard.cpp
     gui/about.cpp
     gui/mainwindow.cpp
     gui/settingsdialog.cpp
@@ -74,6 +78,7 @@ set(tym_SOURCES
 set(tym_UIS
     wizards/searchwizard.ui
     wizards/renamewizard.ui
+    wizards/exportplaylistwizard.ui
     gui/mainwindow.ui
     gui/settingsdialog.ui
     gui/trackinfosview.ui
