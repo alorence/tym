@@ -36,6 +36,13 @@ if(WIN32)
 
     find_file(qSqllitePlugin qsqlite.dll PATHS "${Qt5Core_DIR}/../../../plugins/sqldrivers")
     find_file(qJpegPlugin qjpeg.dll PATHS "${Qt5Core_DIR}/../../../plugins/imageformats")
+    find_file(qWindowsPlugin qwindows.dll PATHS "${Qt5Core_DIR}/../../../plugins/platforms")
+    find_file(icudtPlugin icudt49.dll PATHS "${Qt5Core_DIR}/../../../bin")
+    find_file(icuinPlugin icuin49.dll PATHS "${Qt5Core_DIR}/../../../bin")
+    find_file(icuucPlugin icuuc49.dll PATHS "${Qt5Core_DIR}/../../../bin")
+    find_file(libGLES libGLESv2.dll PATHS "${Qt5Core_DIR}/../../../bin")
+    find_file(libEGL libEGL.dll PATHS "${Qt5Core_DIR}/../../../bin")
+    find_file(d3dDll D3DCompiler_43.dll PATHS "${Qt5Core_DIR}/../../../bin")
 
     # TODO : Copy debug version of dlls in Debug BUILD_TYPE
     add_custom_target(setup
@@ -44,17 +51,27 @@ if(WIN32)
         COMMAND ${CMAKE_COMMAND} -E copy ${GuiDll}      ${TYM_SETUP_TREE_PATH}
         COMMAND ${CMAKE_COMMAND} -E copy ${NetworkDll}  ${TYM_SETUP_TREE_PATH}
         COMMAND ${CMAKE_COMMAND} -E copy ${SqlDll}      ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${icudtPlugin} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${icuinPlugin} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${icuucPlugin} ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${libGLES}     ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${libEGL}      ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${d3dDll}      ${TYM_SETUP_TREE_PATH}
 
-        COMMAND ${CMAKE_COMMAND} -E make_directory              "${TYM_SETUP_TREE_PATH}/sqldrivers"
-        COMMAND ${CMAKE_COMMAND} -E copy ${qSqllitePlugin}      "${TYM_SETUP_TREE_PATH}/sqldrivers/"
-        COMMAND ${CMAKE_COMMAND} -E make_directory              "${TYM_SETUP_TREE_PATH}/imageformats"
-        COMMAND ${CMAKE_COMMAND} -E copy ${qJpegPlugin}         "${TYM_SETUP_TREE_PATH}/imageformats/"
+        COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/platforms
+        COMMAND ${CMAKE_COMMAND} -E copy ${qWindowsPlugin}      ${TYM_SETUP_TREE_PATH}/platforms
+        COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/sqldrivers
+        COMMAND ${CMAKE_COMMAND} -E copy ${qSqllitePlugin}      ${TYM_SETUP_TREE_PATH}/sqldrivers
+        COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/imageformats
+        COMMAND ${CMAKE_COMMAND} -E copy ${qJpegPlugin}         ${TYM_SETUP_TREE_PATH}/imageformats
 
         COMMAND iscc ${CMAKE_CURRENT_BINARY_DIR}/tym-setup.iss
 
         COMMENT "Building installer with Inno Setup compiler (iscc)."
         SOURCES win/tym-setup.iss.in
     )
+
+    add_dependencies(setup ${TYM_EXECUTABLE_FILENAME} Logger)
 else()
     # TBD
 endif()
