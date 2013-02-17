@@ -135,7 +135,7 @@ private slots:
     /*!
      * \brief Delete a library entry in database
      */
-    void on_actionLibraryDelete_triggered();
+    void on_actionRemove_triggered();
 
     /*!
      * \brief Open the context menu on search result table view

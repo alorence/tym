@@ -42,7 +42,7 @@
       <widget class="QSplitter" name="horizontalSplitter">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>1</horstretch>
+         <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
@@ -239,7 +239,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionImport"/>
-   <addaction name="actionLibraryDelete"/>
+   <addaction name="actionRemove"/>
    <addaction name="separator"/>
    <addaction name="actionSearch"/>
    <addaction name="actionRename"/>
@@ -304,16 +304,16 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionLibraryDelete">
+  <action name="actionRemove">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
      <normaloff>:/img/actions/delete</normaloff>:/img/actions/delete</iconset>
    </property>
    <property name="text">
-    <string>Delete</string>
+    <string>Remove</string>
    </property>
    <property name="toolTip">
-    <string>Delete selected tracks from library</string>
+    <string>Remove selected tracks from library</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>

@@ -48,6 +48,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // More space to library view, instead of console
+    ui->verticalSplitter->setStretchFactor(0, 3);
+    ui->verticalSplitter->setStretchFactor(1, 1);
+    // More space on library view instead of right panel
+    ui->horizontalSplitter->setStretchFactor(0, 4);
+    ui->horizontalSplitter->setStretchFactor(1, 1);
+
+
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
 
@@ -292,7 +300,7 @@ void MainWindow::updateLibraryActions()
 {
     int numSel = _libraryModel->selectedIds().size();
 
-    ui->actionLibraryDelete->setDisabled(numSel == 0);
+    ui->actionRemove->setDisabled(numSel == 0);
     ui->actionSearch->setDisabled(numSel == 0);
     ui->actionRename->setDisabled(numSel == 0);
     ui->actionExport->setDisabled(numSel == 0);
@@ -333,7 +341,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
     }
 
     contextMenu.addSeparator();
-    contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionLibraryDelete);
+    contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionRemove);
     contextMenu.exec(ui->libraryView->mapToGlobal(pos));
 }
 
@@ -357,7 +365,7 @@ void MainWindow::on_actionImport_triggered()
     }
 }
 
-void MainWindow::on_actionLibraryDelete_triggered()
+void MainWindow::on_actionRemove_triggered()
 {
     QHash<int, QSqlRecord> selecteds = _libraryModel->selectedRecords();
     QList<int> rows;
