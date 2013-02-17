@@ -17,31 +17,15 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef EXPORTPLAYLISTTASK_H
-#define EXPORTPLAYLISTTASK_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#include "task.h"
-#include "wizards/exportplaylistwizard.h"
+#include <QtCore>
 
-class BPDatabase;
-
-class ExportPlaylistTask : public Task
+class Utils
 {
-    Q_OBJECT
 public:
-    explicit ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath, QObject *parent = 0);
-
-    void run();
-
-private:
-
-    void writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record);
-    void writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record);
-
-    QFile _outputFile;
-    QList<QSqlRecord> _records;
-    BPDatabase * _dbHelper;
-    QSettings _settings;
+    static QString convertKeyToMixedInKeyStyle(const QString &classicKey);
 };
 
-#endif // EXPORTPLAYLISTTASK_H
+#endif // UTILS_H

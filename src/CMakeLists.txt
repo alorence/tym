@@ -63,6 +63,8 @@ set(tym_SOURCES
     tools/searchprovider.cpp
     tools/picturedownloader.cpp
     tools/widgetchangesobserver.cpp
+    tools/utils.h
+    tools/utils.cpp
     dbaccess/bpdatabase.cpp
     dbaccess/librarymodel.cpp
     dbaccess/searchresultsmodel.cpp

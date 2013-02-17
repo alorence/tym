@@ -22,6 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "Logger.h"
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
+#include "tools/utils.h"
 
 ExportPlaylistTask::ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString& filePath,  QObject *parent) :
     Task(parent),
@@ -129,8 +130,15 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
     xmlDoc.writeEmptyElement("INFO");
     xmlDoc.writeAttribute("CATALOG_NO", trackInfos.value(TrackFullInfos::Bpid).toString());
     xmlDoc.writeAttribute("GENRE", trackInfos.value(TrackFullInfos::Genres).toString());
-    // TODO: Convert key into MixedInKey format
-    xmlDoc.writeAttribute("KEY", trackInfos.value(TrackFullInfos::Key).toString());
+
+    Settings::KeyStyle keyStyle = (Settings::KeyStyle) _settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
+    QString trackKey = trackInfos.value(TrackFullInfos::Key).toString();
+    if(keyStyle == Settings::MixedInKey) {
+        trackKey = Utils::convertKeyToMixedInKeyStyle(trackKey);
+    }
+    xmlDoc.writeAttribute("KEY", trackKey);
+
+
     xmlDoc.writeAttribute("LABEL", trackInfos.value(TrackFullInfos::LabelName).toString());
     xmlDoc.writeAttribute("MIX", trackInfos.value(TrackFullInfos::MixName).toString());
     QDateTime d = QDateTime::fromTime_t(trackInfos.value(TrackFullInfos::ReleaseDate).toInt());
