@@ -25,20 +25,10 @@ cmake_minimum_required(VERSION 2.8.9)
 include(resources/config/TymUsefulMacros.cmake)
 
 # Configure projects to use Qt5
-find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
-
-# Include Qt5 dirs used in this project
-include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Sql_INCLUDE_DIRS}
-    ${Qt5Network_INCLUDE_DIRS}
-    ${Qt5LinguistTools_INCLUDE_DIRS}
-)
 
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

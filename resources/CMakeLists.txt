@@ -24,4 +24,9 @@ set(resources
     logos/tym.rc
 )
 
+# Needed to compile cpp file generated from qrc
+include_directories(
+    ${Qt5Core_INCLUDE_DIRS}
+)
+
 add_library(resources OBJECT ${resources} ${RCC_OBJ})

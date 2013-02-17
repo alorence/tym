@@ -58,6 +58,7 @@ set(tym_SOURCES
     concretetasks/searchtask.cpp
     concretetasks/librarystatusupdater.cpp
     tools/patterntool.cpp
+    tools/patternelement.h
     tools/patternelement.cpp
     tools/searchprovider.cpp
     tools/picturedownloader.cpp
@@ -119,11 +120,10 @@ target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger)
 
 # Add Qt5 modules dependencies
 qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
-    Gui
     Widgets
     Sql
     Network
-    LinguistTools
+    # LinguistTools
 )
 
 # WIN32 specific flags and compiler options
