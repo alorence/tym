@@ -20,11 +20,19 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "about.h"
 #include "ui_about.h"
 
+#include "version.h"
+
 About::About(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::About)
 {
     ui->setupUi(this);
+
+    ui->aboutText->setText(ui->aboutText->text().replace("%VERSION%", TYM_VERSION));
+
+    // TODO: Display tabs when more informations will need to be displayed
+    ui->tabWidget->hide();
+    ((QGridLayout*)this->layout())->addWidget(ui->aboutText, 0, 0);
 }
 
 About::~About()
