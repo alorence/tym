@@ -28,6 +28,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->splitter->setStretchFactor(0, 1);
+    ui->splitter->setStretchFactor(1, 4);
+
     initMenu();
 
     connect(ui->buttons, &QDialogButtonBox::rejected, this, &SettingsDialog::close);
@@ -89,11 +92,13 @@ void SettingsDialog::initMenu()
 {
     connect(ui->menu, SIGNAL(itemSelectionChanged()), SLOT(changeDisplayedStack()));
 
-    QTreeWidgetItem * interfaceItem = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Interface"));
-    _menuPagesMap[interfaceItem] = ui->interfacePage;
+    QTreeWidgetItem *item;
 
-    QTreeWidgetItem * networkItem = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Network"));
-    _menuPagesMap[networkItem] = ui->networkPage;
+    item = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Interface"));
+    _menuPagesMap[item] = ui->interfacePage;
+
+    item = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Network"));
+    _menuPagesMap[item] = ui->networkPage;
 
     ui->content->setCurrentWidget(ui->interfacePage);
 }
