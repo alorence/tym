@@ -385,7 +385,7 @@
   <customwidget>
    <class>ConsoleWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>gui\consolewidget.h</header>
+   <header>gui/consolewidget.h</header>
   </customwidget>
   <customwidget>
    <class>TrackInfosView</class>
