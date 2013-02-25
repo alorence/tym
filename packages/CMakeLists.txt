@@ -18,15 +18,16 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
+if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    set(CURRENT_CONFIGURATION DEBUG)
+else(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    set(CURRENT_CONFIGURATION RELEASE)
+endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+
+
 if(WIN32)
     set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
     configure_file(win/tym-setup.iss.in tym-setup.iss)
-
-    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-        set(CURRENT_CONFIGURATION DEBUG)
-    else(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-        set(CURRENT_CONFIGURATION RELEASE)
-    endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
 
     get_target_property(CoreDll         Qt5::Core           IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
     get_target_property(WidgetsDll      Qt5::Widgets        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
@@ -72,6 +73,23 @@ if(WIN32)
     )
 
     add_dependencies(setup ${TYM_EXECUTABLE_FILENAME} Logger)
-else()
-    # TBD
+elseif(UNIX)
+    
+    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
+    SET(CPACK_PACKAGE_VENDOR "Me, myself, and I")
+    #SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
+    #SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
+    SET(CPACK_PACKAGE_VERSION_MAJOR ${TYM_MAJOR_VERSION})
+    SET(CPACK_PACKAGE_VERSION_MINOR ${TYM_MINOR_VERSION})
+    SET(CPACK_PACKAGE_VERSION_PATCH ${TYM_PATCH_VERSION})
+    SET(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+
+    SET(CPACK_STRIP_FILES ${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME})
+    SET(CPACK_SOURCE_STRIP_FILES "")
+
+    SET(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
+    INCLUDE(CPack)
+    add_custom_target(setup
+        COMMAND echo "youpi"
+    )
 endif()
