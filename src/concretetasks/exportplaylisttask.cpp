@@ -131,13 +131,7 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
     xmlDoc.writeAttribute("CATALOG_NO", trackInfos.value(TrackFullInfos::Bpid).toString());
     xmlDoc.writeAttribute("GENRE", trackInfos.value(TrackFullInfos::Genres).toString());
 
-    Settings::KeyStyle keyStyle = (Settings::KeyStyle) _settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
-    QString trackKey = trackInfos.value(TrackFullInfos::Key).toString();
-    if(keyStyle == Settings::MixedInKey) {
-        trackKey = Utils::convertKeyToMixedInKeyStyle(trackKey);
-    }
-    xmlDoc.writeAttribute("KEY", trackKey);
-
+    xmlDoc.writeAttribute("KEY", Utils::formatKey(trackInfos.value(TrackFullInfos::Key).toString()));
 
     xmlDoc.writeAttribute("LABEL", trackInfos.value(TrackFullInfos::LabelName).toString());
     xmlDoc.writeAttribute("MIX", trackInfos.value(TrackFullInfos::MixName).toString());

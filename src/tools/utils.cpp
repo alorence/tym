@@ -18,15 +18,26 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
 #include "utils.h"
+#include "commons.h"
 
-QString Utils::convertKeyToMixedInKeyStyle(const QString &classicKey)
+QString Utils::formatKey(const QString &classicKey)
 {
+    QSettings settings;
+    Settings::KeyStyle keyStyle = (Settings::KeyStyle) settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
+
+    if(keyStyle != Settings::MixedInKey) {
+        return classicKey;
+    }
+
     // IMPORTANT: Ensure your editor is configured to interpret UTF8 to correctly
     // see and/or modify this method. Ensure you can visualize ♯ (sharp) and ♭ (flat)
     // characters before anything
     if(classicKey == "A♭ minor") return "1A";
+    else if(classicKey == "G♯ minor") return "1A";
     else if(classicKey == "E♭ minor") return "2A";
+    else if(classicKey == "D♯ minor") return "2A";
     else if(classicKey == "B♭ minor") return "3A";
+    else if(classicKey == "A♯ minor") return "3A";
     else if(classicKey == "F minor") return "4A";
     else if(classicKey == "C minor") return "5A";
     else if(classicKey == "G minor") return "6A";
@@ -36,12 +47,18 @@ QString Utils::convertKeyToMixedInKeyStyle(const QString &classicKey)
     else if(classicKey == "B minor") return "10A";
     else if(classicKey == "F♯ minor") return "11A";
     else if(classicKey == "D♭ minor") return "12A";
+    else if(classicKey == "C♯ minor") return "12A";
+
     else if(classicKey == "B major") return "1B";
     else if(classicKey == "F♯ major") return "2B";
     else if(classicKey == "D♭ major") return "3B";
+    else if(classicKey == "C♯ major") return "3B";
     else if(classicKey == "A♭ major") return "4B";
+    else if(classicKey == "G♯ major") return "4B";
     else if(classicKey == "E♭ major") return "5B";
+    else if(classicKey == "D♯ major") return "5B";
     else if(classicKey == "B♭ major") return "6B";
+    else if(classicKey == "A♯ major") return "6B";
     else if(classicKey == "F major") return "7B";
     else if(classicKey == "C major") return "8B";
     else if(classicKey == "G major") return "9B";

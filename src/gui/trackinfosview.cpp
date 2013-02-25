@@ -50,13 +50,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
     ui->d_mixname->setText(result.value(TrackFullInfos::MixName).toString());
     ui->d_title->setText(result.value(TrackFullInfos::Title).toString());
 
-    Settings::KeyStyle keyStyle = (Settings::KeyStyle) settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
-    QString trackKey = result.value(TrackFullInfos::Key).toString();
-    qDebug() << keyStyle;
-    if(keyStyle == Settings::MixedInKey) {
-        trackKey = Utils::convertKeyToMixedInKeyStyle(trackKey);
-        qDebug() << trackKey;
-    }
+    QString trackKey = Utils::formatKey(result.value(TrackFullInfos::Key).toString());
     ui->d_key->setText(trackKey);
 
     ui->d_bpm->setText(result.value(TrackFullInfos::Bpm).toString());
