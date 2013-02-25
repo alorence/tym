@@ -25,7 +25,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 class Utils
 {
 public:
-    static QString convertKeyToMixedInKeyStyle(const QString &classicKey);
+    static QString formatKey(const QString &classicKey);
 };
 
 #endif // UTILS_H
