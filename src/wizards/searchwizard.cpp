@@ -41,7 +41,6 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     Logger::registerAppender(_widgetAppender);
 
     connect(ui->pattern1, &QRadioButton::toggled, this, &SearchWizard::updateSearchPattern);
-    connect(ui->pattern2, &QRadioButton::toggled, this, &SearchWizard::updateSearchPattern);
     connect(ui->customSearch, &QRadioButton::toggled, this, &SearchWizard::customSearchSelected);
 
     ui->pattern->setReadOnly(true);

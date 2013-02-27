@@ -27,6 +27,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
 #define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
 #define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg")
+#define TYM_BEATPORT_DEFAULT_FORMAT "%ID%_%OTHER%"
 
 namespace Settings {
     enum KeyStyle {

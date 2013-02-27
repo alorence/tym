@@ -21,6 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define SEARCHTHREAD_H
 
 #include <QSqlRecord>
+#include "commons.h"
 #include "task.h"
 #include "wizards/searchwizard.h"
 
@@ -60,8 +61,14 @@ public slots:
     void checkCountResults();
 
 private:
+    /*!
+     * \brief Try to find the better result for each selected tracks, and link it to the track.
+     */
+    void selectBetterResult() const;
+
     QString _searchPattern;
     QList<QSqlRecord> _selectedRecords;
+    QMap<QString, QMap<TrackFullInfos::Indexes, QString> > _trackParsedInformation;
     BPDatabase* _dbHelper;
     SearchProvider* _search;
 
