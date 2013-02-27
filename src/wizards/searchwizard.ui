@@ -23,28 +23,31 @@
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="0">
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Tag Your Music will try to parse informations from your file names. To ensure the search will be ok, please select your most used file pattern.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QRadioButton" name="searchFromId">
+    <item row="1" column="0">
+     <widget class="QRadioButton" name="pattern1">
       <property name="text">
-       <string>From Beatport ID starting file name</string>
+       <string>%ARTISTS% - %NAME%</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QRadioButton" name="pattern2">
+      <property name="text">
+       <string>%ARTISTS% - %TITLE%</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QRadioButton" name="searchFromArtistTitle">
-      <property name="text">
-       <string>From artist and title</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
      <widget class="QRadioButton" name="customSearch">
       <property name="text">
        <string>Custom</string>
@@ -52,35 +55,13 @@
      </widget>
     </item>
     <item row="4" column="0">
-     <widget class="QLabel" name="labelAT">
-      <property name="text">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Example : &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Some Artists - Some Title (Original Mix).flac&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="labelID">
-      <property name="text">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Example : &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;123456_Some_Artists_Some_Title.flac&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0">
      <widget class="QLabel" name="labelCustom">
       <property name="text">
        <string>Choose your preferred pattern</string>
       </property>
      </widget>
     </item>
-    <item row="13" column="0">
+    <item row="5" column="0">
      <layout class="QHBoxLayout" name="patternHorizLayout">
       <item>
        <widget class="QLabel" name="labelResult">

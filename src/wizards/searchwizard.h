@@ -42,30 +42,15 @@ class SearchWizard : public QWizard
     Q_OBJECT
     
 public:
-    /*!
-     * \brief Define the list of search type user can perform
-     */
-    enum SearchType {
-        //! Search from Beatport ID contained in a track that has just been downloaded,
-        //! and has the original Beatport naming convention
-        FromId,
-        //! Search from informations parsed in filename, often track Artsit and Title.
-        FromArtistTitle,
-        //! Search from a custom pattern user has typed
-        Custom
-    };
-
     explicit SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent = 0);
     ~SearchWizard();
     void initializePage(int id);
 
     QString pattern() const;
-    SearchType searchType() const;
 
 private slots:
-    void idSearchSelected(bool);
-    void titleArtistSearchSelected(bool);
     void customSearchSelected(bool);
+    void updateSearchPattern(bool);
     void insertPatternText(const QString&);
     void printEndText();
 
@@ -76,7 +61,6 @@ private:
         ResultPage
     };
     Ui::SearchWizard* ui;
-    SearchType _type;
     QList<QSqlRecord> _selectedRecords;
 
     PatternButton * _patternHelperButton;

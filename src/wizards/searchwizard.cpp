@@ -40,12 +40,12 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     _widgetAppender->setDetailsLevel(Logger::Info);
     Logger::registerAppender(_widgetAppender);
 
-    connect(ui->searchFromId, SIGNAL(toggled(bool)), this, SLOT(idSearchSelected(bool)));
-    connect(ui->searchFromArtistTitle, SIGNAL(toggled(bool)), this, SLOT(titleArtistSearchSelected(bool)));
-    connect(ui->customSearch, SIGNAL(toggled(bool)), this, SLOT(customSearchSelected(bool)));
+    connect(ui->pattern1, &QRadioButton::toggled, this, &SearchWizard::updateSearchPattern);
+    connect(ui->pattern2, &QRadioButton::toggled, this, &SearchWizard::updateSearchPattern);
+    connect(ui->customSearch, &QRadioButton::toggled, this, &SearchWizard::customSearchSelected);
 
     ui->pattern->setReadOnly(true);
-    ui->searchFromId->setChecked(true);
+    ui->pattern1->setChecked(true);
 
     ui->patternHorizLayout->addWidget(_patternHelperButton);
     _patternHelperButton->hide();
@@ -65,41 +65,27 @@ QString SearchWizard::pattern() const
     return ui->pattern->text();
 }
 
-SearchWizard::SearchType SearchWizard::searchType() const
-{
-    return _type;
-}
-
 void SearchWizard::setPattern(QString value)
 {
     ui->pattern->setText(value);
 }
 
-void SearchWizard::idSearchSelected(bool checked)
-{
-    if(checked ){
-        setPattern("%ID%_%OTHER%");
-        _type = FromId;
-    }
-}
-
-void SearchWizard::titleArtistSearchSelected(bool checked)
-{
-    if(checked) {
-        setPattern("%ARTISTS% - %TITLE%");
-        _type = FromArtistTitle;
-    }
-}
-
 void SearchWizard::customSearchSelected(bool checked)
 {
     if(checked) {
-        _type = Custom;
         _patternHelperButton->show();
         ui->pattern->setReadOnly(false);
     } else {
         _patternHelperButton->hide();
         ui->pattern->setReadOnly(true);
+    }
+}
+
+void SearchWizard::updateSearchPattern(bool selected)
+{
+    if(selected) {
+        QRadioButton *radio = static_cast<QRadioButton*>(sender());
+        ui->pattern->setText(radio->text());
     }
 }
 
@@ -118,7 +104,7 @@ void SearchWizard::initializePage(int id)
     if(id == ResultPage) {
 
         _thread = new QThread();
-        SearchTask * task = new SearchTask(ui->pattern->text(), _type, _selectedRecords);
+        SearchTask * task = new SearchTask(ui->pattern->text(), _selectedRecords);
         task->moveToThread(_thread);
 
         connect(_thread, &QThread::started, task, &SearchTask::run);

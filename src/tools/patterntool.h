@@ -69,6 +69,13 @@ public:
      */
     QMap<TrackFullInfos::Indexes, QString> parse(const QString &basename) const;
 
+    /*!
+     * \brief Check if the current pattern match the baseName parameter
+     * \param basename File name (without suffix)
+     * \return true if information can be extracted from baseName
+     */
+    bool hasMatch(const QString &basename) const;
+
 private:
     QRegularExpression _parserRegularExpression;
 };

@@ -58,7 +58,7 @@ FileBasenameParser::FileBasenameParser(const QString &pattern, QObject *parent) 
     foreach(QString patternElt, _patternElts) {
         QString capitalPatternElt = patternElt.toUpper();
         if(availablesPatterns().contains(capitalPatternElt)) {
-            inRegExpList << QString("(?<%1>%2)").arg(capitalPatternElt).arg(availablesPatterns().value(capitalPatternElt).inRegExp());
+            inRegExpList << QString("(?<%1>%2)").arg(capitalPatternElt).arg(availablesPatterns()[capitalPatternElt].inRegExp());
         } else {
             inRegExpList << QString("%1").arg(patternElt.replace(".", "\\."));
         }
@@ -86,6 +86,11 @@ QMap<TrackFullInfos::Indexes, QString> FileBasenameParser::parse(const QString &
     }
     qDebug() << result;
     return result;
+}
+
+bool FileBasenameParser::hasMatch(const QString &basename) const
+{
+    return _parserRegularExpression.match(basename).hasMatch();
 }
 
 FileBasenameFormatter::FileBasenameFormatter(const QString &pattern, QObject *parent) :

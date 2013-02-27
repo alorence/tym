@@ -39,11 +39,10 @@ public:
     /*!
      * \brief Construct the task
      * \param searchPattern Format supposed to define filenames, used to extract informations used to build a search request
-     * \param searchType Type of search user selected
      * \param selectedRecords List of QSqlRecord corresponding to Library entries user select before launching the search
      * \param parent
      */
-    explicit SearchTask(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
+    explicit SearchTask(QString searchPattern, QList<QSqlRecord> selectedRecords, QObject *parent = 0);
     ~SearchTask();
 
 public slots:
@@ -62,7 +61,6 @@ public slots:
 
 private:
     QString _searchPattern;
-    SearchWizard::SearchType _searchType;
     QList<QSqlRecord> _selectedRecords;
     BPDatabase* _dbHelper;
     SearchProvider* _search;

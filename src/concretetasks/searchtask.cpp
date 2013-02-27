@@ -24,19 +24,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
-SearchTask::SearchTask(QString searchPattern, SearchWizard::SearchType searchType, QList<QSqlRecord> selectedRecords, QObject *parent) :
+SearchTask::SearchTask(QString searchPattern, QList<QSqlRecord> selectedRecords, QObject *parent) :
     Task(parent),
     _searchPattern(searchPattern),
-    _searchType(searchType),
     _selectedRecords(selectedRecords),
     _dbHelper(new BPDatabase("searchTask", this)),
     _search(new SearchProvider(this)),
     _searchResultsCount(0)
 {
-    connect(_search, SIGNAL(searchResultAvailable(QString,QJsonValue)),
-            _dbHelper, SLOT(storeSearchResults(QString,QJsonValue)));
 
-    connect(_dbHelper, SIGNAL(searchResultStored(QString)), this, SLOT(checkCountResults()));
+    connect(_search, &SearchProvider::searchResultAvailable, _dbHelper, &BPDatabase::storeSearchResults);
+
+    connect( _dbHelper, &BPDatabase::searchResultStored, this, &SearchTask::checkCountResults);
 }
 
 SearchTask::~SearchTask()
@@ -48,6 +47,7 @@ SearchTask::~SearchTask()
 void SearchTask::run()
 {
     LOG_TRACE("Start search task");
+
     QMap<QString, QMap<TrackFullInfos::Indexes, QString> > fileInformations;
 
     FileBasenameParser fileParser(_searchPattern);
@@ -57,32 +57,7 @@ void SearchTask::run()
         fileInformations[record.value(Library::Uid).toString()] = fileParser.parse(file.baseName());
     }
 
-    _dbHelper->dbObject().transaction();
-    QMap<QString, QString> * requestMap = new QMap<QString, QString>();
-    if(_searchType == SearchWizard::FromId) {
-        foreach(QString libUid, fileInformations.keys()) {
-            QString bpid = fileInformations[libUid][TrackFullInfos::Bpid];
-            if(bpid.isEmpty()) continue;
 
-            (*requestMap)[libUid] = bpid;
-        }
-        if( ! requestMap->isEmpty()) {
-            _searchResultsCount = 1;
-            _search->searchFromIds(requestMap);
-        }
-    } else {
-        foreach(QString libUid, fileInformations.keys()) {
-            if(fileInformations[libUid].values().isEmpty()) continue;
-
-            // TODO: Add to requestMap only informations selected by user
-
-            (*requestMap)[libUid] = ((QStringList) fileInformations[libUid].values()).join(" ");
-        }
-        if( ! requestMap->isEmpty()) {
-            _searchResultsCount = requestMap->count();
-            _search->searchFromName(requestMap);
-        }
-    }
 }
 
 void SearchTask::checkCountResults()
