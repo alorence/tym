@@ -41,7 +41,6 @@ See [CHANGES.md](CHANGES.md "Tag Your Music Changelog")
 
 ### Planned features (TODO)
 #### In short terms
- - Add more options when searching tracks informations (sorting, etc)
  - Implements the About dialog
 
 #### In long terms
