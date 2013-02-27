@@ -36,13 +36,6 @@ namespace Settings {
     };
 }
 
-namespace Settings {
-    enum KeyStyle {
-        Beatport = 0,
-        MixedInKey
-    };
-}
-
 // Settings - interface
 #define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
 #define TYM_DEFAULT_DISPLAY_FULLPATHS false
