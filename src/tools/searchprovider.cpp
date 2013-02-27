@@ -104,11 +104,9 @@ void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
         QString libId = searchList.key();
         QString text = searchList.value();
 
-        // Remove occurences of - [ ] ( ) and , characters from search parameters
-        text.remove(QRegularExpression("[-\\[\\](),&']"));
-        // Convert _ into spaces
-        text.replace('_', ' ');
-        // Simplify multiple spaces
+        // Replace occurences of - [ ] ( ) _ and , characters with space
+        text.replace(QRegularExpression("[-\\[\\](),&'_]"), " ");
+        // Unify multiple spaces
         text.replace(QRegularExpression("\\s{2,}"), " ");
 
         QUrlQuery query;
