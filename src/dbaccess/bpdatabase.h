@@ -91,11 +91,17 @@ public:
      * Additionnaly, delete all the search results associated with all uids.
      * \param uids List of library uids to delete
      */
-    void deleteLibraryEntry(QStringList uids) const;
+    const QSqlQuery resultsForTrack(const QString &libId) const;
     /*!
      * \brief Delete the search result associated with the library uid and the track bpid.
      * \param libId Library Id
      * \param trackId BPTracks entry's bpid
+     */
+    void deleteLibraryEntry(QStringList uids) const;
+    /*!
+     * \brief Get all results for file corresponding to libId passed in parameter
+     * \param libId libraryy entry uid
+     * \return a set of results
      */
     void deleteSearchResult(const QString &libId, const QString &trackId) const;
 

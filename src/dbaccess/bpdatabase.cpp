@@ -157,6 +157,19 @@ const QSqlQuery BPDatabase::libraryInformations(const QStringList &uids) const
     return query;
 }
 
+const QSqlQuery BPDatabase::resultsForTrack(const QString &libId) const
+{
+    QSqlQuery query("SELECT tr.* FROM TrackFullInfos as tr JOIN SearchResults as s ON s.trackId=tr.bpid WHERE s.libId="+libId, dbObject());
+
+    _dbMutex->lock();
+    if( ! query.exec() ) {
+        LOG_ERROR(tr("Unable to get results for library entry %1: %2").arg(libId).arg(query.lastError().text()));
+    }
+    _dbMutex->unlock();
+
+    return query;
+}
+
 void BPDatabase::deleteLibraryEntry(QStringList uids) const
 {
     QString queryLib = "DELETE FROM Library WHERE " +
