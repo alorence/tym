@@ -23,10 +23,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
-SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, QObject *parent) :
+SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, const QStringList &searchTerms, QObject *parent) :
     Task(parent),
     _selectedRecords(selectedRecords),
     _searchPattern(searchPattern),
+    _searchTerms(searchTerms),
     _dbHelper(new BPDatabase("searchTask", this)),
     _search(new SearchProvider(this)),
     _searchResultsCount(0)
@@ -47,44 +48,64 @@ void SearchTask::run()
 {
     LOG_TRACE(tr("Start search task"));
 
-    QMap<QString, QString> *bpidSearchList = new QMap<QString, QString>();
-    QMap<QString, QString> *fullInfosSearchList = new QMap<QString, QString>();
+    if(_searchPattern.isNull()) {
 
-    FileBasenameParser bpidParser(TYM_BEATPORT_DEFAULT_FORMAT);
-    FileBasenameParser fullInfosParser(_searchPattern);
-    foreach (QSqlRecord record, _selectedRecords) {
+        if(_selectedRecords.count() != _searchTerms.count()) {
+            LOG_ERROR("Number of library entries selected and number of search terms does not match...");
+            emit finished();
+            return;
+        }
 
-        QString uid = record.value(Library::Uid).toString();
-        QString baseName = QFileInfo(record.value(Library::FilePath).toString()).baseName();
+        QMap<QString, QString> *searchMap = new QMap<QString, QString>();
+        for(int i = 0 ; i < _selectedRecords.count() ; ++i) {
+            (*searchMap)[_selectedRecords.value(i).value(Library::Uid).toString()] = _searchTerms.value(i);
+        }
 
-        if(bpidParser.hasMatch(baseName)) {
-            (*bpidSearchList)[uid] = bpidParser.parse(baseName)[TrackFullInfos::Bpid];
-        } else if(fullInfosParser.hasMatch(baseName)) {
-            // Keep track of parsing result, to use it in selectBetterResult()
-            _trackParsedInformation[uid] = fullInfosParser.parse(baseName);
-            (*fullInfosSearchList)[uid] = ((QStringList)_trackParsedInformation[uid].values()).join(' ');
-        } else {
-            LOG_INFO(tr("Unable to extract information from %1 file").arg(baseName));
+        _searchResultsCount += searchMap->count();
+        _search->searchManually(searchMap);
+
+    } else {
+        QMap<QString, QString> *bpidSearchMap = new QMap<QString, QString>();
+        QMap<QString, QString> *fullInfosSearchMap = new QMap<QString, QString>();
+
+        FileBasenameParser bpidParser(TYM_BEATPORT_DEFAULT_FORMAT);
+        FileBasenameParser fullInfosParser(_searchPattern);
+        foreach (QSqlRecord record, _selectedRecords) {
+
+            QString uid = record.value(Library::Uid).toString();
+            QString baseName = QFileInfo(record.value(Library::FilePath).toString()).baseName();
+
+            if(bpidParser.hasMatch(baseName)) {
+                (*bpidSearchMap)[uid] = bpidParser.parse(baseName)[TrackFullInfos::Bpid];
+            } else if(fullInfosParser.hasMatch(baseName)) {
+                // Keep track of parsing result, to use it in selectBetterResult()
+                _trackParsedInformation[uid] = fullInfosParser.parse(baseName);
+                (*fullInfosSearchMap)[uid] = ((QStringList)_trackParsedInformation[uid].values()).join(' ');
+            } else {
+                LOG_INFO(tr("Unable to extract information from %1 file").arg(baseName));
+            }
+        }
+
+        _dbHelper->dbObject().transaction();
+        if( ! bpidSearchMap->empty()) {
+            _searchResultsCount += 1;
+            _search->searchFromIds(bpidSearchMap);
+        }
+        if( ! fullInfosSearchMap->empty()) {
+            _searchResultsCount += fullInfosSearchMap->count();
+            _search->searchManually(fullInfosSearchMap);
         }
     }
-
-    _dbHelper->dbObject().transaction();
-    if( ! bpidSearchList->empty()) {
-        _searchResultsCount += 1;
-        _search->searchFromIds(bpidSearchList);
-    }
-    if( ! fullInfosSearchList->empty()) {
-        _searchResultsCount += fullInfosSearchList->count();
-        _search->searchManually(fullInfosSearchList);
-    }
-
 }
 
 void SearchTask::checkCountResults()
 {
     --_searchResultsCount;
     if(_searchResultsCount <= 0) {
-        selectBetterResult();
+        if( ! _searchPattern.isNull()) {
+            selectBetterResult();
+        }
+
         _dbHelper->dbObject().commit();
         emit finished();
     }

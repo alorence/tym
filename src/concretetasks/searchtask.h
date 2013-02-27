@@ -38,12 +38,14 @@ class SearchTask : public Task
 
 public:
     /*!
-     * \brief Construct the task
+     * \brief Construct the task. If searchPattern is empty, a manual search is launched using searchTerms. If searchTerms is empty too,
+     * an error is displayed.
      * \param selectedRecords List of QSqlRecord corresponding to Library entries user select before launching the search
      * \param searchPattern Format supposed to define filenames, used to extract informations used to build a search request
+     * \param searchPattern Search terms to use in case of manual search
      * \param parent
      */
-    explicit SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, QObject *parent = 0);
+    explicit SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern = QString(), const QStringList &searchTerms = QStringList(), QObject *parent = 0);
     ~SearchTask();
 
 public slots:
@@ -68,6 +70,7 @@ private:
 
     QString _searchPattern;
     QList<QSqlRecord> _selectedRecords;
+    QStringList _searchTerms;
     QMap<QString, QMap<TrackFullInfos::Indexes, QString> > _trackParsedInformation;
     BPDatabase* _dbHelper;
     SearchProvider* _search;
