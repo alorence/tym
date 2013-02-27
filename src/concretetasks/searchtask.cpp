@@ -23,10 +23,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
-SearchTask::SearchTask(QString searchPattern, QList<QSqlRecord> selectedRecords, QObject *parent) :
+SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, QObject *parent) :
     Task(parent),
-    _searchPattern(searchPattern),
     _selectedRecords(selectedRecords),
+    _searchPattern(searchPattern),
     _dbHelper(new BPDatabase("searchTask", this)),
     _search(new SearchProvider(this)),
     _searchResultsCount(0)
@@ -34,7 +34,7 @@ SearchTask::SearchTask(QString searchPattern, QList<QSqlRecord> selectedRecords,
 
     connect(_search, &SearchProvider::searchResultAvailable, _dbHelper, &BPDatabase::storeSearchResults);
 
-    connect( _dbHelper, &BPDatabase::searchResultStored, this, &SearchTask::checkCountResults);
+    connect(_dbHelper, &BPDatabase::searchResultStored, this, &SearchTask::checkCountResults);
 }
 
 SearchTask::~SearchTask()
@@ -111,11 +111,12 @@ void SearchTask::selectBetterResult() const
             // Check for each parsed information, for a corresponding result
             while(it.hasNext()) {
                 TrackFullInfos::Indexes index = it.next().key();
+
+                // To ensure minor differences will not affect the string compare
                 QString value = it.value();
                 value = value.remove(stringPurifyRegexp).normalized(QString::NormalizationForm_D);
                 QString resultValue = result.value(index).toString().remove(stringPurifyRegexp).normalized(QString::NormalizationForm_D);
 
-                // To prevent minor differences
                 if(value.compare(resultValue, Qt::CaseInsensitive) == 0) {
                     ++score;
                 } else {

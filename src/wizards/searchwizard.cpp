@@ -103,7 +103,7 @@ void SearchWizard::initializePage(int id)
     if(id == ResultPage) {
 
         _thread = new QThread();
-        SearchTask * task = new SearchTask(ui->pattern->text(), _selectedRecords);
+        SearchTask * task = new SearchTask(_selectedRecords, ui->pattern->text());
         task->moveToThread(_thread);
 
         connect(_thread, &QThread::started, task, &SearchTask::run);
