@@ -45,6 +45,7 @@ public:
     explicit SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent = 0);
     ~SearchWizard();
     void initializePage(int id);
+    int nextId() const;
 
     QString pattern() const;
 
@@ -57,7 +58,9 @@ private slots:
 private:
     void setPattern(QString value);
     enum WizardPages {
-        SelectPatternPage = 0,
+        SearchTypePage = 0,
+        AutoOptionsPage,
+        ManualOptionsPage,
         ResultPage
     };
     Ui::SearchWizard* ui;

@@ -48,7 +48,7 @@ void SearchTask::run()
 {
     LOG_TRACE(tr("Start search task"));
 
-    if(_searchPattern.isNull()) {
+    if( ! _searchTerms.isEmpty()) {
 
         if(_selectedRecords.count() != _searchTerms.count()) {
             LOG_ERROR("Number of library entries selected and number of search terms does not match...");

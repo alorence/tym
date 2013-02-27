@@ -44,11 +44,12 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     connect(ui->customSearch, &QRadioButton::toggled, this, &SearchWizard::customSearchSelected);
 
     ui->pattern->setReadOnly(true);
-    ui->pattern1->setChecked(true);
 
     ui->patternHorizLayout->addWidget(_patternHelperButton);
     _patternHelperButton->hide();
-    connect(_patternHelperButton, SIGNAL(patternSelected(QString)), this, SLOT(insertPatternText(QString)));
+    connect(_patternHelperButton, &PatternButton::patternSelected, this, &SearchWizard::insertPatternText);
+
+    setStartId(_selectedRecords.count() > 1 ? AutoOptionsPage : SearchTypePage);
 }
 
 SearchWizard::~SearchWizard()
@@ -57,6 +58,48 @@ SearchWizard::~SearchWizard()
     Logger::unRegisterAppender(_widgetAppender);
     delete _widgetAppender;
     delete _patternHelperButton;
+}
+
+void SearchWizard::initializePage(int id)
+{
+    if(id == SearchTypePage) {
+
+        ui->manualSearch->setChecked(true);
+
+    } else if(id == AutoOptionsPage) {
+
+        ui->pattern1->setChecked(true);
+        // Ensure we will not try a manual search (in case user click on previous and change the search type)
+        ui->searchTerms->clear();
+
+    } else if(id == ResultPage) {
+
+        _thread = new QThread();
+        SearchTask * task = new SearchTask(_selectedRecords, ui->pattern->text(), QStringList() << ui->searchTerms->text());
+        task->moveToThread(_thread);
+
+        connect(_thread, &QThread::started, task, &SearchTask::run);
+        connect(task, &SearchTask::finished, this, &SearchWizard::printEndText);
+        connect(task, &SearchTask::finished, _thread, &QThread::quit);
+
+        connect(_thread, &QThread::finished, task, &SearchWizard::deleteLater);
+        connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
+
+        _thread->start();
+    }
+}
+
+int SearchWizard::nextId() const
+{
+    switch (currentId()) {
+    case AutoOptionsPage:
+    case ManualOptionsPage:
+        return ResultPage;
+    case SearchTypePage:
+        return ui->autoSearch->isChecked() ? AutoOptionsPage : ManualOptionsPage;
+    default:
+        return -1;
+    }
 }
 
 QString SearchWizard::pattern() const
@@ -96,24 +139,5 @@ void SearchWizard::insertPatternText(const QString & patternText)
 void SearchWizard::printEndText()
 {
     ui->outputConsole->appendPlainText(tr("Finished successfully"));
-}
-
-void SearchWizard::initializePage(int id)
-{
-    if(id == ResultPage) {
-
-        _thread = new QThread();
-        SearchTask * task = new SearchTask(_selectedRecords, ui->pattern->text());
-        task->moveToThread(_thread);
-
-        connect(_thread, &QThread::started, task, &SearchTask::run);
-        connect(task, &SearchTask::finished, this, &SearchWizard::printEndText);
-        connect(task, &SearchTask::finished, _thread, &QThread::quit);
-
-        connect(_thread, &QThread::finished, task, &SearchWizard::deleteLater);
-        connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
-
-        _thread->start();
-    }
 }
 

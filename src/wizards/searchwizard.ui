@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>500</height>
+    <width>472</width>
+    <height>269</height>
    </rect>
   </property>
   <property name="options">
@@ -22,11 +22,57 @@
 	margin-left : 18px;
 }</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="0">
-     <widget class="QLabel" name="labelCustom">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Choose your preferred pattern</string>
+       <string>By selecting this option, Tag Your Music will search from your tracks filenames on Beatport to find the better result to associate with it.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QRadioButton" name="manualSearch">
+      <property name="text">
+       <string>Manual Search</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QRadioButton" name="autoSearch">
+      <property name="text">
+       <string>Automatic search</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>This option is enabled only when you try to search for only 1 track. It allows you to manually search on Beatport. Use it if Tag Your Music didn't succeed to search automatically.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="autoOptionPage">
+   <property name="styleSheet">
+    <string notr="true">QRadioButton {
+	font-weight: bold;
+}</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Select the file pattern you often use to organize your library</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -37,12 +83,19 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="2" column="0">
+     <widget class="QRadioButton" name="customSearch">
+      <property name="text">
+       <string>Custom</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
      <layout class="QHBoxLayout" name="patternHorizLayout">
       <item>
        <widget class="QLabel" name="labelResult">
         <property name="text">
-         <string>Pattern :</string>
+         <string>Pattern:</string>
         </property>
        </widget>
       </item>
@@ -51,22 +104,30 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
-     <widget class="QRadioButton" name="customSearch">
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="manualOptionPage">
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>Custom</string>
+       <string>Type words to search for, in the same way you usually search on Beatport</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Tag Your Music will try to parse informations from your file names. To ensure the search will be ok, please select your most used file pattern.</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Search terms:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="searchTerms"/>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
