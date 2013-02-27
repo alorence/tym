@@ -75,7 +75,7 @@ void SearchTask::run()
     }
     if( ! fullInfosSearchList->empty()) {
         _searchResultsCount += fullInfosSearchList->count();
-        _search->searchFromName(fullInfosSearchList);
+        _search->searchManually(fullInfosSearchList);
     }
 
 }

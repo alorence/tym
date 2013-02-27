@@ -36,7 +36,7 @@ signals:
 
 public slots:
     void searchFromIds(QMap<QString, QString> *);
-    void searchFromName(QMap<QString, QString> *);
+    void searchManually(QMap<QString, QString> *);
 
 private slots:
     void parseReplyForIdSearch();

@@ -93,7 +93,7 @@ void SearchProvider::parseReplyForIdSearch()
 }
 
 
-void SearchProvider::searchFromName(QMap<QString, QString> *rowNameMap)
+void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
 {
     QUrl requestUrl(_apiUrl);
     requestUrl.setPath(_searchPath);
