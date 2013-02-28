@@ -41,17 +41,26 @@ public:
      */
     explicit Task(QObject *parent = 0);
 
+public slots:
+    /**
+     * @brief Concrete code to execute when task is launched.
+     */
+    virtual void run() = 0;
+
 signals:
     /*!
      * @brief Signal emitted when all work is done for the task.
      */
     void finished();
 
-public slots:
-    /**
-     * @brief Concrete code to execute when task is launched.
-     */
-    virtual void run() = 0;
+    void initializeProgression(int value);
+    void notifyProgression(int newValue);
+
+protected:
+    void increaseProgressStep(int step = 1);
+
+private:
+    int _progressValue;
 };
 
 #endif // TASK_H

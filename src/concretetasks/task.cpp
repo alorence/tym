@@ -20,6 +20,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "task.h"
 
 Task::Task(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    _progressValue(0)
 {
+}
+
+void Task::increaseProgressStep(int step)
+{
+    _progressValue += step;
+    emit notifyProgression(_progressValue);
 }
