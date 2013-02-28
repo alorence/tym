@@ -43,8 +43,10 @@ endif(UNIX)
 # Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
 set(TYM_MINOR_VERSION 1)
-set(TYM_PATCH_VERSION 0)
+set(TYM_PATCH_VERSION 1)
 set(TYM_BUILD_VERSION 0)
+
+set(TYM_BETA 1)
 
 set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}")
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_VERSION}")
@@ -66,7 +68,11 @@ set(TYM_SETUP_TREE_PATH ${TYM_OUTPUT_PATH})
 # Directory were resulting package will be generated
 set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
 # Resulting package filename
-set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
+if(TYM_BETA)
+    set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION}-beta)
+else(TYM_BETA)
+    set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
+endif(TYM_BETA)
 
 # Set the list of translations (*.ts) files to compile them in src directory
 file(GLOB TRANSLATIONS_FILES translations/*.ts)
