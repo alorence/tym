@@ -34,18 +34,15 @@ nmake makesetup
  - Doxygen and Graphviz (dot tool) to generate doc
 
 ### Bugs
-Some bugs are known, please read the [CHANGES.md](CHANGES.md "Tag Your Music Changelog"). If you find new one, please leave an issue on [issue tracker](https://github.com/alorence/tym/issues "Tag Your Music issues").
+Some bugs are known, please read the [CHANGES.md](CHANGES.md "Tag Your Music Changelog"). If you find new one, post an issue on [issue tracker](https://github.com/alorence/tym/issues "Tag Your Music issues").
 
 ### Features
 See [CHANGES.md](CHANGES.md "Tag Your Music Changelog")
 
-### Planned features (TODO)
-#### In short terms
- - Implements the About dialog
-
-#### In long terms
+### Planned features in long terms
  - Write tags into FLAC / MP3 / OGG [/ WAV] files
  - Write special Traktor tag into music files to store non classic informations (BPM, Label, etc.)
  - Write specials Serato tags into music files
  - Search for tracks informations on another platforms (TBD)
+
 If you have some needs or suggestions, please post on [issue tracker](https://github.com/alorence/tym/issues "Tag Your Music issues") with the "enhancement" tag
