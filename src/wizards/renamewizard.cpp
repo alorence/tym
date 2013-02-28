@@ -112,7 +112,7 @@ void RenameWizard::updateRenamePreview()
         } else if( ! bpid.isEmpty()) {
             QString newBaseName = _filenameFormatter.format(_tracksInformations[bpid]);
 
-            if(newBaseName == original.baseName()) {
+            if(newBaseName == original.completeBaseName()) {
                 itemText = "<File already have the good name>";
             } else {
                 itemText = newBaseName + '.' + original.suffix();

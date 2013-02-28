@@ -76,7 +76,9 @@ void SearchTask::run()
         foreach (QSqlRecord record, _selectedRecords) {
 
             QString uid = record.value(Library::Uid).toString();
-            QString baseName = QFileInfo(record.value(Library::FilePath).toString()).baseName();
+            QString baseName = QFileInfo(record.value(Library::FilePath).toString()).completeBaseName();
+
+            qDebug() << baseName;
 
             if(bpidParser.hasMatch(baseName)) {
                 (*bpidSearchMap)[uid] = bpidParser.parse(baseName)[TrackFullInfos::Bpid];
