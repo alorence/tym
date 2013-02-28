@@ -54,6 +54,7 @@ private slots:
     void updateSearchPattern(bool);
     void insertPatternText(const QString&);
     void printEndText();
+    void initializeProgressBar(int value);
 
 private:
     void setPattern(QString value);

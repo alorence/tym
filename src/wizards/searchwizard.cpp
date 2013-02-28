@@ -50,6 +50,8 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     connect(_patternHelperButton, &PatternButton::patternSelected, this, &SearchWizard::insertPatternText);
 
     setStartId(_selectedRecords.count() > 1 ? AutoOptionsPage : SearchTypePage);
+
+    ui->progressBar->hide();
 }
 
 SearchWizard::~SearchWizard()
@@ -75,8 +77,16 @@ void SearchWizard::initializePage(int id)
     } else if(id == ResultPage) {
 
         _thread = new QThread();
-        SearchTask * task = new SearchTask(_selectedRecords, ui->pattern->text(), QStringList() << ui->searchTerms->text());
+        QStringList searchTerms;
+        if( ! ui->searchTerms->text().isEmpty()) {
+            searchTerms << ui->searchTerms->text();
+        }
+        SearchTask * task = new SearchTask(_selectedRecords, ui->pattern->text(), searchTerms);
         task->moveToThread(_thread);
+
+        connect(task, &SearchTask::initializeProgression, ui->progressBar, &QProgressBar::setMaximum);
+        connect(task, &SearchTask::initializeProgression, ui->progressBar, &QProgressBar::show);
+        connect(task, &SearchTask::notifyProgression, ui->progressBar, &QProgressBar::setValue);
 
         connect(_thread, &QThread::started, task, &SearchTask::run);
         connect(task, &SearchTask::finished, this, &SearchWizard::printEndText);
@@ -139,5 +149,14 @@ void SearchWizard::insertPatternText(const QString & patternText)
 void SearchWizard::printEndText()
 {
     ui->outputConsole->appendPlainText(tr("Finished successfully"));
+}
+
+void SearchWizard::initializeProgressBar(int value)
+{
+    if(ui->progressBar->isHidden()) {
+        ui->progressBar->show();
+    }
+
+    ui->progressBar->setMaximum(value);
 }
 
