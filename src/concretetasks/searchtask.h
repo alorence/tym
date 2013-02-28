@@ -66,7 +66,7 @@ private:
     /*!
      * \brief Try to find the better result for each selected tracks, and link it to the track.
      */
-    void selectBetterResult() const;
+    void selectBetterResult();
 
     QString _searchPattern;
     QList<QSqlRecord> _selectedRecords;

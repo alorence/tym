@@ -50,6 +50,9 @@ void SearchTask::run()
 
     if( ! _searchTerms.isEmpty()) {
 
+        qDebug() << _searchTerms;
+        emit initializeProgression(1);
+
         if(_selectedRecords.count() != _searchTerms.count()) {
             LOG_ERROR("Number of library entries selected and number of search terms does not match...");
             emit finished();
@@ -81,18 +84,20 @@ void SearchTask::run()
                 // Keep track of parsing result, to use it in selectBetterResult()
                 _trackParsedInformation[uid] = fullInfosParser.parse(baseName);
                 (*fullInfosSearchMap)[uid] = ((QStringList)_trackParsedInformation[uid].values()).join(' ');
+                _searchResultsCount++;
             } else {
                 LOG_INFO(tr("Unable to extract information from %1 file").arg(baseName));
             }
         }
 
+        _searchResultsCount += bpidSearchMap->empty() ? 0 : 1;
+        emit initializeProgression(_searchResultsCount * 3 + _selectedRecords.count());
+
         _dbHelper->dbObject().transaction();
         if( ! bpidSearchMap->empty()) {
-            _searchResultsCount += 1;
             _search->searchFromIds(bpidSearchMap);
         }
         if( ! fullInfosSearchMap->empty()) {
-            _searchResultsCount += fullInfosSearchMap->count();
             _search->searchManually(fullInfosSearchMap);
         }
     }
@@ -101,6 +106,8 @@ void SearchTask::run()
 void SearchTask::checkCountResults()
 {
     --_searchResultsCount;
+    increaseProgressStep(3);
+
     if(_searchResultsCount <= 0) {
         if( ! _searchPattern.isNull()) {
             selectBetterResult();
@@ -111,7 +118,7 @@ void SearchTask::checkCountResults()
     }
 }
 
-void SearchTask::selectBetterResult() const
+void SearchTask::selectBetterResult()
 {
 
     QRegularExpression stringPurifyRegexp("[-\\[\\](),&'_ +?]");
@@ -161,6 +168,8 @@ void SearchTask::selectBetterResult() const
         if(betterScore > 0) {
             _dbHelper->setLibraryTrackReference(uid, betterResult);
         }
+        increaseProgressStep(1);
+
     }
 }
 
