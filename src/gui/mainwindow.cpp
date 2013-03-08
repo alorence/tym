@@ -74,9 +74,10 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     // Configure Library Model
-    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
-    _libraryModel->setTable("LibraryHelper");
-    _libraryModel->select();
+    _libraryModel = new LibraryModel(this);
+//    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
+//    _libraryModel->setTable("LibraryHelper");
+//    _libraryModel->select();
     // Configure view
     ui->libraryView->setModel(_libraryModel);
     ui->libraryView->hideColumn(Library::Uid);
@@ -138,37 +139,37 @@ MainWindow::MainWindow(QWidget *parent) :
             _libraryModel, SLOT(refresh()));
 
     // Configure actions for selecting groups in library
-    _selectionActions[LibraryModel::AllTracks] = "All tracks";
-    _selectionActions[LibraryModel::NewTracks] = "New";
-    _selectionActions[LibraryModel::MissingTracks] = "Missing";
-    _selectionActions[LibraryModel::LinkedTracks] = "Linked to a result";
+//    _selectionActions[LibraryModel::AllTracks] = "All tracks";
+//    _selectionActions[LibraryModel::NewTracks] = "New";
+//    _selectionActions[LibraryModel::MissingTracks] = "Missing";
+//    _selectionActions[LibraryModel::LinkedTracks] = "Linked to a result";
 
-    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectionActions);
+//    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectionActions);
 
-    ui->selectionCombo->addItem("", -1);
-    while(it.hasNext()) {
-        LibraryModel::GroupSelection id = it.next().key();
-        QString label = it.value();
+//    ui->selectionCombo->addItem("", -1);
+//    while(it.hasNext()) {
+//        LibraryModel::GroupSelection id = it.next().key();
+//        QString label = it.value();
 
-        ui->selectionCombo->addItem(label, id);
+//        ui->selectionCombo->addItem(label, id);
 
-        QAction * action = new QAction(label, ui->libraryView);
-        _selectionMapper.setMapping(action, id);
-        connect(action, SIGNAL(triggered()), &_selectionMapper, SLOT(map()));
+//        QAction * action = new QAction(label, ui->libraryView);
+//        _selectionMapper.setMapping(action, id);
+//        connect(action, SIGNAL(triggered()), &_selectionMapper, SLOT(map()));
 
-        _selectActionsList << action;
-    }
-    // Connect combobox to the slot
-    connect(ui->selectionCombo, SIGNAL(activated(int)),
-            this, SLOT(selectSpecificLibraryElements(int)));
-    // Connect context menu, via the QSignalMapper
-    connect(&_selectionMapper, SIGNAL(mapped(int)),
-            _libraryModel, SLOT(selectSpecificGroup(int)));
+//        _selectActionsList << action;
+//    }
+//    // Connect combobox to the slot
+//    connect(ui->selectionCombo, SIGNAL(activated(int)),
+//            this, SLOT(selectSpecificLibraryElements(int)));
+//    // Connect context menu, via the QSignalMapper
+//    connect(&_selectionMapper, SIGNAL(mapped(int)),
+//            _libraryModel, SLOT(selectSpecificGroup(int)));
 
     // Configure settings management
     connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
     connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
-    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
+//    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();

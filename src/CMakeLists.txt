@@ -36,7 +36,8 @@ set(tym_HEADERS
     tools/picturedownloader.h
     tools/widgetchangesobserver.h
     dbaccess/bpdatabase.h
-    dbaccess/librarymodel.h
+    dbaccess/librarymodel2.h
+    dbaccess/libraryentry.h
     dbaccess/searchresultsmodel.h
     wizards/searchwizard.h
     wizards/renamewizard.h
@@ -66,7 +67,8 @@ set(tym_SOURCES
     tools/utils.h
     tools/utils.cpp
     dbaccess/bpdatabase.cpp
-    dbaccess/librarymodel.cpp
+    dbaccess/librarymodel2.cpp
+    dbaccess/libraryentry.cpp
     dbaccess/searchresultsmodel.cpp
     wizards/searchwizard.cpp
     wizards/renamewizard.cpp
