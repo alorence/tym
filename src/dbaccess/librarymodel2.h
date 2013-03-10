@@ -23,8 +23,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QtSql>
 
+#include "bpdatabase.h"
+
 class LibraryEntry;
-class BPDatabase;
 
 class LibraryModel : public QAbstractItemModel
 {
@@ -53,10 +54,13 @@ public slots:
 
 
 private:
+    LibraryEntry* getParentEntry(const QDir &file);
     LibraryEntry * _root;
 
+    BPDatabase _db;
+    QSqlQuery _elementsList;
 
-
+    QMap<QString, LibraryEntry*> _dirMap;
 };
 
 #endif // LIBRARYMODEL_H

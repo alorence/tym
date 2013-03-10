@@ -19,22 +19,63 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "libraryentry.h"
 
-LibraryEntry::LibraryEntry(const QString &name, QObject *parent) :
-    QObject(parent)
+LibraryEntry::LibraryEntry(const QString &dir, LibraryEntry *parent) :
+    _dir(dir)
 {
-    setName(name);
+    setParent(parent);
 }
 
 LibraryEntry::~LibraryEntry()
 {
+    qDeleteAll(_childDirs);
 }
 
-const QString &LibraryEntry::name() const
+const QDir &LibraryEntry::dir() const
 {
-    return _name;
+    return _dir;
 }
 
-void LibraryEntry::setName(const QString &newName)
+void LibraryEntry::setDirPath(const QString &newDirPath)
 {
-    _name = newName;
+    _dir.setCurrent(newDirPath);
 }
+
+void LibraryEntry::setParent(LibraryEntry *parent)
+{
+    _parent = parent;
+    if(parent != NULL) {
+        _parent->addChild(this);
+    }
+}
+
+bool LibraryEntry::isDir(int child) const
+{
+    return child < _childDirs.size();
+}
+
+void LibraryEntry::addChild(LibraryEntry *childDir)
+{
+    _childDirs.append(childDir);
+}
+
+void LibraryEntry::addChild(const QSqlRecord child)
+{
+    _children.append(child);
+}
+
+void *LibraryEntry::child(int index)
+{
+    if(index < 0 || index > _childDirs.size() + _children.size() - 1) {
+        return NULL;
+    } else if(index < _childDirs.size()) {
+        return _childDirs[index];
+    } else {
+        return &_children[index];
+    }
+}
+
+int LibraryEntry::rowCount() const
+{
+    return _childDirs.size() + _children.size();
+}
+

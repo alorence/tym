@@ -21,24 +21,33 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define LIBRARYENTRY_H
 
 #include <QObject>
+#include <QtSql>
 
-class LibraryEntry : public QObject
+class LibraryEntry
 {
-    Q_OBJECT
 public:
-    explicit LibraryEntry(const QString &name, QObject *parent = 0);
+    explicit LibraryEntry(const QString &dir, LibraryEntry *parent = 0);
     ~LibraryEntry();
 
-    const QString& name() const;
-    void setName(const QString &newName);
+    const QDir &dir() const;
+    void setDirPath(const QString &newDirPath);
 
-    virtual bool isDir() const = 0;
-    virtual bool isFile() const = 0;
+    void setParent(LibraryEntry *parent);
 
+    bool isDir(int child) const;
 
+    void addChild(LibraryEntry *childDir);
+    void addChild(const QSqlRecord child);
+
+    void* child(int index);
+    int rowCount() const;
 
 private:
-    QString _name;
+    LibraryEntry *_parent;
+    QDir _dir;
+
+    QList<LibraryEntry*> _childDirs;
+    QList<QSqlRecord> _children;
 };
 
 #endif // LIBRARYENTRY_H
