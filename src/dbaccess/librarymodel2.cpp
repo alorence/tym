@@ -31,7 +31,7 @@ LibraryModel::LibraryModel(QObject *parent) :
     _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject()),
     _root(NULL)
 {
-
+    refresh();
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
@@ -41,32 +41,18 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &item, int role) const
 {
-    if (!item.isValid())
-        return QVariant();
-
     if (role != Qt::DisplayRole)
         return QVariant();
 
+    LibraryEntry* entry = entryFromIndex(item);
 
-    LibraryEntry *parentDir;
-    if(item.parent().isValid()) {
-        parentDir = _root;
+    if(entry->isDirNode() && item.column() == 0) {
+        return entry->dir().canonicalPath();
+    } else if(! entry->isDirNode()) {
+        return entry->record().value(item.column());
     } else {
-        parentDir = static_cast<LibraryEntry*>(item.parent().internalPointer());
+        return QVariant();
     }
-
-    if(parentDir->isDir(item.row())) {
-        LibraryEntry* dir = static_cast<LibraryEntry*>(item.internalPointer());
-        if(item.column() == 0) {
-            return dir->dir().dirName();
-        }
-    } else {
-        QSqlRecord* record = static_cast<QSqlRecord*>(item.internalPointer());
-        return record->value(item.column());
-    }
-
-    return QVariant();
-
 }
 
 QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) const
@@ -74,34 +60,48 @@ QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) 
     if( ! hasIndex(row, column, parent))
         return QModelIndex();
 
-    LibraryEntry *parentDir;
-    if(parent.isValid()) {
-        parentDir = _root;
-    } else {
-        parentDir = static_cast<LibraryEntry*>(parent.internalPointer());
-    }
+    LibraryEntry *parentEntry = entryFromIndex(parent);
 
-    void *childItem = parentDir->child(row);
-    if (childItem)
+    LibraryEntry *childItem = parentEntry->child(row);
+
+    if (childItem != NULL){
         return createIndex(row, column, childItem);
-    else
+    } else {
         return QModelIndex();
+    }
 }
 
 QModelIndex LibraryModel::parent(const QModelIndex &child) const
 {
-//    if(child)
-    return QModelIndex();
+    LibraryEntry* parent = entryFromIndex(child)->parent();
+
+    if(parent == _root) {
+        return QModelIndex();
+    } else {
+        return createIndex(parent->rowPosition(), 0, parent);
+    }
 }
 
 int LibraryModel::rowCount(const QModelIndex &parent) const
 {
-    return 0;
+    if(entryFromIndex(parent) == _root) {
+        qDebug() << "root rows:" << entryFromIndex(parent)->rowCount();
+    }
+    return entryFromIndex(parent)->rowCount();
 }
 
 int LibraryModel::columnCount(const QModelIndex &parent) const
 {
-    return 0;
+    return 5;
+}
+
+QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        return section;
+
+    return QVariant();
 }
 
 QSqlRecord LibraryModel::record(int i)
@@ -124,14 +124,18 @@ void LibraryModel::refresh()
     if( ! _elementsList.exec()) {
         LOG_ERROR(tr("Unable to refresh library model : %1").arg(_elementsList.lastError().text()));
     } else {
+        delete _root;
+        _root = NULL;
+
         while(_elementsList.next()) {
             // Helper to extract some informations from file path
             QFileInfo fileInfo(_elementsList.value(Library::FilePath).toString());
 
-            LibraryEntry* dirEntry = getParentEntry(fileInfo.dir());
-            dirEntry->addChild(_elementsList.record());
+            LibraryEntry* parentDir = getParentEntry(fileInfo.dir());
+            new LibraryEntry(_elementsList.record(), parentDir);
 
-            LOG_DEBUG(tr("Add child %1 to parent folder %2").arg(_elementsList.value(1).toString()).arg(dirEntry->dir().canonicalPath()));
+            LOG_DEBUG(tr("Add child %1 to parent folder %2").arg(_elementsList.value(1).toString()).arg(parentDir->dir().canonicalPath()));
+            qDebug() << _dirMap;
         }
     }
 
@@ -147,7 +151,7 @@ LibraryEntry *LibraryModel::getParentEntry(const QDir &dir)
     if(_root == NULL) {
         _root = new LibraryEntry(dir.canonicalPath(), NULL);
         _dirMap[dir.canonicalPath()] = _root;
-        LOG_DEBUG(tr("Create new Root %1").arg(dir.canonicalPath()));
+//        LOG_DEBUG(tr("Create new Root %1").arg(dir.canonicalPath()));
         return _root;
     }
 
@@ -165,7 +169,8 @@ LibraryEntry *LibraryModel::getParentEntry(const QDir &dir)
             } else {
                 parentDir = _root;
             }
-            LibraryEntry* newEntry = new LibraryEntry(dir.canonicalPath(), parentDir);
+//            LOG_DEBUG(tr("Create new dir entry : %1").arg(dir.canonicalPath()));
+            LibraryEntry* newEntry = new LibraryEntry(dir, parentDir);
             _dirMap[dir.canonicalPath()] = newEntry;
 
             return newEntry;
@@ -174,24 +179,26 @@ LibraryEntry *LibraryModel::getParentEntry(const QDir &dir)
         else if(_root->dir().canonicalPath().startsWith(dir.canonicalPath())) {
 
             // Create the future new root element and store it into internal map
-            LibraryEntry *newRoot = new LibraryEntry(dir.canonicalPath(), NULL);
+            LibraryEntry *newRoot = new LibraryEntry(dir, NULL);
             _dirMap[dir.canonicalPath()] = newRoot;
-
+            LibraryEntry * oldRoot = _root;
+//            LOG_DEBUG(tr("Update root1 %1 -> %2").arg(oldRoot->dir().canonicalPath()).arg(newRoot->dir().canonicalPath()));
+            _root = newRoot;
 
             // Update old root entry
-            _root->setParent(getParentEntry(_root->dir().canonicalPath()));
+            LibraryEntry * newRootParent = getParentEntry(_root->dir().canonicalPath());
+//            LOG_DEBUG(tr("Update old root parent : %1").arg(newRootParent->dir().canonicalPath()));
+            oldRoot->setParent(newRootParent);
 
-            LOG_DEBUG(tr("Update root %1 -> %2").arg(_root->dir().canonicalPath()).arg(newRoot->dir().canonicalPath()));
-            _root = newRoot;
             return newRoot;
         }
         // root and current elements have no common ancestor
         else {
-            LibraryEntry *newRoot = new LibraryEntry("/", NULL);
+            LibraryEntry *newRoot = new LibraryEntry(QDir("/"), NULL);
             _dirMap["/"] = newRoot;
 
             _root->setParent(getParentEntry(_root->dir()));
-            LOG_DEBUG(tr("Update root %1 -> %2").arg(_root->dir().canonicalPath()).arg(newRoot->dir().canonicalPath()));
+//            LOG_DEBUG(tr("Update root2 %1 -> %2").arg(_root->dir().canonicalPath()).arg(newRoot->dir().canonicalPath()));
             _root = newRoot;
 
             LibraryEntry* newEntry = new LibraryEntry(dir.canonicalPath(), getParentEntry(dir));
@@ -200,38 +207,29 @@ LibraryEntry *LibraryModel::getParentEntry(const QDir &dir)
             return newEntry;
         }
     }
+}
 
+QString LibraryModel::debug(const QModelIndex &index) const
+{
+    LibraryEntry* p = static_cast<LibraryEntry*>(index.internalPointer());
 
-//    QString rootPath = _root->dir().canonicalPath();
-//    QString entryPath = entry->dir().canonicalPath();
+    QString name;
+    if(p == NULL) {
+        name = "NULL";
+    } else if(p->isDirNode()) {
+        name = p->dir().dirName();
+    } else {
+        name = QFileInfo(p->record().value(1).toString()).fileName();
+    }
 
-//    // root is a child of entry
-//    if(rootPath.startsWith(entryPath)) {
+    return QString("[%1, %2, %3]").arg(index.row()).arg(index.column()).arg(name);
+}
 
-//        QString residualPath = rootPath.right(rootPath.size() - entryPath.size());
-//        QStringList residualParts = residualPath.split('/', QString::SkipEmptyParts);
-
-//        LibraryEntry *parent = entry;
-//        LibraryEntry *child;
-//        foreach(QString dirName, residualParts) {
-////            child = new LibraryEntry()
-//        }
-
-//    }
-//    // root is a parent of entry
-//    else if(entryPath.startsWith(rootPath)) {
-
-//    } else {
-//        QStringList rootDirsList = rootPath.split('/', QString::SkipEmptyParts);
-//        QStringList entryDirsList = entryPath.split('/', QString::SkipEmptyParts);
-
-//        // root and entry have a common ancestor
-//        if(rootDirsList.first() == entryDirsList.first()) {
-
-//        }
-//        // root and entry are stored in a totally different path
-//        else {
-
-//        }
-//    }
+LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
+{
+    if( index.isValid()) {
+        return static_cast<LibraryEntry*>(index.internalPointer());
+    } else {
+        return _root;
+    }
 }

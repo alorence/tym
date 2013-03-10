@@ -80,8 +80,8 @@ MainWindow::MainWindow(QWidget *parent) :
 //    _libraryModel->select();
     // Configure view
     ui->libraryView->setModel(_libraryModel);
-    ui->libraryView->hideColumn(Library::Uid);
-    ui->libraryView->hideColumn(Library::Bpid);
+//    ui->libraryView->hideColumn(Library::Uid);
+//    ui->libraryView->hideColumn(Library::Bpid);
 
     // Configure Search Model
     _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
@@ -135,8 +135,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
             ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
 
-    connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
-            _libraryModel, SLOT(refresh()));
+//    connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
+//            _libraryModel, SLOT(refresh()));
 
     // Configure actions for selecting groups in library
 //    _selectionActions[LibraryModel::AllTracks] = "All tracks";
@@ -175,7 +175,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
     libStatusUpdateTask->moveToThread(_libStatusUpdateThread);
     connect(_libStatusUpdateThread, SIGNAL(started()), libStatusUpdateTask, SLOT(run()));
-    connect(libStatusUpdateTask, SIGNAL(finished()), _libraryModel, SLOT(refresh()));
+//    connect(libStatusUpdateTask, SIGNAL(finished()), _libraryModel, SLOT(refresh()));
     connect(_libStatusUpdateThread, SIGNAL(destroyed()), libStatusUpdateTask, SLOT(deleteLater()));
 
     // Update library entries status (missing, etc.) at startup

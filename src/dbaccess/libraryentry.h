@@ -26,28 +26,36 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 class LibraryEntry
 {
 public:
-    explicit LibraryEntry(const QString &dir, LibraryEntry *parent = 0);
+    explicit LibraryEntry(const QDir &dir, LibraryEntry *parent = 0);
+    explicit LibraryEntry(const QSqlRecord &record, LibraryEntry *parent = 0);
     ~LibraryEntry();
 
-    const QDir &dir() const;
-    void setDirPath(const QString &newDirPath);
+    bool isDirNode() const;
 
+    const QDir &dir() const;
+    void setDir(const QDir &newDir);
+
+    const QSqlRecord &record() const;
+    void setRecord(const QSqlRecord &record);
+
+    LibraryEntry *parent() const;
     void setParent(LibraryEntry *parent);
 
-    bool isDir(int child) const;
-
     void addChild(LibraryEntry *childDir);
-    void addChild(const QSqlRecord child);
+    LibraryEntry* child(int index);
+    QList<LibraryEntry*> children() const;
 
-    void* child(int index);
     int rowCount() const;
+    int columnCount() const;
+
+    int rowPosition();
 
 private:
     LibraryEntry *_parent;
     QDir _dir;
+    QSqlRecord _record;
 
-    QList<LibraryEntry*> _childDirs;
-    QList<QSqlRecord> _children;
+    QList<LibraryEntry*> _children;
 };
 
 #endif // LIBRARYENTRY_H

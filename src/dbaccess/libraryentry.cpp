@@ -19,15 +19,28 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "libraryentry.h"
 
-LibraryEntry::LibraryEntry(const QString &dir, LibraryEntry *parent) :
+#include <Logger.h>
+
+LibraryEntry::LibraryEntry(const QDir &dir, LibraryEntry *parent) :
     _dir(dir)
+{
+    setParent(parent);
+}
+
+LibraryEntry::LibraryEntry(const QSqlRecord &record, LibraryEntry *parent) :
+    _record(record)
 {
     setParent(parent);
 }
 
 LibraryEntry::~LibraryEntry()
 {
-    qDeleteAll(_childDirs);
+    qDeleteAll(_children);
+}
+
+bool LibraryEntry::isDirNode() const
+{
+    return _record.isEmpty();
 }
 
 const QDir &LibraryEntry::dir() const
@@ -35,9 +48,24 @@ const QDir &LibraryEntry::dir() const
     return _dir;
 }
 
-void LibraryEntry::setDirPath(const QString &newDirPath)
+void LibraryEntry::setDir(const QDir &newDir)
 {
-    _dir.setCurrent(newDirPath);
+    _dir = newDir;
+}
+
+const QSqlRecord &LibraryEntry::record() const
+{
+    return _record;
+}
+
+void LibraryEntry::setRecord(const QSqlRecord &record)
+{
+    _record = record;
+}
+
+LibraryEntry *LibraryEntry::parent() const
+{
+    return _parent;
 }
 
 void LibraryEntry::setParent(LibraryEntry *parent)
@@ -48,34 +76,48 @@ void LibraryEntry::setParent(LibraryEntry *parent)
     }
 }
 
-bool LibraryEntry::isDir(int child) const
-{
-    return child < _childDirs.size();
-}
-
 void LibraryEntry::addChild(LibraryEntry *childDir)
 {
-    _childDirs.append(childDir);
+    _children.append(childDir);
 }
 
-void LibraryEntry::addChild(const QSqlRecord child)
+LibraryEntry *LibraryEntry::child(int index)
 {
-    _children.append(child);
-}
-
-void *LibraryEntry::child(int index)
-{
-    if(index < 0 || index > _childDirs.size() + _children.size() - 1) {
+    if(index < 0 || index > _children.size()) {
         return NULL;
-    } else if(index < _childDirs.size()) {
-        return _childDirs[index];
     } else {
-        return &_children[index];
+        return _children[index];
     }
+}
+
+QList<LibraryEntry *> LibraryEntry::children() const
+{
+    return _children;
 }
 
 int LibraryEntry::rowCount() const
 {
-    return _childDirs.size() + _children.size();
+    return _children.size();
+}
+
+int LibraryEntry::columnCount() const
+{
+    if(isDirNode()) {
+        return 1;
+    } else {
+        return _record.count();
+    }
+}
+
+int LibraryEntry::rowPosition()
+{
+    if(_parent == NULL) {
+        LOG_TRACE("LibraryEntry::rowPosition() -> NULL -> 0");
+        return 0;
+    } else {
+        int r = _parent->children().indexOf(const_cast<LibraryEntry*>(this));
+        LOG_TRACE(QString("LibraryEntry::rowPosition() -> %1").arg(r));
+        return r;
+    }
 }
 

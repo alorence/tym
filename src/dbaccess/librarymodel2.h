@@ -42,6 +42,8 @@ public:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
 
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+
     /* TODO : to replace this method to use a modelindex */
     QSqlRecord record(int i);
 
@@ -55,12 +57,17 @@ public slots:
 
 private:
     LibraryEntry* getParentEntry(const QDir &file);
+    QString debug(const QModelIndex &index) const;
+
+    LibraryEntry* entryFromIndex(const QModelIndex &index) const;
+
     LibraryEntry * _root;
 
     BPDatabase _db;
     QSqlQuery _elementsList;
 
     QMap<QString, LibraryEntry*> _dirMap;
+    int cpt;
 };
 
 #endif // LIBRARYMODEL_H
