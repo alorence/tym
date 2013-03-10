@@ -36,8 +36,21 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
 
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndex parent(const QModelIndex &child) const;
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+
+    /* TODO : to replace this method to use a modelindex */
+    QSqlRecord record(int i);
+
+    QSet<int> selectedIds() const;
+    QHash<int, QSqlRecord> selectedRecords() const;
+
 public slots:
     void refresh();
+    void unselectRowsAndRefresh(QList<int> rows);
+
 
 private:
     LibraryEntry * _root;

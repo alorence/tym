@@ -41,7 +41,47 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
     return QVariant();
 }
 
+QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) const
+{
+    return QModelIndex();
+}
+
+QModelIndex LibraryModel::parent(const QModelIndex &child) const
+{
+    return QModelIndex();
+}
+
+int LibraryModel::rowCount(const QModelIndex &parent) const
+{
+    return 0;
+}
+
+int LibraryModel::columnCount(const QModelIndex &parent) const
+{
+    return 0;
+}
+
+QSqlRecord LibraryModel::record(int i)
+{
+    return QSqlRecord    ();
+}
+
+QSet<int> LibraryModel::selectedIds() const
+{
+    return QSet<int>();
+}
+
+QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
+{
+    return QHash<int, QSqlRecord>();
+}
+
 
 void LibraryModel::refresh()
+{
+
+}
+
+void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
 }

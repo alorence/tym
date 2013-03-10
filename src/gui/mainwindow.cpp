@@ -250,9 +250,9 @@ void MainWindow::dropEvent(QDropEvent *event)
 void MainWindow::showEvent(QShowEvent *)
 {
     // Configure libraryView filePath column to take as space as possible
-    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
+//    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
     // Ensure 2 last colums have the default section size
-    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+//    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
 }
 
 void MainWindow::toggleConsoleDisplaying(bool show) const
@@ -319,7 +319,7 @@ void MainWindow::selectSpecificLibraryElements(int index)
 {
     int group = ui->selectionCombo->itemData(index).toInt();
     if(group != -1) {
-        _libraryModel->selectSpecificGroup(group);
+//        _libraryModel->selectSpecificGroup(group);
     }
     ui->libraryView->setFocus();
 }
