@@ -30,12 +30,19 @@ public:
     explicit LibraryEntry(const QSqlRecord &record, LibraryEntry *parent = 0);
     ~LibraryEntry();
 
+    enum DataIndexes {
+        Name = 0,
+        Status,
+        Results,
+        Infos
+    };
+
     bool isDirNode() const;
 
     const QDir &dir() const;
     void setDir(const QDir &newDir);
 
-    const QSqlRecord &record() const;
+    const QVariant data(DataIndexes index) const;
     void setRecord(const QSqlRecord &record);
 
     LibraryEntry *parent() const;

@@ -20,6 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "libraryentry.h"
 
 #include <Logger.h>
+#include "commons.h"
 
 LibraryEntry::LibraryEntry(const QDir &dir, LibraryEntry *parent) :
     _dir(dir)
@@ -53,9 +54,19 @@ void LibraryEntry::setDir(const QDir &newDir)
     _dir = newDir;
 }
 
-const QSqlRecord &LibraryEntry::record() const
+const QVariant LibraryEntry::data(DataIndexes index) const
 {
-    return _record;
+    switch(index) {
+    case Name:
+        return QFileInfo(_record.value(Library::FilePath).toString()).fileName();
+    case Status:
+        return _record.value(Library::Status);
+    case Results:
+        return _record.value(Library::NumResults);
+    case Infos:
+    default:
+        return "";
+    }
 }
 
 void LibraryEntry::setRecord(const QSqlRecord &record)
@@ -112,12 +123,10 @@ int LibraryEntry::columnCount() const
 int LibraryEntry::rowPosition()
 {
     if(_parent == NULL) {
-        LOG_TRACE("LibraryEntry::rowPosition() -> NULL -> 0");
         return 0;
     } else {
-        int r = _parent->children().indexOf(const_cast<LibraryEntry*>(this));
-        LOG_TRACE(QString("LibraryEntry::rowPosition() -> %1").arg(r));
-        return r;
+        // TODO: store the position in a member, because this method is called very often
+        return _parent->children().indexOf(const_cast<LibraryEntry*>(this));
     }
 }
 

@@ -31,6 +31,7 @@ LibraryModel::LibraryModel(QObject *parent) :
     _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject()),
     _root(NULL)
 {
+    _headers << tr("Name") << tr("Status") << tr("Results") << tr("Infos");
     refresh();
 }
 
@@ -47,9 +48,11 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
     LibraryEntry* entry = entryFromIndex(item);
 
     if(entry->isDirNode() && item.column() == 0) {
-        return entry->dir().canonicalPath();
+        return entry->dir().dirName();
     } else if(! entry->isDirNode()) {
-        return entry->record().value(item.column());
+        QVariant tpoto = entry->data((LibraryEntry::DataIndexes) item.column());
+        qDebug() << tpoto;
+        return tpoto;
     } else {
         return QVariant();
     }
@@ -92,14 +95,13 @@ int LibraryModel::rowCount(const QModelIndex &parent) const
 
 int LibraryModel::columnCount(const QModelIndex &parent) const
 {
-    return 5;
+    return 4;
 }
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return section;
+        return _headers[section];
 
     return QVariant();
 }
@@ -219,7 +221,7 @@ QString LibraryModel::debug(const QModelIndex &index) const
     } else if(p->isDirNode()) {
         name = p->dir().dirName();
     } else {
-        name = QFileInfo(p->record().value(1).toString()).fileName();
+        name = p->data(LibraryEntry::Name).toString();
     }
 
     return QString("[%1, %2, %3]").arg(index.row()).arg(index.column()).arg(name);

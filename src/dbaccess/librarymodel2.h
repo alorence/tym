@@ -54,7 +54,6 @@ public slots:
     void refresh();
     void unselectRowsAndRefresh(QList<int> rows);
 
-
 private:
     LibraryEntry* getParentEntry(const QDir &file);
     QString debug(const QModelIndex &index) const;
@@ -67,7 +66,7 @@ private:
     QSqlQuery _elementsList;
 
     QMap<QString, LibraryEntry*> _dirMap;
-    int cpt;
+    QList<QString> _headers;
 };
 
 #endif // LIBRARYMODEL_H
