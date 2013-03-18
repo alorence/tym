@@ -51,19 +51,40 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
     QUrl requestUrl(_apiUrl);
     requestUrl.setPath(_tracksPath);
 
-    QUrlQuery query;
-    query.addQueryItem("ids", QStringList(uidBpidMap->values()).join(","));
-    requestUrl.setQuery(query);
+    QList<QMap<QString, QString> *> splittedMaps;
+    int i = 0;
+    for (auto it = uidBpidMap->begin() ; it != uidBpidMap->end() ; ++it, ++i) {
 
-    QNetworkRequest request(requestUrl);
+        int listIndex = i / 10;
+        if(splittedMaps.size() == listIndex) {
+            splittedMaps.append(new QMap<QString, QString>());
+        }
 
-    QNetworkReply *reply = _manager->get(request);
+        splittedMaps.value(listIndex)->insert(it.key(), it.value());
+    }
 
-    _replyMap.insert(reply, uidBpidMap);
+    foreach(auto tempMap, splittedMaps) {
+        QUrlQuery query;
+        QString idsList = QStringList(tempMap->values()).join(",");
+        query.addQueryItem("ids", idsList);
+        requestUrl.setQuery(query);
 
-    connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
-    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(requestError(QNetworkReply::NetworkError)));
+        QNetworkRequest request(requestUrl);
+
+        QNetworkReply *reply = _manager->get(request);
+
+        LOG_DEBUG(tr("Request sent for IDs %1").arg(idsList));
+
+        _replyMap.insert(reply, tempMap);
+
+        connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
+        connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+                this, SLOT(requestError(QNetworkReply::NetworkError)));
+
+        tempMap = new QMap<QString, QString>();
+    }
+
+    delete uidBpidMap;
 }
 
 void SearchProvider::parseReplyForIdSearch()
@@ -73,14 +94,17 @@ void SearchProvider::parseReplyForIdSearch()
 
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
-    QMapIterator<QString, QString> req(*uidBpidMap);
-    while(req.hasNext()) {
-        req.next();
+    QJsonArray resultsArray = response.object()["results"].toArray();
+    LOG_DEBUG(tr("Response received for id search: %1 results").arg(resultsArray.size()));
 
-        QString uid = req.key();
-        QString bpid = req.value();
+    QMapIterator<QString, QString> requestPair(*uidBpidMap);
+    while(requestPair.hasNext()) {
+        requestPair.next();
 
-        foreach(QJsonValue track, response.object()["results"].toArray()) {
+        QString uid = requestPair.key();
+        QString bpid = requestPair.value();
+
+        foreach(QJsonValue track, resultsArray) {
             if(bpid == track.toObject().value("id").toVariant().toString()) {
                 emit searchResultAvailable(uid, track);
                 break;

@@ -30,7 +30,7 @@ SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &
     _searchTerms(searchTerms),
     _dbHelper(new BPDatabase("searchTask", this)),
     _search(new SearchProvider(this)),
-    _searchResultsCount(0)
+    _numTracksToUpdate(0)
 {
 
     connect(_search, &SearchProvider::searchResultAvailable, _dbHelper, &BPDatabase::storeSearchResults);
@@ -64,12 +64,14 @@ void SearchTask::run()
             (*searchMap)[_selectedRecords.value(i).value(Library::Uid).toString()] = _searchTerms.value(i);
         }
 
-        _searchResultsCount += searchMap->count();
+        _numTracksToUpdate += searchMap->count();
         _search->searchManually(searchMap);
 
     } else {
         QMap<QString, QString> *bpidSearchMap = new QMap<QString, QString>();
         QMap<QString, QString> *fullInfosSearchMap = new QMap<QString, QString>();
+
+        int numTracksToAutoLink = 0;
 
         FileBasenameParser bpidParser(TYM_BEATPORT_DEFAULT_FORMAT);
         FileBasenameParser fullInfosParser(_searchPattern);
@@ -78,22 +80,21 @@ void SearchTask::run()
             QString uid = record.value(Library::Uid).toString();
             QString baseName = QFileInfo(record.value(Library::FilePath).toString()).completeBaseName();
 
-            qDebug() << baseName;
-
             if(bpidParser.hasMatch(baseName)) {
                 (*bpidSearchMap)[uid] = bpidParser.parse(baseName)[TrackFullInfos::Bpid];
+                ++_numTracksToUpdate;
             } else if(fullInfosParser.hasMatch(baseName)) {
                 // Keep track of parsing result, to use it in selectBetterResult()
                 _trackParsedInformation[uid] = fullInfosParser.parse(baseName);
                 (*fullInfosSearchMap)[uid] = ((QStringList)_trackParsedInformation[uid].values()).join(' ');
-                _searchResultsCount++;
+                ++_numTracksToUpdate;
+                ++numTracksToAutoLink;
             } else {
                 LOG_INFO(tr("Unable to extract information from %1 file").arg(baseName));
             }
         }
 
-        _searchResultsCount += bpidSearchMap->empty() ? 0 : 1;
-        emit initializeProgression(_searchResultsCount * 3 + _selectedRecords.count());
+        emit initializeProgression(_numTracksToUpdate * 3 + numTracksToAutoLink);
 
         _dbHelper->dbObject().transaction();
         if( ! bpidSearchMap->empty()) {
@@ -107,10 +108,10 @@ void SearchTask::run()
 
 void SearchTask::checkCountResults()
 {
-    --_searchResultsCount;
+    --_numTracksToUpdate;
     increaseProgressStep(3);
 
-    if(_searchResultsCount <= 0) {
+    if(_numTracksToUpdate <= 0) {
         if( ! _searchPattern.isNull()) {
             selectBetterResult();
         }

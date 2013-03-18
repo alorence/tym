@@ -75,7 +75,7 @@ private:
     BPDatabase* _dbHelper;
     SearchProvider* _search;
 
-    int _searchResultsCount;
+    int _numTracksToUpdate;
 };
 
 #endif // SEARCHTHREAD_H
