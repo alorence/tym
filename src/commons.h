@@ -26,7 +26,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_PICTURE_URL_DOWNLOAD "http://geo-media.beatport.com/image_size/200x200/%1.jpg"
 #define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
 #define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
-#define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg")
+#define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg" << "*.aiff")
 #define TYM_BEATPORT_DEFAULT_FORMAT "%ID%_%OTHER%"
 
 namespace Settings {
