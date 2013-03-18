@@ -52,7 +52,12 @@ void RenameTask::run()
             continue;
         }
 
-        if(QFile::rename(from.canonicalFilePath(), to)) {
+        // FIXME: Need to remove/replace unusable chars according to OSs specific guidelines
+        // Windows: \/:*?<>"|
+        // MacOs: /:
+        // Linux: /
+
+        if(QFile(from.canonicalFilePath()).rename(to)) {
             LOG_INFO(tr("File %1 renamed to %2")
                      .arg(from.canonicalFilePath())
                      .arg(QFileInfo(to).fileName()));
