@@ -20,6 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "searchprovider.h"
 
 #include "commons.h"
+#include "tools/utils.h"
 #include "gui/settingsdialog.h"
 
 SearchProvider::SearchProvider(QObject *parent) :
@@ -128,9 +129,8 @@ void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
         QString libId = searchList.key();
         QString text = searchList.value();
 
-        text.replace('_', " ");
-        // Unify multiple spaces
-        text.replace(QRegularExpression("\\s{2,}"), " ");
+        // Replace underscores by spaces (and prevent multiple spaces)
+        Utils::simplifySpaces(text.replace('_', ' '));
 
         QUrlQuery query;
         query.addQueryItem("query", text);

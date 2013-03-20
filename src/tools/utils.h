@@ -26,6 +26,10 @@ class Utils
 {
 public:
     static QString formatKey(const QString &classicKey);
+
+    static QString &simplifySpaces(QString &subject);
+    static QString &osFilenameSanitize(QString &fileName);
+
 };
 
 #endif // UTILS_H

@@ -24,6 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "WidgetAppender.h"
 
 #include "commons.h"
+#include "tools/utils.h"
 #include "dbaccess/bpdatabase.h"
 #include "concretetasks/renametask.h"
 
@@ -111,6 +112,9 @@ void RenameWizard::updateRenamePreview()
             itemText = "<Original file not found>";
         } else if( ! bpid.isEmpty()) {
             QString newBaseName = _filenameFormatter.format(_tracksInformations[bpid]);
+            // TODO: Allow user to define a replacement map to choose which char must replace forbid one
+            Utils::osFilenameSanitize(newBaseName);
+            Utils::simplifySpaces(newBaseName);
 
             if(newBaseName == original.completeBaseName()) {
                 itemText = "<File already have the good name>";

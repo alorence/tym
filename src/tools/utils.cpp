@@ -67,3 +67,20 @@ QString Utils::formatKey(const QString &classicKey)
     else if(classicKey == "E major") return "12B";
     else return classicKey;
 }
+
+QString &Utils::simplifySpaces(QString &subject)
+{
+    return subject.replace(QRegularExpression("\\s{2,}"), " ");
+}
+
+QString &Utils::osFilenameSanitize(QString &fileName)
+{
+#ifdef Q_OS_WIN
+    const QRegularExpression forbiddenChars("[\"\\/:*?<>|]", QRegularExpression::CaseInsensitiveOption);
+#elif defined Q_OS_MAC
+    const QRegularExpression forbiddenChars("[/:]", QRegularExpression::CaseInsensitiveOption);
+#else
+    const QRegularExpression forbiddenChars("[/]", QRegularExpression::CaseInsensitiveOption);
+#endif
+    return fileName.replace(forbiddenChars, " ");
+}

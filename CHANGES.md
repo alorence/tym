@@ -2,7 +2,6 @@
 
 ### Known bugs
  - Wizards have a too large title size. Qt 5.0.x bug, should be resolved in a future version (see https://bugreports.qt-project.org/browse/QTBUG-28099)
- - Files can't have some chars in their name, depending on platform. These chars are not removed/replaced for now, and tracks renaming can be affected. The resulting files can be totally lost in that cases. This must be fixed before the next release.
 
 ## Next release
 #### New features
@@ -16,6 +15,7 @@
  - Compile error on GNU/Linux
  - Files containing a '.' (dot) can now be searched automatically
  - Search can be performed on IDs on more than 10 tracks per request
+ - Forbidden characters are replaced by a space when renaming (os dependant)
 
 ## 0.1.0 First release - 2013-02-17
 #### Features
