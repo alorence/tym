@@ -34,6 +34,9 @@ find_package(Qt5LinguistTools REQUIRED)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
+    # Display all warnings
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
     # qt5/qtbase/include/QtCore/qglobal.h:1765:4: error:
     # #error "You must build your code with position independent code if Qt was
     # built with -reduce-relocations. " "Compile your code with -fPIC or -fPIE."

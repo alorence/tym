@@ -40,11 +40,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     _defaultConsoleDisplaying(false),
     ui(new Ui::MainWindow),
+    _aboutDialog(new About(this)),
     _settings(new SettingsDialog(this)),
     _pictureDownloader(new PictureDownloader(this)),
     _dbHelper(new BPDatabase),
-    _libStatusUpdateThread(new QThread()),
-    _aboutDialog(new About(this))
+    _libStatusUpdateThread(new QThread())
 {
     ui->setupUi(this);
 
