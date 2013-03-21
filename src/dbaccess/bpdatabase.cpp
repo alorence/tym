@@ -65,8 +65,8 @@ BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
     }
 
     if(! _dbObject.isOpen()){
-        LOG_ERROR() << tr("Unable to open database: %1")
-                       .arg(_dbObject.lastError().text());
+        LOG_ERROR(tr("Unable to open database: %1")
+                  .arg(_dbObject.lastError().text()));
         return;
     }
 }
