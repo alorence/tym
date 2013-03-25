@@ -43,18 +43,24 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &item, int role) const
 {
-    if (role != Qt::DisplayRole)
+    if (role != Qt::DisplayRole && role != Qt::DecorationRole)
         return QVariant();
 
     LibraryEntry* entry = entryFromIndex(item);
 
-    if(entry->isDirNode() && item.column() == 0) {
-        return entry->dir().dirName();
-    } else if(! entry->isDirNode()) {
-        return entry->data((LibraryEntry::DataIndexes) item.column());
-    } else {
-        return QVariant();
+    if(role == Qt::DisplayRole) {
+        if(entry->isDirNode() && item.column() == 0) {
+            return entry->dir().dirName();
+        } else if(! entry->isDirNode()) {
+            return entry->data((LibraryEntry::DataIndexes) item.column());
+        } else {
+            return QVariant();
+        }
+    } else if(role == Qt::DecorationRole && item.column() == 0) {
+        QString iconType = entry->isDirNode() ? "folder" : "file";
+        return QPixmap (":/img/icons/general/" + iconType);
     }
+    return QVariant();
 }
 
 QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) const

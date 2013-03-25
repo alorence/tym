@@ -16,12 +16,6 @@
         <file alias="help">fugues-icons-3.5/icons/book-question.png</file>
         <file alias="tick">fugues-icons-3.5/icons/tick.png</file>
         <file alias="rename">fugues-icons-3.5/icons-shadowless/blue-document-rename.png</file>
-        <file>fugues-icons-3.5/icons/folder-open-document-music.png</file>
-        <file>fugues-icons-3.5/icons/folder-open-document-music-playlist.png</file>
-        <file>fugues-icons-3.5/icons/document-music.png</file>
-        <file alias="playlist">fugues-icons-3.5/icons/document-music-playlist.png</file>
-        <file>fugues-icons-3.5/icons/blue-document-music.png</file>
-        <file>fugues-icons-3.5/icons/blue-document-music-playlist.png</file>
         <file alias="terminal">fugues-icons-3.5/icons/terminal.png</file>
     </qresource>
     <qresource prefix="/img/logos">
@@ -33,5 +27,13 @@
     </qresource>
     <qresource prefix="/img/general">
         <file alias="noalbum">noalbum.png</file>
+    </qresource>
+    <qresource prefix="/img/icons/general">
+        <file alias="folder">fugues-icons-3.5/icons/folder-open-document-music.png</file>
+        <file>fugues-icons-3.5/icons/folder-open-document-music-playlist.png</file>
+        <file alias="file">fugues-icons-3.5/icons/document-music.png</file>
+        <file alias="playlist">fugues-icons-3.5/icons/document-music-playlist.png</file>
+        <file>fugues-icons-3.5/icons/blue-document-music.png</file>
+        <file>fugues-icons-3.5/icons/blue-document-music-playlist.png</file>
     </qresource>
 </RCC>
