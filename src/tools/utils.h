@@ -26,6 +26,8 @@ class Utils
 {
 public:
     static QString formatKey(const QString &classicKey);
+
+    static QString &unifyPath(QString &path);
 };
 
 #endif // UTILS_H

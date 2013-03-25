@@ -55,7 +55,7 @@ public slots:
     void unselectRowsAndRefresh(QList<int> rows);
 
 private:
-    LibraryEntry* getParentEntry(const QDir &file);
+    LibraryEntry* getLibraryNode(const QDir &file);
     QString debug(const QModelIndex &index) const;
 
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;

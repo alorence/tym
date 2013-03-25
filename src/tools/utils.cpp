@@ -67,3 +67,12 @@ QString Utils::formatKey(const QString &classicKey)
     else if(classicKey == "E major") return "12B";
     else return classicKey;
 }
+
+QString &Utils::unifyPath(QString &path)
+{
+#ifdef Q_OS_WIN
+    return path.prepend('/');
+#elif
+    return path;
+#endif
+}
