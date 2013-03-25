@@ -51,9 +51,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
     if(entry->isDirNode() && item.column() == 0) {
         return entry->dir().dirName();
     } else if(! entry->isDirNode()) {
-        QVariant tpoto = entry->data((LibraryEntry::DataIndexes) item.column());
-        qDebug() << tpoto;
-        return tpoto;
+        return entry->data((LibraryEntry::DataIndexes) item.column());
     } else {
         return QVariant();
     }
@@ -88,9 +86,6 @@ QModelIndex LibraryModel::parent(const QModelIndex &child) const
 
 int LibraryModel::rowCount(const QModelIndex &parent) const
 {
-    if(entryFromIndex(parent) == _root) {
-        qDebug() << "root rows:" << entryFromIndex(parent)->rowCount();
-    }
     return entryFromIndex(parent)->rowCount();
 }
 
@@ -176,7 +171,7 @@ LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
                 // FIXME: should never come here...
                 parentDir = _root;
             }
-            //LOG_DEBUG(tr("Create new dir entry : %1").arg(dir.canonicalPath()));
+            LOG_DEBUG(tr("**1** Create new dir entry : %1").arg(dir.canonicalPath()));
             LibraryEntry* newEntry = new LibraryEntry(dir, parentDir);
             _dirMap[dirUnifiedPath] = newEntry;
 
@@ -191,9 +186,9 @@ LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
             // Create the future new root element and update current root & internal map
             _dirMap[dirUnifiedPath] = _root = new LibraryEntry(dir, NULL);
 
-            //LOG_DEBUG(tr("Update root1 %1 -> %2").arg(oldRoot->dir().canonicalPath()).arg(newRoot->dir().canonicalPath()));
+            LOG_DEBUG(tr("**2** Update root1 %1 -> %2").arg(oldRoot->dir().canonicalPath()).arg(_root->dir().canonicalPath()));
 
-            QDir oldRootDir = _root->dir();
+            QDir oldRootDir = oldRoot->dir();
             oldRootDir.cdUp();
 
             // Update old root parent member
@@ -207,6 +202,8 @@ LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
 
             QDir upDir = dir;
             upDir.cdUp();
+
+            LOG_DEBUG(tr("**3** Check up dir"));
 
             LibraryEntry* newEntry = new LibraryEntry(dir.canonicalPath(), getLibraryNode(upDir));
             _dirMap[dirUnifiedPath] = newEntry;
