@@ -48,13 +48,14 @@ public:
     LibraryEntry *parent() const;
     void setParent(LibraryEntry *parent);
 
-    void addChild(LibraryEntry *childDir);
+    void addChild(LibraryEntry *child);
     LibraryEntry* child(int index);
     QList<LibraryEntry*> children() const;
 
     int rowCount() const;
     int columnCount() const;
 
+    void setPosition(int position);
     int rowPosition();
 
 private:
@@ -63,6 +64,7 @@ private:
     QSqlRecord _record;
 
     QList<LibraryEntry*> _children;
+    int _position;
 };
 
 #endif // LIBRARYENTRY_H

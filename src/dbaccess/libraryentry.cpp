@@ -23,13 +23,15 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 
 LibraryEntry::LibraryEntry(const QDir &dir, LibraryEntry *parent) :
-    _dir(dir)
+    _dir(dir),
+    _position(0)
 {
     setParent(parent);
 }
 
 LibraryEntry::LibraryEntry(const QSqlRecord &record, LibraryEntry *parent) :
-    _record(record)
+    _record(record),
+    _position(0)
 {
     setParent(parent);
 }
@@ -87,9 +89,10 @@ void LibraryEntry::setParent(LibraryEntry *parent)
     }
 }
 
-void LibraryEntry::addChild(LibraryEntry *childDir)
+void LibraryEntry::addChild(LibraryEntry *child)
 {
-    _children.append(childDir);
+    child->setPosition(_children.size());
+    _children.append(child);
 }
 
 LibraryEntry *LibraryEntry::child(int index)
@@ -120,13 +123,13 @@ int LibraryEntry::columnCount() const
     }
 }
 
+void LibraryEntry::setPosition(int position)
+{
+    _position = position;
+}
+
 int LibraryEntry::rowPosition()
 {
-    if(_parent == NULL) {
-        return 0;
-    } else {
-        // TODO: store the position in a member, because this method is called very often
-        return _parent->children().indexOf(const_cast<LibraryEntry*>(this));
-    }
+    return _position;
 }
 
