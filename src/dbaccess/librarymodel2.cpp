@@ -38,12 +38,16 @@ LibraryModel::LibraryModel(QObject *parent) :
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
+    if(index.column() == 0) {
+        Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+        return  defaultFlags | Qt::ItemIsUserCheckable;
+    }
     return QAbstractItemModel::flags(index);
 }
 
 QVariant LibraryModel::data(const QModelIndex &item, int role) const
 {
-    if (role != Qt::DisplayRole && role != Qt::DecorationRole)
+    if (role != Qt::DisplayRole && role != Qt::DecorationRole && role != Qt::CheckStateRole)
         return QVariant();
 
     LibraryEntry* entry = entryFromIndex(item);
@@ -59,8 +63,20 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
     } else if(role == Qt::DecorationRole && item.column() == 0) {
         QString iconType = entry->isDirNode() ? "folder" : "file";
         return QPixmap (":/img/icons/general/" + iconType);
+    } else if(role == Qt::CheckStateRole && item.column() == 0) {
+        return isChecked(item) ? Qt::Checked : Qt::Unchecked;
     }
     return QVariant();
+}
+
+bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(role != Qt::CheckStateRole) {
+        return false;
+    }
+
+    setChecked(index, value == Qt::Checked);
+    return true;
 }
 
 QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) const
@@ -241,4 +257,68 @@ LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
     } else {
         return _root;
     }
+}
+
+void LibraryModel::setChecked(const QModelIndex &ind, bool checked)
+{
+    LibraryEntry *entry = entryFromIndex(ind);
+    // Check rows not already checked
+    if(checked && !_checkedEntries.contains(entry)) {
+        // Check the entry
+        _checkedEntries.insert(entry);
+        emit dataChanged(ind, ind, QVector<int>() << Qt::CheckStateRole);
+
+        // Check its parent if all sibling are checked
+        bool allChecked = true;
+        foreach(LibraryEntry* sibling, entry->parent()->children()) {
+            if(!_checkedEntries.contains(sibling)) {
+                allChecked = false;
+                break;
+            }
+        }
+        if(allChecked) {
+            _checkedEntries.insert(entry->parent());
+            emit dataChanged(ind.parent(), ind.parent(),
+                             QVector<int>() << Qt::CheckStateRole);
+        }
+
+        // If entry is a dir, check all its children
+        if(entry->isDirNode()) {
+            foreach(LibraryEntry* child, entry->children()) {
+                _checkedEntries.insert(child);
+            }
+
+            emit dataChanged(ind.child(0, 0), ind.child(rowCount(ind) - 1, 0),
+                             QVector<int>() << Qt::CheckStateRole);
+
+        }
+    }
+    // Uncheck rows already checked
+    else if (!checked && _checkedEntries.contains(entry)) {
+        // Uncheck the entry
+        _checkedEntries.remove(entry);
+        emit dataChanged(ind, ind, QVector<int>() << Qt::CheckStateRole);
+
+        // Uncheck its parent if it was checked
+        if(_checkedEntries.contains(entry->parent())){
+            _checkedEntries.remove(entry->parent());
+            emit dataChanged(ind.parent(), ind.parent(),
+                             QVector<int>() << Qt::CheckStateRole);
+        }
+
+        // Uncheck all its children if it is a dir
+        if(entry->isDirNode()) {
+            foreach(LibraryEntry* child, entry->children()) {
+                _checkedEntries.remove(child);
+            }
+
+            emit dataChanged(ind.child(0, 0), ind.child(rowCount(ind) - 1, 0),
+                             QVector<int>() << Qt::CheckStateRole);
+        }
+    }
+}
+
+bool LibraryModel::isChecked(const QModelIndex &index) const
+{
+    return _checkedEntries.contains(entryFromIndex(index));
 }

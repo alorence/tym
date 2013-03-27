@@ -36,6 +36,7 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QModelIndex parent(const QModelIndex &child) const;
@@ -59,6 +60,9 @@ private:
 
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
+    void setChecked(const QModelIndex &ind, bool checked);
+    bool isChecked(const QModelIndex &index) const;
+
     LibraryEntry * _root;
 
     BPDatabase _db;
@@ -66,6 +70,8 @@ private:
 
     QMap<QString, LibraryEntry*> _dirMap;
     QList<QString> _headers;
+
+    QSet<LibraryEntry*> _checkedEntries;
 };
 
 #endif // LIBRARYMODEL_H
