@@ -234,22 +234,6 @@ LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
     }
 }
 
-QString LibraryModel::debug(const QModelIndex &index) const
-{
-    LibraryEntry* p = static_cast<LibraryEntry*>(index.internalPointer());
-
-    QString name;
-    if(p == NULL) {
-        name = "NULL";
-    } else if(p->isDirNode()) {
-        name = p->dir().dirName();
-    } else {
-        name = p->data(LibraryEntry::Name).toString();
-    }
-
-    return QString("[%1, %2, %3]").arg(index.row()).arg(index.column()).arg(name);
-}
-
 LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
 {
     if(index.isValid()) {

@@ -56,7 +56,6 @@ public slots:
 
 private:
     LibraryEntry* getLibraryNode(const QDir &file);
-    QString debug(const QModelIndex &index) const;
 
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
