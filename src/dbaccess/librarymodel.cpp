@@ -21,265 +21,304 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtWidgets>
 
+#include <Logger.h>
 #include "commons.h"
-#include "bpdatabase.h"
+#include "libraryentry.h"
+#include "tools/utils.h"
 
-LibraryModel::LibraryModel(QObject *parent, QSqlDatabase db) :
-    QSqlTableModel(parent, db)
+LibraryModel::LibraryModel(QObject *parent) :
+    QAbstractItemModel(parent),
+    _db("libraryModel", this),
+    _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject()),
+    _root(NULL)
 {
-    _columnWithCheckbox = Library::FilePath;
-
-    _newFileColor = QColor(Qt::gray);
-    _newFileColor.setAlpha(30);
-    _missingColor = QColor(Qt::red);
-    _missingColor.setAlpha(60);
-    _resultsAvailableColor = QColor(254, 183, 11, 50);
-    _trackLinkedColor = QColor(Qt::green);
-    _trackLinkedColor.setAlpha(50);
-
-    updateSettings();
+    _headers << tr("Name") << tr("Status") << tr("Results") << tr("Infos");
+    refresh();
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
-    Qt::ItemFlags flags = QSqlTableModel::flags(index);
-    if(_checkboxesEnabled && index.column() == _columnWithCheckbox) {
-        return flags | Qt::ItemIsUserCheckable;
+    if(index.column() == 0) {
+        Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+        return  defaultFlags | Qt::ItemIsUserCheckable;
+    }
+    return QAbstractItemModel::flags(index);
+}
+
+QVariant LibraryModel::data(const QModelIndex &item, int role) const
+{
+    if (role != Qt::DisplayRole && role != Qt::DecorationRole && role != Qt::CheckStateRole)
+        return QVariant();
+
+    LibraryEntry* entry = entryFromIndex(item);
+
+    if(role == Qt::DisplayRole) {
+        if(entry->isDirNode() && item.column() == 0) {
+            return entry->dir().dirName();
+        } else if(! entry->isDirNode()) {
+            return entry->data((LibraryEntry::DataIndexes) item.column());
+        } else {
+            return QVariant();
+        }
+    } else if(role == Qt::DecorationRole && item.column() == 0) {
+        QString iconType = entry->isDirNode() ? "folder" : "file";
+        return QPixmap (":/img/icons/general/" + iconType);
+    } else if(role == Qt::CheckStateRole && item.column() == 0) {
+        return isChecked(item) ? Qt::Checked : Qt::Unchecked;
+    }
+    return QVariant();
+}
+
+bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(role != Qt::CheckStateRole) {
+        return false;
+    }
+
+    setChecked(index, value == Qt::Checked);
+    return true;
+}
+
+QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) const
+{
+    if( ! hasIndex(row, column, parent))
+        return QModelIndex();
+
+    LibraryEntry *parentEntry = entryFromIndex(parent);
+
+    LibraryEntry *childItem = parentEntry->child(row);
+
+    if (childItem != NULL){
+        return createIndex(row, column, childItem);
     } else {
-        return flags;
+        return QModelIndex();
     }
 }
 
-QVariant LibraryModel::data(const QModelIndex &ind, int role) const
+QModelIndex LibraryModel::parent(const QModelIndex &child) const
 {
-    if(_colorsEnabled && role == Qt::BackgroundRole) {
-        // Set BG color for each row
-        Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
+    LibraryEntry* parent = entryFromIndex(child)->parent();
 
-        if(status.testFlag(Library::FileNotFound)) {
-            return QBrush(_missingColor);
-        } else {
-            QString bpid = record(ind.row()).value(Library::Bpid).toString();
-            if( ! bpid.isEmpty()) {
-                return QBrush(_trackLinkedColor);
-            } else if(status.testFlag(Library::ResultsAvailable)) {
-                return QBrush(_resultsAvailableColor);
-            } else {
-                return QBrush(_newFileColor);
-            }
-        }
+    if(parent == _root) {
+        return QModelIndex();
+    } else {
+        return createIndex(parent->rowPosition(), 0, parent);
     }
-
-    if(ind.column() == _columnWithCheckbox && role == Qt::CheckStateRole && _checkboxesEnabled) {
-        return _checkedRows.contains(ind.row()) ? Qt::Checked : Qt::Unchecked;
-    } else if (ind.column() == Library::FilePath && !_displayFullPaths){
-        if(role == Qt::DisplayRole) {
-            QFileInfo file = record(ind.row()).value(Library::FilePath).toString();
-            return QVariant(file.fileName());
-        } else if(role == Qt::ToolTipRole) {
-            // Display only the folder (all text before the last dir separator)
-            QFileInfo file = record(ind.row()).value(Library::FilePath).toString();
-            return QVariant(tr("In directory %1").arg(file.absolutePath()));
-        }
-    } else if (ind.column() == Library::NumResults && role == Qt::DisplayRole) {
-
-        Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
-
-        QString trackLinked;
-        if( ! record(ind.row()).value(Library::Bpid).toString().isEmpty()) {
-            trackLinked = " Entry linked to a track.";
-        }
-
-        if(status.testFlag(Library::FileNotFound)) {
-            return tr("The file has been moved or renamed out of this software.%1").arg(trackLinked);
-        } else if (status.testFlag(Library::New)) {
-            return tr("No result for now...");
-        } else if (status.testFlag(Library::ResultsAvailable)) {
-            if(trackLinked.isEmpty()) {
-                return tr("Select the better result on the right");
-            } else {
-                return tr("A result has been linked to this track.");
-            }
-        } else {
-            return tr("");
-        }
-
-    } else if (ind.column() == Library::Status && role == Qt::DisplayRole) {
-
-        Library::FileStatus status = (Library::FileStatus) record(ind.row()).value(Library::Status).toInt();
-
-        if(status.testFlag(Library::FileNotFound)) {
-            return tr("Missing");
-        } else if (status.testFlag(Library::New)) {
-            return tr("Freshly added");
-        } else if (status.testFlag(Library::ResultsAvailable)) {
-            int n = QSqlTableModel::data(index(ind.row(), Library::NumResults), Qt::DisplayRole).toInt();
-            return tr("%n result(s)", "Display number of results available for one library element", n);
-        } else {
-            return tr("Unknown");
-        }
-    }
-    return QSqlTableModel::data(ind, role);
 }
 
-bool LibraryModel::setData(const QModelIndex &ind, const QVariant &value, int role)
+int LibraryModel::rowCount(const QModelIndex &parent) const
 {
-    if(ind.column() == _columnWithCheckbox && role == Qt::CheckStateRole) {
-        QItemSelectionModel::SelectionFlag selStatus;
-        selStatus = value == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect;
+    return entryFromIndex(parent)->rowCount();
+}
 
-        if(selStatus != data(ind, Qt::CheckStateRole)) {
-            QItemSelection item(ind, ind);
-            emit requestSelectRows(item, selStatus | QItemSelectionModel::Rows);
-
-            emit requestChangeCurrentIndex(ind, selStatus | QItemSelectionModel::Rows);
-        }
-        return true;
-    }
-    else {
-        return QSqlTableModel::setData(ind, value, role);
-    }
+int LibraryModel::columnCount(const QModelIndex &parent) const
+{
+    return 4;
 }
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-        switch(section) {
-        case Library::Uid:           return tr("Uid");
-        case Library::FilePath:      return tr("File");
-        case Library::Status:        return tr("Status");
-        case Library::NumResults:    return tr("Comment");
-        case Library::Bpid:          return tr("Track Id");
-        }
-    }
-    return QSqlTableModel::headerData(section, orientation, role);
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        return _headers[section];
+
+    return QVariant();
 }
 
-void LibraryModel::sort(int column, Qt::SortOrder order)
+QSqlRecord LibraryModel::record(int i)
 {
-    _checkedRows.clear();
-    QSqlTableModel::sort(column, order);
-}
-
-void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItemSelection& deselected)
-{
-    int i;
-    QItemSelectionRange range;
-    QVector<int> checkRole;
-    checkRole << Qt::CheckStateRole;
-    foreach(range, deselected) {
-        for(i = range.top() ; i <= range.bottom() ; i++) {
-            _checkedRows.remove(i);
-        }
-        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox), checkRole);
-    }
-    foreach(range, selected) {
-        for(i = range.top() ; i <= range.bottom() ; i++) {
-            _checkedRows << i;
-        }
-        emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox), checkRole);
-    }
+    return QSqlRecord();
 }
 
 QSet<int> LibraryModel::selectedIds() const
 {
-    return _checkedRows;
+    return QSet<int>();
 }
 
 QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
 {
-    QHash<int, QSqlRecord> result;
-    foreach(int index, _checkedRows) {
-        result[index] = record(index);
-    }
-    return result;
-}
-
-void LibraryModel::selectSpecificGroup(int group)
-{
-    if(group == AllTracks) {
-        QItemSelection entire(index(0, _columnWithCheckbox), index(rowCount() -1, _columnWithCheckbox));
-        emit requestSelectRows(entire, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-    } else if (group == MissingTracks) {
-        QItemSelection missing;
-        for (int i = 0 ; i < rowCount() - 1 ; ++i) {
-            if( ((Library::FileStatus) record(i).value(Library::Status).toInt()).testFlag(Library::FileNotFound)) {
-                QModelIndex ind = index(i, _columnWithCheckbox);
-                missing.select(ind, ind);
-            }
-        }
-        emit requestSelectRows(missing, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-    } else if (group == NewTracks) {
-        QItemSelection news;
-        for (int i = 0 ; i < rowCount() - 1 ; ++i) {
-            if( ( (Library::FileStatus) record(i).value(Library::Status).toInt()).testFlag(Library::New)) {
-                QModelIndex ind = index(i, _columnWithCheckbox);
-                news.select(ind, ind);
-            }
-        }
-        emit requestSelectRows(news, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-    } else if (group == LinkedTracks) {
-        QItemSelection linked;
-        for (int i = 0 ; i < rowCount() - 1 ; ++i) {
-            if( ! record(i).value(Library::Bpid).toString().isEmpty()) {
-                QModelIndex ind = index(i, _columnWithCheckbox);
-                linked.select(ind, ind);
-            }
-        }
-        emit requestSelectRows(linked, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-    }
-}
-
-void LibraryModel::updateSettings()
-{
-    QSettings settings;
-    bool colorsEnabled = settings.value(TYM_PATH_DISPLAY_COLORS, TYM_DEFAULT_DISPLAY_COLORS).toBool();
-    bool checkboxesEnabled = settings.value(TYM_PATH_DISPLAY_CHECKBOXES, TYM_DEFAULT_DISPLAY_CHECKBOXES).toBool();
-    bool displayFullPaths = settings.value(TYM_PATH_DISPLAY_FULLPATHS, TYM_DEFAULT_DISPLAY_FULLPATHS).toBool();
-
-    QVector<int> changes;
-    if(colorsEnabled != _colorsEnabled)
-        changes << Qt::BackgroundColorRole;
-    if(checkboxesEnabled != _checkboxesEnabled)
-        changes << Qt::CheckStateRole;
-    if(displayFullPaths != _displayFullPaths)
-        changes << Qt::DisplayRole;
-
-    _colorsEnabled = colorsEnabled;
-    _checkboxesEnabled = checkboxesEnabled;
-    _displayFullPaths = displayFullPaths;
-
-    if( ! changes.isEmpty()) {
-        emit dataChanged(index(0, columnCount() - 1), index(rowCount() - 1, columnCount() - 1), changes);
-    }
+    return QHash<int, QSqlRecord>();
 }
 
 void LibraryModel::refresh()
 {
-    select();
+    if( ! _elementsList.exec()) {
+        LOG_ERROR(tr("Unable to refresh library model : %1").arg(_elementsList.lastError().text()));
+    } else {
+        delete _root;
+        _root = NULL;
 
-    QModelIndex ind;
-    QItemSelection selection;
-    foreach(int row, _checkedRows) {
-        ind = index(row, _columnWithCheckbox);
-        selection.select(ind, ind);
+        while(_elementsList.next()) {
+            // Helper to extract some informations from file path
+            QFileInfo fileInfo(_elementsList.value(Library::FilePath).toString());
+
+            LibraryEntry* parentDir = getLibraryNode(fileInfo.dir());
+            new LibraryEntry(_elementsList.record(), parentDir);
+
+            LOG_DEBUG(tr("Add child %1 to parent folder %2").arg(_elementsList.value(1).toString()).arg(parentDir->dir().canonicalPath()));
+            qDebug() << _dirMap << _root->dir().canonicalPath();
+        }
     }
 
-    emit requestSelectRows(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-    // TODO: Ensure new current index is the last row, i.e. checkedRows is sorted (remove QSet)
-    emit requestChangeCurrentIndex(ind, QItemSelectionModel::NoUpdate);
+    LOG_DEBUG(tr("Root is %1").arg(_root->dir().canonicalPath()));
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
-    QModelIndex ind;
-    QItemSelection selection;
-    foreach(int row, rows) {
-        _checkedRows.remove(row);
-        ind = index(row, _columnWithCheckbox);
-        selection.select(ind, ind);
-    }
-    emit requestSelectRows(selection, QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
-    refresh();
 }
 
+LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
+{
+    QString dirUnifiedPath = Utils::unifyPath(dir.canonicalPath());
+
+    if(_root == NULL) {
+        _root = new LibraryEntry(dir.canonicalPath(), NULL);
+        _dirMap[dirUnifiedPath] = _root;
+        //LOG_DEBUG(tr("Create new Root %1").arg(dir.canonicalPath()));
+        return _root;
+    }
+
+    QString rootUnifiedPath = Utils::unifyPath(_root->dir().canonicalPath());
+
+    // Parent directory already exist
+    if(_dirMap.contains(dirUnifiedPath)) {
+        return _dirMap.value(dirUnifiedPath);
+    } else {
+        // dir is a subentry of root
+        if(dirUnifiedPath.startsWith(rootUnifiedPath)) {
+            QDir upDir = dir;
+            LibraryEntry* parentDir;
+            if(upDir.cdUp()) {
+                parentDir = getLibraryNode(upDir);
+            } else {
+                // FIXME: should never come here...
+                parentDir = _root;
+            }
+            LOG_DEBUG(tr("**1** Create new dir entry : %1").arg(dir.canonicalPath()));
+            LibraryEntry* newEntry = new LibraryEntry(dir, parentDir);
+            _dirMap[dirUnifiedPath] = newEntry;
+
+            return newEntry;
+        }
+        // dir is a parent of root, need to update root entry
+        else if(rootUnifiedPath.startsWith(dirUnifiedPath)) {
+
+            // Stroe the current root, before updating it
+            LibraryEntry *oldRoot = _root;
+
+            // Create the future new root element and update current root & internal map
+            _dirMap[dirUnifiedPath] = _root = new LibraryEntry(dir, NULL);
+
+            LOG_DEBUG(tr("**2** Update root1 %1 -> %2").arg(oldRoot->dir().canonicalPath()).arg(_root->dir().canonicalPath()));
+
+            QDir oldRootDir = oldRoot->dir();
+            oldRootDir.cdUp();
+
+            // Update old root parent member
+            oldRoot->setParent(getLibraryNode(oldRootDir));
+            //LOG_DEBUG(tr("Update old root parent : %1").arg(newRootParent->dir().canonicalPath()));
+
+            return _root;
+        }
+        // root and current elements have no common ancestor
+        else {
+
+            QDir upDir = dir;
+            upDir.cdUp();
+
+            LOG_DEBUG(tr("**3** Check up dir"));
+
+            LibraryEntry* newEntry = new LibraryEntry(dir.canonicalPath(), getLibraryNode(upDir));
+            _dirMap[dirUnifiedPath] = newEntry;
+
+            /*
+            LibraryEntry *oldRoot = _root;
+
+            LibraryEntry *newRoot = new LibraryEntry(QDir("/"), NULL);
+            _dirMap["/"] = newRoot;
+            _root = newRoot;
+
+            oldRoot->setParent(getParentDirEntry(oldRoot->dir()));
+            //LOG_DEBUG(tr("Update root2 %1 -> %2").arg(rootUnifiedPath).arg(newRoot->dir().canonicalPath()));
+
+
+            LibraryEntry* newEntry = new LibraryEntry(dir.canonicalPath(), getParentDirEntry(dir));
+            _dirMap[dir.canonicalPath()] = newEntry;
+            */
+
+            return newEntry;
+        }
+    }
+}
+
+LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
+{
+    if(index.isValid()) {
+        return static_cast<LibraryEntry*>(index.internalPointer());
+    } else {
+        return _root;
+    }
+}
+
+void LibraryModel::setChecked(const QModelIndex &ind, bool checked)
+{
+    LibraryEntry *entry = entryFromIndex(ind);
+    // Check rows not already checked
+    if(checked && !_checkedEntries.contains(entry)) {
+        // Check the entry
+        _checkedEntries.insert(entry);
+        emit dataChanged(ind, ind, QVector<int>() << Qt::CheckStateRole);
+
+        // Check its parent if all sibling are checked
+        bool allChecked = true;
+        foreach(LibraryEntry* sibling, entry->parent()->children()) {
+            if(!_checkedEntries.contains(sibling)) {
+                allChecked = false;
+                break;
+            }
+        }
+        if(allChecked) {
+            _checkedEntries.insert(entry->parent());
+            emit dataChanged(ind.parent(), ind.parent(),
+                             QVector<int>() << Qt::CheckStateRole);
+        }
+
+        // If entry is a dir, check all its children
+        if(entry->isDirNode()) {
+            foreach(LibraryEntry* child, entry->children()) {
+                _checkedEntries.insert(child);
+            }
+
+            emit dataChanged(ind.child(0, 0), ind.child(rowCount(ind) - 1, 0),
+                             QVector<int>() << Qt::CheckStateRole);
+
+        }
+    }
+    // Uncheck rows already checked
+    else if (!checked && _checkedEntries.contains(entry)) {
+        // Uncheck the entry
+        _checkedEntries.remove(entry);
+        emit dataChanged(ind, ind, QVector<int>() << Qt::CheckStateRole);
+
+        // Uncheck its parent if it was checked
+        if(_checkedEntries.contains(entry->parent())){
+            _checkedEntries.remove(entry->parent());
+            emit dataChanged(ind.parent(), ind.parent(),
+                             QVector<int>() << Qt::CheckStateRole);
+        }
+
+        // Uncheck all its children if it is a dir
+        if(entry->isDirNode()) {
+            foreach(LibraryEntry* child, entry->children()) {
+                _checkedEntries.remove(child);
+            }
+
+            emit dataChanged(ind.child(0, 0), ind.child(rowCount(ind) - 1, 0),
+                             QVector<int>() << Qt::CheckStateRole);
+        }
+    }
+}
+
+bool LibraryModel::isChecked(const QModelIndex &index) const
+{
+    return _checkedEntries.contains(entryFromIndex(index));
+}

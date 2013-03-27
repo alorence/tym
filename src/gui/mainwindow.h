@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 
 #include "tools/searchprovider.h"
-#include "dbaccess/librarymodel2.h"
+#include "dbaccess/librarymodel.h"
 
 class About;
 class SettingsDialog;

@@ -23,62 +23,54 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QtSql>
 
-class LibraryModel : public QSqlTableModel
+#include "bpdatabase.h"
+
+class LibraryEntry;
+
+class LibraryModel : public QAbstractItemModel
 {
     Q_OBJECT
 
-
 public:
-    explicit LibraryModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
+    explicit LibraryModel(QObject *parent = 0);
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex &i, const QVariant &value, int role);
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndex parent(const QModelIndex &child) const;
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-    void sort(int column, Qt::SortOrder order);
+    /* TODO : to replace this method to use a modelindex */
+    QSqlRecord record(int i);
 
     QSet<int> selectedIds() const;
     QHash<int, QSqlRecord> selectedRecords() const;
 
-    enum GroupSelection {
-        AllTracks,
-        NewTracks,
-        MissingTracks,
-        LinkedTracks
-    };
-
-signals:
-    void requestChangeCurrentIndex(const QModelIndex&,QItemSelectionModel::SelectionFlags);
-    void requestSelectRows(const QItemSelection&,QItemSelectionModel::SelectionFlags);
-
 public slots:
-    /*!
-     * \brief Update settings specific to this model
-     */
-    void updateSettings();
-    void updateCheckedRows(const QItemSelection &, const QItemSelection &);
     void refresh();
     void unselectRowsAndRefresh(QList<int> rows);
-    /*!
-     * \brief Select a particular group of elements, depending on their status
-     * \param group Kind of elements which must be selected
-     */
-    void selectSpecificGroup(int group);
-
 
 private:
-    QSet<int> _checkedRows;
-    int _columnWithCheckbox;
+    LibraryEntry* getLibraryNode(const QDir &file);
+    LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
-    QColor _missingColor;
-    QColor _newFileColor;
-    QColor _resultsAvailableColor;
-    QColor _trackLinkedColor;
+    void setChecked(const QModelIndex &ind, bool checked);
+    bool isChecked(const QModelIndex &index) const;
 
-    bool _checkboxesEnabled;
-    bool _colorsEnabled;
-    bool _displayFullPaths;
+    LibraryEntry * _root;
+
+    BPDatabase _db;
+    QSqlQuery _elementsList;
+
+    QMap<QString, LibraryEntry*> _dirMap;
+    QList<QString> _headers;
+
+    QSet<LibraryEntry*> _checkedEntries;
 };
 
 #endif // LIBRARYMODEL_H
