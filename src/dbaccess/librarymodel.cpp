@@ -113,7 +113,10 @@ int LibraryModel::rowCount(const QModelIndex &parent) const
 
 int LibraryModel::columnCount(const QModelIndex &parent) const
 {
-    return 4;
+    if(!parent.isValid())
+        return 4;
+    else
+        return entryFromIndex(parent)->columnCount();
 }
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
