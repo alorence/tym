@@ -72,22 +72,17 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
 
-    // Configure Library Model
+    // Configure Library Model and View
     _libraryModel = new LibraryModel(this);
-//    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
-//    _libraryModel->setTable("LibraryHelper");
-//    _libraryModel->select();
-    // Configure view
     ui->libraryView->setModel(_libraryModel);
-//    ui->libraryView->hideColumn(Library::Uid);
-//    ui->libraryView->hideColumn(Library::Bpid);
 
-    // Configure Search Model
+    // Configure search model
     _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
     _searchModel->setTable("SearchResultsHelper");
     _searchModel->setFilter("libId=NULL");
     _searchModel->select();
-    // Configure view
+
+    // Configure search view
     ui->searchResultsView->setModel(_searchModel);
     ui->searchResultsView->hideColumn(SearchResults::LibId);
     ui->searchResultsView->hideColumn(SearchResults::Bpid);
@@ -196,9 +191,7 @@ MainWindow::~MainWindow()
     delete _settings;
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
-    foreach(QAction *action, _selectActionsList) {
-        action->deleteLater();
-    }
+    qDeleteAll(_selectActionsList);
 }
 
 void MainWindow::updateSettings()
@@ -414,8 +407,8 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
     QFileInfoList result;
 
     if(entry.isDir()) {
-        foreach(QFileInfo toto, QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-            result.append(filteredFileList(toto));
+        foreach(QFileInfo dirEntry, QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+            result.append(filteredFileList(dirEntry));
         }
 
     } else if(entry.isFile()) {
