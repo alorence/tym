@@ -55,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalSplitter->setStretchFactor(0, 4);
     ui->horizontalSplitter->setStretchFactor(1, 1);
 
-
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
 
@@ -326,7 +325,7 @@ void MainWindow::selectSpecificLibraryElements(int index)
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SearchWizard wizard(_libraryModel->selectedRecords().values());
+    SearchWizard wizard(_libraryModel->selectedRecords());
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -368,17 +367,8 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionRemove_triggered()
 {
-    QHash<int, QSqlRecord> selecteds = _libraryModel->selectedRecords();
-    QList<int> rows;
-    QStringList uids;
-
-    QHashIterator<int, QSqlRecord> it(selecteds);
-    while(it.hasNext()) {
-        rows << it.next().key();
-        uids << it.value().value(Library::Uid).toString();
-    }
-    _dbHelper->deleteLibraryEntry(uids);
-    _libraryModel->unselectRowsAndRefresh(rows);
+    _dbHelper->deleteLibraryEntry(_libraryModel->selectedUids());
+    _libraryModel->refresh();
 }
 
 void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
@@ -412,7 +402,7 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
 void MainWindow::on_actionRename_triggered()
 {
-    RenameWizard wizard(_libraryModel->selectedRecords().values());
+    RenameWizard wizard(_libraryModel->selectedRecords());
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -441,6 +431,6 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 
 void MainWindow::on_actionExport_triggered()
 {
-    ExportPlaylistWizard wizard(_libraryModel->selectedRecords().values());
+    ExportPlaylistWizard wizard(_libraryModel->selectedRecords());
     wizard.exec();
 }

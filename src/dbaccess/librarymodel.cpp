@@ -85,7 +85,6 @@ QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) 
         return QModelIndex();
 
     LibraryEntry *parentEntry = entryFromIndex(parent);
-
     LibraryEntry *childItem = parentEntry->child(row);
 
     if (childItem != NULL){
@@ -137,9 +136,22 @@ QSet<int> LibraryModel::selectedIds() const
     return QSet<int>();
 }
 
-QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
+QList<QSqlRecord> LibraryModel::selectedRecords() const
 {
-    return QHash<int, QSqlRecord>();
+    QList<QSqlRecord> result;
+    foreach (LibraryEntry* entry, _checkedEntries) {
+        result << entry->record();
+    }
+    return result;
+}
+
+QStringList LibraryModel::selectedUids() const
+{
+    QStringList result;
+    foreach (LibraryEntry* entry, _checkedEntries) {
+        result << entry->data(LibraryEntry::Name).toString();
+    }
+    return result;
 }
 
 void LibraryModel::refresh()

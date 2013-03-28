@@ -49,7 +49,8 @@ public:
     QSqlRecord record(int i);
 
     QSet<int> selectedIds() const;
-    QHash<int, QSqlRecord> selectedRecords() const;
+    QList<QSqlRecord> selectedRecords() const;
+    QStringList selectedUids() const;
 
 public slots:
     void refresh();

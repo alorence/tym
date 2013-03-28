@@ -43,6 +43,7 @@ public:
     void setDir(const QDir &newDir);
 
     const QVariant data(DataIndexes index) const;
+    const QSqlRecord &record();
     void setRecord(const QSqlRecord &record);
 
     LibraryEntry *parent() const;

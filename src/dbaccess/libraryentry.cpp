@@ -71,6 +71,11 @@ const QVariant LibraryEntry::data(DataIndexes index) const
     }
 }
 
+const QSqlRecord &LibraryEntry::record()
+{
+    return _record;
+}
+
 void LibraryEntry::setRecord(const QSqlRecord &record)
 {
     _record = record;
