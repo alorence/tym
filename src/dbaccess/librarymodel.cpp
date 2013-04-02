@@ -161,8 +161,16 @@ void LibraryModel::refresh()
     if( ! _elementsList.exec()) {
         LOG_ERROR(tr("Unable to refresh library model : %1").arg(_elementsList.lastError().text()));
     } else {
+
+        beginResetModel();
+
+        // All root's children are deleted and cleaned
         delete _root;
         _root = NULL;
+
+        // Reset the directories map and checked entries
+        _dirMap.clear();
+        _checkedEntries.clear();;
 
         while(_elementsList.next()) {
             // Helper to extract some informations from file path
@@ -174,6 +182,8 @@ void LibraryModel::refresh()
             LOG_DEBUG(tr("Add child %1 to parent folder %2").arg(_elementsList.value(1).toString()).arg(parentDir->dir().canonicalPath()));
             qDebug() << _dirMap << _root->dir().canonicalPath();
         }
+
+        endResetModel();
     }
 
     LOG_DEBUG(tr("Root is %1").arg(_root->dir().canonicalPath()));
