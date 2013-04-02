@@ -91,38 +91,24 @@ MainWindow::MainWindow(QWidget *parent) :
     // Ensure both library and search results view are always focused together
     ui->libraryView->setFocusProxy(ui->searchResultsView);
 
-    // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(_libraryModel, SIGNAL(requestSelectRows(QItemSelection,QItemSelectionModel::SelectionFlags)),
-            ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
-
-    // Set current selection index to last modified row
-    connect(_libraryModel, SIGNAL(requestChangeCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)),
-            ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
-
     // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(_libraryModel, &LibraryModel::checkedItemsUpdated, this, &MainWindow::updateLibraryActions);
 
     // Update search results view when selecting something in the library view
-    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateSearchResults(QModelIndex,QModelIndex)));
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::updateSearchResults);
 
     // Display informations about a track when selecting it in the view
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::updateTrackInfos);
 
     // TODO: Maybe useless when LibraryModel::refresh(int row) will work
-    connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
-            _searchModel, SLOT(refresh(QString)));
+    connect(_dbHelper, &BPDatabase::referenceForTrackUpdated, _searchModel, &SearchResultsModel::refresh);
 
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            this, SLOT(updateSearchResultsActions()));
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::updateSearchResultsActions);
 
     // Download pictures when needed
-    connect(ui->trackInfos, SIGNAL(downloadPicture(QString)),
-            _pictureDownloader, SLOT(downloadTrackPicture(QString)));
-    connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
-            ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
+    connect(ui->trackInfos, &TrackInfosView::downloadPicture, _pictureDownloader, &PictureDownloader::downloadTrackPicture);
+    connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished, ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
 
 //    connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
 //            _libraryModel, SLOT(refresh()));
@@ -163,9 +149,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
     libStatusUpdateTask->moveToThread(_libStatusUpdateThread);
-    connect(_libStatusUpdateThread, SIGNAL(started()), libStatusUpdateTask, SLOT(run()));
-//    connect(libStatusUpdateTask, SIGNAL(finished()), _libraryModel, SLOT(refresh()));
-    connect(_libStatusUpdateThread, SIGNAL(destroyed()), libStatusUpdateTask, SLOT(deleteLater()));
+    connect(_libStatusUpdateThread, &QThread::started, libStatusUpdateTask, &Task::run);
+    connect(libStatusUpdateTask, &Task::finished, _libraryModel, &LibraryModel::refresh);
+    connect(_libStatusUpdateThread, &QThread::destroyed, libStatusUpdateTask, &Task::deleteLater);
 
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
