@@ -23,6 +23,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QtSql>
 
+#include "commons.h"
+
 class LibraryEntry
 {
 public:
@@ -30,19 +32,12 @@ public:
     explicit LibraryEntry(const QSqlRecord &record, LibraryEntry *parent = 0);
     ~LibraryEntry();
 
-    enum DataIndexes {
-        Name = 0,
-        Status,
-        Results,
-        Infos
-    };
-
     bool isDirNode() const;
 
     const QDir &dir() const;
     void setDir(const QDir &newDir);
 
-    const QVariant data(DataIndexes index) const;
+    const QVariant data(Library::GuiIndexes index) const;
     const QSqlRecord &record();
     void setRecord(const QSqlRecord &record);
 

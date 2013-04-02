@@ -56,7 +56,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         if(entry->isDirNode() && item.column() == 0) {
             return entry->dir().dirName();
         } else if(! entry->isDirNode()) {
-            return entry->data((LibraryEntry::DataIndexes) item.column());
+            return entry->data((Library::GuiIndexes) item.column());
         } else {
             return QVariant();
         }
@@ -110,12 +110,9 @@ int LibraryModel::rowCount(const QModelIndex &parent) const
     return entryFromIndex(parent)->rowCount();
 }
 
-int LibraryModel::columnCount(const QModelIndex &parent) const
+int LibraryModel::columnCount(const QModelIndex &) const
 {
-    if(!parent.isValid())
-        return 4;
-    else
-        return entryFromIndex(parent)->columnCount();
+    return 4;
 }
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -149,7 +146,7 @@ QStringList LibraryModel::checkedUids() const
 {
     QStringList result;
     foreach (LibraryEntry* entry, _checkedEntries) {
-        result << entry->data(LibraryEntry::Name).toString();
+        result << entry->data(Library::Name).toString();
     }
     return result;
 }

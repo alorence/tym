@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "libraryentry.h"
 
 #include <Logger.h>
-#include "commons.h"
+
 
 LibraryEntry::LibraryEntry(const QDir &dir, LibraryEntry *parent) :
     _dir(dir),
@@ -39,6 +39,7 @@ LibraryEntry::LibraryEntry(const QSqlRecord &record, LibraryEntry *parent) :
 LibraryEntry::~LibraryEntry()
 {
     qDeleteAll(_children);
+    _children.clear();
 }
 
 bool LibraryEntry::isDirNode() const
@@ -56,17 +57,18 @@ void LibraryEntry::setDir(const QDir &newDir)
     _dir = newDir;
 }
 
-const QVariant LibraryEntry::data(DataIndexes index) const
+const QVariant LibraryEntry::data(Library::GuiIndexes index) const
 {
     switch(index) {
-    case Name:
+    case Library::Name:
         return QFileInfo(_record.value(Library::FilePath).toString()).fileName();
-    case Status:
+    case Library::StatusMessage:
         return _record.value(Library::Status);
-    case Results:
+    case Library::Results:
         return _record.value(Library::NumResults);
-    case Infos:
+    case Library::Infos:
     default:
+        // TODO: return a message
         return "";
     }
 }
@@ -124,7 +126,7 @@ int LibraryEntry::columnCount() const
     if(isDirNode()) {
         return 1;
     } else {
-        return _record.count();
+        return 4;
     }
 }
 
