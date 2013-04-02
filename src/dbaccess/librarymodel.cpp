@@ -137,7 +137,9 @@ QList<QSqlRecord> LibraryModel::checkedRecords() const
 {
     QList<QSqlRecord> result;
     foreach (LibraryEntry* entry, _checkedEntries) {
-        result << entry->record();
+        if(!entry->isDirNode()) {
+            result << entry->record();
+        }
     }
     return result;
 }
@@ -146,7 +148,9 @@ QStringList LibraryModel::checkedUids() const
 {
     QStringList result;
     foreach (LibraryEntry* entry, _checkedEntries) {
-        result << entry->data(Library::Name).toString();
+        if(!entry->isDirNode()) {
+            result << entry->data(Library::Name).toString();
+        }
     }
     return result;
 }
@@ -161,7 +165,7 @@ void LibraryModel::refresh()
     if( ! _elementsList.exec()) {
         LOG_ERROR(tr("Unable to refresh library model : %1").arg(_elementsList.lastError().text()));
     } else {
-
+        // Invalidate all existing ModelIndexes
         beginResetModel();
 
         // All root's children are deleted and cleaned
@@ -183,6 +187,7 @@ void LibraryModel::refresh()
             qDebug() << _dirMap << _root->dir().canonicalPath();
         }
 
+        // Inform view that new items are stored in the model. It will start te rebuild its ModelIndexes
         endResetModel();
     }
 
