@@ -131,7 +131,7 @@ QSqlRecord LibraryModel::record(int i)
     return QSqlRecord();
 }
 
-QList<QSqlRecord> LibraryModel::selectedRecords() const
+QList<QSqlRecord> LibraryModel::checkedRecords() const
 {
     QList<QSqlRecord> result;
     foreach (LibraryEntry* entry, _checkedEntries) {
@@ -140,7 +140,7 @@ QList<QSqlRecord> LibraryModel::selectedRecords() const
     return result;
 }
 
-QStringList LibraryModel::selectedUids() const
+QStringList LibraryModel::checkedUids() const
 {
     QStringList result;
     foreach (LibraryEntry* entry, _checkedEntries) {

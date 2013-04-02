@@ -317,7 +317,7 @@ void MainWindow::selectSpecificLibraryElements(int index)
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SearchWizard wizard(_libraryModel->selectedRecords());
+    SearchWizard wizard(_libraryModel->checkedRecords());
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -359,7 +359,7 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionRemove_triggered()
 {
-    _dbHelper->deleteLibraryEntry(_libraryModel->selectedUids());
+    _dbHelper->deleteLibraryEntry(_libraryModel->checkedUids());
     _libraryModel->refresh();
 }
 
@@ -394,7 +394,7 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
 void MainWindow::on_actionRename_triggered()
 {
-    RenameWizard wizard(_libraryModel->selectedRecords());
+    RenameWizard wizard(_libraryModel->checkedRecords());
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -423,6 +423,6 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 
 void MainWindow::on_actionExport_triggered()
 {
-    ExportPlaylistWizard wizard(_libraryModel->selectedRecords());
+    ExportPlaylistWizard wizard(_libraryModel->checkedRecords());
     wizard.exec();
 }

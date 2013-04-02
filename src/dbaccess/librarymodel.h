@@ -48,8 +48,8 @@ public:
     /* TODO : to replace this method to use a modelindex */
     QSqlRecord record(int i);
 
-    QList<QSqlRecord> selectedRecords() const;
-    QStringList selectedUids() const;
+    QList<QSqlRecord> checkedRecords() const;
+    QStringList checkedUids() const;
     int numChecked();
 
 public slots:
