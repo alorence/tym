@@ -237,9 +237,11 @@ void MainWindow::dropEvent(QDropEvent *event)
 void MainWindow::showEvent(QShowEvent *)
 {
     // Configure libraryView filePath column to take as space as possible
-//    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
-    // Ensure 2 last colums have the default section size
-//    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+    QHeaderView *horizHeader = ui->libraryView->header();
+    // Ensure 1st column take as most space as possible
+    ui->libraryView->setColumnWidth(Library::Name, horizHeader->width() - 3 * horizHeader->defaultSectionSize());
+    // Enlarge last column (same size as first one)
+    ui->libraryView->setColumnWidth(Library::Infos, ui->libraryView->columnWidth(Library::Name));
 }
 
 void MainWindow::toggleConsoleDisplaying(bool show) const

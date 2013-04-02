@@ -74,6 +74,12 @@ namespace Library {
         FileNotFound = 0x10
     };
     Q_DECLARE_FLAGS(FileStatus, FileStatuses)
+    enum GuiIndexes {
+        Name = 0,
+        StatusMessage,
+        Results,
+        Infos
+    };
 }
 Q_DECLARE_OPERATORS_FOR_FLAGS(Library::FileStatus)
 namespace BPTracks {
