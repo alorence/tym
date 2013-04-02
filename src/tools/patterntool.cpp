@@ -71,11 +71,11 @@ FileBasenameParser::FileBasenameParser(const QString &pattern, QObject *parent) 
 
 }
 
-QMap<TrackFullInfos::Indexes, QString> FileBasenameParser::parse(const QString &basename) const
+QMap<TrackFullInfos::TableIndexes, QString> FileBasenameParser::parse(const QString &basename) const
 {
     QRegularExpressionMatch matchResult = _parserRegularExpression.match(basename);
 
-    QMap<TrackFullInfos::Indexes, QString> result;
+    QMap<TrackFullInfos::TableIndexes, QString> result;
     foreach(QString patternElt, _patternElts) {
         QString upCasePatternElt = patternElt.toUpper();
         if(availablesPatterns().contains(upCasePatternElt)

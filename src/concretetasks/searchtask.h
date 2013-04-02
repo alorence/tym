@@ -71,7 +71,7 @@ private:
     QString _searchPattern;
     QList<QSqlRecord> _selectedRecords;
     QStringList _searchTerms;
-    QMap<QString, QMap<TrackFullInfos::Indexes, QString> > _trackParsedInformation;
+    QMap<QString, QMap<TrackFullInfos::TableIndexes, QString> > _trackParsedInformation;
     BPDatabase* _dbHelper;
     SearchProvider* _search;
 

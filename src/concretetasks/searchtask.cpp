@@ -136,11 +136,11 @@ void SearchTask::selectBetterResult()
             QSqlRecord result = results.record();
             int score = 0;
 
-            QMapIterator<TrackFullInfos::Indexes, QString> it(_trackParsedInformation[uid]);
+            QMapIterator<TrackFullInfos::TableIndexes, QString> it(_trackParsedInformation[uid]);
 
             // Check for each parsed information, for a corresponding result
             while(it.hasNext()) {
-                TrackFullInfos::Indexes index = it.next().key();
+                TrackFullInfos::TableIndexes index = it.next().key();
 
                 // To ensure minor differences will not affect the string compare
                 QString value = it.value();

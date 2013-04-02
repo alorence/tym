@@ -45,7 +45,7 @@ public:
      * \param inRegExp RegularExpression associated with the pattern, to parse filenames
      * \param sqlIndex Corresponding index in TrackFullInfos table
      */
-    PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::Indexes sqlIndex = TrackFullInfos::InvalidIndex);
+    PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::TableIndexes sqlIndex = TrackFullInfos::InvalidIndex);
     /*!
      * \link _displayName
      */
@@ -55,7 +55,7 @@ public:
      */
     const QString &description() const { return _description; }
     const QString &inRegExp() const { return _regExp; }
-    TrackFullInfos::Indexes sqlIndex() const { return _sqlIndex; }
+    TrackFullInfos::TableIndexes sqlIndex() const { return _sqlIndex; }
 
     /*!
      * \link _displayName
@@ -66,7 +66,7 @@ public:
      */
     void setDescription(const QString& description) { _description = description; }
     void setRegExp(const QString& inRegExp) { _regExp = inRegExp; }
-    void setSqlIndex(TrackFullInfos::Indexes index) { _sqlIndex = index; }
+    void setSqlIndex(TrackFullInfos::TableIndexes index) { _sqlIndex = index; }
 
 private:
     /*!
@@ -78,7 +78,7 @@ private:
      */
     QString _description;
     QString _regExp;
-    TrackFullInfos::Indexes _sqlIndex;
+    TrackFullInfos::TableIndexes _sqlIndex;
 };
 
 #endif // PATTERNELEMENT_H

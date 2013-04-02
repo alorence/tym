@@ -61,7 +61,7 @@ namespace Settings {
 #define TYM_DEFAULT_PROXY_PORT ""
 
 namespace Library {
-    enum Indexes {
+    enum TableIndexes {
         Uid = 0,
         FilePath,
         Bpid,
@@ -83,7 +83,7 @@ namespace Library {
 }
 Q_DECLARE_OPERATORS_FOR_FLAGS(Library::FileStatus)
 namespace BPTracks {
-    enum Indexes {
+    enum TableIndexes {
         Bpid = 0,
         TrackName,
         MixName,
@@ -100,7 +100,7 @@ namespace BPTracks {
     };
 }
 namespace TrackFullInfos {
-    enum Indexes {
+    enum TableIndexes {
         Artists,
         Remixers,
         Genres,
@@ -122,7 +122,7 @@ namespace TrackFullInfos {
     };
 }
 namespace SearchResults {
-    enum Indexes {
+    enum TableIndexes {
         LibId = 0,
         Bpid,
         Track,

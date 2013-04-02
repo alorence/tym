@@ -27,7 +27,7 @@ PatternElement::PatternElement() :
 {
 }
 
-PatternElement::PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::Indexes sqlIndex) :
+PatternElement::PatternElement(QString displayName, QString description, QString inRegExp, TrackFullInfos::TableIndexes sqlIndex) :
     _displayName(displayName),
     _description(description),
     _regExp(inRegExp),
