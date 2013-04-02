@@ -110,8 +110,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->trackInfos, &TrackInfosView::downloadPicture, _pictureDownloader, &PictureDownloader::downloadTrackPicture);
     connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished, ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
 
-//    connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
-//            _libraryModel, SLOT(refresh()));
+    connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
     // Configure actions for selecting groups in library
 //    _selectionActions[LibraryModel::AllTracks] = "All tracks";
