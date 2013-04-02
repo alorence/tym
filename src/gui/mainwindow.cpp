@@ -99,13 +99,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_libraryModel, SIGNAL(requestChangeCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)),
             ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
 
-    // Check rows in model when selection change on the view
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));
-
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            this, SLOT(updateLibraryActions()));
+    connect(_libraryModel, &LibraryModel::checkedItemsUpdated, this, &MainWindow::updateLibraryActions);
 
     // Update search results view when selecting something in the library view
     connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -289,9 +284,11 @@ void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex
     ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
 }
 
-void MainWindow::updateLibraryActions()
+void MainWindow::updateLibraryActions(int numSel)
 {
-    int numSel = _libraryModel->selectedIds().size();
+    if(numSel == -1) {
+        numSel = _libraryModel->numChecked();
+    }
 
     ui->actionRemove->setDisabled(numSel == 0);
     ui->actionSearch->setDisabled(numSel == 0);

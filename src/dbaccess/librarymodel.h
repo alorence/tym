@@ -48,13 +48,16 @@ public:
     /* TODO : to replace this method to use a modelindex */
     QSqlRecord record(int i);
 
-    QSet<int> selectedIds() const;
     QList<QSqlRecord> selectedRecords() const;
     QStringList selectedUids() const;
+    int numChecked();
 
 public slots:
     void refresh();
     void unselectRowsAndRefresh(QList<int> rows);
+
+signals:
+    void checkedItemsUpdated(int numSelected);
 
 private:
     LibraryEntry* getLibraryNode(const QDir &file);

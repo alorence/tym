@@ -109,7 +109,7 @@ private slots:
     /*!
      * \brief Enable or disable actions according to number of library elements currently selected
      */
-    void updateLibraryActions();
+    void updateLibraryActions(int numSelected = -1);
     /*!
      * \brief Enable or disable actions according to number of search results displayed an,d selected
      */

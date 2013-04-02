@@ -131,11 +131,6 @@ QSqlRecord LibraryModel::record(int i)
     return QSqlRecord();
 }
 
-QSet<int> LibraryModel::selectedIds() const
-{
-    return QSet<int>();
-}
-
 QList<QSqlRecord> LibraryModel::selectedRecords() const
 {
     QList<QSqlRecord> result;
@@ -152,6 +147,11 @@ QStringList LibraryModel::selectedUids() const
         result << entry->data(LibraryEntry::Name).toString();
     }
     return result;
+}
+
+int LibraryModel::numChecked()
+{
+    return _checkedEntries.size();
 }
 
 void LibraryModel::refresh()
@@ -331,6 +331,7 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked)
                              QVector<int>() << Qt::CheckStateRole);
         }
     }
+    emit checkedItemsUpdated(_checkedEntries.size());
 }
 
 bool LibraryModel::isChecked(const QModelIndex &index) const
