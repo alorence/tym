@@ -107,7 +107,12 @@ QModelIndex LibraryModel::parent(const QModelIndex &child) const
 
 int LibraryModel::rowCount(const QModelIndex &parent) const
 {
-    return entryFromIndex(parent)->rowCount();
+    LibraryEntry* entry = entryFromIndex(parent);
+    if(entry == NULL) {
+        return 0;
+    } else {
+        return entry->rowCount();
+    }
 }
 
 int LibraryModel::columnCount(const QModelIndex &) const
@@ -191,7 +196,11 @@ void LibraryModel::refresh()
         endResetModel();
     }
 
-    LOG_DEBUG(tr("Root is %1").arg(_root->dir().canonicalPath()));
+    if(_root == NULL) {
+        LOG_DEBUG(tr("Root is NULL, library is empty"));
+    } else {
+        LOG_DEBUG(tr("Root is %1").arg(_root->dir().canonicalPath()));
+    }
 }
 
 void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
@@ -255,9 +264,9 @@ LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
         else {
 
             QDir upDir = dir;
-            upDir.cdUp();
+            bool up = upDir.cdUp();
 
-            LOG_DEBUG(tr("**3** Check up dir"));
+            LOG_DEBUG(tr("**3** Check up dir %1 %2").arg(up).arg(getLibraryNode(upDir)->dir().canonicalPath()));
 
             LibraryEntry* newEntry = new LibraryEntry(dir.canonicalPath(), getLibraryNode(upDir));
             _dirMap[dirUnifiedPath] = newEntry;
