@@ -257,7 +257,7 @@ void MainWindow::toggleConsoleDisplaying(bool show) const
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    QSqlRecord current = _libraryModel->record(selected.row());
+    QSqlRecord current = _libraryModel->record(selected);
     QString libId = current.value(Library::Uid).toString();
     _searchModel->setFilter("libId=" + libId);
 

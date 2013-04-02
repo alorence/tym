@@ -126,9 +126,14 @@ QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-QSqlRecord LibraryModel::record(int i)
+QSqlRecord LibraryModel::record(const QModelIndex &index)
 {
-    return QSqlRecord();
+    LibraryEntry * item = entryFromIndex(index);
+    if(item->isDirNode()) {
+        return QSqlRecord();
+    } else {
+        return item->record();
+    }
 }
 
 QList<QSqlRecord> LibraryModel::checkedRecords() const

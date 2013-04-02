@@ -45,8 +45,7 @@ public:
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-    /* TODO : to replace this method to use a modelindex */
-    QSqlRecord record(int i);
+    QSqlRecord record(const QModelIndex &index);
 
     QList<QSqlRecord> checkedRecords() const;
     QStringList checkedUids() const;
