@@ -311,16 +311,18 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked, bool recursi
         _checkedEntries.insert(entry);
         emit dataChanged(ind, ind, QVector<int>() << Qt::CheckStateRole);
 
-        // Check its parent if all sibling are checked
-        bool allChecked = true;
-        foreach(LibraryEntry* sibling, entry->parent()->children()) {
-            if(!_checkedEntries.contains(sibling)) {
-                allChecked = false;
-                break;
+        // Check entry's parent if it is not root and all sibling are checked
+        if(ind.parent().isValid()) {
+            bool allChecked = true;
+            foreach(LibraryEntry* sibling, entry->parent()->children()) {
+                if(!_checkedEntries.contains(sibling)) {
+                    allChecked = false;
+                    break;
+                }
             }
-        }
-        if(allChecked) {
-            setChecked(ind.parent(), true, false);
+            if(allChecked) {
+                setChecked(ind.parent(), true, false);
+            }
         }
 
         // If entry is a dir, check all its children
