@@ -300,7 +300,7 @@ LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
     }
 }
 
-void LibraryModel::setChecked(const QModelIndex &ind, bool checked)
+void LibraryModel::setChecked(const QModelIndex &ind, bool checked, bool recursive)
 {
     LibraryEntry *entry = entryFromIndex(ind);
     // Check rows not already checked
@@ -318,20 +318,14 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked)
             }
         }
         if(allChecked) {
-            _checkedEntries.insert(entry->parent());
-            emit dataChanged(ind.parent(), ind.parent(),
-                             QVector<int>() << Qt::CheckStateRole);
+            setChecked(ind.parent(), true, false);
         }
 
         // If entry is a dir, check all its children
-        if(entry->isDirNode()) {
-            foreach(LibraryEntry* child, entry->children()) {
-                _checkedEntries.insert(child);
+        if(recursive && entry->isDirNode()) {
+            for(int i = 0 ; i < rowCount(ind) ; ++i) {
+                setChecked(index(i, ind.column(), ind), true, true);
             }
-
-            emit dataChanged(ind.child(0, 0), ind.child(rowCount(ind) - 1, 0),
-                             QVector<int>() << Qt::CheckStateRole);
-
         }
     }
     // Uncheck rows already checked
@@ -342,19 +336,14 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked)
 
         // Uncheck its parent if it was checked
         if(_checkedEntries.contains(entry->parent())){
-            _checkedEntries.remove(entry->parent());
-            emit dataChanged(ind.parent(), ind.parent(),
-                             QVector<int>() << Qt::CheckStateRole);
+            setChecked(ind.parent(), false, false);
         }
 
         // Uncheck all its children if it is a dir
-        if(entry->isDirNode()) {
-            foreach(LibraryEntry* child, entry->children()) {
-                _checkedEntries.remove(child);
+        if(recursive && entry->isDirNode()) {
+            for(int i = 0 ; i < rowCount(ind) ; ++i) {
+                setChecked(index(i, ind.column(), ind), false, true);
             }
-
-            emit dataChanged(ind.child(0, 0), ind.child(rowCount(ind) - 1, 0),
-                             QVector<int>() << Qt::CheckStateRole);
         }
     }
     emit checkedItemsUpdated(_checkedEntries.size());

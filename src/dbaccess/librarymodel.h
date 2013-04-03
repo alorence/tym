@@ -62,7 +62,7 @@ private:
     LibraryEntry* getLibraryNode(const QDir &file);
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
-    void setChecked(const QModelIndex &ind, bool checked);
+    void setChecked(const QModelIndex &ind, bool checked, bool recursive = true);
     bool isChecked(const QModelIndex &index) const;
 
     LibraryEntry * _root;
