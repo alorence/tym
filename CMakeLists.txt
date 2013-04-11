@@ -33,19 +33,24 @@ find_package(Qt5LinguistTools REQUIRED)
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # Display all warnings
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     # qt5/qtbase/include/QtCore/qglobal.h:1765:4: error:
     # #error "You must build your code with position independent code if Qt was
     # built with -reduce-relocations. " "Compile your code with -fPIC or -fPIE."
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
     # Enable C++11
-    SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
-endif(CMAKE_COMPILER_IS_GNUCXX)
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+
+    # Enable C++11
+    set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}")
+
+endif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 
 # Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
