@@ -18,46 +18,55 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
+set(TYM_SETUP_TARGET_NAME "setup")
+
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(CURRENT_CONFIGURATION DEBUG)
 else(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(CURRENT_CONFIGURATION RELEASE)
 endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
 
+set(LOGGER_FULL_SRC_PATH "${CuteLogger_BINARY_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}Logger${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(LOGGER_FULL_TARGET_PATH "${TYM_SETUP_OUTPUT_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}Logger${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(TYM_FULL_PATH "${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME}")
+
+set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
 
 if(WIN32)
     set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
     configure_file(win/tym-setup.iss.in tym-setup.iss)
 
-    get_target_property(CoreDll         Qt5::Core           IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(WidgetsDll      Qt5::Widgets        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(GuiDll          Qt5::Gui            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(NetworkDll      Qt5::Network        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(SqlDll          Qt5::Sql            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(Qt5CoreLib         Qt5::Core           IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(Qt5WidgetsLib      Qt5::Widgets        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(Qt5GuiLib          Qt5::Gui            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(Qt5NetworkLib      Qt5::Network        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
+    get_target_property(Qt5SqlLib          Qt5::Sql            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
 
-    find_file(qSqllitePlugin qsqlite.dll PATHS "${Qt5Core_DIR}/../../../plugins/sqldrivers")
-    find_file(qJpegPlugin qjpeg.dll PATHS "${Qt5Core_DIR}/../../../plugins/imageformats")
-    find_file(qWindowsPlugin qwindows.dll PATHS "${Qt5Core_DIR}/../../../plugins/platforms")
-    find_file(icudtPlugin icudt49.dll PATHS "${Qt5Core_DIR}/../../../bin")
-    find_file(icuinPlugin icuin49.dll PATHS "${Qt5Core_DIR}/../../../bin")
-    find_file(icuucPlugin icuuc49.dll PATHS "${Qt5Core_DIR}/../../../bin")
-    find_file(libGLES libGLESv2.dll PATHS "${Qt5Core_DIR}/../../../bin")
-    find_file(libEGL libEGL.dll PATHS "${Qt5Core_DIR}/../../../bin")
-    find_file(d3dDll D3DCompiler_43.dll PATHS "${Qt5Core_DIR}/../../../bin")
+    find_file(qSqllitePlugin "qsqlite${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${Qt5Core_DIR}/../../../plugins/sqldrivers")
+    find_file(qJpegPlugin "qjpeg${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${Qt5Core_DIR}/../../../plugins/imageformats")
+    find_file(qSqllitePlugin "${CMAKE_SHARED_LIBRARY_PREFIX}qsqlite${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/plugins/sqldrivers")
+    find_file(qJpegPlugin "${CMAKE_SHARED_LIBRARY_PREFIX}qjpeg${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/plugins/imageformats")
+    find_file(qWindowsPlugin "qwindows${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/plugins/platforms")
+    find_file(icudtPlugin "icudt49${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
+    find_file(icuinPlugin "icuin49${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
+    find_file(icuucPlugin "icuuc49${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
+    find_file(libGLES "libGLESv2${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
+    find_file(libEGL "libEGL${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
+    find_file(Qt5d3dLib "D3DCompiler_43${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
 
-    # TODO : Copy debug version of dlls in Debug BUILD_TYPE
-    add_custom_target(setup
-        COMMAND ${CMAKE_COMMAND} -E copy ${CoreDll}     ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${WidgetsDll}  ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${GuiDll}      ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${NetworkDll}  ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${SqlDll}      ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${icudtPlugin} ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${icuinPlugin} ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${icuucPlugin} ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${libGLES}     ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${libEGL}      ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${d3dDll}      ${TYM_SETUP_TREE_PATH}
+    # TODO : Copy debug version of dynamic libs in Debug BUILD_TYPE
+    add_custom_target(${TYM_SETUP_TARGET_NAME}
+        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5CoreLib}          ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5WidgetsLib}       ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5GuiLib}           ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5NetworkLib}       ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5SqlLib}           ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${icudtPlugin}         ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${icuinPlugin}         ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${icuucPlugin}         ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${libGLES}             ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${libEGL}              ${TYM_SETUP_TREE_PATH}
+        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5d3dLib}           ${TYM_SETUP_TREE_PATH}
 
         COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/platforms
         COMMAND ${CMAKE_COMMAND} -E copy ${qWindowsPlugin}      ${TYM_SETUP_TREE_PATH}/platforms
@@ -72,24 +81,41 @@ if(WIN32)
         SOURCES win/tym-setup.iss.in
     )
 
-    add_dependencies(setup ${TYM_EXECUTABLE_FILENAME} Logger)
+    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME} Logger)
+elseif(APPLE)
+
+    set(TYM_BUNDLE_PATH "${TYM_SETUP_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME}.app")
+
+    add_custom_target(${TYM_SETUP_TARGET_NAME}
+
+        COMMAND mkdir -p ${TYM_BUNDLE_PATH}/Contents/Frameworks
+        COMMAND cp -r ${tym_BINARY_DIR}/src/${TYM_EXECUTABLE_FILENAME}.app/* ${TYM_BUNDLE_PATH}
+        COMMAND cp ${LOGGER_FULL_SRC_PATH} ${TYM_BUNDLE_PATH}/Contents/Frameworks
+        COMMAND install_name_tool -change ${LOGGER_FULL_SRC_PATH} @executable_path/../Frameworks/${CMAKE_STATIC_LIBRARY_PREFIX}Logger${CMAKE_SHARED_LIBRARY_SUFFIX} ${TYM_BUNDLE_PATH}/Contents/MacOS/${TYM_EXECUTABLE_FILENAME}
+
+        COMMAND ${QT5_INSTALL_DIR}/bin/macdeployqt ${TYM_BUNDLE_PATH}
+
+        COMMAND rm -fr ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
+        COMMAND mv -f -v ${TYM_BUNDLE_PATH} ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
+        COMMENT "Build the app package"
+    )
 elseif(UNIX)
     
-    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
-    SET(CPACK_PACKAGE_VENDOR "Me, myself, and I")
-    #SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
-    #SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
-    SET(CPACK_PACKAGE_VERSION_MAJOR ${TYM_MAJOR_VERSION})
-    SET(CPACK_PACKAGE_VERSION_MINOR ${TYM_MINOR_VERSION})
-    SET(CPACK_PACKAGE_VERSION_PATCH ${TYM_PATCH_VERSION})
-    SET(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
+    set(CPACK_PACKAGE_VENDOR "Me, myself, and I")
+    #set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
+    #set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
+    set(CPACK_PACKAGE_VERSION_MAJOR ${TYM_MAJOR_VERSION})
+    set(CPACK_PACKAGE_VERSION_MINOR ${TYM_MINOR_VERSION})
+    set(CPACK_PACKAGE_VERSION_PATCH ${TYM_PATCH_VERSION})
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
 
-    SET(CPACK_STRIP_FILES ${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME})
-    SET(CPACK_SOURCE_STRIP_FILES "")
+    set(CPACK_STRIP_FILES ${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME})
+    set(CPACK_SOURCE_STRIP_FILES "")
 
-    SET(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
-    INCLUDE(CPack)
-    add_custom_target(setup
+    set(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
+    include(CPack)
+    add_custom_target(${TYM_SETUP_TARGET_NAME}
         COMMAND echo "youpi"
     )
 endif()
