@@ -101,9 +101,6 @@ qt5_wrap_ui(tym_UIS_HEADERS ${tym_UIS})
 # Compile translations (*.ts) files
 qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 
-# build/gui/ui_mainwindow.h must be accessible for main.cpp
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/gui)
-
 if(${WIN32})
     set(GUI_FLAG WIN32)
 elseif(${APPLE})
