@@ -72,7 +72,8 @@ QString &Utils::unifyPath(QString &path)
 {
 #ifdef Q_OS_WIN
     return path.prepend('/');
-#elif
-    return path;
+#else
+    QString &refPath = path;
+    return refPath;
 #endif
 }
