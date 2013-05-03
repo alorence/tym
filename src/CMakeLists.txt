@@ -24,20 +24,17 @@ include_directories(.)
 configure_file(version.h.in version.h)
 
 set(tym_HEADERS
-    # commons.h # Not a QObject and MOC doesn't need to be applied on it
     concretetasks/task.h
     concretetasks/exportplaylisttask.h
     concretetasks/renametask.h
     concretetasks/searchtask.h
     concretetasks/librarystatusupdater.h
     tools/patterntool.h
-    # tools/patternelement.h # Not a QObject
     tools/searchprovider.h
     tools/picturedownloader.h
     tools/widgetchangesobserver.h
     dbaccess/bpdatabase.h
     dbaccess/librarymodel.h
-    dbaccess/libraryentry.h
     dbaccess/searchresultsmodel.h
     wizards/searchwizard.h
     wizards/renamewizard.h
@@ -50,8 +47,18 @@ set(tym_HEADERS
     gui/patternbutton.h
 )
 
+# These headers doesn't define QObject children,
+# they does not need to be parsed with moc tool.
+# They are added to the source list to appear in
+# IDE project (QtCreator, Xcode, etc.)
+set(tym_BASIC_HDRS
+    commons.h
+    tools/utils.h
+    tools/patternelement.h
+    dbaccess/libraryentry.h
+)
+
 set(tym_SOURCES
-    commons.h # ensure the file will appear in Qt Creator project view
     main.cpp
     concretetasks/task.cpp
     concretetasks/exportplaylisttask.cpp
@@ -59,12 +66,10 @@ set(tym_SOURCES
     concretetasks/searchtask.cpp
     concretetasks/librarystatusupdater.cpp
     tools/patterntool.cpp
-    tools/patternelement.h
     tools/patternelement.cpp
     tools/searchprovider.cpp
     tools/picturedownloader.cpp
     tools/widgetchangesobserver.cpp
-    tools/utils.h
     tools/utils.cpp
     dbaccess/bpdatabase.cpp
     dbaccess/librarymodel.cpp
@@ -111,6 +116,7 @@ endif(${WIN32})
 add_executable(${TYM_EXECUTABLE_FILENAME}
     ${GUI_FLAG}
     ${tym_SOURCES}
+    ${tym_BASIC_HDRS}
     ${tym_MOCS}
     ${tym_UIS_HEADERS}
     ${TYM_TRANSLATIONS}
