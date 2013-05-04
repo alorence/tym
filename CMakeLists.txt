@@ -63,6 +63,7 @@ set(TYM_BETA 1)
 set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}")
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_VERSION}")
 
+set(TYM_EXECUTABLE_FILENAME tym)
 # Path where all dlls will be copied before compiling package
 set(TYM_SETUP_TREE_PATH ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
 # Directory were resulting package will be generated
