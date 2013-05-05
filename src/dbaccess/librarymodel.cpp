@@ -154,7 +154,7 @@ QStringList LibraryModel::checkedUids() const
     QStringList result;
     foreach (LibraryEntry* entry, _checkedEntries) {
         if(!entry->isDirNode()) {
-            result << entry->data(Library::Name).toString();
+            result << entry->record().value(Library::Uid).toString();
         }
     }
     return result;
