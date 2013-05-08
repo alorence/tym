@@ -33,10 +33,7 @@ public:
     explicit LibraryEntry(const QSqlRecord &record, LibraryEntry *parent = 0);
     ~LibraryEntry();
 
-    static const char* ROOT_NODE;
-
     bool isDirNode() const;
-    bool isRootDirNode() const;
 
     const QString &dirName() const;
     void setDirName(const QString &newDirName);

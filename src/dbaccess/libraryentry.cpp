@@ -21,8 +21,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <Logger.h>
 
-const char* LibraryEntry::ROOT_NODE = "*ROOT_NODE*";
-
 LibraryEntry::LibraryEntry() :
     _dirName()
 {
@@ -51,11 +49,6 @@ LibraryEntry::~LibraryEntry()
 bool LibraryEntry::isDirNode() const
 {
     return _record.isEmpty();
-}
-
-bool LibraryEntry::isRootDirNode() const
-{
-    return _record.isEmpty() && _dirName == ROOT_NODE;
 }
 
 const QString &LibraryEntry::dirName() const

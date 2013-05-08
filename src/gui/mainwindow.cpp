@@ -328,6 +328,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
     QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
+    // TODO: replace ALL foreach macro by new C++11 for syntax
     foreach(QAction *selectAction, _selectActionsList) {
         selectMenu->addAction(selectAction);
     }

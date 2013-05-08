@@ -53,7 +53,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
 
     if(role == Qt::DisplayRole) {
         if(entry->isDirNode() && item.column() == 0) {
-            return entry->isRootDirNode() ? "/" : entry->dirName();
+            return entry->dirName();
         } else if(! entry->isDirNode()) {
             return entry->data((Library::GuiIndexes) item.column());
         } else {
@@ -83,8 +83,7 @@ QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) 
     if( ! hasIndex(row, column, parent))
         return QModelIndex();
 
-    LibraryEntry *parentEntry = entryFromIndex(parent);
-    LibraryEntry *childItem = parentEntry->child(row);
+    LibraryEntry *childItem = entryFromIndex(parent)->child(row);
 
     if (childItem != NULL){
         return createIndex(row, column, childItem);
@@ -117,6 +116,11 @@ int LibraryModel::rowCount(const QModelIndex &parent) const
 int LibraryModel::columnCount(const QModelIndex &) const
 {
     return 4;
+}
+
+bool LibraryModel::hasChildren(const QModelIndex &parent) const
+{
+    return !parent.isValid() || entryFromIndex(parent)->isDirNode();
 }
 
 QVariant LibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -197,9 +201,8 @@ void LibraryModel::refresh()
 
 LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
 {
-    QString unifiedPath = dirPath;
-    if(_dirMap.contains(unifiedPath)) {
-        return _dirMap[unifiedPath];
+    if(_dirMap.contains(dirPath)) {
+        return _dirMap[dirPath];
     }
 
     // We need to create a new dir entry
@@ -231,7 +234,7 @@ LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
         emit rootPathChanged(path);
     }
 
-    _dirMap[unifiedPath] = currentDirEntry;
+    _dirMap[dirPath] = currentDirEntry;
     return currentDirEntry;
 }
 
