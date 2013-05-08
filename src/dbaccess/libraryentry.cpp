@@ -24,6 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 LibraryEntry::LibraryEntry() :
     _dirName()
 {
+    setParent(NULL);
 }
 
 LibraryEntry::LibraryEntry(const QString &dirName, LibraryEntry *parent) :

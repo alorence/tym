@@ -199,6 +199,8 @@ private:
 //    QMap<LibraryModel::GroupSelection,QString> _selectionActions;
     QSignalMapper _selectionMapper;
     QList<QAction*> _selectActionsList;
+
+    QStringList _expandedItems;
 };
 
 #endif // MAINWINDOW_H

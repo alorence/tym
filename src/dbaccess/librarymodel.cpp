@@ -46,7 +46,8 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &item, int role) const
 {
-    if (role != Qt::DisplayRole && role != Qt::DecorationRole && role != Qt::CheckStateRole)
+    if (role != Qt::DisplayRole && role != Qt::DecorationRole && role != Qt::CheckStateRole
+            && !(role == UniqueReversePathRole && entryFromIndex(item)->isDirNode()))
         return QVariant();
 
     LibraryEntry* entry = entryFromIndex(item);
@@ -64,6 +65,14 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         return QPixmap (":/img/icons/general/" + iconType);
     } else if(role == Qt::CheckStateRole && item.column() == 0) {
         return isChecked(item) ? Qt::Checked : Qt::Unchecked;
+    } else if (role == UniqueReversePathRole) {
+        QString result;
+        LibraryEntry *entry = entryFromIndex(item);
+        do {
+            result.append(entry->dirName());
+            entry = entry->parent();
+        } while (entry != NULL);
+        return result;
     }
     return QVariant();
 }
@@ -78,9 +87,20 @@ bool LibraryModel::setData(const QModelIndex &index, const QVariant &value, int 
     return true;
 }
 
+QModelIndexList LibraryModel::dirNodeModelIndexes() const
+{
+    QModelIndexList dirNodeList;
+    for(QModelIndex ind : persistentIndexList()) {
+        if(entryFromIndex(ind)->isDirNode()) {
+            dirNodeList << ind;
+        }
+    }
+    return dirNodeList;
+}
+
 QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if( ! hasIndex(row, column, parent))
+    if(! hasIndex(row, column, parent))
         return QModelIndex();
 
     LibraryEntry *childItem = entryFromIndex(parent)->child(row);

@@ -38,7 +38,9 @@ public:
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndexList dirNodeModelIndexes() const;
+
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
@@ -51,6 +53,10 @@ public:
     QList<QSqlRecord> checkedRecords() const;
     QStringList checkedUids() const;
     int numChecked();
+
+    enum UserRoles {
+        UniqueReversePathRole = Qt::UserRole + 1
+    };
 
 public slots:
     void refresh();
