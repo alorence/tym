@@ -69,7 +69,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         QString result;
         LibraryEntry *entry = entryFromIndex(item);
         do {
-            result.append(entry->dirName());
+            result.prepend(entry->dirName());
             entry = entry->parent();
         } while (entry != NULL);
         return result;
@@ -243,7 +243,7 @@ LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
 #ifdef Q_OS_WIN
     QString path = tr("Computer");
 #else
-    QString path = "/";
+    QString path = "";
 #endif
     while(r->rowCount() == 1) {
         r = r->child(0);

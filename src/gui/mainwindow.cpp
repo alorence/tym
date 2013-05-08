@@ -315,7 +315,11 @@ void MainWindow::afterLibraryViewReset()
         QModelIndexList matchList = _libraryModel->match(_libraryModel->index(0,0), LibraryModel::UniqueReversePathRole,
                                                     uniquePathIdentifier, 1, Qt::MatchFixedString | Qt::MatchRecursive);
         if(matchList.size()) {
-            ui->libraryView->expand(matchList.at(0));
+            QModelIndex item = matchList.at(0);
+            do {
+                ui->libraryView->expand(item);
+                item = item.parent();
+            } while (item.isValid());
         }
     }
     _expandedItems.clear();
