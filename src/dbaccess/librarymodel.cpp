@@ -53,8 +53,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
 
     if(role == Qt::DisplayRole) {
         if(entry->isDirNode() && item.column() == 0) {
-            QString dirName = entry->dir().dirName();
-            return dirName.isEmpty() ? entry->dir().canonicalPath() : dirName;
+            return entry->isRootDirNode() ? "/" : entry->dirName();
         } else if(! entry->isDirNode()) {
             return entry->data((Library::GuiIndexes) item.column());
         } else {
@@ -173,33 +172,26 @@ void LibraryModel::refresh()
         // Invalidate all existing ModelIndexes
         beginResetModel();
 
-        // All root's children are deleted and cleaned
-        delete _root;
-        _root = NULL;
+        // All items are deleted
+        delete _dirMap["/"];
 
         // Reset the directories map and checked entries
         _dirMap.clear();
         _checkedEntries.clear();;
 
+        _dirMap["/"] = new LibraryEntry();;
+        _root = _dirMap["/"];
+
         while(_elementsList.next()) {
             // Helper to extract some informations from file path
             QFileInfo fileInfo(_elementsList.value(Library::FilePath).toString());
 
-            LibraryEntry* parentDir = getLibraryNode(fileInfo.dir());
+            LibraryEntry* parentDir = getLibraryNode(fileInfo.canonicalPath());
             new LibraryEntry(_elementsList.record(), parentDir);
-
-            LOG_DEBUG(tr("Add child %1 to parent folder %2").arg(_elementsList.value(1).toString()).arg(parentDir->dir().canonicalPath()));
-            qDebug() << _dirMap << _root->dir().canonicalPath();
         }
 
         // Inform view that new items are stored in the model. It will start te rebuild its ModelIndexes
         endResetModel();
-    }
-
-    if(_root == NULL) {
-        LOG_DEBUG(tr("Root is NULL, library is empty"));
-    } else {
-        LOG_DEBUG(tr("Root is %1").arg(_root->dir().canonicalPath()));
     }
 }
 
@@ -207,83 +199,32 @@ void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
 }
 
-LibraryEntry *LibraryModel::getLibraryNode(const QDir &dir)
+LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
 {
-    QString dirPath = dir.canonicalPath();
-    Utils::unifyPath(dirPath);
-
-    if(_root == NULL) {
-        _root = new LibraryEntry(dir.canonicalPath(), NULL);
-        _dirMap[dirPath] = _root;
-        //LOG_DEBUG(tr("Create new Root %1").arg(dir.canonicalPath()));
-        return _root;
+    QString unifiedPath = dirPath;
+    if(_dirMap.contains(unifiedPath)) {
+        return _dirMap[unifiedPath];
     }
 
-    QString rootPath = _root->dir().canonicalPath();
-    QString rootUnifiedPath = Utils::unifyPath(rootPath);
-
-    // Parent directory already exist
-    if(_dirMap.contains(dirPath)) {
-        return _dirMap.value(dirPath);
+    // We need to create a new dir entry
+    LibraryEntry *currentDirEntry;
+    QDir currentDir(dirPath);
+    if(currentDir.isRoot()) {
+        currentDirEntry = new LibraryEntry(currentDir.path(), _dirMap["/"]);
     } else {
-        // dir is a subentry of root
-        if(dirPath.startsWith(rootUnifiedPath)) {
-            QDir upDir = dir;
-            LibraryEntry* parentDir;
-            if(upDir.cdUp()) {
-                parentDir = getLibraryNode(upDir);
-            } else {
-                // FIXME: should never come here...
-                parentDir = _root;
-            }
-            LOG_DEBUG(tr("**1** Create new dir entry : %1").arg(dir.canonicalPath()));
-            LibraryEntry* newEntry = new LibraryEntry(dir, parentDir);
-            _dirMap[dirPath] = newEntry;
+        QDir upDir(currentDir);
+        upDir.cdUp();
+        LibraryEntry *parentEntry = getLibraryNode(upDir.canonicalPath());
 
-            return newEntry;
-        }
-        // dir is a parent of root, need to update root entry
-        else if(rootUnifiedPath.startsWith(dirPath)) {
-
-            // Stroe the current root, before updating it
-            LibraryEntry *oldRoot = _root;
-
-            // Create the future new root element and update current root & internal map
-            _dirMap[dirPath] = _root = new LibraryEntry(dir, NULL);
-
-            LOG_DEBUG(tr("**2** Update root1 %1 -> %2").arg(oldRoot->dir().canonicalPath()).arg(_root->dir().canonicalPath()));
-
-            QDir oldRootDir = oldRoot->dir();
-            oldRootDir.cdUp();
-
-            // Update old root parent member
-            oldRoot->setParent(getLibraryNode(oldRootDir));
-
-            return _root;
-        }
-        // root and current elements have no common ancestor
-        else {
-            LibraryEntry * newEntry;
-
-            QDir upDir = dir;
-            if(upDir.cdUp()) {
-                newEntry = new LibraryEntry(dir.canonicalPath(), getLibraryNode(upDir));
-            } else {
-                LibraryEntry *newRoot = new LibraryEntry(QDir());
-                _dirMap["/"] = newRoot;
-
-                qDebug() << "***********" << newRoot->dir().canonicalPath();
-
-                newEntry = new LibraryEntry(dir.canonicalPath(), newRoot);
-                _root->setParent(newRoot);
-
-                _root = newRoot;
-            }
-
-            _dirMap[dirPath] = newEntry;
-            return newEntry;
-        }
+        currentDirEntry = new LibraryEntry(currentDir.dirName(), parentEntry);
     }
+
+    // Update _root pointer
+    _root = _dirMap["/"];
+    while(_root->rowCount() == 1) _root = _root->child(0);
+
+    _dirMap[unifiedPath] = currentDirEntry;
+    return currentDirEntry;
 }
 
 LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const

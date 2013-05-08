@@ -68,12 +68,3 @@ QString Utils::formatKey(const QString &classicKey)
     else return classicKey;
 }
 
-QString &Utils::unifyPath(QString &path)
-{
-#ifdef Q_OS_WIN
-    return path.prepend('/');
-#else
-    QString &refPath = path;
-    return refPath;
-#endif
-}

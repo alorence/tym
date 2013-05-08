@@ -21,9 +21,15 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <Logger.h>
 
+const char* LibraryEntry::ROOT_NODE = "*ROOT_NODE*";
 
-LibraryEntry::LibraryEntry(const QDir &dir, LibraryEntry *parent) :
-    _dir(dir),
+LibraryEntry::LibraryEntry() :
+    _dirName()
+{
+}
+
+LibraryEntry::LibraryEntry(const QString &dirName, LibraryEntry *parent) :
+    _dirName(dirName),
     _position(0)
 {
     setParent(parent);
@@ -47,14 +53,19 @@ bool LibraryEntry::isDirNode() const
     return _record.isEmpty();
 }
 
-const QDir &LibraryEntry::dir() const
+bool LibraryEntry::isRootDirNode() const
 {
-    return _dir;
+    return _record.isEmpty() && _dirName == ROOT_NODE;
 }
 
-void LibraryEntry::setDir(const QDir &newDir)
+const QString &LibraryEntry::dirName() const
 {
-    _dir = newDir;
+    return _dirName;
+}
+
+void LibraryEntry::setDirName(const QString &newDirName)
+{
+    _dirName = newDirName;
 }
 
 const QVariant LibraryEntry::data(Library::GuiIndexes index) const
@@ -100,6 +111,9 @@ void LibraryEntry::addChild(LibraryEntry *child)
 {
     child->setPosition(_children.size());
     _children.append(child);
+    if(child->parent() != this) {
+        child->setParent(this);
+    }
 }
 
 LibraryEntry *LibraryEntry::child(int index)

@@ -59,7 +59,7 @@ signals:
     void checkedItemsUpdated(int numSelected);
 
 private:
-    LibraryEntry* getLibraryNode(const QDir &file);
+    LibraryEntry* getLibraryNode(const QString &dirPath);
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
     void setChecked(const QModelIndex &ind, bool checked, bool recursive = true);
