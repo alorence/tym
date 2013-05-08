@@ -91,6 +91,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Ensure both library and search results view are always focused together
     ui->libraryView->setFocusProxy(ui->searchResultsView);
 
+    // Update root dir text label
+    connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
+
     // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(_libraryModel, &LibraryModel::checkedItemsUpdated, this, &MainWindow::updateLibraryActions);
 

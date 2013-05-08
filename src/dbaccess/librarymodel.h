@@ -57,6 +57,7 @@ public slots:
 
 signals:
     void checkedItemsUpdated(int numSelected);
+    void rootPathChanged(QString path);
 
 private:
     LibraryEntry* getLibraryNode(const QString &dirPath);

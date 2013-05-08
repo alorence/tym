@@ -210,7 +210,7 @@ LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
     LibraryEntry *currentDirEntry;
     QDir currentDir(dirPath);
     if(currentDir.isRoot()) {
-        currentDirEntry = new LibraryEntry(currentDir.path(), _dirMap["/"]);
+        currentDirEntry = new LibraryEntry(currentDir.path().remove(QRegularExpression("/$")), _dirMap["/"]);
     } else {
         QDir upDir(currentDir);
         upDir.cdUp();
@@ -220,8 +220,20 @@ LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
     }
 
     // Update _root pointer
-    _root = _dirMap["/"];
-    while(_root->rowCount() == 1) _root = _root->child(0);
+    LibraryEntry *r = _dirMap["/"];
+#ifdef Q_OS_WIN
+    QString path = tr("Computer");
+#else
+    QString path = "/";
+#endif
+    while(r->rowCount() == 1) {
+        r = r->child(0);
+        path.append(QDir::separator()).append(r->dirName());
+    }
+    if(r != _root) {
+        _root = r;
+        emit rootPathChanged(path);
+    }
 
     _dirMap[unifiedPath] = currentDirEntry;
     return currentDirEntry;
