@@ -30,7 +30,7 @@ class LibraryEntry
 public:
     explicit LibraryEntry();
     explicit LibraryEntry(const QString &dirName, LibraryEntry *parent);
-    explicit LibraryEntry(const QSqlRecord &record, LibraryEntry *parent = 0);
+    explicit LibraryEntry(const QSqlRecord &record, LibraryEntry *parent);
     ~LibraryEntry();
 
     bool isDirNode() const;
@@ -43,7 +43,6 @@ public:
     void setRecord(const QSqlRecord &record);
 
     LibraryEntry *parent() const;
-    void setParent(LibraryEntry *parent);
 
     void addChild(LibraryEntry *child);
     LibraryEntry* child(int index);
@@ -56,6 +55,8 @@ public:
     int rowPosition();
 
 private:
+    void setParent(LibraryEntry *parent);
+
     QString infoMessage(int statusCode, int numResults, bool hasLinkedResult) const;
     QString statusMessage(int statusCode, bool hasLinkedResult) const;
 

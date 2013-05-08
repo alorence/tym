@@ -97,21 +97,10 @@ LibraryEntry *LibraryEntry::parent() const
     return _parent;
 }
 
-void LibraryEntry::setParent(LibraryEntry *parent)
-{
-    _parent = parent;
-    if(parent != NULL) {
-        _parent->addChild(this);
-    }
-}
-
 void LibraryEntry::addChild(LibraryEntry *child)
 {
     child->setPosition(_children.size());
     _children.append(child);
-    if(child->parent() != this) {
-        child->setParent(this);
-    }
 }
 
 LibraryEntry *LibraryEntry::child(int index)
@@ -150,6 +139,14 @@ void LibraryEntry::setPosition(int position)
 int LibraryEntry::rowPosition()
 {
     return _position;
+}
+
+void LibraryEntry::setParent(LibraryEntry *parent)
+{
+    _parent = parent;
+    if(parent != NULL) {
+        _parent->addChild(this);
+    }
 }
 
 QString LibraryEntry::infoMessage(int statusCode, int numResults, bool hasLinkedResult) const
