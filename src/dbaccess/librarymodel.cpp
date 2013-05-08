@@ -195,10 +195,6 @@ void LibraryModel::refresh()
     }
 }
 
-void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
-{
-}
-
 LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
 {
     QString unifiedPath = dirPath;

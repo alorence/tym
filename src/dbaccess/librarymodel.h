@@ -53,7 +53,6 @@ public:
 
 public slots:
     void refresh();
-    void unselectRowsAndRefresh(QList<int> rows);
 
 signals:
     void checkedItemsUpdated(int numSelected);

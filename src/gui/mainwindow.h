@@ -115,6 +115,9 @@ private slots:
      */
     void updateSearchResultsActions();
 
+    void beforeLibraryViewReset();
+    void afterLibraryViewReset();
+
     /*!
      * \brief Select library elements.
      *

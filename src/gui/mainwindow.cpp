@@ -97,8 +97,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Set actions menu/buttons as enabled/disabled folowing library selection
     connect(_libraryModel, &LibraryModel::checkedItemsUpdated, this, &MainWindow::updateLibraryActions);
 
-    // Update search results view when selecting something in the library view
-    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::updateSearchResults);
+    // Reconfigure some view properties when it is refreshed
+    connect(_libraryModel, &LibraryModel::modelAboutToBeReset, this, &MainWindow::beforeLibraryViewReset);
+    connect(_libraryModel, &LibraryModel::modelReset, this, &MainWindow::afterLibraryViewReset);
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::updateTrackInfos);
@@ -292,6 +293,17 @@ void MainWindow::updateSearchResultsActions()
 
     ui->actionSetDefaultResult->setDisabled(numSel == 0);
     ui->actionSearchResultDelete->setDisabled(numSel == 0);
+}
+
+void MainWindow::beforeLibraryViewReset()
+{
+}
+
+void MainWindow::afterLibraryViewReset()
+{
+    // Update search results view when selecting something in the library view
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::updateSearchResults);
+
 }
 
 void MainWindow::selectSpecificLibraryElements(int index)
