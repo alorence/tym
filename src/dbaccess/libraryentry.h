@@ -59,6 +59,9 @@ public:
     int rowPosition();
 
 private:
+    QString infoMessage(int statusCode, int numResults, bool hasLinkedResult) const;
+    QString statusMessage(int statusCode, bool hasLinkedResult) const;
+
     LibraryEntry *_parent;
     QString _dirName;
     QSqlRecord _record;

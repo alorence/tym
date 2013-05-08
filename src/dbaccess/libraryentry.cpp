@@ -74,10 +74,14 @@ const QVariant LibraryEntry::data(Library::GuiIndexes index) const
     case Library::Name:
         return QFileInfo(_record.value(Library::FilePath).toString()).fileName();
     case Library::StatusMessage:
-        return _record.value(Library::Status);
+        return statusMessage(_record.value(Library::Status).toInt(),
+                             !_record.value(Library::Bpid).isNull());
     case Library::Results:
         return _record.value(Library::NumResults);
     case Library::Infos:
+        return infoMessage(_record.value(Library::Status).toInt(),
+                           _record.value(Library::NumResults).toInt(),
+                           !_record.value(Library::Bpid).isNull());
     default:
         // TODO: return a message
         return "";
@@ -152,5 +156,39 @@ void LibraryEntry::setPosition(int position)
 int LibraryEntry::rowPosition()
 {
     return _position;
+}
+
+QString LibraryEntry::infoMessage(int statusCode, int numResults, bool hasLinkedResult) const
+{
+    Library::FileStatus status = (Library::FileStatus)statusCode;
+    if(status.testFlag(Library::FileNotFound)) {
+        return QObject::tr("File not found. Did you moved or rename this file ?");
+    } else if (status.testFlag(Library::New)) {
+        return QObject::tr("Use Search to request Beatport for information on this track.");
+    } else {
+        if(hasLinkedResult) {
+            return QObject::tr("Ready.");
+        } else if (numResults == 0) {
+            return QObject::tr("No search result has been found, you can try a manual search. Use search tool after selecting only this track.");
+        } else {
+            return QObject::tr("Please check on the right panel and select the better result for this track.");
+        }
+    }
+}
+
+QString LibraryEntry::statusMessage(int statusCode, bool hasLinkedResult) const
+{
+    Library::FileStatus status = (Library::FileStatus)statusCode;
+    if(status.testFlag(Library::FileNotFound)) {
+        return QObject::tr("Missing");
+    } else if (status.testFlag(Library::New)) {
+        return QObject::tr("New");
+    } else {
+        if(hasLinkedResult) {
+            return QObject::tr("Ok");
+        } else {
+            return QObject::tr("Searched");
+        }
+    }
 }
 

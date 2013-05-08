@@ -70,7 +70,7 @@ namespace Library {
     };
     enum FileStatuses {
         New = 0x00,
-        ResultsAvailable = 0x01,
+        Searched = 0x01,
         FileNotFound = 0x10
     };
     Q_DECLARE_FLAGS(FileStatus, FileStatuses)
