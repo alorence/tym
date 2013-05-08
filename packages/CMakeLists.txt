@@ -83,20 +83,26 @@ if(WIN32)
 
     add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME} Logger)
 elseif(APPLE)
-
-    set(TYM_BUNDLE_PATH "${TYM_SETUP_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME}.app")
-
+    
     add_custom_target(${TYM_SETUP_TARGET_NAME}
 
-        COMMAND mkdir -p ${TYM_BUNDLE_PATH}/Contents/Frameworks
-        COMMAND cp -r ${tym_BINARY_DIR}/src/${TYM_EXECUTABLE_FILENAME}.app/* ${TYM_BUNDLE_PATH}
-        COMMAND cp ${LOGGER_FULL_SRC_PATH} ${TYM_BUNDLE_PATH}/Contents/Frameworks
-        COMMAND install_name_tool -change ${LOGGER_FULL_SRC_PATH} @executable_path/../Frameworks/${CMAKE_STATIC_LIBRARY_PREFIX}Logger${CMAKE_SHARED_LIBRARY_SUFFIX} ${TYM_BUNDLE_PATH}/Contents/MacOS/${TYM_EXECUTABLE_FILENAME}
+        COMMAND mkdir -p ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
+        COMMAND cp -r ${tym_BINARY_DIR}/src/${TYM_EXECUTABLE_FILENAME}.app/* ${TYM_EXECUTABLE_FILENAME}.app
 
-        COMMAND ${QT5_INSTALL_DIR}/bin/macdeployqt ${TYM_BUNDLE_PATH}
+        COMMAND cp ${LOGGER_FULL_SRC_PATH} ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
+        COMMAND cp /usr/lib/libc++.1.dylib ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
+
+        COMMAND install_name_tool -change ${LOGGER_FULL_SRC_PATH} @executable_path/../Frameworks/${CMAKE_STATIC_LIBRARY_PREFIX}Logger${CMAKE_SHARED_LIBRARY_SUFFIX} ${TYM_EXECUTABLE_FILENAME}.app/Contents/MacOS/${TYM_EXECUTABLE_FILENAME}
+        COMMAND install_name_tool -change /usr/lib/libc++.1.dylib @executable_path/../Frameworks/libc++.1.dylib ${TYM_EXECUTABLE_FILENAME}.app/Contents/MacOS/${TYM_EXECUTABLE_FILENAME}
+
+        COMMAND ${QT5_INSTALL_DIR}/bin/macdeployqt ${TYM_EXECUTABLE_FILENAME}.app
 
         COMMAND rm -fr ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
-        COMMAND mv -f -v ${TYM_BUNDLE_PATH} ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
+        COMMAND mv -f -v ${TYM_EXECUTABLE_FILENAME}.app ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
+
+        COMMAND rm -f ${TYM_SETUP_FILENAME}.zip
+        COMMAND zip -v -r -X ./${TYM_SETUP_FILENAME}.zip ${TYM_SETUP_FILENAME}.app
+        WORKING_DIRECTORY ${TYM_SETUP_OUTPUT_PATH}
         COMMENT "Build the app package"
     )
 elseif(UNIX)
