@@ -37,9 +37,9 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
 
     // Configure console
     _widgetAppender = new WidgetAppender(ui->outputConsole);
-    _widgetAppender->setFormat("%m\n");
+    _widgetAppender->setFormat("%{message}\n");
     _widgetAppender->setDetailsLevel(Logger::Info);
-    Logger::registerAppender(_widgetAppender);
+    logger->registerAppender(_widgetAppender);
 
     // Configure pattern button
     _patternHelperButton = new PatternButton(_filenameFormatter, this);
@@ -92,7 +92,7 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
 RenameWizard::~RenameWizard()
 {
     delete ui;
-    Logger::unRegisterAppender(_widgetAppender);
+    logger->unRegisterAppender(_widgetAppender);
     delete _widgetAppender;
 }
 

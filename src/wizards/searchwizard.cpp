@@ -36,9 +36,9 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     ui->setupUi(this);
 
     _widgetAppender = new WidgetAppender(ui->outputConsole);
-    _widgetAppender->setFormat("%m\n");
+    _widgetAppender->setFormat("%{message}\n");
     _widgetAppender->setDetailsLevel(Logger::Info);
-    Logger::registerAppender(_widgetAppender);
+    logger->registerAppender(_widgetAppender);
 
     connect(ui->pattern1, &QRadioButton::toggled, this, &SearchWizard::updateSearchPattern);
     connect(ui->customSearch, &QRadioButton::toggled, this, &SearchWizard::customSearchSelected);
@@ -57,7 +57,7 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
 SearchWizard::~SearchWizard()
 {
     delete ui;
-    Logger::unRegisterAppender(_widgetAppender);
+    logger->unRegisterAppender(_widgetAppender);
     delete _widgetAppender;
     delete _patternHelperButton;
 }

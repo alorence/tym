@@ -64,8 +64,8 @@ MainWindow::MainWindow(QWidget *parent) :
     toggleConsoleDisplaying(_defaultConsoleDisplaying);
 
     WidgetAppender* widgetAppender = new WidgetAppender(ui->outputConsole);
-    widgetAppender->setFormat("%m\n");
-    Logger::registerAppender(widgetAppender);
+    widgetAppender->setFormat("%{message}\n");
+    logger->registerAppender(widgetAppender);
 
     if( ! _dbHelper->initialized()) {
         LOG_ERROR(tr("Impossible to connect with database..."));

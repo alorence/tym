@@ -60,13 +60,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     ConsoleAppender* consoleAppender = new ConsoleAppender();
-    consoleAppender->setFormat("[%-7l] <%c> %m\n");
 #ifdef QT_DEBUG
     consoleAppender->setDetailsLevel(Logger::Trace); // Trace==0, default is Debug(1)
 #else
     consoleAppender->setDetailsLevel(Logger::Info); // Info==2
 #endif
-    Logger::registerAppender(consoleAppender);
+    logger->registerAppender(consoleAppender);
 
     a.setApplicationName("tagyourmusic");
     a.setApplicationDisplayName("Tag Your Music");
