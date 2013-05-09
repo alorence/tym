@@ -35,6 +35,16 @@ LibraryModel::LibraryModel(QObject *parent) :
     _root(NULL)
 {
     _headers << tr("Name") << tr("Status") << tr("Results") << tr("Infos");
+
+    _noResultsColor = QColor(Qt::gray);
+    _noResultsColor.setAlpha(30);
+    _missingColor = QColor(Qt::red);
+    _missingColor.setAlpha(60);
+    _searchedColor = QColor(254, 183, 11, 50);
+    _trackLinkedColor = QColor(Qt::green);
+    _trackLinkedColor.setAlpha(50);
+
+    updateSettings();
 }
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
@@ -48,8 +58,14 @@ Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 
 QVariant LibraryModel::data(const QModelIndex &item, int role) const
 {
-    if (role != Qt::DisplayRole && role != Qt::DecorationRole && role != Qt::CheckStateRole
-            && !(role == UniqueReversePathRole && entryFromIndex(item)->isDirNode()))
+    QSet<Qt::ItemDataRole> enabledRoles;
+    enabledRoles << Qt::DisplayRole << Qt::DecorationRole << Qt::CheckStateRole;
+
+    if(_colorsEnabled) {
+        enabledRoles << Qt::BackgroundColorRole;
+    }
+
+    if ( ! enabledRoles.contains((Qt::ItemDataRole)role) && !(role == UniqueReversePathRole && entryFromIndex(item)->isDirNode()))
         return QVariant();
 
     LibraryEntry* entry = entryFromIndex(item);
@@ -75,6 +91,24 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
             entry = entry->parent();
         } while (entry != NULL);
         return result;
+    } else if (role == Qt::BackgroundColorRole) {
+        // Set BG color for each row
+        Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+
+        if(status.testFlag(Library::FileNotFound)) {
+            return QBrush(_missingColor);
+        } else if(status.testFlag(Library::Searched)) {
+            bool hasLink = !entry->record().value(Library::Bpid).isNull();
+            int numResults = entry->record().value(Library::NumResults).toInt();
+            if(hasLink) {
+                return QBrush(_trackLinkedColor);
+            } else if(numResults) {
+                return QBrush(_searchedColor);
+            } else {
+                return QBrush(_noResultsColor);
+            }
+        }
+        return QVariant();
     }
     return QVariant();
 }
@@ -190,6 +224,23 @@ int LibraryModel::numChecked()
     return _checkedEntries.size();
 }
 
+void LibraryModel::updateSettings()
+{
+    QSettings settings;
+    bool colorsEnabled = settings.value(TYM_PATH_DISPLAY_COLORS, TYM_DEFAULT_DISPLAY_COLORS).toBool();
+
+    QVector<int> changes;
+    if(colorsEnabled != _colorsEnabled)
+        changes << Qt::BackgroundColorRole;
+
+    _colorsEnabled = colorsEnabled;
+
+    if( ! changes.isEmpty()) {
+        emit dataChanged(index(0, columnCount(QModelIndex()) - 1, QModelIndex()),
+                         index(rowCount(QModelIndex()) - 1, columnCount(QModelIndex()) - 1, QModelIndex()),
+                         changes);
+    }
+}
 void LibraryModel::refresh()
 {
     if( ! _elementsList.exec()) {

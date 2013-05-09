@@ -150,7 +150,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Configure settings management
     connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
     connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
-//    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
+    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();

@@ -37,12 +37,8 @@ namespace Settings {
 }
 
 // Settings - interface
-#define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
-#define TYM_DEFAULT_DISPLAY_FULLPATHS false
 #define TYM_PATH_DISPLAY_COLORS "settings/interface/library/colors"
-#define TYM_DEFAULT_DISPLAY_COLORS true
-#define TYM_PATH_DISPLAY_CHECKBOXES "settings/interface/library/checkboxes"
-#define TYM_DEFAULT_DISPLAY_CHECKBOXES true
+#define TYM_DEFAULT_DISPLAY_COLORS false
 #define TYM_PATH_KEY_STYLE "settings/interface/keystyle"
 #define TYM_DEFAULT_KEY_STYLE Settings::Beatport
 

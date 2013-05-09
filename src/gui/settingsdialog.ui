@@ -193,27 +193,13 @@
            <string>Library</string>
           </property>
           <layout class="QFormLayout" name="formLayout_4">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
            <item row="0" column="1">
-            <widget class="QCheckBox" name="libFullPaths">
-             <property name="text">
-              <string>Display full paths</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
             <widget class="QCheckBox" name="libColors">
              <property name="text">
               <string>Enable colors</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QCheckBox" name="libCheckboxes">
-             <property name="text">
-              <string>Display checkboxes</string>
              </property>
              <property name="checked">
               <bool>true</bool>

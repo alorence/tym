@@ -38,12 +38,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Interface
      ********************************/
-    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_FULLPATHS, ui->libFullPaths,
-                                                    TYM_DEFAULT_DISPLAY_FULLPATHS, this);
     _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_COLORS, ui->libColors,
                                                     TYM_DEFAULT_DISPLAY_COLORS, this);
-    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_CHECKBOXES, ui->libCheckboxes,
-                                                    TYM_DEFAULT_DISPLAY_CHECKBOXES, this);
     QList<QRadioButton*> keyStyleValueList;
     keyStyleValueList << ui->bpStyle << ui->mikStyle;
     _widgetObservers << new RadioButtonListObserver(TYM_PATH_KEY_STYLE, keyStyleValueList,

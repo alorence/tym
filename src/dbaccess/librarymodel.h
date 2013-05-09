@@ -69,6 +69,8 @@ public:
         SearchedAndNotLinkedTracks
     };
 
+    void updateSettings();
+
 public slots:
     void refresh();
     void checkSpecificGroup(int checkGroup);
@@ -95,6 +97,12 @@ private:
 
     QSet<LibraryEntry*> _checkedEntries;
     static const int CHECKABLECOLUMN;
+
+    bool _colorsEnabled;
+    QColor _noResultsColor;
+    QColor _missingColor;
+    QColor _searchedColor;
+    QColor _trackLinkedColor;
 };
 
 #endif // LIBRARYMODEL_H
