@@ -26,6 +26,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "libraryentry.h"
 #include "tools/utils.h"
 
+const int LibraryModel::CHECKABLECOLUMN = Library::Name;
+
 LibraryModel::LibraryModel(QObject *parent) :
     QAbstractItemModel(parent),
     _db("libraryModel", this),
@@ -37,7 +39,7 @@ LibraryModel::LibraryModel(QObject *parent) :
 
 Qt::ItemFlags LibraryModel::flags(const QModelIndex &index) const
 {
-    if(index.column() == 0) {
+    if(index.column() == CHECKABLECOLUMN) {
         Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
         return  defaultFlags | Qt::ItemIsUserCheckable;
     }
@@ -219,6 +221,57 @@ void LibraryModel::refresh()
     }
 }
 
+void LibraryModel::checkSpecificGroup(int checkGroup)
+{
+    _checkedEntries.clear();
+
+    std::function<bool (LibraryEntry*)> filter;
+    switch((GroupSelection) checkGroup) {
+    case AllTracks:
+        for(int i = 0 ; i < _root->rowCount() ; ++i) {
+            setChecked(index(i, CHECKABLECOLUMN, QModelIndex()), true, true);
+        }
+        return;
+        break;
+    case Neither:
+        // _checkedEntries has been cleared, only emits signals to inform others
+        emit dataChanged(QModelIndex(), QModelIndex(), QVector<int>() << Qt::CheckStateRole);
+        emit checkedItemsUpdated(0);
+        return;
+        break;
+    case NewTracks:
+        filter = [](LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            return status.testFlag(Library::New);
+        };
+        break;
+    case MissingTracks:
+        filter = [](LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            return status.testFlag(Library::FileNotFound);
+        };
+        break;
+    case LinkedTracks:
+        filter = [](LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            bool hasLikedResult = !entry->record().value(Library::Bpid).isNull();
+            return status.testFlag(Library::Searched) && hasLikedResult;
+        };
+        break;
+    case SearchedAndNotLinkedTracks:
+        filter = [](LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            bool hasLikedResult = !entry->record().value(Library::Bpid).isNull();
+            return status.testFlag(Library::Searched) && !hasLikedResult;
+        };
+        break;
+    default:
+        break;
+    }
+
+    recursiveFilteredSetChecked(QModelIndex(), filter);
+}
+
 LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
 {
     if(_dirMap.contains(dirPath)) {
@@ -267,6 +320,19 @@ LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
     }
 }
 
+void LibraryModel::recursiveFilteredSetChecked(const QModelIndex &ind, const std::function<bool (LibraryEntry *)> &filterFunction)
+{
+    if(hasChildren(ind)) {
+        for(int i = 0 ; i < rowCount(ind) ; ++i) {
+            recursiveFilteredSetChecked(index(i, CHECKABLECOLUMN, ind), filterFunction);
+        }
+    } else {
+        if(filterFunction(entryFromIndex(ind))) {
+            setChecked(ind, true, false);
+        }
+    }
+}
+
 void LibraryModel::setChecked(const QModelIndex &ind, bool checked, bool recursive)
 {
     LibraryEntry *entry = entryFromIndex(ind);
@@ -293,7 +359,7 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked, bool recursi
         // If entry is a dir, check all its children
         if(recursive && entry->isDirNode()) {
             for(int i = 0 ; i < rowCount(ind) ; ++i) {
-                setChecked(index(i, ind.column(), ind), true, true);
+                setChecked(index(i, CHECKABLECOLUMN, ind), true, true);
             }
         }
     }
@@ -311,7 +377,7 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked, bool recursi
         // Uncheck all its children if it is a dir
         if(recursive && entry->isDirNode()) {
             for(int i = 0 ; i < rowCount(ind) ; ++i) {
-                setChecked(index(i, ind.column(), ind), false, true);
+                setChecked(index(i, CHECKABLECOLUMN, ind), false, true);
             }
         }
     }
@@ -322,3 +388,4 @@ bool LibraryModel::isChecked(const QModelIndex &index) const
 {
     return _checkedEntries.contains(entryFromIndex(index));
 }
+

@@ -117,32 +117,35 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
     // Configure actions for selecting groups in library
-//    _selectionActions[LibraryModel::AllTracks] = "All tracks";
-//    _selectionActions[LibraryModel::NewTracks] = "New";
-//    _selectionActions[LibraryModel::MissingTracks] = "Missing";
-//    _selectionActions[LibraryModel::LinkedTracks] = "Linked to a result";
+    _checkActions[LibraryModel::AllTracks] = "All tracks";
+    _checkActions[LibraryModel::Neither] = "Neither";
+    _checkActions[LibraryModel::NewTracks] = "News";
+    _checkActions[LibraryModel::MissingTracks] = "Missing";
+    _checkActions[LibraryModel::LinkedTracks] = "Linked to a result";
+    _checkActions[LibraryModel::SearchedAndNotLinkedTracks] = "Not linked to better result";
 
-//    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectionActions);
+    QMapIterator<LibraryModel::GroupSelection, QString> it(_checkActions);
 
-//    ui->selectionCombo->addItem("", -1);
-//    while(it.hasNext()) {
-//        LibraryModel::GroupSelection id = it.next().key();
-//        QString label = it.value();
+    ui->checkElementsCombo->addItem("", -1);
+    while(it.hasNext()) {
+        LibraryModel::GroupSelection id = it.next().key();
+        QString label = it.value();
 
-//        ui->selectionCombo->addItem(label, id);
+        ui->checkElementsCombo->addItem(label, id);
 
-//        QAction * action = new QAction(label, ui->libraryView);
-//        _selectionMapper.setMapping(action, id);
-//        connect(action, SIGNAL(triggered()), &_selectionMapper, SLOT(map()));
+        QAction * action = new QAction(label, ui->libraryView);
+        _checkMapper.setMapping(action, id);
+        connect(action, SIGNAL(triggered()), &_checkMapper, SLOT(map()));
 
-//        _selectActionsList << action;
-//    }
-//    // Connect combobox to the slot
-//    connect(ui->selectionCombo, SIGNAL(activated(int)),
-//            this, SLOT(selectSpecificLibraryElements(int)));
-//    // Connect context menu, via the QSignalMapper
-//    connect(&_selectionMapper, SIGNAL(mapped(int)),
-//            _libraryModel, SLOT(selectSpecificGroup(int)));
+        _selectActionsList << action;
+    }
+    // Connect combobox to the slot
+    connect(ui->checkElementsCombo, SIGNAL(activated(int)),
+            this, SLOT(checkSpecificLibraryElements(int)));
+    // Connect context menu, via the QSignalMapper
+    connect(&_checkMapper, SIGNAL(mapped(int)),
+            _libraryModel, SLOT(selectSpecificGroup(int)));
+
 
     // Configure settings management
     connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
@@ -325,13 +328,13 @@ void MainWindow::afterLibraryViewReset()
     _expandedItems.clear();
 }
 
-void MainWindow::selectSpecificLibraryElements(int index)
+void MainWindow::checkSpecificLibraryElements(int index)
 {
-    int group = ui->selectionCombo->itemData(index).toInt();
+    int group = ui->checkElementsCombo->itemData(index).toInt();
     if(group != -1) {
-//        _libraryModel->selectSpecificGroup(group);
+        _libraryModel->checkSpecificGroup(group);
     }
-    ui->libraryView->setFocus();
+    ui->checkElementsCombo->setCurrentIndex(0);
 }
 
 void MainWindow::on_actionSearch_triggered()

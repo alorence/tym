@@ -111,7 +111,7 @@ private slots:
      */
     void updateLibraryActions(int numSelected = -1);
     /*!
-     * \brief Enable or disable actions according to number of search results displayed an,d selected
+     * \brief Enable or disable actions according to number of search results displayed and selected
      */
     void updateSearchResultsActions();
 
@@ -119,11 +119,11 @@ private slots:
     void afterLibraryViewReset();
 
     /*!
-     * \brief Select library elements.
+     * \brief Check library elements, according to entry selected by user in the combobox
      *
      * \param comboIndex index of the combo element selected
      */
-    void selectSpecificLibraryElements(int comboIndex);
+    void checkSpecificLibraryElements(int comboIndex);
 
     /*!
      * \brief Open the context menu on library table view
@@ -196,8 +196,8 @@ private:
 
     QThread* _libStatusUpdateThread;
 
-//    QMap<LibraryModel::GroupSelection,QString> _selectionActions;
-    QSignalMapper _selectionMapper;
+    QMap<LibraryModel::GroupSelection,QString> _checkActions;
+    QSignalMapper _checkMapper;
     QList<QAction*> _selectActionsList;
 
     QStringList _expandedItems;

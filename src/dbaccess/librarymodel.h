@@ -23,6 +23,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QtSql>
 
+#include <functional>
+
 #include "bpdatabase.h"
 
 class LibraryEntry;
@@ -58,8 +60,18 @@ public:
         UniqueReversePathRole = Qt::UserRole + 1
     };
 
+    enum GroupSelection {
+        AllTracks,
+        Neither,
+        NewTracks,
+        MissingTracks,
+        LinkedTracks,
+        SearchedAndNotLinkedTracks
+    };
+
 public slots:
     void refresh();
+    void checkSpecificGroup(int checkGroup);
 
 signals:
     void checkedItemsUpdated(int numSelected);
@@ -69,6 +81,7 @@ private:
     LibraryEntry* getLibraryNode(const QString &dirPath);
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
+    void recursiveFilteredSetChecked(const QModelIndex &index, const std::function<bool (LibraryEntry *)> &f);
     void setChecked(const QModelIndex &ind, bool checked, bool recursive = true);
     bool isChecked(const QModelIndex &index) const;
 
@@ -81,6 +94,7 @@ private:
     QList<QString> _headers;
 
     QSet<LibraryEntry*> _checkedEntries;
+    static const int CHECKABLECOLUMN;
 };
 
 #endif // LIBRARYMODEL_H
