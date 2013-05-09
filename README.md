@@ -26,7 +26,7 @@ nmake makesetup
 ```
 
 ### Dependencies
- - Modified version (https://gitorious.org/~alorence/cutelogger/alorences-cutelogger) of Cutelogger library (https://gitorious.org/cutelogger/cutelogger)
+ - Forked version of Cutelogger library (https://github.com/cyberbobs/CuteLogger)
  - Qt 5.0.0 (https://qt-project.org/)
  - CMake 2.8.9 minimum
  - C++ compiler, g++ and msvc 2010 are ok, and others should also be
