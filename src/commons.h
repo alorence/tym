@@ -37,12 +37,8 @@ namespace Settings {
 }
 
 // Settings - interface
-#define TYM_PATH_DISPLAY_FULLPATHS "settings/interface/library/fullpaths"
-#define TYM_DEFAULT_DISPLAY_FULLPATHS false
 #define TYM_PATH_DISPLAY_COLORS "settings/interface/library/colors"
-#define TYM_DEFAULT_DISPLAY_COLORS true
-#define TYM_PATH_DISPLAY_CHECKBOXES "settings/interface/library/checkboxes"
-#define TYM_DEFAULT_DISPLAY_CHECKBOXES true
+#define TYM_DEFAULT_DISPLAY_COLORS false
 #define TYM_PATH_KEY_STYLE "settings/interface/keystyle"
 #define TYM_DEFAULT_KEY_STYLE Settings::Beatport
 
@@ -61,7 +57,7 @@ namespace Settings {
 #define TYM_DEFAULT_PROXY_PORT ""
 
 namespace Library {
-    enum Indexes {
+    enum TableIndexes {
         Uid = 0,
         FilePath,
         Bpid,
@@ -70,14 +66,20 @@ namespace Library {
     };
     enum FileStatuses {
         New = 0x00,
-        ResultsAvailable = 0x01,
+        Searched = 0x01,
         FileNotFound = 0x10
     };
     Q_DECLARE_FLAGS(FileStatus, FileStatuses)
+    enum GuiIndexes {
+        Name = 0,
+        StatusMessage,
+        Results,
+        Infos
+    };
 }
 Q_DECLARE_OPERATORS_FOR_FLAGS(Library::FileStatus)
 namespace BPTracks {
-    enum Indexes {
+    enum TableIndexes {
         Bpid = 0,
         TrackName,
         MixName,
@@ -94,7 +96,7 @@ namespace BPTracks {
     };
 }
 namespace TrackFullInfos {
-    enum Indexes {
+    enum TableIndexes {
         Artists,
         Remixers,
         Genres,
@@ -116,7 +118,7 @@ namespace TrackFullInfos {
     };
 }
 namespace SearchResults {
-    enum Indexes {
+    enum TableIndexes {
         LibId = 0,
         Bpid,
         Track,

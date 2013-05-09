@@ -55,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalSplitter->setStretchFactor(0, 4);
     ui->horizontalSplitter->setStretchFactor(1, 1);
 
-
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
 
@@ -73,21 +72,17 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
     }
 
-    // Configure Library Model
-    _libraryModel = new LibraryModel(this, _dbHelper->dbObject());
-    _libraryModel->setTable("LibraryHelper");
-    _libraryModel->select();
-    // Configure view
+    // Configure Library Model and View
+    _libraryModel = new LibraryModel(this);
     ui->libraryView->setModel(_libraryModel);
-    ui->libraryView->hideColumn(Library::Uid);
-    ui->libraryView->hideColumn(Library::Bpid);
 
-    // Configure Search Model
+    // Configure search model
     _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
     _searchModel->setTable("SearchResultsHelper");
     _searchModel->setFilter("libId=NULL");
     _searchModel->select();
-    // Configure view
+
+    // Configure search view
     ui->searchResultsView->setModel(_searchModel);
     ui->searchResultsView->hideColumn(SearchResults::LibId);
     ui->searchResultsView->hideColumn(SearchResults::Bpid);
@@ -96,74 +91,61 @@ MainWindow::MainWindow(QWidget *parent) :
     // Ensure both library and search results view are always focused together
     ui->libraryView->setFocusProxy(ui->searchResultsView);
 
-    // Select or deselect rows on the view when checkboxes are checked / unchecked
-    connect(_libraryModel, SIGNAL(requestSelectRows(QItemSelection,QItemSelectionModel::SelectionFlags)),
-            ui->libraryView->selectionModel(), SLOT(select(QItemSelection,QItemSelectionModel::SelectionFlags)));
-
-    // Set current selection index to last modified row
-    connect(_libraryModel, SIGNAL(requestChangeCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)),
-            ui->libraryView->selectionModel(), SLOT(setCurrentIndex(QModelIndex,QItemSelectionModel::SelectionFlags)));
-
-    // Check rows in model when selection change on the view
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            _libraryModel, SLOT(updateCheckedRows(QItemSelection,QItemSelection)));
+    // Update root dir text label
+    connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
 
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->libraryView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            this, SLOT(updateLibraryActions()));
+    connect(_libraryModel, &LibraryModel::checkedItemsUpdated, this, &MainWindow::updateLibraryActions);
 
-    // Update search results view when selecting something in the library view
-    connect(ui->libraryView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateSearchResults(QModelIndex,QModelIndex)));
+    // Reconfigure some view properties when it is refreshed
+    connect(_libraryModel, &LibraryModel::modelAboutToBeReset, this, &MainWindow::beforeLibraryViewReset);
+    connect(_libraryModel, &LibraryModel::modelReset, this, &MainWindow::afterLibraryViewReset);
 
     // Display informations about a track when selecting it in the view
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-            this, SLOT(updateTrackInfos(QModelIndex,QModelIndex)));
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::updateTrackInfos);
 
     // TODO: Maybe useless when LibraryModel::refresh(int row) will work
-    connect(_dbHelper, SIGNAL(referenceForTrackUpdated(QString)),
-            _searchModel, SLOT(refresh(QString)));
+    connect(_dbHelper, &BPDatabase::referenceForTrackUpdated, _searchModel, &SearchResultsModel::refresh);
 
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->searchResultsView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            this, SLOT(updateSearchResultsActions()));
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::updateSearchResultsActions);
 
     // Download pictures when needed
-    connect(ui->trackInfos, SIGNAL(downloadPicture(QString)),
-            _pictureDownloader, SLOT(downloadTrackPicture(QString)));
-    connect(_pictureDownloader, SIGNAL(pictureDownloadFinished(QString)),
-            ui->trackInfos, SLOT(displayDownloadedPicture(QString)));
+    connect(ui->trackInfos, &TrackInfosView::downloadPicture, _pictureDownloader, &PictureDownloader::downloadTrackPicture);
+    connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished, ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
 
-    connect(_dbHelper, SIGNAL(libraryEntryUpdated(QString)),
-            _libraryModel, SLOT(refresh()));
+    connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
     // Configure actions for selecting groups in library
-    _selectionActions[LibraryModel::AllTracks] = "All tracks";
-    _selectionActions[LibraryModel::NewTracks] = "New";
-    _selectionActions[LibraryModel::MissingTracks] = "Missing";
-    _selectionActions[LibraryModel::LinkedTracks] = "Linked to a result";
+    _checkActions[LibraryModel::AllTracks] = "All tracks";
+    _checkActions[LibraryModel::Neither] = "Neither";
+    _checkActions[LibraryModel::NewTracks] = "News";
+    _checkActions[LibraryModel::MissingTracks] = "Missing";
+    _checkActions[LibraryModel::LinkedTracks] = "Linked to a result";
+    _checkActions[LibraryModel::SearchedAndNotLinkedTracks] = "Not linked to better result";
 
-    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectionActions);
+    QMapIterator<LibraryModel::GroupSelection, QString> it(_checkActions);
 
-    ui->selectionCombo->addItem("", -1);
+    ui->checkElementsCombo->addItem("", -1);
     while(it.hasNext()) {
         LibraryModel::GroupSelection id = it.next().key();
         QString label = it.value();
 
-        ui->selectionCombo->addItem(label, id);
+        ui->checkElementsCombo->addItem(label, id);
 
         QAction * action = new QAction(label, ui->libraryView);
-        _selectionMapper.setMapping(action, id);
-        connect(action, SIGNAL(triggered()), &_selectionMapper, SLOT(map()));
+        _checkMapper.setMapping(action, id);
+        connect(action, SIGNAL(triggered()), &_checkMapper, SLOT(map()));
 
         _selectActionsList << action;
     }
     // Connect combobox to the slot
-    connect(ui->selectionCombo, SIGNAL(activated(int)),
-            this, SLOT(selectSpecificLibraryElements(int)));
+    connect(ui->checkElementsCombo, SIGNAL(activated(int)),
+            this, SLOT(checkSpecificLibraryElements(int)));
     // Connect context menu, via the QSignalMapper
-    connect(&_selectionMapper, SIGNAL(mapped(int)),
-            _libraryModel, SLOT(selectSpecificGroup(int)));
+    connect(&_checkMapper, SIGNAL(mapped(int)),
+            _libraryModel, SLOT(checkSpecificGroup(int)));
+
 
     // Configure settings management
     connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
@@ -173,9 +155,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
     libStatusUpdateTask->moveToThread(_libStatusUpdateThread);
-    connect(_libStatusUpdateThread, SIGNAL(started()), libStatusUpdateTask, SLOT(run()));
-    connect(libStatusUpdateTask, SIGNAL(finished()), _libraryModel, SLOT(refresh()));
-    connect(_libStatusUpdateThread, SIGNAL(destroyed()), libStatusUpdateTask, SLOT(deleteLater()));
+    connect(_libStatusUpdateThread, &QThread::started, libStatusUpdateTask, &Task::run);
+    connect(libStatusUpdateTask, &Task::finished, _libraryModel, &LibraryModel::refresh);
+    connect(_libStatusUpdateThread, &QThread::destroyed, libStatusUpdateTask, &Task::deleteLater);
 
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
@@ -196,9 +178,7 @@ MainWindow::~MainWindow()
     delete _settings;
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
-    foreach(QAction *action, _selectActionsList) {
-        action->deleteLater();
-    }
+    qDeleteAll(_selectActionsList);
 }
 
 void MainWindow::updateSettings()
@@ -249,9 +229,11 @@ void MainWindow::dropEvent(QDropEvent *event)
 void MainWindow::showEvent(QShowEvent *)
 {
     // Configure libraryView filePath column to take as space as possible
-    QHeaderView *horizHeader = ui->libraryView->horizontalHeader();
-    // Ensure 2 last colums have the default section size
-    ui->libraryView->setColumnWidth(Library::FilePath, horizHeader->width() - 2 * horizHeader->defaultSectionSize());
+    QHeaderView *horizHeader = ui->libraryView->header();
+    // Ensure 1st column take as most space as possible
+    ui->libraryView->setColumnWidth(Library::Name, horizHeader->width() - 3 * horizHeader->defaultSectionSize());
+    // Enlarge last column (same size as first one)
+    ui->libraryView->setColumnWidth(Library::Infos, ui->libraryView->columnWidth(Library::Name));
 }
 
 void MainWindow::toggleConsoleDisplaying(bool show) const
@@ -267,7 +249,7 @@ void MainWindow::toggleConsoleDisplaying(bool show) const
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
 {
-    QSqlRecord current = _libraryModel->record(selected.row());
+    QSqlRecord current = _libraryModel->record(selected);
     QString libId = current.value(Library::Uid).toString();
     _searchModel->setFilter("libId=" + libId);
 
@@ -296,9 +278,11 @@ void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex
     ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
 }
 
-void MainWindow::updateLibraryActions()
+void MainWindow::updateLibraryActions(int numSel)
 {
-    int numSel = _libraryModel->selectedIds().size();
+    if(numSel == -1) {
+        numSel = _libraryModel->numChecked();
+    }
 
     ui->actionRemove->setDisabled(numSel == 0);
     ui->actionSearch->setDisabled(numSel == 0);
@@ -314,18 +298,48 @@ void MainWindow::updateSearchResultsActions()
     ui->actionSearchResultDelete->setDisabled(numSel == 0);
 }
 
-void MainWindow::selectSpecificLibraryElements(int index)
+void MainWindow::beforeLibraryViewReset()
 {
-    int group = ui->selectionCombo->itemData(index).toInt();
-    if(group != -1) {
-        _libraryModel->selectSpecificGroup(group);
+    // Save expanded folder, as a list of unique identifiers
+    for(QModelIndex ind : _libraryModel->dirNodeModelIndexes()) {
+        if(ui->libraryView->isExpanded(ind)) {
+            _expandedItems << _libraryModel->data(ind, LibraryModel::UniqueReversePathRole).toString();
+        }
     }
-    ui->libraryView->setFocus();
+}
+
+void MainWindow::afterLibraryViewReset()
+{
+    // Update search results view when selecting something in the library view
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::updateSearchResults);
+
+    // Restore expanded items by searching them from their identifier
+    for(QString uniquePathIdentifier : _expandedItems) {
+        QModelIndexList matchList = _libraryModel->match(_libraryModel->index(0,0), LibraryModel::UniqueReversePathRole,
+                                                    uniquePathIdentifier, 1, Qt::MatchFixedString | Qt::MatchRecursive);
+        if(matchList.size()) {
+            QModelIndex item = matchList.at(0);
+            do {
+                ui->libraryView->expand(item);
+                item = item.parent();
+            } while (item.isValid());
+        }
+    }
+    _expandedItems.clear();
+}
+
+void MainWindow::checkSpecificLibraryElements(int index)
+{
+    int group = ui->checkElementsCombo->itemData(index).toInt();
+    if(group != -1) {
+        _libraryModel->checkSpecificGroup(group);
+    }
+    ui->checkElementsCombo->setCurrentIndex(0);
 }
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SearchWizard wizard(_libraryModel->selectedRecords().values());
+    SearchWizard wizard(_libraryModel->checkedRecords());
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -336,6 +350,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
     QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
+    // TODO: replace ALL foreach macro by new C++11 for syntax
     foreach(QAction *selectAction, _selectActionsList) {
         selectMenu->addAction(selectAction);
     }
@@ -367,17 +382,8 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionRemove_triggered()
 {
-    QHash<int, QSqlRecord> selecteds = _libraryModel->selectedRecords();
-    QList<int> rows;
-    QStringList uids;
-
-    QHashIterator<int, QSqlRecord> it(selecteds);
-    while(it.hasNext()) {
-        rows << it.next().key();
-        uids << it.value().value(Library::Uid).toString();
-    }
-    _dbHelper->deleteLibraryEntry(uids);
-    _libraryModel->unselectRowsAndRefresh(rows);
+    _dbHelper->deleteLibraryEntry(_libraryModel->checkedUids());
+    _libraryModel->refresh();
 }
 
 void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
@@ -411,7 +417,7 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
 void MainWindow::on_actionRename_triggered()
 {
-    RenameWizard wizard(_libraryModel->selectedRecords().values());
+    RenameWizard wizard(_libraryModel->checkedRecords());
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -423,8 +429,8 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
     QFileInfoList result;
 
     if(entry.isDir()) {
-        foreach(QFileInfo toto, QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-            result.append(filteredFileList(toto));
+        foreach(QFileInfo dirEntry, QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+            result.append(filteredFileList(dirEntry));
         }
 
     } else if(entry.isFile()) {
@@ -440,6 +446,6 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 
 void MainWindow::on_actionExport_triggered()
 {
-    ExportPlaylistWizard wizard(_libraryModel->selectedRecords().values());
+    ExportPlaylistWizard wizard(_libraryModel->checkedRecords());
     wizard.exec();
 }

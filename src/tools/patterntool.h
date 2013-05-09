@@ -67,7 +67,7 @@ public:
      * \param basename File name (without suffix)
      * \return Results as map, indexed by TrackFullInfos::Indexes
      */
-    QMap<TrackFullInfos::Indexes, QString> parse(const QString &basename) const;
+    QMap<TrackFullInfos::TableIndexes, QString> parse(const QString &basename) const;
 
     /*!
      * \brief Check if the current pattern match the baseName parameter
