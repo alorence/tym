@@ -48,7 +48,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
     # Enable C++11
-    set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7 ${CMAKE_CXX_FLAGS}")
 
 endif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 

@@ -87,8 +87,6 @@ elseif(APPLE)
         COMMAND mkdir -p ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
         COMMAND cp -r ${tym_BINARY_DIR}/src/${TYM_EXECUTABLE_FILENAME}.app/* ${TYM_EXECUTABLE_FILENAME}.app
 
-        COMMAND cp /usr/lib/libc++.1.dylib ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
-        COMMAND install_name_tool -change /usr/lib/libc++.1.dylib @executable_path/../Frameworks/libc++.1.dylib ${TYM_EXECUTABLE_FILENAME}.app/Contents/MacOS/${TYM_EXECUTABLE_FILENAME}
         COMMAND ${QT5_INSTALL_DIR}/bin/macdeployqt ${TYM_EXECUTABLE_FILENAME}.app
 
         COMMAND rm -fr ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
