@@ -123,24 +123,14 @@ target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger)
 
 # Add Qt5 modules dependencies
 qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
+    Core
     Widgets
     Sql
     Network
 )
 
-# WIN32 specific flags and compiler options
-if(WIN32)
-    # Ensure main() function is compatible with target platform
-    target_link_libraries(${TYM_EXECUTABLE_FILENAME} ${Qt5Core_QTMAIN_LIBRARIES})
-
-    if(${MINGW})
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS "-mwindows")
-    elseif(${MSVC})
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-        set_target_properties(${EXECUTABLE_FILENAME} PROPERTIES MINSIZEREL "/SUBSYSTEM:WINDOWS")
-    endif(${MINGW})
-endif(WIN32)
+if(MSVC)
+    # Link with Qt WinMain, ensuring that the entry function will have
+    # signature required by MSVC
+    target_link_libraries(${TYM_EXECUTABLE_FILENAME} Qt5::WinMain)
+endif(MSVC)

@@ -81,7 +81,7 @@ if(WIN32)
 
     add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME} Logger)
 elseif(APPLE)
-    
+
     add_custom_target(${TYM_SETUP_TARGET_NAME}
 
         COMMAND mkdir -p ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
@@ -98,7 +98,7 @@ elseif(APPLE)
         COMMENT "Build the app package"
     )
 elseif(UNIX)
-    
+
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
     set(CPACK_PACKAGE_VENDOR "Me, myself, and I")
     #set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")

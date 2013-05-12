@@ -23,8 +23,16 @@ set(TYM_WIN_RC logos/tym.rc)
 # Set the list of translations (*.ts) files to compile them in src directory
 file(GLOB TRANSLATIONS_FILES translations/*.ts)
 
-# Compile translations (*.qm) files from *.ts
-qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
+# Compile translations (*.ts) files
+
+if(TYM_UPDATE_TRANSLATIONS)
+	# Update *.ts files with latest tr() strings
+    qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_CURRENT_SOURCE_DIR}../src ${TRANSLATIONS_FILES})
+    message(STATUS "Translations files has been updated. To prevent them to be deleted at the next 'make clean' invocation, don't forget to disable the option TYM_UPDATE_TRANSLATIONS. You can use cmake-gui or the command line option -U to do so.")
+else(TYM_UPDATE_TRANSLATIONS)
+	# Compile translations (*.qm) files from *.ts
+    qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
+endif(TYM_UPDATE_TRANSLATIONS)
 
 # Write resources into proper cpp source file
 qt5_add_resources(CPP_RESOURCES resources.qrc)
