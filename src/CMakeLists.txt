@@ -103,9 +103,6 @@ qt5_wrap_cpp(tym_MOCS ${tym_HEADERS})
 # Process forms files (<filename>.ui) and converts them to ui_<filename>.h files
 qt5_wrap_ui(tym_UIS_HEADERS ${tym_UIS})
 
-# Compile translations (*.ts) files
-qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
-
 if(${WIN32})
     set(GUI_FLAG WIN32)
 elseif(${APPLE})
@@ -119,8 +116,7 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
     ${tym_BASIC_HDRS}
     ${tym_MOCS}
     ${tym_UIS_HEADERS}
-    ${TYM_TRANSLATIONS}
-    $<TARGET_OBJECTS:resources>
+    ${tym_resources}
 )
 
 target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger)
@@ -130,7 +126,6 @@ qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
     Widgets
     Sql
     Network
-    # LinguistTools
 )
 
 # WIN32 specific flags and compiler options

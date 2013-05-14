@@ -37,11 +37,6 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # Display all warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-    # qt5/qtbase/include/QtCore/qglobal.h:1765:4: error:
-    # #error "You must build your code with position independent code if Qt was
-    # built with -reduce-relocations. " "Compile your code with -fPIC or -fPIE."
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-
     # Enable C++11
     set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
@@ -75,10 +70,6 @@ if(TYM_BETA)
 else(TYM_BETA)
     set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
 endif(TYM_BETA)
-
-# Set the list of translations (*.ts) files to compile them in src directory
-file(GLOB TRANSLATIONS_FILES translations/*.ts)
-# TODO: Add a custom target to create / update ts files in transl. dir.
 
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)

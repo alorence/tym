@@ -18,15 +18,17 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-qt5_add_resources(RCC_OBJ resources.qrc)
+set(TYM_WIN_RC logos/tym.rc)
 
-set(resources
-    logos/tym.rc
-)
+# Set the list of translations (*.ts) files to compile them in src directory
+file(GLOB TRANSLATIONS_FILES translations/*.ts)
 
-# Needed to compile cpp file generated from qrc
-include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-)
+# Compile translations (*.qm) files from *.ts
+qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 
-add_library(resources OBJECT ${resources} ${RCC_OBJ})
+# Write resources into proper cpp source file
+qt5_add_resources(CPP_RESOURCES resources.qrc)
+
+add_library(tym_resources STATIC ${TRANSLATIONS_FILES} ${CPP_RESOURCES} ${TYM_WIN_RC})
+
+qt5_use_modules(tym_resources Core)
