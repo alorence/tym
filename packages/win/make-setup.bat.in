@@ -1,0 +1,34 @@
+@set SKELETON_PATH=${TYM_SETUP_TREE_PATH}
+
+@set QT_DIR=${QT5_INSTALL_DIR}
+@set QT_BINDIR=%QT_DIR%\bin
+@set QT_PLUGINDIR=%QT_DIR%\plugins
+
+@set DLL_SUFFIX=${DEBUG_SUFFIX}
+
+@set TYM_PATH=
+
+del /S /F "%SKELETON_PATH%\*"
+
+mkdir "%SKELETON_PATH%"
+mkdir "%SKELETON_PATH%\platforms"
+mkdir "%SKELETON_PATH%\sqldrivers"
+mkdir "%SKELETON_PATH%\imageformats"
+
+xcopy "%QT_BINDIR%\Qt5Core%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\Qt5Widgets%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\Qt5Gui%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\Qt5Network%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\icudt49.dll" "%SKELETON_PATH%" /y /f :: No dubug version in Qt5.0.2
+xcopy "%QT_BINDIR%\icuin49%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\icuuc49%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\libGLESv2%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%\libEGL%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+
+xcopy "%QT_PLUGINDIR%\sqldrivers\qsqlite%DLL_SUFFIX%.dll" "%SKELETON_PATH%\sqldrivers" /y /f
+xcopy "%QT_PLUGINDIR%\imageformats\qjpeg%DLL_SUFFIX%.dll" "%SKELETON_PATH%\imageformats" /y /f
+xcopy "%QT_PLUGINDIR%\platforms\qwindows%DLL_SUFFIX%.dll" "%SKELETON_PATH%\platforms" /y /f
+
+xcopy "${TYM_FULL_PATH}" "%SKELETON_PATH%" /y /f
+
+iscc tym-setup.iss

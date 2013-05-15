@@ -26,60 +26,28 @@ else(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(CURRENT_CONFIGURATION RELEASE)
 endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
 
-set(TYM_FULL_PATH "${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME}")
-
 set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
 
+get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
+
 if(WIN32)
+
+    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+        set(DEBUG_SUFFIX "d")
+    endif()
+
     set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
+
     configure_file(win/tym-setup.iss.in tym-setup.iss)
+    configure_file(win/make-setup.bat.in make-setup.bat)
+    configure_file(win/GPL3licence.txt ${TYM_SETUP_TREE_PATH}/GPL3licence.txt)
 
-    get_target_property(Qt5CoreLib         Qt5::Core           IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(Qt5WidgetsLib      Qt5::Widgets        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(Qt5GuiLib          Qt5::Gui            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(Qt5NetworkLib      Qt5::Network        IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-    get_target_property(Qt5SqlLib          Qt5::Sql            IMPORTED_LOCATION_${CURRENT_CONFIGURATION})
-
-    find_file(qSqllitePlugin "qsqlite${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${Qt5Core_DIR}/../../../plugins/sqldrivers")
-    find_file(qJpegPlugin "qjpeg${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${Qt5Core_DIR}/../../../plugins/imageformats")
-    find_file(qSqllitePlugin "${CMAKE_SHARED_LIBRARY_PREFIX}qsqlite${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/plugins/sqldrivers")
-    find_file(qJpegPlugin "${CMAKE_SHARED_LIBRARY_PREFIX}qjpeg${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/plugins/imageformats")
-    find_file(qWindowsPlugin "qwindows${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/plugins/platforms")
-    find_file(icudtPlugin "icudt49${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
-    find_file(icuinPlugin "icuin49${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
-    find_file(icuucPlugin "icuuc49${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
-    find_file(libGLES "libGLESv2${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
-    find_file(libEGL "libEGL${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
-    find_file(Qt5d3dLib "D3DCompiler_43${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "${QT5_INSTALL_DIR}/bin")
-
-    # TODO : Copy debug version of dynamic libs in Debug BUILD_TYPE
     add_custom_target(${TYM_SETUP_TARGET_NAME}
-        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5CoreLib}          ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5WidgetsLib}       ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5GuiLib}           ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5NetworkLib}       ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5SqlLib}           ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${icudtPlugin}         ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${icuinPlugin}         ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${icuucPlugin}         ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${libGLES}             ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${libEGL}              ${TYM_SETUP_TREE_PATH}
-        COMMAND ${CMAKE_COMMAND} -E copy ${Qt5d3dLib}           ${TYM_SETUP_TREE_PATH}
-
-        COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/platforms
-        COMMAND ${CMAKE_COMMAND} -E copy ${qWindowsPlugin}      ${TYM_SETUP_TREE_PATH}/platforms
-        COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/sqldrivers
-        COMMAND ${CMAKE_COMMAND} -E copy ${qSqllitePlugin}      ${TYM_SETUP_TREE_PATH}/sqldrivers
-        COMMAND ${CMAKE_COMMAND} -E make_directory              ${TYM_SETUP_TREE_PATH}/imageformats
-        COMMAND ${CMAKE_COMMAND} -E copy ${qJpegPlugin}         ${TYM_SETUP_TREE_PATH}/imageformats
-
-        COMMAND iscc ${CMAKE_CURRENT_BINARY_DIR}/tym-setup.iss
-
+        COMMAND cmd /C make-setup.bat
         COMMENT "Building installer with Inno Setup compiler (iscc)."
-        SOURCES win/tym-setup.iss.in
     )
 
-    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME} Logger)
+    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
 elseif(APPLE)
 
     add_custom_target(${TYM_SETUP_TARGET_NAME}

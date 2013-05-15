@@ -50,7 +50,6 @@ Source: "${TYM_SETUP_TREE_PATH}/*.dll";       		DestDir: {app}
 Source: "${TYM_SETUP_TREE_PATH}/platforms/*";		DestDir: {app}/platforms
 Source: "${TYM_SETUP_TREE_PATH}/sqldrivers/*";  	DestDir: {app}/sqldrivers
 Source: "${TYM_SETUP_TREE_PATH}/imageformats/*";	DestDir: {app}/imageformats
-Source: "vcredist_x86.exe";                     	DestDir: {tmp};                                         Flags: deleteafterinstall
 
 [CustomMessages]
 en.ApplicationName=Tag Your Music
@@ -61,7 +60,6 @@ fr.LaunchProgram=Démarrer Tag Your Music
 fr.VCRedistInstall=Installation de Microsoft Visual Studio 2010 Redistributable
 
 [Run]
-Filename: "{tmp}\vcredist_x86.exe";             Parameters : /q                                             StatusMsg: {cm:VCRedistInstall}
 Filename: {app}/${TYM_EXECUTABLE_FILENAME}.exe; Description: {cm:LaunchProgram,{cm:ApplicationName}};       Flags: nowait postinstall skipifsilent
 
 [Icons]
