@@ -18,25 +18,14 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-set(TYM_WIN_RC logos/tym.rc)
+qt5_add_resources(RCC_OBJ resources.qrc)
 
-# Set the list of translations (*.ts) files to compile them in src directory
-file(GLOB TRANSLATIONS_FILES translations/*.ts)
+set(resources
+    logos/tym.rc
+)
+# Needed to compile cpp file generated from qrc
+include_directories(
+    ${Qt5Core_INCLUDE_DIRS}
+)
 
-# Compile translations (*.ts) files
-
-if(TYM_UPDATE_TRANSLATIONS)
-	# Update *.ts files with latest tr() strings
-    qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_CURRENT_SOURCE_DIR}../src ${TRANSLATIONS_FILES})
-    message(STATUS "Translations files has been updated. To prevent them to be deleted at the next 'make clean' invocation, don't forget to disable the option TYM_UPDATE_TRANSLATIONS. You can use cmake-gui or the command line option -U to do so.")
-else(TYM_UPDATE_TRANSLATIONS)
-	# Compile translations (*.qm) files from *.ts
-    qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
-endif(TYM_UPDATE_TRANSLATIONS)
-
-# Write resources into proper cpp source file
-qt5_add_resources(CPP_RESOURCES resources.qrc)
-
-add_library(tym_resources STATIC ${TRANSLATIONS_FILES} ${CPP_RESOURCES} ${TYM_WIN_RC})
-
-qt5_use_modules(tym_resources Core)
+add_library(resources OBJECT ${resources} ${RCC_OBJ})
