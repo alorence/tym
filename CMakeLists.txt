@@ -35,19 +35,20 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 option(TYM_UPDATE_TRANSLATIONS OFF)
 
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    # Display all warnings
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+if(MSVC) # MSVC
+    # Display more warnings
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
 
-    # Enable C++11
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+elseif(UNIX OR CMAKE_COMPILER_IS_GNUCXX)
+    # Enable C++11 and displays all warnings
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    if(APPLE)
+        # Required on OSX to compile c++11
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mmacosx-version-min=10.7")
+    endif(APPLE)
 
-    # Enable C++11
-    set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7 ${CMAKE_CXX_FLAGS}")
-
-endif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+endif(MSVC)
 
 # Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
