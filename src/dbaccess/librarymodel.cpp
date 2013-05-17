@@ -30,9 +30,10 @@ const int LibraryModel::CHECKABLECOLUMN = Library::Name;
 
 LibraryModel::LibraryModel(QObject *parent) :
     QAbstractItemModel(parent),
+    _root(NULL),
     _db("libraryModel", this),
-    _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject()),
-    _root(NULL)
+    _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject())
+
 {
     _headers << tr("Name") << tr("Status") << tr("Results") << tr("Infos");
 

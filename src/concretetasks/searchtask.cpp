@@ -25,8 +25,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, const QStringList &searchTerms, QObject *parent) :
     Task(parent),
-    _selectedRecords(selectedRecords),
     _searchPattern(searchPattern),
+    _selectedRecords(selectedRecords),
     _searchTerms(searchTerms),
     _dbHelper(new BPDatabase("searchTask", this)),
     _search(new SearchProvider(this)),
