@@ -51,21 +51,14 @@ if(WIN32)
     add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
 elseif(APPLE)
 
+    configure_file(osx/make-bundle.sh.in make-bundle.sh @ONLY)
+
     add_custom_target(${TYM_SETUP_TARGET_NAME}
-
-        COMMAND mkdir -p ${TYM_EXECUTABLE_FILENAME}.app/Contents/Frameworks
-        COMMAND cp -r ${tym_BINARY_DIR}/src/${TYM_EXECUTABLE_FILENAME}.app/* ${TYM_EXECUTABLE_FILENAME}.app
-
-        COMMAND ${QT5_INSTALL_DIR}/bin/macdeployqt ${TYM_EXECUTABLE_FILENAME}.app
-
-        COMMAND rm -fr ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
-        COMMAND mv -f -v ${TYM_EXECUTABLE_FILENAME}.app ${TYM_SETUP_OUTPUT_PATH}/${TYM_SETUP_FILENAME}.app
-
-        COMMAND rm -f ${TYM_SETUP_FILENAME}.zip
-        COMMAND zip -v -r -X ./${TYM_SETUP_FILENAME}.zip ${TYM_SETUP_FILENAME}.app
+        COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
         WORKING_DIRECTORY ${TYM_SETUP_OUTPUT_PATH}
-        COMMENT "Build the app package"
+        COMMENT "Build the app package and the final zip"
     )
+    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
 elseif(UNIX)
 
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
