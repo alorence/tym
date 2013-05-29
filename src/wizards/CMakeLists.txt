@@ -39,11 +39,10 @@ set(UIS
 qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymWizards ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
-
+add_library(TymWizards OBJECT ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
 add_dependencies(TymWizards TymGui)
 
-qt5_use_modules(TymWizards
+tym_qt5_use_modules(TymWizards
     Widgets
     Sql
 )

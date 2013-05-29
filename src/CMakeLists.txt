@@ -67,10 +67,15 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
     ${SOURCES}
     ${BASIC_HDRS}
     ${TYM_TRANSLATIONS}
+    $<TARGET_OBJECTS:TymConcretetasks>
+    $<TARGET_OBJECTS:TymDbaccess>
+    $<TARGET_OBJECTS:TymGui>
+    $<TARGET_OBJECTS:TymTools>
+    $<TARGET_OBJECTS:TymWizards>
     $<TARGET_OBJECTS:TymResources>
 )
 
-target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger TymConcretetasks TymDbaccess TymGui TymTools TymWizards)
+target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger)
 
 # Add Qt5 modules dependencies
 qt5_use_modules(${TYM_EXECUTABLE_FILENAME}

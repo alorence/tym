@@ -30,13 +30,7 @@ else(APPLE)
 endif(MSVC)
 
 add_library(TymResources OBJECT ${RES_OBJ})
-set_property(TARGET TymResources APPEND PROPERTY INCLUDE_DIRECTORIES ${Qt5Core_INCLUDE_DIRS})
-set_property(TARGET TymResources APPEND PROPERTY COMPILE_DEFINITIONS ${Qt5Core_COMPILE_DEFINITIONS})
-set_property(TARGET TymResources APPEND PROPERTY COMPILE_DEFINITIONS_RELEASE QT_NO_DEBUG)
-
-if (Qt5_POSITION_INDEPENDENT_CODE)
-    set_property(TARGET TymResources PROPERTY POSITION_INDEPENDENT_CODE ${Qt5_POSITION_INDEPENDENT_CODE})
-endif()
+tym_qt5_use_modules(TymResources Core)
 
 # TRANSLATIONS ================================================================
 # Only set a global variable with a list of all .ts files. qt5_add_translation or

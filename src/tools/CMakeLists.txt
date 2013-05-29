@@ -41,11 +41,10 @@ set(BASIC_HDRS
 
 qt5_wrap_cpp(MOCS ${HDRS})
 
-add_library(TymTools ${CPP} ${MOCS} ${BASIC_HDRS} ${HDRS})
-
+add_library(TymTools OBJECT ${CPP} ${MOCS} ${BASIC_HDRS} ${HDRS})
 add_dependencies(TymTools TymGui)
 
-qt5_use_modules(TymTools
+tym_qt5_use_modules(TymTools
     Widgets
     Network
     Sql
