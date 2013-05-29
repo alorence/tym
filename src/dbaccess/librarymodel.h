@@ -21,6 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define LIBRARYMODEL_H
 
 #include <QtCore>
+#include <QtGui>
 #include <QtSql>
 
 #include <functional>

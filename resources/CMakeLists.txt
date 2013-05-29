@@ -18,14 +18,29 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-qt5_add_resources(RCC_OBJ resources.qrc)
+# RESOURCES ===================================================================
+# Create an OBJECT library to ensure qrc_resources.cpp will be properly generated.
 
-set(resources
-    logos/tym.rc
-)
-# Needed to compile cpp file generated from qrc
-include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-)
+qt5_add_resources(RES_OBJ resources.qrc)
 
-add_library(resources OBJECT ${resources} ${RCC_OBJ})
+if(MSVC)
+    list(APPEND RES_OBJ ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.rc)
+endif(MSVC)
+
+add_library(TymResources OBJECT ${RES_OBJ})
+set_property(TARGET TymResources APPEND PROPERTY INCLUDE_DIRECTORIES ${Qt5Core_INCLUDE_DIRS})
+set_property(TARGET TymResources APPEND PROPERTY COMPILE_DEFINITIONS ${Qt5Core_COMPILE_DEFINITIONS})
+set_property(TARGET TymResources APPEND PROPERTY COMPILE_DEFINITIONS_RELEASE QT_NO_DEBUG)
+
+if (Qt5_POSITION_INDEPENDENT_CODE)
+    set_property(TARGET TymResources PROPERTY POSITION_INDEPENDENT_CODE ${Qt5_POSITION_INDEPENDENT_CODE})
+endif()
+
+# TRANSLATIONS ================================================================
+# Only set a global variable with a list of all .ts files. qt5_add_translation or
+# qt5_create_translation cannot be applied here, since cmake break with an error if
+# .qm files are in the list of input files for an OBJECT library
+
+# Set the list of translations (*.ts) files to compile them in src directory
+file(GLOB TRANSLATIONS_FILES translations/*.ts)
+set(TRANSLATIONS_FILES ${TRANSLATIONS_FILES} PARENT_SCOPE)

@@ -18,6 +18,8 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
+# Automatically add to each subdir the current source and binary dirs to include path
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
 cmake_minimum_required(VERSION 2.8.9)
 
@@ -29,9 +31,6 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
-
-# Automatically add to each subdir the current source and binary dirs to include path
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 option(TYM_UPDATE_TRANSLATIONS OFF)
 
@@ -74,10 +73,6 @@ if(TYM_BETA)
 else(TYM_BETA)
     set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
 endif(TYM_BETA)
-
-# Set the list of translations (*.ts) files to compile them in src directory
-file(GLOB TRANSLATIONS_FILES translations/*.ts)
-# TODO: Add a custom target to create / update ts files in transl. dir.
 
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)

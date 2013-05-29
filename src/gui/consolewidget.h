@@ -22,7 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QWidget>
 #include <QPlainTextEdit>
-#include "ui_consolewidget.h"
+#include "gui/ui_consolewidget.h"
 
 namespace Ui {
 class ConsoleWidget;
