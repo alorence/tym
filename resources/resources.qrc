@@ -20,7 +20,7 @@
     </qresource>
     <qresource prefix="/img/logos">
         <file alias="gpl3">logos/gplv3-88x31.png</file>
-        <file alias="tyme-logo">logos/tym_logo.png</file>
+        <file alias="tym-logo">logos/tym_logo.png</file>
     </qresource>
     <qresource prefix="/sql/init">
         <file alias="0.1">config/sql/init-0.1.sql</file>
