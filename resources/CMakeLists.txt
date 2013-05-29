@@ -24,7 +24,9 @@
 qt5_add_resources(RES_OBJ resources.qrc)
 
 if(MSVC)
-    list(APPEND RES_OBJ ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.rc)
+    list(APPEND RES_OBJ logos/tym.rc)
+else(APPLE)
+    set(OSX_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.icns PARENT_SCOPE)
 endif(MSVC)
 
 add_library(TymResources OBJECT ${RES_OBJ})

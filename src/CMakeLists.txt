@@ -56,6 +56,9 @@ if(WIN32)
     set(EXECUTABLE_OPTION WIN32)
 elseif(APPLE)
     set(EXECUTABLE_OPTION MACOSX_BUNDLE)
+    # CMake will copy icon to Resource folder at build time
+    set_source_files_properties(${OSX_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    list(APPEND SOURCES ${OSX_ICON_FILE})
 endif(WIN32)
 
 # Configure final executable building
@@ -81,4 +84,7 @@ if(MSVC)
     # Link with Qt WinMain, ensuring that the entry function will have
     # signature required by MSVC
     target_link_libraries(${TYM_EXECUTABLE_FILENAME} Qt5::WinMain)
+elseif(APPLE)
+    # configure some properties on Info.plist
+    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_ICON_FILE tym.icns)
 endif(MSVC)
