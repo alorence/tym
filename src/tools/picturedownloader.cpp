@@ -71,8 +71,9 @@ void PictureDownloader::sendFinalNotification()
 void PictureDownloader::requestError(QNetworkReply::NetworkError error) const
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    LOG_WARNING(tr("Error on request %1 : %2")
+    LOG_WARNING(tr("Error on request %1: [%2] %3")
                 .arg(reply->request().url().toString())
-                .arg(error));
+                .arg(error)
+                .arg(reply->errorString()));
     reply->deleteLater();
 }
