@@ -58,7 +58,7 @@ public:
     int numChecked();
 
     enum UserRoles {
-        UniqueReversePathRole = Qt::UserRole + 1
+        UniquePathRole = Qt::UserRole + 1
     };
 
     enum GroupSelection {

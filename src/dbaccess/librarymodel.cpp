@@ -66,7 +66,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         enabledRoles << Qt::BackgroundColorRole;
     }
 
-    if ( ! enabledRoles.contains((Qt::ItemDataRole)role) && !(role == UniqueReversePathRole && entryFromIndex(item)->isDirNode()))
+    if ( ! enabledRoles.contains((Qt::ItemDataRole)role) && !(role == UniquePathRole && entryFromIndex(item)->isDirNode()))
         return QVariant();
 
     LibraryEntry* entry = entryFromIndex(item);
@@ -84,14 +84,9 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         return QPixmap (":/img/icons/general/" + iconType);
     } else if(role == Qt::CheckStateRole && item.column() == 0) {
         return isChecked(item) ? Qt::Checked : Qt::Unchecked;
-    } else if (role == UniqueReversePathRole) {
-        QString result;
-        LibraryEntry *entry = entryFromIndex(item);
-        do {
-            result.prepend(entry->dirName());
-            entry = entry->parent();
-        } while (entry != NULL);
-        return result;
+    } else if (role == UniquePathRole) {
+
+        return _dirMap.key(entryFromIndex(item), "/");
     } else if (role == Qt::BackgroundColorRole) {
         // Set BG color for each row
         Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();

@@ -303,7 +303,7 @@ void MainWindow::beforeLibraryViewReset()
     // Save expanded folder, as a list of unique identifiers
     for(QModelIndex ind : _libraryModel->dirNodeModelIndexes()) {
         if(ui->libraryView->isExpanded(ind)) {
-            _expandedItems << _libraryModel->data(ind, LibraryModel::UniqueReversePathRole).toString();
+            _expandedItems << _libraryModel->data(ind, LibraryModel::UniquePathRole).toString();
         }
     }
 }
@@ -315,7 +315,7 @@ void MainWindow::afterLibraryViewReset()
 
     // Restore expanded items by searching them from their identifier
     for(QString uniquePathIdentifier : _expandedItems) {
-        QModelIndexList matchList = _libraryModel->match(_libraryModel->index(0,0), LibraryModel::UniqueReversePathRole,
+        QModelIndexList matchList = _libraryModel->match(_libraryModel->index(0,0), LibraryModel::UniquePathRole,
                                                     uniquePathIdentifier, 1, Qt::MatchFixedString | Qt::MatchRecursive);
         if(matchList.size()) {
             QModelIndex item = matchList.at(0);
