@@ -172,21 +172,27 @@ const QSqlQuery BPDatabase::resultsForTrack(const QString &libId) const
 
 void BPDatabase::deleteLibraryEntry(QStringList uids) const
 {
-    QString queryLib = "DELETE FROM Library WHERE " +
-            uids.replaceInStrings(QRegularExpression("^(.*)$"), "uid=\\1").join(" OR ");
-    QString querySR = "DELETE FROM SearchResults WHERE " +
-            uids.replaceInStrings("uid=", "libId=").join(" OR ");
 
-    QSqlQuery delLibQuery(queryLib, dbObject());
-    QSqlQuery delSRQuery(querySR, dbObject());
     _dbMutex->lock();
-    if( ! delLibQuery.exec()) {
-        LOG_WARNING(tr("Unable to remove tracks from library: %1").arg(delLibQuery.lastError().text()));
+    dbObject().transaction();
+
+    QSqlQuery libDeletion(dbObject());
+    libDeletion.prepare("DELETE FROM Library WHERE uid=:uid");
+    QSqlQuery searchResultsDeletion(dbObject());
+    searchResultsDeletion.prepare("DELETE FROM SearchResults WHERE libId=:libId");
+    for(QString uid : uids) {
+        libDeletion.bindValue(":uid", uid);
+        searchResultsDeletion.bindValue(":libId", uid);
+        if( ! libDeletion.exec()) {
+            LOG_WARNING(tr("Unable to remove tracks from library: %1").arg(libDeletion.lastError().text()));
+        }
+        if( ! searchResultsDeletion.exec()) {
+            LOG_WARNING(tr("Unable to delete search results: %1").arg(searchResultsDeletion.lastError().text()));
+        }
     }
-    if( ! delSRQuery.exec()) {
-        LOG_WARNING(tr("Unable to delete search results: %1").arg(delSRQuery.lastError().text()));
-    }
+    dbObject().commit();
     _dbMutex->unlock();
+
 }
 
 void BPDatabase::deleteSearchResult(const QString &libId, const QString &trackId) const
@@ -290,20 +296,30 @@ void BPDatabase::importFiles(const QStringList &pathList) const
 {
     if(pathList.isEmpty()) return;
 
-    QString baseQuery = "INSERT OR IGNORE INTO Library (filePath, status) ";
-    QString value = QString("SELECT '%2', %1").arg(Library::New);
+    QSqlQuery query(dbObject());
+    query.prepare("INSERT OR IGNORE INTO Library (filePath, status) VALUES (:path, :status);");
+    query.bindValue(":status", Library::New);
 
-    QStringList values;
-    for(QString path : pathList){
-        values << value.arg(path.replace("'", "''"));
-    }
+    uint errors = 0;
     _dbMutex->lock();
-    QSqlQuery query = dbObject().exec(baseQuery.append(values.join(" UNION ")).append(";"));
+    dbObject().transaction();
+
+    for(QString path : pathList){
+        query.bindValue(":path", path);
+        if(!query.exec()){
+            LOG_WARNING(tr("Unable to import file: %1").arg(query.lastError().text()));
+            ++errors;
+        }
+    }
+
+    dbObject().commit();
     _dbMutex->unlock();
-    if(query.lastError().isValid()){
-        LOG_WARNING(tr("Unable to import files: %2").arg(query.lastError().text()));
-    } else {
-        emit libraryEntryUpdated();
+
+    // TODO: send uid of newly added entry ? Need to ensure LibraryModel::refresh(QString) works and is efficient
+    emit libraryEntryUpdated();
+
+    if(errors) {
+        LOG_WARNING(tr("%1 file(s) have not been added due to database error(s)", 0, errors).arg(errors));
     }
 }
 
