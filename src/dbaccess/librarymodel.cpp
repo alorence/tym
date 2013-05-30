@@ -257,8 +257,8 @@ void LibraryModel::refresh()
         _dirMap.clear();
         _checkedEntries.clear();;
 
-        _dirMap["/"] = new LibraryEntry();;
-        _root = _dirMap["/"];
+        LibraryEntry* systemRootEntry = new LibraryEntry();
+        _dirMap["/"] = systemRootEntry;
 
         while(_elementsList.next()) {
             // Helper to extract some informations from file path
@@ -266,6 +266,30 @@ void LibraryModel::refresh()
 
             LibraryEntry* parentDir = getLibraryNode(fileInfo.canonicalPath());
             new LibraryEntry(_elementsList.record(), parentDir);
+        }
+
+        // Update _root pointer
+        LibraryEntry *r = systemRootEntry;
+        #ifdef Q_OS_WIN
+            //: On Windows only, defines the system top level folder (above disks)
+            QString path = tr("My Computer");
+        #else
+            QString path = "";
+        #endif
+        // From system root path to the first node with more than 1 children
+        while(r->rowCount() == 1) {
+            r = r->child(0);
+            path.append(QDir::separator()).append(r->dirName());
+        }
+        // 'r' is the current valid root in the tree
+        _root = r;
+
+        // Update label above library view
+        if(r != systemRootEntry) {
+            emit rootPathChanged(path);
+        } else {
+            //: Used as displayed root dir when library is empty (no tracks in the database)
+            emit rootPathChanged(tr("<empty>"));
         }
 
         // Inform view that new items are stored in the model. It will start te rebuild its ModelIndexes
@@ -341,22 +365,6 @@ LibraryEntry *LibraryModel::getLibraryNode(const QString &dirPath)
         LibraryEntry *parentEntry = getLibraryNode(upDir.canonicalPath());
 
         currentDirEntry = new LibraryEntry(currentDir.dirName(), parentEntry);
-    }
-
-    // Update _root pointer
-    LibraryEntry *r = _dirMap["/"];
-#ifdef Q_OS_WIN
-    QString path = tr("Computer");
-#else
-    QString path = "";
-#endif
-    while(r->rowCount() == 1) {
-        r = r->child(0);
-        path.append(QDir::separator()).append(r->dirName());
-    }
-    if(r != _root) {
-        _root = r;
-        emit rootPathChanged(path);
     }
 
     _dirMap[dirPath] = currentDirEntry;
