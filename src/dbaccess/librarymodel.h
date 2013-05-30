@@ -84,8 +84,8 @@ private:
     LibraryEntry* getLibraryNode(const QString &dirPath);
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
 
-    void recursiveFilteredSetChecked(const QModelIndex &index, const std::function<bool (LibraryEntry *)> &f);
-    void setChecked(const QModelIndex &ind, bool checked, bool recursive = true);
+    void recursiveFilteredSetChecked(const LibraryEntry* entry, const std::function<bool (const LibraryEntry *)> &f);
+    void setChecked(const LibraryEntry* entry, bool checked, bool recursive = true);
     bool isChecked(const QModelIndex &index) const;
 
     LibraryEntry * _root;
@@ -96,7 +96,7 @@ private:
     QMap<QString, LibraryEntry*> _dirMap;
     QList<QString> _headers;
 
-    QSet<LibraryEntry*> _checkedEntries;
+    QSet<const LibraryEntry*> _checkedEntries;
     static const int CHECKABLECOLUMN;
 
     bool _colorsEnabled;

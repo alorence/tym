@@ -82,7 +82,7 @@ const QVariant LibraryEntry::data(Library::GuiIndexes index) const
     }
 }
 
-const QSqlRecord &LibraryEntry::record()
+const QSqlRecord &LibraryEntry::record() const
 {
     return _record;
 }
@@ -103,7 +103,7 @@ void LibraryEntry::addChild(LibraryEntry *child)
     _children.append(child);
 }
 
-LibraryEntry *LibraryEntry::child(int index)
+LibraryEntry *LibraryEntry::child(int index) const
 {
     if(index < 0 || index > _children.size()) {
         return NULL;

@@ -39,13 +39,13 @@ public:
     void setDirName(const QString &newDirName);
 
     const QVariant data(Library::GuiIndexes index) const;
-    const QSqlRecord &record();
+    const QSqlRecord &record() const;
     void setRecord(const QSqlRecord &record);
 
     LibraryEntry *parent() const;
 
     void addChild(LibraryEntry *child);
-    LibraryEntry* child(int index);
+    LibraryEntry *child(int index) const;
     QList<LibraryEntry*> children() const;
 
     int rowCount() const;
