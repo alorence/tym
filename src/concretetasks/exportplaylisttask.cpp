@@ -63,7 +63,7 @@ void ExportPlaylistTask::run()
 
     xmlDoc.writeStartElement("COLLECTION");
     xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
-    foreach(QSqlRecord record, _records) {
+    for(QSqlRecord record : _records) {
         writeCollectionEntry(xmlDoc, record);
     }
     xmlDoc.writeEndElement(); // COLLECTION
@@ -84,7 +84,7 @@ void ExportPlaylistTask::run()
     xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
     xmlDoc.writeAttribute("TYPE", "LIST");
 
-    foreach(QSqlRecord record, _records) {
+    for(QSqlRecord record : _records) {
         writePlaylistEntry(xmlDoc, record);
     }
     xmlDoc.writeEndElement(); // PLAYLIST

@@ -68,7 +68,7 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::showEvent(QShowEvent *)
 {
-    foreach(WidgetChangesObserver *observer, _widgetObservers) {
+    for(WidgetChangesObserver *observer : _widgetObservers) {
         observer->init();
     }
 }
@@ -80,7 +80,7 @@ void SettingsDialog::changeDisplayedStack()
 
 void SettingsDialog::on_buttons_accepted()
 {
-    foreach(WidgetChangesObserver *observer, _widgetObservers) {
+    for(WidgetChangesObserver *observer : _widgetObservers) {
         observer->commit();
     }
 

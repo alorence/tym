@@ -211,14 +211,14 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
 
     QStringList filteredFiles;
-    foreach(QUrl url, event->mimeData()->urls()) {
+    for(QUrl url : event->mimeData()->urls()) {
 
         if(! url.isLocalFile()) continue;
 
         QFileInfo entry(url.toLocalFile());
         if( ! entry.exists()) continue;
 
-        foreach(QFileInfo file, filteredFileList(entry)) {
+        for(QFileInfo file : filteredFileList(entry)) {
             filteredFiles.append(file.absoluteFilePath());
         }
     }
@@ -350,8 +350,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
     QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
-    // TODO: replace ALL foreach macro by new C++11 for syntax
-    foreach(QAction *selectAction, _selectActionsList) {
+    for(QAction *selectAction : _selectActionsList) {
         selectMenu->addAction(selectAction);
     }
 
@@ -429,12 +428,12 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
     QFileInfoList result;
 
     if(entry.isDir()) {
-        foreach(QFileInfo dirEntry, QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+        for(QFileInfo dirEntry : QDir(entry.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
             result.append(filteredFileList(dirEntry));
         }
 
     } else if(entry.isFile()) {
-        foreach(QString wildcard, TYM_SUPPORTED_SUFFIXES) {
+        for(QString wildcard : TYM_SUPPORTED_SUFFIXES) {
             if(entry.fileName().contains(QRegExp(wildcard, Qt::CaseInsensitive, QRegExp::Wildcard))) {
                 result.append(entry);
             }

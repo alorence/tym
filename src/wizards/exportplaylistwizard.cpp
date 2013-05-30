@@ -75,7 +75,7 @@ void ExportPlaylistWizard::initializePage(int id)
 
             QMap<QString, QList<QSqlRecord> > exportMap;
 
-            foreach(QSqlRecord record, _selectedRecords) {
+            for(QSqlRecord record : _selectedRecords) {
                 QFileInfo fileInfo(record.value(Library::FilePath).toString());
 
                 if(fileInfo.exists()) {
@@ -96,7 +96,7 @@ void ExportPlaylistWizard::initializePage(int id)
         } else {
             QList<QSqlRecord> records;
 
-            foreach(QSqlRecord record, _selectedRecords) {
+            for(QSqlRecord record : _selectedRecords) {
                 QFileInfo fileInfo(record.value(Library::FilePath).toString());
 
                 if(fileInfo.exists()) {

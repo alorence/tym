@@ -75,7 +75,7 @@ void SearchTask::run()
 
         FileBasenameParser bpidParser(TYM_BEATPORT_DEFAULT_FORMAT);
         FileBasenameParser fullInfosParser(_searchPattern);
-        foreach (QSqlRecord record, _selectedRecords) {
+        for(QSqlRecord record : _selectedRecords) {
 
             QString uid = record.value(Library::Uid).toString();
             QString baseName = QFileInfo(record.value(Library::FilePath).toString()).completeBaseName();
@@ -126,7 +126,7 @@ void SearchTask::selectBetterResult()
 
     QRegularExpression stringPurifyRegexp("[-\\[\\](),&'_ +?]");
 
-    foreach (QSqlRecord record, _selectedRecords) {
+    for(QSqlRecord record : _selectedRecords) {
         QString uid = record.value(Library::Uid).toString();
 
         QSqlQuery results = _dbHelper->resultsForTrack(uid);

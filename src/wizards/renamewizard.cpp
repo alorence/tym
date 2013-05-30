@@ -60,7 +60,7 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     QStringList bpids;
 
     int row = 0;
-    foreach(QSqlRecord record, selected) {
+    for(QSqlRecord record : selected) {
 
         QFileInfo original(record.value(Library::FilePath).toString());
         _fileInfosList[row] = original;

@@ -201,7 +201,7 @@ QSqlRecord LibraryModel::record(const QModelIndex &index)
 QList<QSqlRecord> LibraryModel::checkedRecords() const
 {
     QList<QSqlRecord> result;
-    foreach (LibraryEntry* entry, _checkedEntries) {
+    for(LibraryEntry* entry : _checkedEntries) {
         if(!entry->isDirNode()) {
             result << entry->record();
         }
@@ -212,7 +212,7 @@ QList<QSqlRecord> LibraryModel::checkedRecords() const
 QStringList LibraryModel::checkedUids() const
 {
     QStringList result;
-    foreach (LibraryEntry* entry, _checkedEntries) {
+    for(LibraryEntry* entry : _checkedEntries) {
         if(!entry->isDirNode()) {
             result << entry->record().value(Library::Uid).toString();
         }
@@ -397,7 +397,7 @@ void LibraryModel::setChecked(const QModelIndex &ind, bool checked, bool recursi
         // Check entry's parent if it is not root and all sibling are checked
         if(ind.parent().isValid()) {
             bool allChecked = true;
-            foreach(LibraryEntry* sibling, entry->parent()->children()) {
+            for(LibraryEntry* sibling : entry->parent()->children()) {
                 if(!_checkedEntries.contains(sibling)) {
                     allChecked = false;
                     break;

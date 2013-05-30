@@ -167,13 +167,13 @@ void LibraryModel::updateCheckedRows(const QItemSelection& selected, const QItem
     QItemSelectionRange range;
     QVector<int> checkRole;
     checkRole << Qt::CheckStateRole;
-    foreach(range, deselected) {
+    for(range : deselected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
             _checkedRows.remove(i);
         }
         emit dataChanged(index(range.top(), _columnWithCheckbox), index(range.bottom(), _columnWithCheckbox), checkRole);
     }
-    foreach(range, selected) {
+    for(range : selected) {
         for(i = range.top() ; i <= range.bottom() ; i++) {
             _checkedRows << i;
         }
@@ -189,7 +189,7 @@ QSet<int> LibraryModel::selectedIds() const
 QHash<int, QSqlRecord> LibraryModel::selectedRecords() const
 {
     QHash<int, QSqlRecord> result;
-    foreach(int index, _checkedRows) {
+    for(int index : _checkedRows) {
         result[index] = record(index);
     }
     return result;
@@ -260,7 +260,7 @@ void LibraryModel::refresh()
 
     QModelIndex ind;
     QItemSelection selection;
-    foreach(int row, _checkedRows) {
+    for(int row : _checkedRows) {
         ind = index(row, _columnWithCheckbox);
         selection.select(ind, ind);
     }
@@ -274,7 +274,7 @@ void LibraryModel::unselectRowsAndRefresh(QList<int> rows)
 {
     QModelIndex ind;
     QItemSelection selection;
-    foreach(int row, rows) {
+    for(int row : rows) {
         _checkedRows.remove(row);
         ind = index(row, _columnWithCheckbox);
         selection.select(ind, ind);

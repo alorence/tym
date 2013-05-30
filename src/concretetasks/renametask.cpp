@@ -34,8 +34,7 @@ void RenameTask::run()
 {
     BPDatabase db("renameThread");
 
-    QPair<QFileInfo,QString> pair;
-    foreach(pair, _renameMap) {
+    for(QPair<QFileInfo,QString> pair : _renameMap) {
         QFileInfo from(pair.first);
         QString to = from.canonicalPath() + '/' + pair.second;
 

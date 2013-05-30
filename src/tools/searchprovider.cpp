@@ -40,7 +40,7 @@ SearchProvider::SearchProvider(QObject *parent) :
 
 SearchProvider::~SearchProvider()
 {
-    foreach(QNetworkReply* reply, _replyMap.keys())
+    for(QNetworkReply* reply : _replyMap.keys())
        delete _replyMap.take(reply);
 
     delete _textSearchMapper;
@@ -64,7 +64,7 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
         splittedMaps.value(listIndex)->insert(it.key(), it.value());
     }
 
-    foreach(auto tempMap, splittedMaps) {
+    for(auto tempMap : splittedMaps) {
         QUrlQuery query;
         QString idsList = QStringList(tempMap->values()).join(",");
         query.addQueryItem("ids", idsList);
@@ -105,7 +105,7 @@ void SearchProvider::parseReplyForIdSearch()
         QString uid = requestPair.key();
         QString bpid = requestPair.value();
 
-        foreach(QJsonValue track, resultsArray) {
+        for(QJsonValue track : resultsArray) {
             if(bpid == track.toObject().value("id").toVariant().toString()) {
                 emit searchResultAvailable(uid, track);
                 break;

@@ -55,7 +55,7 @@ FileBasenameParser::FileBasenameParser(const QString &pattern, QObject *parent) 
     _allowedPatterns["OTHER"] = PatternElement("Other", "Uninteresting text", _commonRegExpPattern);
 
     QStringList inRegExpList;
-    foreach(QString patternElt, _patternElts) {
+    for(QString patternElt : _patternElts) {
         QString capitalPatternElt = patternElt.toUpper();
         if(availablesPatterns().contains(capitalPatternElt)) {
             inRegExpList << QString("(?<%1>%2)").arg(capitalPatternElt).arg(availablesPatterns()[capitalPatternElt].inRegExp());
@@ -76,7 +76,7 @@ QMap<TrackFullInfos::TableIndexes, QString> FileBasenameParser::parse(const QStr
     QRegularExpressionMatch matchResult = _parserRegularExpression.match(basename);
 
     QMap<TrackFullInfos::TableIndexes, QString> result;
-    foreach(QString patternElt, _patternElts) {
+    for(QString patternElt : _patternElts) {
         QString upCasePatternElt = patternElt.toUpper();
         if(availablesPatterns().contains(upCasePatternElt)
                 && availablesPatterns()[upCasePatternElt].sqlIndex() != TrackFullInfos::InvalidIndex) {
@@ -102,7 +102,7 @@ QString FileBasenameFormatter::format(const QSqlRecord &trackInfoRecord) const
 {
     QString result;
 
-    foreach(QString patternElt, _patternElts) {
+    for(QString patternElt : _patternElts) {
 
         if(availablesPatterns().contains(patternElt.toUpper())) {
             result.append(trackInfoRecord.value(availablesPatterns().value(patternElt.toUpper()).sqlIndex()).toString());

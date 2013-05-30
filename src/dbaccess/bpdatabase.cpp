@@ -251,7 +251,7 @@ void BPDatabase::storeSearchResults(const QString &libUid, const QJsonValue &res
     // Many results per library row
     if (result.isArray() && ! result.toArray().empty()) {
 
-        foreach(QJsonValue track, result.toArray()) {
+        for(QJsonValue track : result.toArray()) {
             QString bpid = storeTrack(track);
 
             query.bindValue(":libId", libUid);
@@ -294,7 +294,7 @@ void BPDatabase::importFiles(const QStringList &pathList) const
     QString value = QString("SELECT '%2', %1").arg(Library::New);
 
     QStringList values;
-    foreach(QString path, pathList){
+    for(QString path : pathList){
         values << value.arg(path.replace("'", "''"));
     }
     _dbMutex->lock();
@@ -400,7 +400,7 @@ const QString BPDatabase::storeTrack(const QJsonValue &track) const
     QStringList artists;
     QSqlQuery query(dbObject()), linkQuery(dbObject());
     query.prepare("INSERT OR IGNORE INTO BPArtists VALUES (:bpid,:name)");
-    foreach (QJsonValue artist, trackObject.value("artists").toArray()) {
+    for(QJsonValue artist : trackObject.value("artists").toArray()) {
         QString artistBpId = artist.toObject().value("id").toVariant().toString();
 
         query.bindValue(":bpid", artistBpId);
@@ -428,7 +428,7 @@ const QString BPDatabase::storeTrack(const QJsonValue &track) const
 
     query.prepare("INSERT OR IGNORE INTO BPGenres VALUES (:bpid,:name)");
     linkQuery.prepare("INSERT OR IGNORE INTO BPTracksGenresLink VALUES (:trackId,:genreId)");
-    foreach (QJsonValue genre, trackObject.value("genres").toArray()) {
+    for(QJsonValue genre : trackObject.value("genres").toArray()) {
         QString genreBpId = genre.toObject().value("id").toVariant().toString();
 
         query.bindValue(":bpid", genreBpId);
