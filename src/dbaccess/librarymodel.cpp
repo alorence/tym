@@ -412,13 +412,6 @@ void LibraryModel::setChecked(const LibraryEntry *entry, bool checked, bool recu
                 setChecked(entry->parent(), true, false);
             }
         }
-
-        // If entry is a dir, check all its children
-        if(recursive && entry->isDirNode()) {
-            for(const LibraryEntry* child : entry->children()) {
-                setChecked(child, true, true);
-            }
-        }
     }
     // Uncheck rows already checked
     else if (!checked && _checkedEntries.contains(entry)) {
@@ -429,12 +422,12 @@ void LibraryModel::setChecked(const LibraryEntry *entry, bool checked, bool recu
         if(_checkedEntries.contains(entry->parent())){
             setChecked(entry->parent(), false, false);
         }
+    }
 
-        // Uncheck all its children if it is a dir
-        if(recursive && entry->isDirNode()) {
-            for(const LibraryEntry* child : entry->children()) {
-                setChecked(child, false, true);
-            }
+    // If entry is a dir, update all its children recursively
+    if(recursive && entry->isDirNode()) {
+        for(const LibraryEntry* child : entry->children()) {
+            setChecked(child, checked);
         }
     }
 }
