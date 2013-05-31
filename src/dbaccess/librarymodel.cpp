@@ -83,7 +83,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         QString iconType = entry->isDirNode() ? "folder" : "file";
         return QPixmap (":/img/icons/general/" + iconType);
     } else if(role == Qt::CheckStateRole && item.column() == 0) {
-        return isChecked(item) ? Qt::Checked : Qt::Unchecked;
+        return isChecked(entry) ? Qt::Checked : Qt::Unchecked;
     } else if (role == UniquePathRole) {
 
         return _dirMap.key(entryFromIndex(item), "/");
@@ -432,8 +432,8 @@ void LibraryModel::setChecked(const LibraryEntry *entry, bool checked, bool recu
     }
 }
 
-bool LibraryModel::isChecked(const QModelIndex &index) const
+bool LibraryModel::isChecked(const LibraryEntry* entry) const
 {
-    return _checkedEntries.contains(entryFromIndex(index));
+    return _checkedEntries.contains(entry);
 }
 

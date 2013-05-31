@@ -86,7 +86,7 @@ private:
 
     void recursiveFilteredSetChecked(const LibraryEntry* entry, const std::function<bool (const LibraryEntry *)> &f);
     void setChecked(const LibraryEntry* entry, bool checked, bool recursive = true);
-    bool isChecked(const QModelIndex &index) const;
+    bool isChecked(const LibraryEntry *entry) const;
 
     LibraryEntry * _root;
 
