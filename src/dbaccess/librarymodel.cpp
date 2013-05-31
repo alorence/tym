@@ -379,9 +379,9 @@ LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
 
 void LibraryModel::recursiveFilteredSetChecked(const LibraryEntry *entry, const std::function<bool (const LibraryEntry *)> &filterFunction)
 {
-    if(entry->rowCount()) {
-        for(int i = 0 ; i < entry->rowCount() ; ++i) {
-            recursiveFilteredSetChecked(entry, filterFunction);
+    if(entry->isDirNode()) {
+        for(const LibraryEntry* child : entry->children()) {
+            recursiveFilteredSetChecked(child, filterFunction);
         }
     } else {
         if(filterFunction(entry)) {
