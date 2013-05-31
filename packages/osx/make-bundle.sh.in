@@ -1,14 +1,17 @@
 #!/bin/sh
 
-app="Tag Your Music.app"
+originalAppName="@TYM_EXECUTABLE_FILENAME@.app"
+finalAppName="Tag Your Music.app"
 
-rm -fr "${app}"
+rm -fr ${finalAppName}
+rm -fr ${originalAppName}
 rm -f "@TYM_SETUP_FILENAME@.zip"
 
+mkdir "${originalAppName}"
+cp -r @tym_BINARY_DIR@/src/${originalAppName} .
+
 # Need to aply command on tym.app and not TagYourMusic.app, to help the tool to find binary
-@QT5_INSTALL_DIR@/bin/macdeployqt "@tym_BINARY_DIR@/src/@TYM_EXECUTABLE_FILENAME@.app"
+@QT5_INSTALL_DIR@/bin/macdeployqt "${originalAppName}"
 
-mkdir "${app}"
-cp -r @tym_BINARY_DIR@/src/@TYM_EXECUTABLE_FILENAME@.app/* "${app}/"
-
-zip -v -r -X "./@TYM_SETUP_FILENAME@.zip" "${app}"
+mv "${originalAppName}" "${finalAppName}"
+zip -v -r -X "./@TYM_SETUP_FILENAME@.zip" "${finalAppName}"
