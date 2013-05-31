@@ -432,8 +432,8 @@ void LibraryModel::setChecked(const LibraryEntry *entry, bool checked, bool recu
 
         // Uncheck all its children if it is a dir
         if(recursive && entry->isDirNode()) {
-            for(int i = 0 ; i < entry->rowCount() ; ++i) {
-                setChecked(entry, false, true);
+            for(const LibraryEntry* child : entry->children()) {
+                setChecked(child, false, true);
             }
         }
     }
