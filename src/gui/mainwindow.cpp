@@ -252,6 +252,7 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
     QSqlRecord current = _libraryModel->record(selected);
     QString libId = current.value(Library::Uid).toString();
     _searchModel->setFilter("libId=" + libId);
+    _searchModel->select();
 
     if(_searchModel->record().count()) {
         QString bpid = current.value(Library::Bpid).toString();
@@ -430,6 +431,23 @@ void MainWindow::on_actionRename_triggered()
     _libraryModel->refresh();
 }
 
+void MainWindow::on_actionExport_triggered()
+
+{
+    ExportPlaylistWizard wizard(_libraryModel->checkedRecords());
+    wizard.exec();
+}
+
+void MainWindow::on_actionCheck_selected_triggered()
+{
+    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), true);
+}
+
+void MainWindow::on_actionUncheck_selected_triggered()
+{
+    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), false);
+}
+
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 {
     QFileInfoList result;
@@ -448,20 +466,4 @@ const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
     }
 
     return result;
-}
-
-void MainWindow::on_actionExport_triggered()
-{
-    ExportPlaylistWizard wizard(_libraryModel->checkedRecords());
-    wizard.exec();
-}
-
-void MainWindow::on_actionCheck_selected_triggered()
-{
-    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), true);
-}
-
-void MainWindow::on_actionUncheck_selected_triggered()
-{
-    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), false);
 }
