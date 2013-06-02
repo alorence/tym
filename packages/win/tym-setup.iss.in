@@ -19,7 +19,7 @@
 
 [Setup]
 SourceDir=${TYM_SETUP_SOURCE_DIR}
-AppName=Tag Your Music
+AppName=${TYM_NAME}
 AppVersion=${TYM_SHORT_VERSION}
 AppPublisher=Antoine Lorence
 AppPublisherURL=http://www.antoine-lorence.fr/
@@ -29,7 +29,7 @@ LicenseFile=GPL3licence.txt
 
 ;ArchitecturesInstallIn64BitMode=x64 if program is compiled for x64 systems
 DefaultDirName={pf}\TagYourMusic
-DefaultGroupName=Tag Your Music
+DefaultGroupName=${TYM_NAME}
 UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
 
 ;SetupIconFile=MyProgSetup.ico
