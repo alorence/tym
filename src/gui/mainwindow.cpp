@@ -278,16 +278,16 @@ void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex
     ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
 }
 
-void MainWindow::updateLibraryActions(int numSel)
+void MainWindow::updateLibraryActions(int numChecked)
 {
-    if(numSel == -1) {
-        numSel = _libraryModel->numChecked();
+    if(numChecked == -1) {
+        numChecked = _libraryModel->numChecked();
     }
 
-    ui->actionRemove->setDisabled(numSel == 0);
-    ui->actionSearch->setDisabled(numSel == 0);
-    ui->actionRename->setDisabled(numSel == 0);
-    ui->actionExport->setDisabled(numSel == 0);
+    ui->actionRemove->setDisabled(numChecked == 0);
+    ui->actionSearch->setDisabled(numChecked == 0);
+    ui->actionRename->setDisabled(numChecked == 0);
+    ui->actionExport->setDisabled(numChecked == 0);
 }
 
 void MainWindow::updateSearchResultsActions()
@@ -349,7 +349,14 @@ void MainWindow::on_actionSearch_triggered()
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
-    QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
+
+    int numSelected = ui->libraryView->selectionModel()->selectedIndexes().size();
+    ui->actionCheck_selected->setDisabled(numSelected == 0);
+    ui->actionUncheck_selected->setDisabled(numSelected == 0);
+    contextMenu.addAction(ui->actionCheck_selected);
+    contextMenu.addAction(ui->actionUncheck_selected);
+
+    QMenu *selectMenu = contextMenu.addMenu(tr("Check"));
     for(QAction *selectAction : _selectActionsList) {
         selectMenu->addAction(selectAction);
     }
@@ -447,4 +454,14 @@ void MainWindow::on_actionExport_triggered()
 {
     ExportPlaylistWizard wizard(_libraryModel->checkedRecords());
     wizard.exec();
+}
+
+void MainWindow::on_actionCheck_selected_triggered()
+{
+    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), true);
+}
+
+void MainWindow::on_actionUncheck_selected_triggered()
+{
+    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), false);
 }

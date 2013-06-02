@@ -57,6 +57,8 @@ public:
     QStringList checkedUids() const;
     int numChecked();
 
+    void checkIndexes(const QModelIndexList& entries, bool checked);
+
     enum UserRoles {
         UniquePathRole = Qt::UserRole + 1
     };

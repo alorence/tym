@@ -86,6 +86,9 @@
            <property name="alternatingRowColors">
             <bool>false</bool>
            </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
            </property>
@@ -160,7 +163,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -352,6 +355,24 @@
    </property>
    <property name="toolTip">
     <string>Export selected tracks as playlist</string>
+   </property>
+  </action>
+  <action name="actionCheck_selected">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/img/actions/check</normaloff>:/img/actions/check</iconset>
+   </property>
+   <property name="text">
+    <string>Check selected</string>
+   </property>
+  </action>
+  <action name="actionUncheck_selected">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/img/actions/uncheck</normaloff>:/img/actions/uncheck</iconset>
+   </property>
+   <property name="text">
+    <string>Uncheck selected</string>
    </property>
   </action>
  </widget>

@@ -17,6 +17,10 @@
         <file alias="tick">fugues-icons-3.5/icons/tick.png</file>
         <file alias="rename">fugues-icons-3.5/icons-shadowless/blue-document-rename.png</file>
         <file alias="terminal">fugues-icons-3.5/icons/terminal.png</file>
+        <file alias="uncheck">fugues-icons-3.5/icons/ui-check-box-uncheck.png</file>
+        <file alias="check">fugues-icons-3.5/icons/ui-check-box.png</file>
+        <file alias="expand">fugues-icons-3.5/icons/toggle-expand.png</file>
+        <file alias="unexpand">fugues-icons-3.5/icons/toggle.png</file>
     </qresource>
     <qresource prefix="/img/logos">
         <file alias="gpl3">logos/gplv3-88x31.png</file>

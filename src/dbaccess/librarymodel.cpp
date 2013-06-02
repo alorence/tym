@@ -222,6 +222,23 @@ int LibraryModel::numChecked()
     return _checkedEntries.size();
 }
 
+void LibraryModel::checkIndexes(const QModelIndexList &entries, bool checked)
+{
+    for(const QModelIndex &ind : entries) {
+        bool recursiveCheck = true;
+        // If a folder is selected, check its children only if
+        // neither of them is in the current selection
+        for(int i = 0 ; i < rowCount(ind) ; ++i) {
+            if(entries.contains(ind.child(i, CHECKABLECOLUMN))) {
+                recursiveCheck = false;
+                break;
+            }
+        }
+        setChecked(entryFromIndex(ind), checked, recursiveCheck);
+    }
+    emit dataChanged(entries.first(), entries.last(), QVector<int>() << Qt::CheckStateRole);
+}
+
 void LibraryModel::updateSettings()
 {
     QSettings settings;

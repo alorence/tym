@@ -168,6 +168,10 @@ private slots:
      */
     void on_actionExport_triggered();
 
+    void on_actionCheck_selected_triggered();
+
+    void on_actionUncheck_selected_triggered();
+
 private:
     /*!
      * \brief Return a list of files supported by the application
