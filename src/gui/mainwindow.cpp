@@ -254,7 +254,7 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
     _searchModel->setFilter("libId=" + libId);
     _searchModel->select();
 
-    if(_searchModel->record().count()) {
+    if(_searchModel->rowCount()) {
         QString bpid = current.value(Library::Bpid).toString();
         if( ! bpid.isEmpty()) {
             for(int i = 0 ; i < _searchModel->rowCount() ; ++i) {
