@@ -79,6 +79,8 @@ public:
      */
     void showEvent(QShowEvent *);
 
+    void closeEvent(QCloseEvent *);
+
 private slots:
     /*!
      * \brief Show or hide console in window

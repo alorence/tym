@@ -165,6 +165,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Update actions status (disabled/enabled) at startup
     updateLibraryActions();
     updateSearchResultsActions();
+    updateSettings();
 }
 
 MainWindow::~MainWindow()
@@ -205,6 +206,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
     if(event->mimeData()->hasUrls()) {
         event->acceptProposedAction();
     }
+    QWidget::dragEnterEvent(event);
 }
 
 void MainWindow::dropEvent(QDropEvent *event)
@@ -224,9 +226,10 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
 
     _dbHelper->importFiles(filteredFiles);
+    QWidget::dropEvent(event);
 }
 
-void MainWindow::showEvent(QShowEvent *)
+void MainWindow::showEvent(QShowEvent *e)
 {
     // Configure libraryView filePath column to take as space as possible
     QHeaderView *horizHeader = ui->libraryView->header();
@@ -234,6 +237,20 @@ void MainWindow::showEvent(QShowEvent *)
     ui->libraryView->setColumnWidth(Library::Name, horizHeader->width() - 3 * horizHeader->defaultSectionSize());
     // Enlarge last column (same size as first one)
     ui->libraryView->setColumnWidth(Library::Infos, ui->libraryView->columnWidth(Library::Name));
+
+    QSettings settings;
+    if(settings.contains(TYM_WINDOW_GEOMETRY)) {
+        restoreGeometry(settings.value(TYM_WINDOW_GEOMETRY).toByteArray());
+    }
+    QWidget::showEvent(e);
+}
+
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    QSettings settings;
+    settings.setValue(TYM_WINDOW_GEOMETRY, saveGeometry());
+
+    QWidget::closeEvent(e);
 }
 
 void MainWindow::toggleConsoleDisplaying(bool show) const

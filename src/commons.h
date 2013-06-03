@@ -41,6 +41,7 @@ namespace Settings {
 #define TYM_DEFAULT_DISPLAY_COLORS false
 #define TYM_PATH_KEY_STYLE "settings/interface/keystyle"
 #define TYM_DEFAULT_KEY_STYLE Settings::Beatport
+#define TYM_WINDOW_GEOMETRY "settings/interface/window/geometry"
 
 // Settings - network
 #define TYM_PATH_API_URL "settings/network/beatport/apihost"
