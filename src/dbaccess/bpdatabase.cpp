@@ -21,10 +21,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <Logger.h>
 
+QMutex* BPDatabase::_dbMutex = new QMutex(QMutex::Recursive);
+
 BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
     QObject(parent),
-    _dbInitialized(false),
-    _dbMutex(new QMutex(QMutex::Recursive))
+    _dbInitialized(false)
 {
     if(QSqlDatabase::contains(connectionName)) {
 
@@ -74,7 +75,6 @@ BPDatabase::BPDatabase(QString connectionName, QObject *parent) :
 BPDatabase::~BPDatabase()
 {
     _dbObject.close();
-    delete _dbMutex;
 }
 
 const bool BPDatabase::initialized() const
@@ -172,7 +172,6 @@ const QSqlQuery BPDatabase::resultsForTrack(const QString &libId) const
 
 void BPDatabase::deleteLibraryEntry(QStringList uids) const
 {
-
     _dbMutex->lock();
     dbObject().transaction();
 
@@ -192,7 +191,6 @@ void BPDatabase::deleteLibraryEntry(QStringList uids) const
     }
     dbObject().commit();
     _dbMutex->unlock();
-
 }
 
 void BPDatabase::deleteSearchResult(const QString &libId, const QString &trackId) const

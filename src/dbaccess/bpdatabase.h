@@ -182,7 +182,7 @@ private :
     QSqlDatabase _dbObject;
     bool _dbInitialized;
 
-    QMutex *_dbMutex;
+    static QMutex *_dbMutex;
 };
 
 #endif // BPDATABASE_H
