@@ -237,6 +237,7 @@ void LibraryModel::checkIndexes(const QModelIndexList &entries, bool checked)
         setChecked(entryFromIndex(ind), checked, recursiveCheck);
     }
     emit dataChanged(entries.first(), entries.last(), QVector<int>() << Qt::CheckStateRole);
+    emit checkedItemsUpdated(_checkedEntries.size());
 }
 
 void LibraryModel::updateSettings()

@@ -50,11 +50,10 @@ void SearchTask::run()
 
     if( ! _searchTerms.isEmpty()) {
 
-        qDebug() << _searchTerms;
         emit initializeProgression(1);
 
         if(_selectedRecords.count() != _searchTerms.count()) {
-            LOG_ERROR("Number of library entries selected and number of search terms does not match...");
+            LOG_ERROR(tr("Number of library entries selected and number of search terms does not match..."));
             emit finished();
             return;
         }
@@ -150,8 +149,6 @@ void SearchTask::selectBetterResult()
 
                 if(value.compare(resultValue, Qt::CaseInsensitive) == 0) {
                     ++score;
-                } else {
-                    qDebug() << value << resultValue << value.compare(resultValue, Qt::CaseInsensitive);
                 }
             }
 
