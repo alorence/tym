@@ -300,11 +300,11 @@ void LibraryModel::refresh()
         _root = r;
 
         // Update label above library view
-        if(r != systemRootEntry) {
-            emit rootPathChanged(path);
-        } else {
+        if(!_elementsList.size()) {
             //: Used as displayed root dir when library is empty (no tracks in the database)
             emit rootPathChanged(tr("<empty>"));
+        } else {
+            emit rootPathChanged(path);
         }
 
         // Inform view that new items are stored in the model. It will start te rebuild its ModelIndexes
