@@ -275,13 +275,18 @@ void LibraryModel::refresh()
         LibraryEntry* systemRootEntry = new LibraryEntry();
         _dirMap["/"] = systemRootEntry;
 
+        // _elementsList.size() always returns -1 on Linux, we must determine the
+        // number of results manually
+        int resultsCount = 0;
         while(_elementsList.next()) {
             // Helper to extract some informations from file path
             QFileInfo fileInfo(_elementsList.value(Library::FilePath).toString());
 
             LibraryEntry* parentDir = getLibraryNode(fileInfo.canonicalPath());
             new LibraryEntry(_elementsList.record(), parentDir);
+            resultsCount++;
         }
+        _elementsList.finish();
 
         // Update _root pointer
         LibraryEntry *r = systemRootEntry;
@@ -300,7 +305,7 @@ void LibraryModel::refresh()
         _root = r;
 
         // Update label above library view
-        if(!_elementsList.size()) {
+        if(resultsCount < 1) {
             //: Used as displayed root dir when library is empty (no tracks in the database)
             emit rootPathChanged(tr("<empty>"));
         } else {
