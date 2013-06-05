@@ -324,8 +324,8 @@ void LibraryModel::checkSpecificGroup(int checkGroup)
     std::function<bool (const LibraryEntry*)> filter;
     switch((GroupSelection) checkGroup) {
     case AllTracks:
-        for(int i = 0 ; i < _root->rowCount() ; ++i) {
-            setChecked(_root, true, true);
+        for(LibraryEntry* child : _root->children()) {
+            setChecked(child, true, true);
         }
         emit dataChanged(QModelIndex(), QModelIndex(), QVector<int>() << Qt::CheckStateRole);
         emit checkedItemsUpdated(_checkedEntries.size());
@@ -423,7 +423,7 @@ void LibraryModel::setChecked(const LibraryEntry *entry, bool checked, bool recu
         _checkedEntries.insert(entry);
 
         // Check entry's parent if it is not root and all sibling are checked
-        if(entry->parent() != _root) {
+        if(entry->parent() != NULL) {
             bool allChecked = true;
             for(const LibraryEntry* sibling : entry->parent()->children()) {
                 if(!_checkedEntries.contains(sibling)) {
