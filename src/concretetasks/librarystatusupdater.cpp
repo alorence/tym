@@ -37,6 +37,8 @@ LibraryStatusUpdater::~LibraryStatusUpdater()
 
 void LibraryStatusUpdater::run()
 {
+    QList<QSqlRecord> missingList;
+
     QSqlQuery query = _dbHelper->libraryInformations();
     while(query.next()) {
         if( ((Library::FileStatus) query.value(Library::Status).toInt()).testFlag(Library::FileNotFound) ) {
@@ -45,10 +47,16 @@ void LibraryStatusUpdater::run()
 
         QFileInfo fileToCheck(query.value(Library::FilePath).toString());
         if( ! fileToCheck.exists()) {
-            _dbHelper->updateLibraryStatus(query.value(Library::Uid).toString(),
-                                           Library::FileNotFound | (Library::FileStatus) query.value(Library::Status).toInt());
-            LOG_INFO(tr("Track %1 missing, status updated.").arg(fileToCheck.absoluteFilePath()));
+            missingList << query.record();
+            LOG_INFO(tr("Track %1 missing, status will be updated.").arg(fileToCheck.absoluteFilePath()));
         }
+    }
+
+    query.finish();
+
+    for(QSqlRecord missing : missingList) {
+        _dbHelper->updateLibraryStatus(missing.value(Library::Uid).toString(),
+                                       Library::FileNotFound | (Library::FileStatus) missing.value(Library::Status).toInt());
     }
 
     emit finished();
