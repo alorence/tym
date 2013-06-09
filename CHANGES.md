@@ -3,7 +3,7 @@
 ### Known bugs
  - [Windows] Wizards have a too large title size. Qt 5.0.x bug, should be resolved in a future version (see https://bugreports.qt-project.org/browse/QTBUG-28099)
 
-## Next release
+## 0.2.0 - 2013-06-09
 #### New features
  - Enable a manual search when only 1 track is selected in the library
  - Try to find and link the best result for classic searches
