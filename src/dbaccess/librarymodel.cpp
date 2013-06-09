@@ -281,8 +281,9 @@ void LibraryModel::refresh()
         while(_elementsList.next()) {
             // Helper to extract some informations from file path
             QFileInfo fileInfo(_elementsList.value(Library::FilePath).toString());
+            QString filePath = fileInfo.exists() ? fileInfo.canonicalPath() : fileInfo.absolutePath();
 
-            LibraryEntry* parentDir = getLibraryNode(fileInfo.canonicalPath());
+            LibraryEntry* parentDir = getLibraryNode(filePath);
             new LibraryEntry(_elementsList.record(), parentDir);
             resultsCount++;
         }
