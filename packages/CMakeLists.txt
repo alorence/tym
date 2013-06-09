@@ -36,9 +36,6 @@ if(WIN32)
         set(DEBUG_SUFFIX "d")
     endif()
 
-    # TODO: Check if still necessary
-    set(TYM_SETUP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/win)
-
     configure_file(win/tym-setup.iss.in tym-setup.iss)
     configure_file(win/make-setup.bat.in make-setup.bat)
     configure_file(win/GPL3licence.txt ${TYM_SETUP_TREE_PATH}/GPL3licence.txt COPYONLY)
