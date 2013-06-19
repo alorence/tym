@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 LibraryEntry::LibraryEntry() :
     _dirName()
 {
-    setParent(NULL);
+    setParent(nullptr);
 }
 
 LibraryEntry::LibraryEntry(const QString &dirName, LibraryEntry *parent) :
@@ -106,7 +106,7 @@ void LibraryEntry::addChild(LibraryEntry *child)
 LibraryEntry *LibraryEntry::child(int index) const
 {
     if(index < 0 || index > _children.size()) {
-        return NULL;
+        return nullptr;
     } else {
         return _children[index];
     }
@@ -144,7 +144,7 @@ int LibraryEntry::rowPosition()
 void LibraryEntry::setParent(LibraryEntry *parent)
 {
     _parent = parent;
-    if(parent != NULL) {
+    if(parent != nullptr) {
         _parent->addChild(this);
     }
 }

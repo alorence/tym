@@ -42,8 +42,8 @@ public:
     explicit ExportPlaylistWizard(const QList<QSqlRecord> &selected, QWidget *parent = 0);
     ~ExportPlaylistWizard();
 
-    void showEvent(QShowEvent *);
-    void initializePage(int id);
+    void showEvent(QShowEvent *) override;
+    void initializePage(int id) override;
 
     enum MainOption {
         UniquePlaylist,

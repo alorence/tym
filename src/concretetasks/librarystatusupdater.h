@@ -49,7 +49,7 @@ public slots:
      * Check all files in Library SQLite table, and update "flags" column
      * if some tracks can't be found on the disk at the path specified.
      */
-    void run();
+    void run() override;
 
 private:
     BPDatabase* _dbHelper;

@@ -64,12 +64,12 @@ public:
      * \brief Define if elements dragged to this windows can or not be accepted.
      * \sa QWidget::dragEnterEvent()
      */
-    void dragEnterEvent(QDragEnterEvent *);
+    void dragEnterEvent(QDragEnterEvent *) override;
     /*!
      * \brief Launch the right action when user drop elements to this window.
      * \sa QWidget::dropEvent()
      */
-    void dropEvent(QDropEvent *);
+    void dropEvent(QDropEvent *) override;
     /*!
      * \brief Called when windows is displayed.
      * Reimplemented from QMainWindow to configure some little things in the views. Some options need to be set
@@ -77,9 +77,9 @@ public:
      * the total with of the widget can be done only in this function, because QHeaderView::width() has a valid
      * result only here.
      */
-    void showEvent(QShowEvent *);
+    void showEvent(QShowEvent *) override;
 
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *) override;
 
 private slots:
     /*!

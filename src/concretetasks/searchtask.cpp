@@ -58,7 +58,7 @@ void SearchTask::run()
             return;
         }
 
-        QMap<QString, QString> *searchMap = new QMap<QString, QString>();
+        auto searchMap = new QMap<QString, QString>();
         for(int i = 0 ; i < _selectedRecords.count() ; ++i) {
             (*searchMap)[_selectedRecords.value(i).value(Library::Uid).toString()] = _searchTerms.value(i);
         }
@@ -67,8 +67,8 @@ void SearchTask::run()
         _search->searchManually(searchMap);
 
     } else {
-        QMap<QString, QString> *bpidSearchMap = new QMap<QString, QString>();
-        QMap<QString, QString> *fullInfosSearchMap = new QMap<QString, QString>();
+        auto bpidSearchMap = new QMap<QString, QString>();
+        auto fullInfosSearchMap = new QMap<QString, QString>();
 
         int numTracksToAutoLink = 0;
 

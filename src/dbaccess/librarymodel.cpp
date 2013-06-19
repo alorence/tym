@@ -30,7 +30,7 @@ const int LibraryModel::CHECKABLECOLUMN = Library::Name;
 
 LibraryModel::LibraryModel(QObject *parent) :
     QAbstractItemModel(parent),
-    _root(NULL),
+    _root(nullptr),
     _db("libraryModel", this),
     _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject())
 
@@ -139,7 +139,7 @@ QModelIndex LibraryModel::index(int row, int column, const QModelIndex &parent) 
 
     LibraryEntry *childItem = entryFromIndex(parent)->child(row);
 
-    if (childItem != NULL){
+    if (childItem != nullptr){
         return createIndex(row, column, childItem);
     } else {
         return QModelIndex();
@@ -160,7 +160,7 @@ QModelIndex LibraryModel::parent(const QModelIndex &child) const
 int LibraryModel::rowCount(const QModelIndex &parent) const
 {
     LibraryEntry* entry = entryFromIndex(parent);
-    if(entry == NULL) {
+    if(entry == nullptr) {
         return 0;
     } else {
         return entry->rowCount();
@@ -424,7 +424,7 @@ void LibraryModel::setChecked(const LibraryEntry *entry, bool checked, bool recu
         _checkedEntries.insert(entry);
 
         // Check entry's parent if it is not root and all sibling are checked
-        if(entry->parent() != NULL) {
+        if(entry->parent() != nullptr) {
             bool allChecked = true;
             for(const LibraryEntry* sibling : entry->parent()->children()) {
                 if(!_checkedEntries.contains(sibling)) {

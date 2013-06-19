@@ -47,7 +47,7 @@ public:
      * According to the QMap<QString, QString> used to create the class, rename each @a key
      * into @value and update database with new file names.
      */
-    void run();
+    void run() override;
 private:
     QList<QPair<QFileInfo, QString> > _renameMap;
 };

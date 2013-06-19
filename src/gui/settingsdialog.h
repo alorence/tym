@@ -43,7 +43,7 @@ protected:
      * Try to load QSettings value, or the default one if widget state has never been modified.
      * \sa WidgetChangesObserver::init()
      */
-    void showEvent(QShowEvent *);
+    void showEvent(QShowEvent *) override;
     
 private slots:
     /*!

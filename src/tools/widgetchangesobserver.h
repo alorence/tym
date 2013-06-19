@@ -89,11 +89,11 @@ public:
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
-    QVariant getWidgetValue() const;
+    QVariant getWidgetValue() const override;
     /*!
      * \copydoc WidgetChangesObserver::setWidgetValue
      */
-    void setWidgetValue(const QVariant &value);
+    void setWidgetValue(const QVariant &value) override;
 
 private:
     QLineEdit * _widget;
@@ -114,11 +114,11 @@ public:
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
-    QVariant getWidgetValue() const;
+    QVariant getWidgetValue() const override;
     /*!
      * \copydoc WidgetChangesObserver::setWidgetValue
      */
-    void setWidgetValue(const QVariant &value);
+    void setWidgetValue(const QVariant &value) override;
 
 private:
     QCheckBox * _widget;
@@ -139,11 +139,11 @@ public:
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
-    QVariant getWidgetValue() const;
+    QVariant getWidgetValue() const override;
     /*!
      * \copydoc WidgetChangesObserver::setWidgetValue
      */
-    void setWidgetValue(const QVariant &value);
+    void setWidgetValue(const QVariant &value) override;
 
 private:
     QGroupBox * _widget;
@@ -162,11 +162,11 @@ public:
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
-    QVariant getWidgetValue() const;
+    QVariant getWidgetValue() const override;
     /*!
      * \copydoc WidgetChangesObserver::setWidgetValue
      */
-    void setWidgetValue(const QVariant &value);
+    void setWidgetValue(const QVariant &value) override;
 
 private:
     QList<QRadioButton*> _widgets;

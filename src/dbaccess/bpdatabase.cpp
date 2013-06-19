@@ -317,7 +317,7 @@ void BPDatabase::importFiles(const QStringList &pathList) const
     emit libraryEntryUpdated();
 
     if(errors) {
-        LOG_WARNING(tr("%1 file(s) have not been added due to database error(s)", 0, errors).arg(errors));
+        LOG_WARNING(tr("%1 file(s) have not been added due to database error(s)", nullptr, errors).arg(errors));
     }
 }
 

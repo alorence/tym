@@ -395,7 +395,7 @@ void MainWindow::on_actionImport_triggered()
     QString filters = "Audio tracks ("+wildcards+")";
 
     // TODO: Implements a specific class to open both files and dirctories
-    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", searchDir, filters, 0, 0);
+    QStringList fileList = QFileDialog::getOpenFileNames(this, "Select files", searchDir, filters, nullptr, nullptr);
     if(! fileList.isEmpty()) {
         _dbHelper->importFiles(fileList);
 

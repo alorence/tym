@@ -31,7 +31,7 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     ui(new Ui::SearchWizard),
     _selectedRecords(selectedRecords),
     _patternHelperButton(new PatternButton(FileBasenameParser(), this)),
-    _thread(NULL)
+    _thread(nullptr)
 {
     ui->setupUi(this);
 

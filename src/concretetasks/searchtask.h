@@ -56,7 +56,7 @@ public slots:
      * have to emit the finished() signal. Network request's results are connected to BPDatabase::storeSearchResults()
      * to store results into SQLite database.
      */
-    void run();
+    void run() override;
     /*!
      * \brief Used to check number of results received, and emit the finished() signal when last result has arrived.
      */

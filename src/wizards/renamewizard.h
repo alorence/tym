@@ -42,7 +42,7 @@ public:
     ~RenameWizard();
 
 protected:
-    void initializePage(int id);
+    void initializePage(int id) override;
     
 private slots:
     void updateRenamePreview();

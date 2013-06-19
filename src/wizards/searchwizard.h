@@ -44,8 +44,8 @@ class SearchWizard : public QWizard
 public:
     explicit SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent = 0);
     ~SearchWizard();
-    void initializePage(int id);
-    int nextId() const;
+    void initializePage(int id) override;
+    int nextId() const override;
 
     QString pattern() const;
 

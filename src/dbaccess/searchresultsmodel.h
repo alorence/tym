@@ -42,7 +42,7 @@ public:
      * \brief Reimplemented from QSqlTableModel::data() to display an image on a result linked
      * \sa QSqlTableModel::data()
      */
-    QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const override;
 
 public slots:
     /*!

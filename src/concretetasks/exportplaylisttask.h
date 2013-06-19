@@ -31,7 +31,7 @@ class ExportPlaylistTask : public Task
 public:
     explicit ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath, QObject *parent = 0);
 
-    void run();
+    void run() override;
 
 private:
 
