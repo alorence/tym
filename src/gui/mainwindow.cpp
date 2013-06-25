@@ -32,7 +32,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "wizards/renamewizard.h"
 #include "wizards/exportplaylistwizard.h"
 #include "tools/patterntool.h"
-#include "tools/picturedownloader.h"
+#include "network/picturedownloader.h"
 
 #include "concretetasks/librarystatusupdater.h"
 

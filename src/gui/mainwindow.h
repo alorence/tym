@@ -23,7 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
-#include "tools/searchprovider.h"
+#include "network/searchprovider.h"
 #include "dbaccess/librarymodel.h"
 
 class About;

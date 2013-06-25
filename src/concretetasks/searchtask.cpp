@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "searchtask.h"
 
 #include "tools/patterntool.h"
-#include "tools/searchprovider.h"
+#include "network/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
 SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, const QStringList &searchTerms, QObject *parent) :

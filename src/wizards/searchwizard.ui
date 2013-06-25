@@ -157,7 +157,7 @@
   <customwidget>
    <class>ConsoleWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>gui/consolewidget.h</header>
+   <header>widgets/consolewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

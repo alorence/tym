@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore>
 #include <QSqlRecord>
 
-#include "gui/patternbutton.h"
+#include "widgets/patternbutton.h"
 
 namespace Ui {
 class SearchWizard;

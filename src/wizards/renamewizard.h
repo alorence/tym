@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include <QtSql>
 
-#include "gui/patternbutton.h"
+#include "widgets/patternbutton.h"
 #include "tools/patterntool.h"
 
 namespace Ui {

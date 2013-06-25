@@ -19,29 +19,27 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 set(HDRS
-    about.h
-    mainwindow.h
-    settingsdialog.h
+    consolewidget.h
+    patternbutton.h
+    trackinfosview.h
 )
 
 set(CPP
-    about.cpp
-    mainwindow.cpp
-    settingsdialog.cpp
+    patternbutton.cpp
+    trackinfosview.cpp
 )
 
 set(UIS
-    about.ui
-    mainwindow.ui
-    settingsdialog.ui
+    consolewidget.ui
+    trackinfosview.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymGui OBJECT ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
+add_library(TymWidgets OBJECT ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
 
-tym_qt5_use_modules(TymGui
+tym_qt5_use_modules(TymWidgets
     Widgets
     Sql
     Network

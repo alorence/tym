@@ -20,23 +20,19 @@
 
 set(HDRS
     patterntool.h
-    searchprovider.h
-    picturedownloader.h
     widgetchangesobserver.h
 )
 
 set(CPP
-    patterntool.cpp
     patternelement.cpp
-    searchprovider.cpp
-    picturedownloader.cpp
-    widgetchangesobserver.cpp
+    patterntool.cpp
     utils.cpp
+    widgetchangesobserver.cpp
 )
 
 set(BASIC_HDRS
-    utils.h
     patternelement.h
+    utils.h
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})

@@ -375,12 +375,12 @@
   <customwidget>
    <class>ConsoleWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>gui/consolewidget.h</header>
+   <header>widgets/consolewidget.h</header>
   </customwidget>
   <customwidget>
    <class>TrackInfosView</class>
    <extends>QWidget</extends>
-   <header>gui/trackinfosview.h</header>
+   <header>widgets/trackinfosview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

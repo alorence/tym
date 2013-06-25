@@ -24,8 +24,10 @@ configure_file(version.h.in version.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(concretetasks)
 add_subdirectory(dbaccess)
+add_subdirectory(network)
 add_subdirectory(gui)
 add_subdirectory(tools)
+add_subdirectory(widgets)
 add_subdirectory(wizards)
 
 # These headers doesn't define QObject children,
@@ -70,7 +72,9 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
     $<TARGET_OBJECTS:TymConcretetasks>
     $<TARGET_OBJECTS:TymDbaccess>
     $<TARGET_OBJECTS:TymGui>
+    $<TARGET_OBJECTS:TymNetwork>
     $<TARGET_OBJECTS:TymTools>
+    $<TARGET_OBJECTS:TymWidgets>
     $<TARGET_OBJECTS:TymWizards>
     $<TARGET_OBJECTS:TymResources>
 )
