@@ -81,7 +81,7 @@ QVariant LibraryModel::data(const QModelIndex &item, int role) const
         }
     } else if(role == Qt::DecorationRole && item.column() == 0) {
         QString iconType = entry->isDirNode() ? "folder" : "file";
-        return QPixmap (":/img/icons/general/" + iconType);
+        return QPixmap (":/generic_icons/" + iconType);
     } else if(role == Qt::CheckStateRole && item.column() == 0) {
         return isChecked(entry) ? Qt::Checked : Qt::Unchecked;
     } else if (role == UniquePathRole) {

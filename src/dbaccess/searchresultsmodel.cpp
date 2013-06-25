@@ -23,7 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 SearchResultsModel::SearchResultsModel(QObject *parent, QSqlDatabase db) :
     QSqlTableModel(parent, db),
-    _tick(QPixmap(":/img/actions/tick")),
+    _tick(QPixmap(":/action_icons/tick")),
     _transp(QPixmap(_tick.width(), _tick.height()))
 {
     _transp.fill(Qt::transparent);

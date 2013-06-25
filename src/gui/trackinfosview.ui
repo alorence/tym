@@ -207,7 +207,7 @@
         </size>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../resources/resources.qrc">:/img/general/noalbum</pixmap>
+        <pixmap resource="../../resources/resources.qrc">:/general/noalbum</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

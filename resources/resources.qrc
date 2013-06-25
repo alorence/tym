@@ -1,17 +1,12 @@
 <RCC>
-    <qresource prefix="/img/actions">
+    <qresource prefix="/action_icons">
         <file alias="export_app">fugues-icons-3.5/icons/application-export.png</file>
         <file alias="import">fugues-icons-3.5/icons/music--plus.png</file>
         <file alias="export">fugues-icons-3.5/icons/music--arrow.png</file>
-        <file>fugues-icons-3.5/icons/music--exclamation.png</file>
         <file alias="delete">fugues-icons-3.5/icons/music--minus.png</file>
-        <file>fugues-icons-3.5/icons/music--pencil.png</file>
         <file alias="params">fugues-icons-3.5/icons/wrench-screwdriver.png</file>
         <file alias="search">fugues-icons-3.5/icons/magnifier.png</file>
         <file alias="close">fugues-icons-3.5/icons/cross.png</file>
-        <file>fugues-icons-3.5/icons/cross-button.png</file>
-        <file>fugues-icons-3.5/icons/book.png</file>
-        <file>fugues-icons-3.5/icons/book--exclamation.png</file>
         <file alias="about">fugues-icons-3.5/icons/question.png</file>
         <file alias="help">fugues-icons-3.5/icons/book-question.png</file>
         <file alias="tick">fugues-icons-3.5/icons/tick.png</file>
@@ -22,21 +17,28 @@
         <file alias="expand">fugues-icons-3.5/icons/toggle-expand.png</file>
         <file alias="unexpand">fugues-icons-3.5/icons/toggle.png</file>
     </qresource>
-    <qresource prefix="/img/logos">
+    <qresource prefix="/generic_icons">
+        <file alias="folder">fugues-icons-3.5/icons/folder-open-document-music.png</file>
+        <file alias="file">fugues-icons-3.5/icons/document-music.png</file>
+        <file alias="playlist">fugues-icons-3.5/icons/document-music-playlist.png</file>
+    </qresource>
+    <qresource prefix="/logos">
         <file alias="gpl3">logos/gplv3-88x31.png</file>
         <file alias="tym-logo">logos/tym_logo.png</file>
     </qresource>
     <qresource prefix="/sql/init">
         <file alias="0.1">config/sql/init-0.1.sql</file>
     </qresource>
-    <qresource prefix="/img/general">
+    <qresource prefix="/general">
         <file alias="noalbum">noalbum.png</file>
     </qresource>
-    <qresource prefix="/img/icons/general">
-        <file alias="folder">fugues-icons-3.5/icons/folder-open-document-music.png</file>
+    <qresource prefix="/unused">
+        <file>fugues-icons-3.5/icons/music--exclamation.png</file>
+        <file>fugues-icons-3.5/icons/music--pencil.png</file>
+        <file>fugues-icons-3.5/icons/cross-button.png</file>
+        <file>fugues-icons-3.5/icons/book.png</file>
+        <file>fugues-icons-3.5/icons/book--exclamation.png</file>
         <file>fugues-icons-3.5/icons/folder-open-document-music-playlist.png</file>
-        <file alias="file">fugues-icons-3.5/icons/document-music.png</file>
-        <file alias="playlist">fugues-icons-3.5/icons/document-music-playlist.png</file>
         <file>fugues-icons-3.5/icons/blue-document-music.png</file>
         <file>fugues-icons-3.5/icons/blue-document-music-playlist.png</file>
     </qresource>

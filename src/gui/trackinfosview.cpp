@@ -27,7 +27,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 TrackInfosView::TrackInfosView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TrackInfosView),
-    _defaultAlbumArt(":/img/general/noalbum")
+    _defaultAlbumArt(":/general/noalbum")
 {
     ui->setupUi(this);
 }

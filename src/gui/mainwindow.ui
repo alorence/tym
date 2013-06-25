@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/resources.qrc">
-    <normaloff>:/img/logos/tym-logo</normaloff>:/img/logos/tym-logo</iconset>
+    <normaloff>:/logos/tym-logo</normaloff>:/logos/tym-logo</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -222,7 +222,7 @@
   <action name="actionImport">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/import</normaloff>:/img/actions/import</iconset>
+     <normaloff>:/action_icons/import</normaloff>:/action_icons/import</iconset>
    </property>
    <property name="text">
     <string>Import</string>
@@ -237,7 +237,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/about</normaloff>:/img/actions/about</iconset>
+     <normaloff>:/action_icons/about</normaloff>:/action_icons/about</iconset>
    </property>
    <property name="text">
     <string>About</string>
@@ -246,7 +246,7 @@
   <action name="actionSettings">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/params</normaloff>:/img/actions/params</iconset>
+     <normaloff>:/action_icons/params</normaloff>:/action_icons/params</iconset>
    </property>
    <property name="text">
     <string>Settings</string>
@@ -255,7 +255,7 @@
   <action name="actionClose">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/close</normaloff>:/img/actions/close</iconset>
+     <normaloff>:/action_icons/close</normaloff>:/action_icons/close</iconset>
    </property>
    <property name="text">
     <string>Close</string>
@@ -264,7 +264,7 @@
   <action name="actionSearch">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/search</normaloff>:/img/actions/search</iconset>
+     <normaloff>:/action_icons/search</normaloff>:/action_icons/search</iconset>
    </property>
    <property name="text">
     <string>Search</string>
@@ -279,7 +279,7 @@
   <action name="actionRemove">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/delete</normaloff>:/img/actions/delete</iconset>
+     <normaloff>:/action_icons/delete</normaloff>:/action_icons/delete</iconset>
    </property>
    <property name="text">
     <string>Remove</string>
@@ -297,7 +297,7 @@
    </property>
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/terminal</normaloff>:/img/actions/terminal</iconset>
+     <normaloff>:/action_icons/terminal</normaloff>:/action_icons/terminal</iconset>
    </property>
    <property name="text">
     <string>Display console</string>
@@ -312,7 +312,7 @@
   <action name="actionSetDefaultResult">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/tick</normaloff>:/img/actions/tick</iconset>
+     <normaloff>:/action_icons/tick</normaloff>:/action_icons/tick</iconset>
    </property>
    <property name="text">
     <string>Link this result</string>
@@ -324,7 +324,7 @@
   <action name="actionSearchResultDelete">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/close</normaloff>:/img/actions/close</iconset>
+     <normaloff>:/action_icons/close</normaloff>:/action_icons/close</iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -333,7 +333,7 @@
   <action name="actionRename">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/rename</normaloff>:/img/actions/rename</iconset>
+     <normaloff>:/action_icons/rename</normaloff>:/action_icons/rename</iconset>
    </property>
    <property name="text">
     <string>Rename</string>
@@ -342,7 +342,7 @@
   <action name="actionExport">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/export</normaloff>:/img/actions/export</iconset>
+     <normaloff>:/action_icons/export</normaloff>:/action_icons/export</iconset>
    </property>
    <property name="text">
     <string>Export</string>
@@ -354,7 +354,7 @@
   <action name="actionCheck_selected">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/check</normaloff>:/img/actions/check</iconset>
+     <normaloff>:/action_icons/check</normaloff>:/action_icons/check</iconset>
    </property>
    <property name="text">
     <string>Check selected</string>
@@ -363,7 +363,7 @@
   <action name="actionUncheck_selected">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/img/actions/uncheck</normaloff>:/img/actions/uncheck</iconset>
+     <normaloff>:/action_icons/uncheck</normaloff>:/action_icons/uncheck</iconset>
    </property>
    <property name="text">
     <string>Uncheck selected</string>

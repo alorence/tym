@@ -92,7 +92,7 @@
   <action name="actionSelect_playlist_name">
    <property name="icon">
     <iconset>
-     <normaloff>:/img/actions/playlist</normaloff>:/img/actions/playlist</iconset>
+     <normaloff>:/action_icons/playlist</normaloff>:/action_icons/playlist</iconset>
    </property>
    <property name="text">
     <string>Select playlist name</string>
