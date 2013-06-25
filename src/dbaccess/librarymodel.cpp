@@ -32,7 +32,7 @@ LibraryModel::LibraryModel(QObject *parent) :
     QAbstractItemModel(parent),
     _root(nullptr),
     _db("libraryModel", this),
-    _elementsList("SELECT * FROM LibraryHelper ORDER BY filePath", _db.dbObject())
+    _elementsList(_db.dbObject())
 
 {
     _headers << tr("Name") << tr("Status") << tr("Results") << tr("Infos");
@@ -44,6 +44,8 @@ LibraryModel::LibraryModel(QObject *parent) :
     _searchedColor = QColor(254, 183, 11, 50);
     _trackLinkedColor = QColor(Qt::green);
     _trackLinkedColor.setAlpha(50);
+
+    _elementsList.prepare("SELECT * FROM LibraryHelper ORDER BY filePath");
 
     updateSettings();
 }
