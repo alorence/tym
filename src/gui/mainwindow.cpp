@@ -303,12 +303,18 @@ void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex
 
 void MainWindow::updateLibraryActions(const QItemSelection & selected, const QItemSelection &)
 {
-    int numSelected = selected.size();
+    bool rowsSelected = false;
+    for(QItemSelectionRange range : selected) {
+        if(range.height()) {
+            rowsSelected = true;
+            break;
+        }
+    }
 
-    ui->actionRemove->setDisabled(!numSelected);
-    ui->actionSearch->setDisabled(!numSelected);
-    ui->actionRename->setDisabled(!numSelected);
-    ui->actionExport->setDisabled(!numSelected);
+    ui->actionRemove->setDisabled(!rowsSelected);
+    ui->actionSearch->setDisabled(!rowsSelected);
+    ui->actionRename->setDisabled(!rowsSelected);
+    ui->actionExport->setDisabled(!rowsSelected);
 }
 
 void MainWindow::updateSearchResultsActions()
@@ -347,6 +353,8 @@ void MainWindow::afterLibraryViewReset()
         }
     }
     _expandedItems.clear();
+
+    updateLibraryActions(ui->libraryView->selectionModel()->selection());
 }
 
 void MainWindow::selectSpecificLibraryElements(int index)
