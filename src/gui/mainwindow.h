@@ -124,9 +124,9 @@ private slots:
     /*!
      * \brief Check library elements, according to entry selected by user in the combobox
      *
-     * \param comboIndex index of the combo element selected
+     * \param checkGroup index of the combo element selected
      */
-    void selectSpecificLibraryElements(int comboIndex);
+    void selectSpecificLibraryElements(int checkGroup);
 
     /*!
      * \brief Open the context menu on library table view
@@ -199,7 +199,7 @@ private:
 
     QThread* _libStatusUpdateThread;
 
-    QMap<LibraryModel::GroupSelection,QString> _checkActions;
+    QMap<LibraryModel::GroupSelection,QString> _selectActions;
     QSignalMapper _checkMapper;
     QList<QAction*> _selectActionsList;
 

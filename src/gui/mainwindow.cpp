@@ -121,24 +121,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
     // Configure actions for selecting groups in library
-    _checkActions[LibraryModel::AllTracks] = "All tracks";
-    _checkActions[LibraryModel::Neither] = "Neither";
-    _checkActions[LibraryModel::NewTracks] = "News";
-    _checkActions[LibraryModel::MissingTracks] = "Missing";
-    _checkActions[LibraryModel::LinkedTracks] = "Linked to a result";
-    _checkActions[LibraryModel::SearchedAndNotLinkedTracks] = "Not linked to better result";
+    _selectActions[LibraryModel::AllTracks] = "All tracks";
+    _selectActions[LibraryModel::Neither] = "Neither";
+    _selectActions[LibraryModel::NewTracks] = "News";
+    _selectActions[LibraryModel::MissingTracks] = "Missing";
+    _selectActions[LibraryModel::LinkedTracks] = "Linked to a result";
+    _selectActions[LibraryModel::SearchedAndNotLinkedTracks] = "Not linked to better result";
 
-    QMapIterator<LibraryModel::GroupSelection, QString> it(_checkActions);
+    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectActions);
 
     ui->checkElementsCombo->addItem("", -1);
     while(it.hasNext()) {
-        LibraryModel::GroupSelection id = it.next().key();
+        int id = it.next().key();
         QString label = it.value();
 
         ui->checkElementsCombo->addItem(label, id);
 
         QAction * action = new QAction(label, ui->libraryView);
-        _checkMapper.setMapping(action, id);
+        _checkMapper.setMapping(action, id + 1);
         connect(action, SIGNAL(triggered()), &_checkMapper, SLOT(map()));
 
         _selectActionsList << action;
@@ -147,9 +147,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->checkElementsCombo, SIGNAL(activated(int)),
             this, SLOT(selectSpecificLibraryElements(int)));
     // Connect context menu, via the QSignalMapper
-    // FIXME: reenable this
-//    connect(&_checkMapper, SIGNAL(mapped(int)),
-//            _libraryModel, SLOT(checkSpecificGroup(int)));
+    connect(&_checkMapper, SIGNAL(mapped(int)),
+            this, SLOT(selectSpecificLibraryElements(int)));
 
 
     // Configure settings management
@@ -338,12 +337,15 @@ void MainWindow::beforeLibraryViewReset()
 void MainWindow::afterLibraryViewReset()
 {
     // Update search results view when selecting something in the library view
-    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::updateSearchResults);
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &MainWindow::updateSearchResults);
 
     // Restore expanded items by searching them from their identifier
     for(QString uniquePathIdentifier : _expandedItems) {
-        QModelIndexList matchList = _libraryModel->match(_libraryModel->index(0,0), LibraryModel::UniquePathRole,
-                                                    uniquePathIdentifier, 1, Qt::MatchFixedString | Qt::MatchRecursive);
+        QModelIndexList matchList = _libraryModel->match(_libraryModel->index(0,0),
+                                                         LibraryModel::UniquePathRole,
+                                                         uniquePathIdentifier, 1,
+                                                         Qt::MatchFixedString | Qt::MatchRecursive);
         if(matchList.size()) {
             QModelIndex item = matchList.at(0);
             do {
@@ -357,18 +359,15 @@ void MainWindow::afterLibraryViewReset()
     updateLibraryActions(ui->libraryView->selectionModel()->selection());
 }
 
-void MainWindow::selectSpecificLibraryElements(int index)
+void MainWindow::selectSpecificLibraryElements(int comboIndex)
 {
-    // FIXME: implements MainWindow::selectSpecificLibraryElements
-    LOG_WARNING("MainWindow::selectSpecificLibraryElements is tempoary disabled");
-
-    /*
-    int group = ui->checkElementsCombo->itemData(index).toInt();
-    if(group != -1) {
-        _libraryModel->checkSpecificGroup(group);
+    LibraryModel::GroupSelection checkGroup =
+            (LibraryModel::GroupSelection) ui->checkElementsCombo->itemData(comboIndex).toInt();
+    ui->libraryView->selectionModel()->clear();
+    for(QModelIndex index : _libraryModel->indexesForGroup((LibraryModel::GroupSelection)checkGroup)) {
+        ui->libraryView->selectionModel()->select(index,
+                                        QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
-    ui->checkElementsCombo->setCurrentIndex(0);
-    */
 }
 
 void MainWindow::on_actionSearch_triggered()

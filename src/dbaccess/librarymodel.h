@@ -37,6 +37,19 @@ class LibraryModel : public QAbstractItemModel
 public:
     explicit LibraryModel(QObject *parent = 0);
 
+    enum UserRoles {
+        UniquePathRole = Qt::UserRole + 1
+    };
+
+    enum GroupSelection {
+        AllTracks,
+        Neither,
+        NewTracks,
+        MissingTracks,
+        LinkedTracks,
+        SearchedAndNotLinkedTracks
+    };
+
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const override;
 
     QModelIndex index(int row, int col, const QModelIndex &parent = QModelIndex()) const override;
@@ -87,18 +100,7 @@ public:
      */
     QModelIndexList dirNodeModelIndexes() const;
 
-    enum UserRoles {
-        UniquePathRole = Qt::UserRole + 1
-    };
-
-    enum GroupSelection {
-        AllTracks,
-        Neither,
-        NewTracks,
-        MissingTracks,
-        LinkedTracks,
-        SearchedAndNotLinkedTracks
-    };
+    const QModelIndexList indexesForGroup(GroupSelection group) const;
 
     /**
      * @brief Update library configuration according to settings registered by user.
@@ -120,6 +122,10 @@ signals:
 private:
     LibraryEntry* getLibraryNode(const QString &dirPath);
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
+
+    void filteredIndexes(const QModelIndex &index,
+                         const std::function<bool (const LibraryEntry *)> &filterFunction,
+                         QModelIndexList &result) const;
 
     LibraryEntry * _root;
 

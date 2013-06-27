@@ -215,6 +215,51 @@ QModelIndexList LibraryModel::dirNodeModelIndexes() const
     return dirNodeList;
 }
 
+const QModelIndexList LibraryModel::indexesForGroup(LibraryModel::GroupSelection group) const
+{
+    std::function<bool (const LibraryEntry*)> filter;
+    switch((GroupSelection) group) {
+    case AllTracks:
+        filter = [](const LibraryEntry* entry) {
+            return true;
+        };
+        break;
+    case NewTracks:
+        filter = [](const LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            return status.testFlag(Library::New);
+        };
+        break;
+    case MissingTracks:
+        filter = [](const LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            return status.testFlag(Library::FileNotFound);
+        };
+        break;
+    case LinkedTracks:
+        filter = [](const LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            bool hasLikedResult = !entry->record().value(Library::Bpid).isNull();
+            return status.testFlag(Library::Searched) && hasLikedResult;
+        };
+        break;
+    case SearchedAndNotLinkedTracks:
+        filter = [](const LibraryEntry* entry) {
+            Library::FileStatus status = (Library::FileStatus) entry->record().value(Library::Status).toInt();
+            bool hasLikedResult = !entry->record().value(Library::Bpid).isNull();
+            return status.testFlag(Library::Searched) && !hasLikedResult;
+        };
+        break;
+    default:
+        return QModelIndexList();
+    }
+    QModelIndexList indexesList;
+    for(int i = 0 ; i < rowCount() ; ++i) {
+        filteredIndexes(index(i, 0, QModelIndex()), filter, indexesList);
+    }
+    return indexesList;
+}
+
 void LibraryModel::updateSettings()
 {
     QSettings settings;
@@ -327,5 +372,21 @@ LibraryEntry *LibraryModel::entryFromIndex(const QModelIndex &index) const
         return static_cast<LibraryEntry*>(index.internalPointer());
     } else {
         return _root;
+    }
+}
+
+void LibraryModel::filteredIndexes(const QModelIndex &index,
+                                   const std::function<bool (const LibraryEntry *)> &filterFunction,
+                                   QModelIndexList &result) const
+{
+    int numChildren = rowCount(index);
+    if(numChildren) {
+        for(int i = 0 ; i < numChildren ; ++i) {
+            filteredIndexes(index.child(i, index.column()), filterFunction, result);
+        }
+    } else {
+        if(filterFunction(entryFromIndex(index))) {
+            result << index;
+        }
     }
 }
