@@ -88,9 +88,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->searchResultsView->hideColumn(SearchResults::Bpid);
     ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
 
-    // Ensure both library and search results view are always focused together
-    ui->libraryView->setFocusProxy(ui->searchResultsView);
-
     // Update root dir text label
     connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
 
