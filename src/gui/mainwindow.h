@@ -111,7 +111,8 @@ private slots:
     /*!
      * \brief Enable or disable actions according to number of library elements currently selected
      */
-    void updateLibraryActions(int numSelected = -1);
+    void updateLibraryActions(const QItemSelection &selected = QItemSelection(),
+                              const QItemSelection & unsel = QItemSelection());
     /*!
      * \brief Enable or disable actions according to number of search results displayed and selected
      */
@@ -125,7 +126,7 @@ private slots:
      *
      * \param comboIndex index of the combo element selected
      */
-    void checkSpecificLibraryElements(int comboIndex);
+    void selectSpecificLibraryElements(int comboIndex);
 
     /*!
      * \brief Open the context menu on library table view
@@ -169,10 +170,6 @@ private slots:
      * \brief Open the export playlist wizard
      */
     void on_actionExport_triggered();
-
-    void on_actionCheck_selected_triggered();
-
-    void on_actionUncheck_selected_triggered();
 
 private:
     /*!

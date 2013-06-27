@@ -163,7 +163,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -349,24 +349,6 @@
    </property>
    <property name="toolTip">
     <string>Export selected tracks as playlist</string>
-   </property>
-  </action>
-  <action name="actionCheck_selected">
-   <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/action_icons/check</normaloff>:/action_icons/check</iconset>
-   </property>
-   <property name="text">
-    <string>Check selected</string>
-   </property>
-  </action>
-  <action name="actionUncheck_selected">
-   <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
-     <normaloff>:/action_icons/uncheck</normaloff>:/action_icons/uncheck</iconset>
-   </property>
-   <property name="text">
-    <string>Uncheck selected</string>
    </property>
   </action>
  </widget>

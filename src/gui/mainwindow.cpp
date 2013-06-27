@@ -95,24 +95,31 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
 
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(_libraryModel, &LibraryModel::checkedItemsUpdated, this, &MainWindow::updateLibraryActions);
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::updateLibraryActions);
 
     // Reconfigure some view properties when it is refreshed
-    connect(_libraryModel, &LibraryModel::modelAboutToBeReset, this, &MainWindow::beforeLibraryViewReset);
+    connect(_libraryModel, &LibraryModel::modelAboutToBeReset,
+            this, &MainWindow::beforeLibraryViewReset);
     connect(_libraryModel, &LibraryModel::modelReset, this, &MainWindow::afterLibraryViewReset);
 
     // Display informations about a track when selecting it in the view
-    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::updateTrackInfos);
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &MainWindow::updateTrackInfos);
 
     // TODO: Maybe useless when LibraryModel::refresh(int row) will work
-    connect(_dbHelper, &BPDatabase::referenceForTrackUpdated, _searchModel, &SearchResultsModel::refresh);
+    connect(_dbHelper, &BPDatabase::referenceForTrackUpdated,
+            _searchModel, &SearchResultsModel::refresh);
 
     // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::updateSearchResultsActions);
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::updateSearchResultsActions);
 
     // Download pictures when needed
-    connect(ui->trackInfos, &TrackInfosView::downloadPicture, _pictureDownloader, &PictureDownloader::downloadTrackPicture);
-    connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished, ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
+    connect(ui->trackInfos, &TrackInfosView::downloadPicture,
+            _pictureDownloader, &PictureDownloader::downloadTrackPicture);
+    connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
+            ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
 
     connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
@@ -141,10 +148,11 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     // Connect combobox to the slot
     connect(ui->checkElementsCombo, SIGNAL(activated(int)),
-            this, SLOT(checkSpecificLibraryElements(int)));
+            this, SLOT(selectSpecificLibraryElements(int)));
     // Connect context menu, via the QSignalMapper
-    connect(&_checkMapper, SIGNAL(mapped(int)),
-            _libraryModel, SLOT(checkSpecificGroup(int)));
+    // FIXME: reenable this
+//    connect(&_checkMapper, SIGNAL(mapped(int)),
+//            _libraryModel, SLOT(checkSpecificGroup(int)));
 
 
     // Configure settings management
@@ -296,16 +304,14 @@ void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex
     ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
 }
 
-void MainWindow::updateLibraryActions(int numChecked)
+void MainWindow::updateLibraryActions(const QItemSelection & selected, const QItemSelection &)
 {
-    if(numChecked == -1) {
-        numChecked = _libraryModel->numChecked();
-    }
+    int numSelected = selected.size();
 
-    ui->actionRemove->setDisabled(numChecked == 0);
-    ui->actionSearch->setDisabled(numChecked == 0);
-    ui->actionRename->setDisabled(numChecked == 0);
-    ui->actionExport->setDisabled(numChecked == 0);
+    ui->actionRemove->setDisabled(!numSelected);
+    ui->actionSearch->setDisabled(!numSelected);
+    ui->actionRename->setDisabled(!numSelected);
+    ui->actionExport->setDisabled(!numSelected);
 }
 
 void MainWindow::updateSearchResultsActions()
@@ -346,18 +352,26 @@ void MainWindow::afterLibraryViewReset()
     _expandedItems.clear();
 }
 
-void MainWindow::checkSpecificLibraryElements(int index)
+void MainWindow::selectSpecificLibraryElements(int index)
 {
+    // FIXME: implements MainWindow::selectSpecificLibraryElements
+    LOG_WARNING("MainWindow::selectSpecificLibraryElements is tempoary disabled");
+
+    /*
     int group = ui->checkElementsCombo->itemData(index).toInt();
     if(group != -1) {
         _libraryModel->checkSpecificGroup(group);
     }
     ui->checkElementsCombo->setCurrentIndex(0);
+    */
 }
 
 void MainWindow::on_actionSearch_triggered()
 {
-    SearchWizard wizard(_libraryModel->checkedRecords());
+    QList<QSqlRecord> selectedRecords;
+    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                     selectedRecords);
+    SearchWizard wizard(selectedRecords);
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -367,12 +381,6 @@ void MainWindow::on_actionSearch_triggered()
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
-
-    int numSelected = ui->libraryView->selectionModel()->selectedIndexes().size();
-    ui->actionCheck_selected->setDisabled(numSelected == 0);
-    ui->actionUncheck_selected->setDisabled(numSelected == 0);
-    contextMenu.addAction(ui->actionCheck_selected);
-    contextMenu.addAction(ui->actionUncheck_selected);
 
     QMenu *selectMenu = contextMenu.addMenu(tr("Check"));
     for(QAction *selectAction : _selectActionsList) {
@@ -406,7 +414,10 @@ void MainWindow::on_actionImport_triggered()
 
 void MainWindow::on_actionRemove_triggered()
 {
-    _dbHelper->deleteLibraryEntry(_libraryModel->checkedUids());
+    QStringList selectedUids;
+    _libraryModel->uidsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                  selectedUids);
+    _dbHelper->deleteLibraryEntry(selectedUids);
     _libraryModel->refresh();
 }
 
@@ -441,7 +452,10 @@ void MainWindow::on_actionSearchResultDelete_triggered()
 
 void MainWindow::on_actionRename_triggered()
 {
-    RenameWizard wizard(_libraryModel->checkedRecords());
+    QList<QSqlRecord> selectedRecords;
+    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                     selectedRecords);
+    RenameWizard wizard(selectedRecords);
     if(wizard.exec() == QWizard::Rejected) {
         return;
     }
@@ -451,18 +465,11 @@ void MainWindow::on_actionRename_triggered()
 void MainWindow::on_actionExport_triggered()
 
 {
-    ExportPlaylistWizard wizard(_libraryModel->checkedRecords());
+    QList<QSqlRecord> selectedRecords;
+    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                     selectedRecords);
+    ExportPlaylistWizard wizard(selectedRecords);
     wizard.exec();
-}
-
-void MainWindow::on_actionCheck_selected_triggered()
-{
-    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), true);
-}
-
-void MainWindow::on_actionUncheck_selected_triggered()
-{
-    _libraryModel->checkIndexes(ui->libraryView->selectionModel()->selectedIndexes(), false);
 }
 
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const

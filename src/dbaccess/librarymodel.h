@@ -37,13 +37,9 @@ class LibraryModel : public QAbstractItemModel
 public:
     explicit LibraryModel(QObject *parent = 0);
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
     QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
-    QModelIndexList dirNodeModelIndexes() const;
-
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex index(int row, int col, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &child) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -51,13 +47,45 @@ public:
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
+    /**
+     * @brief Return a QSqlRecord corresponding to a given \a index.
+     * If index is a dir node, this function returns an empty (invalid) record
+     * @param index A index in the model
+     * @return Cooresponding sql record
+     */
     QSqlRecord record(const QModelIndex &index);
 
-    QList<QSqlRecord> checkedRecords() const;
-    QStringList checkedUids() const;
-    int numChecked();
+    /**
+     * @brief Append records corresponding to given \a index list to the given \a result list.
+     * Tracks uids are appended recursively if one of the index given corresponds to a
+     * directory node.
+     * @param[in] list List of indexes in the model
+     * @param[out] result Resulting list of sql records
+     */
+    void recordsForIndexes(const QModelIndexList &list, QList<QSqlRecord> &result) const;
+    /**
+     * @brief Append uids corresponding to given \a index list to the given \a result list.
+     * Tracks uids are appended recursively if one of the index given corresponds to a
+     * directory node.
+     * @param[in] list List of indexes in the model
+     * @param[out] result Resulting list of uids as strings
+     */
+    void uidsForIndexes(const QModelIndexList &list, QStringList &result) const;
 
-    void checkIndexes(const QModelIndexList& entries, bool checked);
+    /**
+     * @brief Append to given \ result indexes which correspond to a track node in the library.
+     * If an index to a dir node is given, all its children will be appended. If \a index
+     * corresponds to a track in the library, \a result will contains only \a index
+     * @param[in] index
+     * @param[out] result
+     */
+    void leafIndexes(const QModelIndex &index, QSet<QModelIndex> &result) const;
+
+    /**
+     * @brief Return all indexes corresponding to directory nodes in the model.
+     * @return List of dir nodes as a list of QModelIndex
+     */
+    QModelIndexList dirNodeModelIndexes() const;
 
     enum UserRoles {
         UniquePathRole = Qt::UserRole + 1
@@ -72,23 +100,26 @@ public:
         SearchedAndNotLinkedTracks
     };
 
+    /**
+     * @brief Update library configuration according to settings registered by user.
+     * For the moment, this only affects colors of elements in the library.
+     */
     void updateSettings();
 
 public slots:
     void refresh();
-    void checkSpecificGroup(int checkGroup);
 
 signals:
-    void checkedItemsUpdated(int numSelected);
+    /**
+     * @brief Signal emitted when a refresh modify the root folder containing all tracks
+     * in the library.
+     * @param path
+     */
     void rootPathChanged(QString path);
 
 private:
     LibraryEntry* getLibraryNode(const QString &dirPath);
     LibraryEntry* entryFromIndex(const QModelIndex &index) const;
-
-    void recursiveFilteredSetChecked(const LibraryEntry* entry, const std::function<bool (const LibraryEntry *)> &f);
-    void setChecked(const LibraryEntry* entry, bool checked, bool recursive = true);
-    bool isChecked(const LibraryEntry *entry) const;
 
     LibraryEntry * _root;
 
@@ -97,9 +128,6 @@ private:
 
     QMap<QString, LibraryEntry*> _dirMap;
     QList<QString> _headers;
-
-    QSet<const LibraryEntry*> _checkedEntries;
-    static const int CHECKABLECOLUMN;
 
     bool _colorsEnabled;
     QColor _noResultsColor;
