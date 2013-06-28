@@ -120,6 +120,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
+    ui->actionRemove->setShortcut(QKeySequence::Delete);
+    ui->actionImport->setShortcut(QKeySequence::Open);
+
     // Configure actions for selecting groups in library
     _selectActions[LibraryModel::AllTracks] = "All tracks";
     _selectActions[LibraryModel::Neither] = "Neither";
