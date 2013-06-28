@@ -375,6 +375,15 @@ void MainWindow::selectSpecificLibraryElements(int comboIndex)
         for(QModelIndex index : indexes) {
             ui->libraryView->selectionModel()->select(index,
                                             QItemSelectionModel::Select | QItemSelectionModel::Rows);
+
+            // TODO: [settings] Add choice to use this or not
+            if(_libraryModel->rowCount(index)) {
+                QModelIndex toExpand = index;
+                do {
+                    ui->libraryView->expand(toExpand);
+                    toExpand = _libraryModel->parent(toExpand);
+                } while(toExpand.isValid());
+            }
         }
     }
     ui->groupSelectionCombo->setCurrentIndex(0);
