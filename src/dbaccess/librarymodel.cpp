@@ -257,6 +257,7 @@ const QModelIndexList LibraryModel::indexesForGroup(LibraryModel::GroupSelection
     for(int i = 0 ; i < rowCount() ; ++i) {
         filteredIndexes(index(i, 0, QModelIndex()), filter, indexesList);
     }
+
     return indexesList;
 }
 
@@ -381,8 +382,17 @@ void LibraryModel::filteredIndexes(const QModelIndex &index,
 {
     int numChildren = rowCount(index);
     if(numChildren) {
+        bool allChildrenAdded = true;
         for(int i = 0 ; i < numChildren ; ++i) {
-            filteredIndexes(index.child(i, index.column()), filterFunction, result);
+            QModelIndex child = index.child(i, index.column());
+            filteredIndexes(child, filterFunction, result);
+            if(allChildrenAdded && !result.contains(child)) {
+                allChildrenAdded = false;
+            }
+        }
+        // All children have been added, add the parent
+        if(allChildrenAdded) {
+            result << index;
         }
     } else {
         if(filterFunction(entryFromIndex(index))) {
