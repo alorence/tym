@@ -118,7 +118,7 @@ QModelIndex LibraryModel::parent(const QModelIndex &child) const
 {
     LibraryEntry* parent = entryFromIndex(child)->parent();
 
-    if(parent == _root) {
+    if(!parent || parent == _root) {
         return QModelIndex();
     } else {
         return createIndex(parent->rowPosition(), 0, parent);
