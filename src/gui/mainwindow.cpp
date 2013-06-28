@@ -361,13 +361,23 @@ void MainWindow::afterLibraryViewReset()
 
 void MainWindow::selectSpecificLibraryElements(int comboIndex)
 {
-    LibraryModel::GroupSelection selectionGroup =
-            (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
-    ui->libraryView->selectionModel()->clear();
-    for(QModelIndex index : _libraryModel->indexesForGroup((LibraryModel::GroupSelection)selectionGroup)) {
-        ui->libraryView->selectionModel()->select(index,
-                                        QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    if(comboIndex == LibraryModel::AllTracks) {
+        ui->libraryView->selectionModel()->select(QModelIndex(),
+                                                  QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        return;
+    } else if (comboIndex == LibraryModel::Neither) {
+        ui->libraryView->selectionModel()->clear();
+    } else {
+        ui->libraryView->selectionModel()->clear();
+        LibraryModel::GroupSelection selectionGroup =
+                (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
+        QModelIndexList indexes = _libraryModel->indexesForGroup((LibraryModel::GroupSelection)selectionGroup);
+        for(QModelIndex index : indexes) {
+            ui->libraryView->selectionModel()->select(index,
+                                            QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
     }
+    ui->groupSelectionCombo->setCurrentIndex(0);
 }
 
 void MainWindow::on_actionSearch_triggered()
