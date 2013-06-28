@@ -130,24 +130,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QMapIterator<LibraryModel::GroupSelection, QString> it(_selectActions);
 
-    ui->checkElementsCombo->addItem("", -1);
+    ui->groupSelectionCombo->addItem("", -1);
     while(it.hasNext()) {
         int id = it.next().key();
         QString label = it.value();
 
-        ui->checkElementsCombo->addItem(label, id);
+        ui->groupSelectionCombo->addItem(label, id);
 
         QAction * action = new QAction(label, ui->libraryView);
-        _checkMapper.setMapping(action, id + 1);
-        connect(action, SIGNAL(triggered()), &_checkMapper, SLOT(map()));
+        _groupSelectionMapper.setMapping(action, id + 1);
+        connect(action, SIGNAL(triggered()), &_groupSelectionMapper, SLOT(map()));
 
         _selectActionsList << action;
     }
     // Connect combobox to the slot
-    connect(ui->checkElementsCombo, SIGNAL(activated(int)),
+    connect(ui->groupSelectionCombo, SIGNAL(activated(int)),
             this, SLOT(selectSpecificLibraryElements(int)));
     // Connect context menu, via the QSignalMapper
-    connect(&_checkMapper, SIGNAL(mapped(int)),
+    connect(&_groupSelectionMapper, SIGNAL(mapped(int)),
             this, SLOT(selectSpecificLibraryElements(int)));
 
 
@@ -361,10 +361,10 @@ void MainWindow::afterLibraryViewReset()
 
 void MainWindow::selectSpecificLibraryElements(int comboIndex)
 {
-    LibraryModel::GroupSelection checkGroup =
-            (LibraryModel::GroupSelection) ui->checkElementsCombo->itemData(comboIndex).toInt();
+    LibraryModel::GroupSelection selectionGroup =
+            (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
     ui->libraryView->selectionModel()->clear();
-    for(QModelIndex index : _libraryModel->indexesForGroup((LibraryModel::GroupSelection)checkGroup)) {
+    for(QModelIndex index : _libraryModel->indexesForGroup((LibraryModel::GroupSelection)selectionGroup)) {
         ui->libraryView->selectionModel()->select(index,
                                         QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
@@ -386,7 +386,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
 
-    QMenu *selectMenu = contextMenu.addMenu(tr("Check"));
+    QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
     for(QAction *selectAction : _selectActionsList) {
         selectMenu->addAction(selectAction);
     }

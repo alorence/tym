@@ -37,7 +37,7 @@
        <widget class="QWidget" name="layoutWidget">
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="4">
-          <widget class="QComboBox" name="checkElementsCombo"/>
+          <widget class="QComboBox" name="groupSelectionCombo"/>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">

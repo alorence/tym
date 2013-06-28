@@ -200,7 +200,7 @@ private:
     QThread* _libStatusUpdateThread;
 
     QMap<LibraryModel::GroupSelection,QString> _selectActions;
-    QSignalMapper _checkMapper;
+    QSignalMapper _groupSelectionMapper;
     QList<QAction*> _selectActionsList;
 
     QStringList _expandedItems;
