@@ -11,6 +11,7 @@
  - Checkboxes are not displayed anymore. Classic selection is used to select files to be used for an action
 
 #### Bug fixes
+ - A missing DLL caused an error at startup, Windows version can now run normally
  - Fixed #2. When some files were missing at startup, entire library was not displayed immediatly
  - Actions are correctly disabled after a refresh, when selection is reset
 
@@ -18,7 +19,7 @@
 #### New features
  - Enable a manual search when only 1 track is selected in the library
  - Try to find and link the best result for classic searches
- - Tracks are displayed in a tree view instead of a flat one.
+ - Tracks are displayed in a tree view instead of a flat one
 
 #### Minor improvements
  - Display a progressbar while search run
