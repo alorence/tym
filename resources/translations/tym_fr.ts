@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../../src/gui/about.ui" line="33"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/img/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;This program is open source, distrubuted under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GPL 3 licence&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fugue Icons pack&lt;/span&gt;&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;More informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;This program use a modified version of &lt;a href=&quot;https://gitorious.org/cutelogger/cutelogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Cutelogger library&lt;/span&gt;&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;LGPL 2.1 licence&lt;/span&gt;&lt;/a&gt;. Modifications are visible on &lt;a href=&quot;https://gitorious.org/~alorence/cutelogger/alorences-cutelogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;gitorious&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;This program is open source, distrubuted under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GPL 3 licence&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fugue Icons pack&lt;/span&gt;&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;More informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;This program use a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Cutelogger library&lt;/span&gt;&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;LGPL 2.1 licence&lt;/span&gt;&lt;/a&gt;. Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -22,27 +22,27 @@
 <context>
     <name>BPDatabase</name>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="40"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="41"/>
         <source>Create connection %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="48"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="49"/>
         <source>Unable to initialise database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="53"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="54"/>
         <source>DB opened and initialized for the first time, version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="59"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="60"/>
         <source>DB opened, version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="68"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="69"/>
         <source>Unable to open database: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -67,103 +67,108 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="184"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="186"/>
         <source>Unable to remove tracks from library: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="187"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="189"/>
         <source>Unable to delete search results: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="206"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="210"/>
         <source>Unable to remove search result %1 / %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="209"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="213"/>
         <source>Unable to update Library entry %1 to delete default bpid %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="223"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="227"/>
         <source>Unable to rename filename %1 in database: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="246"/>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="260"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="250"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="264"/>
         <source>Unable to register search result for track %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="282"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="286"/>
         <source>Unable to import file %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="304"/>
-        <source>Unable to import files: %2</source>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="308"/>
+        <source>Unable to import file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="320"/>
+        <source>%1 file(s) have not been added due to database error(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="334"/>
         <source>Unable to update library elements&apos;s %1 status: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="338"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="352"/>
         <source>Unable to update library element %1 with the bpid %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="368"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="382"/>
         <source>Unable to execute request: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="377"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="391"/>
         <source>Unable to open init file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="394"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="408"/>
         <source>Track %1 (%2) already stored in database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="409"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="423"/>
         <source>Unable to insert the artist %1 into the database: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="423"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="437"/>
         <source>Unable to insert the track &lt;-&gt; artist/remixer link into the database (%1 for track %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="437"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="451"/>
         <source>Unable to insert the genre %1 into the database: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="445"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="459"/>
         <source>Unable to insert the track &lt;-&gt; genre link into the database (%1 for track %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="495"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="509"/>
         <source>Unable to insert the label %1 into database: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="509"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="523"/>
         <source>Unable to insert the track %1 - %2 into database: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/bpdatabase.cpp" line="513"/>
+        <location filename="../../src/dbaccess/bpdatabase.cpp" line="527"/>
         <source>Track &quot;%1 - %2&quot; stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -192,7 +197,7 @@
 <context>
     <name>ConsoleWidget</name>
     <message>
-        <location filename="../../src/gui/consolewidget.ui" line="21"/>
+        <location filename="../../src/widgets/consolewidget.ui" line="21"/>
         <source>ConsoleWidget</source>
         <translation type="unfinished"></translation>
     </message>
@@ -248,8 +253,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/wizards/exportplaylistwizard.ui" line="89"/>
-        <location filename="../../src/wizards/exportplaylistwizard.ui" line="92"/>
+        <location filename="../../src/wizards/exportplaylistwizard.ui" line="98"/>
+        <location filename="../../src/wizards/exportplaylistwizard.ui" line="101"/>
         <source>Select playlist name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -293,13 +298,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="248"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="265"/>
         <source>Unable to refresh library model : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="349"/>
-        <source>Computer</source>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="298"/>
+        <source>My Computer</source>
+        <extracomment>On Windows only, defines the system top level folder (above disks)</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="313"/>
+        <source>&lt;empty&gt;</source>
+        <extracomment>Used as displayed root dir when library is empty (no tracks in the database)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -375,8 +387,8 @@
 <context>
     <name>LibraryStatusUpdater</name>
     <message>
-        <location filename="../../src/concretetasks/librarystatusupdater.cpp" line="50"/>
-        <source>Track %1 missing, status updated.</source>
+        <location filename="../../src/concretetasks/librarystatusupdater.cpp" line="51"/>
+        <source>Track %1 missing, status will be updated.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -406,119 +418,129 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="174"/>
+        <location filename="../../src/gui/mainwindow.ui" line="177"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="183"/>
+        <location filename="../../src/gui/mainwindow.ui" line="186"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="196"/>
+        <location filename="../../src/gui/mainwindow.ui" line="199"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="231"/>
+        <location filename="../../src/gui/mainwindow.ui" line="228"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="234"/>
+        <location filename="../../src/gui/mainwindow.ui" line="231"/>
         <source>Import files into library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="237"/>
+        <location filename="../../src/gui/mainwindow.ui" line="234"/>
         <source>Ctrl+I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="246"/>
+        <location filename="../../src/gui/mainwindow.ui" line="243"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="255"/>
+        <location filename="../../src/gui/mainwindow.ui" line="252"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="264"/>
+        <location filename="../../src/gui/mainwindow.ui" line="261"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="273"/>
+        <location filename="../../src/gui/mainwindow.ui" line="270"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="276"/>
+        <location filename="../../src/gui/mainwindow.ui" line="273"/>
         <source>Search on Beatport from files name&apos;s informations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="279"/>
+        <location filename="../../src/gui/mainwindow.ui" line="276"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="288"/>
+        <location filename="../../src/gui/mainwindow.ui" line="285"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="291"/>
+        <location filename="../../src/gui/mainwindow.ui" line="288"/>
         <source>Remove selected tracks from library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="294"/>
+        <location filename="../../src/gui/mainwindow.ui" line="291"/>
         <source>Ctrl+D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../src/gui/mainwindow.ui" line="303"/>
         <location filename="../../src/gui/mainwindow.ui" line="306"/>
-        <location filename="../../src/gui/mainwindow.ui" line="309"/>
         <source>Display console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="312"/>
+        <location filename="../../src/gui/mainwindow.ui" line="309"/>
         <source>Ctrl+Alt+C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="321"/>
+        <location filename="../../src/gui/mainwindow.ui" line="318"/>
         <source>Link this result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="324"/>
+        <location filename="../../src/gui/mainwindow.ui" line="321"/>
         <source>Set as default result for the current track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="333"/>
+        <location filename="../../src/gui/mainwindow.ui" line="330"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="342"/>
+        <location filename="../../src/gui/mainwindow.ui" line="339"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="351"/>
+        <location filename="../../src/gui/mainwindow.ui" line="348"/>
         <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="354"/>
+        <location filename="../../src/gui/mainwindow.ui" line="351"/>
         <source>Export selected tracks as playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/mainwindow.ui" line="360"/>
+        <source>Check selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/mainwindow.ui" line="369"/>
+        <source>Uncheck selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -527,25 +549,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="242"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="259"/>
         <source>Hide console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="244"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="261"/>
         <source>Show console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="352"/>
-        <source>Select</source>
+        <location filename="../../src/gui/mainwindow.cpp" line="377"/>
+        <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PatternButton</name>
     <message>
-        <location filename="../../src/gui/patternbutton.cpp" line="31"/>
+        <location filename="../../src/widgets/patternbutton.cpp" line="31"/>
         <source>Pattern</source>
         <translation type="unfinished"></translation>
     </message>
@@ -553,8 +575,8 @@
 <context>
     <name>PictureDownloader</name>
     <message>
-        <location filename="../../src/tools/picturedownloader.cpp" line="74"/>
-        <source>Error on request %1 : %2</source>
+        <location filename="../../src/network/picturedownloader.cpp" line="74"/>
+        <source>Error on request %1: [%2] %3</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -629,27 +651,27 @@
 <context>
     <name>RenameTask</name>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="43"/>
+        <location filename="../../src/concretetasks/renametask.cpp" line="42"/>
         <source>Error, file %1 does not exists, it can&apos;t be renamed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="49"/>
+        <location filename="../../src/concretetasks/renametask.cpp" line="48"/>
         <source>Error when renaming file %1, file %2 already exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="57"/>
+        <location filename="../../src/concretetasks/renametask.cpp" line="56"/>
         <source>File %1 renamed to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="61"/>
+        <location filename="../../src/concretetasks/renametask.cpp" line="60"/>
         <source>Your file %1 seems to have been renamed, but the new one (%2) can&apos;t be found on disk !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="66"/>
+        <location filename="../../src/concretetasks/renametask.cpp" line="65"/>
         <source>Error when renaming file %1 into %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -710,22 +732,22 @@
 <context>
     <name>SearchProvider</name>
     <message>
-        <location filename="../../src/tools/searchprovider.cpp" line="77"/>
+        <location filename="../../src/network/searchprovider.cpp" line="77"/>
         <source>Request sent for IDs %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/tools/searchprovider.cpp" line="99"/>
+        <location filename="../../src/network/searchprovider.cpp" line="99"/>
         <source>Response received for id search: %1 results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/tools/searchprovider.cpp" line="149"/>
+        <location filename="../../src/network/searchprovider.cpp" line="149"/>
         <source>Send request: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/tools/searchprovider.cpp" line="168"/>
+        <location filename="../../src/network/searchprovider.cpp" line="168"/>
         <source>Error on request %1 : %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -738,7 +760,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/searchtask.cpp" line="93"/>
+        <location filename="../../src/concretetasks/searchtask.cpp" line="56"/>
+        <source>Number of library entries selected and number of search terms does not match...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/concretetasks/searchtask.cpp" line="92"/>
         <source>Unable to extract information from %1 file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -897,88 +924,88 @@
 <context>
     <name>TrackInfosView</name>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="20"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="20"/>
         <source>Infos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="33"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="64"/>
         <source>Artist(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="50"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="81"/>
         <source>Remixer(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="67"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="98"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="84"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="115"/>
         <source>Full Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="101"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="132"/>
         <source>Mix Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="118"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="149"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="135"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="40"/>
         <source>Genres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="152"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="33"/>
         <source>Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="169"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="57"/>
         <source>Published</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="220"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="220"/>
         <source>Released</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="243"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="243"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="260"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="250"/>
         <source>Tempo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="277"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="257"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="294"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="264"/>
         <source>Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.ui" line="311"/>
+        <location filename="../../src/widgets/trackinfosview.ui" line="271"/>
         <source>Beatport ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/trackinfosview.cpp" line="58"/>
-        <location filename="../../src/gui/trackinfosview.cpp" line="60"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="58"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="60"/>
         <source>yyyy-MM-dd</source>
         <translation type="unfinished"></translation>
     </message>
