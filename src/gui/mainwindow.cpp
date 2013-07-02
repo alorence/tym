@@ -91,14 +91,17 @@ MainWindow::MainWindow(QWidget *parent) :
     // Update root dir text label
     connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
 
-    // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &MainWindow::updateLibraryActions);
-
     // Reconfigure some view properties when it is refreshed
     connect(_libraryModel, &LibraryModel::modelAboutToBeReset,
             this, &MainWindow::beforeLibraryViewReset);
     connect(_libraryModel, &LibraryModel::modelReset, this, &MainWindow::afterLibraryViewReset);
+
+    // Set actions menu/buttons as enabled/disabled folowing library selection
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::updateLibraryActions);
+    // Set actions menu/buttons as enabled/disabled folowing library selection
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::updateSearchResultsActions);
 
     // Display informations about a track when selecting it in the view
     connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged,
@@ -107,10 +110,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // TODO: Maybe useless when LibraryModel::refresh(int row) will work
     connect(_dbHelper, &BPDatabase::referenceForTrackUpdated,
             _searchModel, &SearchResultsModel::refresh);
-
-    // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &MainWindow::updateSearchResultsActions);
 
     // Download pictures when needed
     connect(ui->trackInfos, &TrackInfosView::downloadPicture,
@@ -303,20 +302,14 @@ void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex
     ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
 }
 
-void MainWindow::updateLibraryActions(const QItemSelection & selected, const QItemSelection &)
+void MainWindow::updateLibraryActions()
 {
-    bool rowsSelected = false;
-    for(QItemSelectionRange range : selected) {
-        if(range.height()) {
-            rowsSelected = true;
-            break;
-        }
-    }
+    int numSel = ui->libraryView->selectionModel()->selectedRows().size();
 
-    ui->actionRemove->setDisabled(!rowsSelected);
-    ui->actionSearch->setDisabled(!rowsSelected);
-    ui->actionRename->setDisabled(!rowsSelected);
-    ui->actionExport->setDisabled(!rowsSelected);
+    ui->actionRemove->setDisabled(numSel == 0);
+    ui->actionSearch->setDisabled(numSel == 0);
+    ui->actionRename->setDisabled(numSel == 0);
+    ui->actionExport->setDisabled(numSel == 0);
 }
 
 void MainWindow::updateSearchResultsActions()
@@ -359,7 +352,7 @@ void MainWindow::afterLibraryViewReset()
     }
     _expandedItems.clear();
 
-    updateLibraryActions(ui->libraryView->selectionModel()->selection());
+    updateLibraryActions();
 }
 
 void MainWindow::selectSpecificLibraryElements(int comboIndex)

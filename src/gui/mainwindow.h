@@ -111,8 +111,7 @@ private slots:
     /*!
      * \brief Enable or disable actions according to number of library elements currently selected
      */
-    void updateLibraryActions(const QItemSelection &selected = QItemSelection(),
-                              const QItemSelection & unsel = QItemSelection());
+    void updateLibraryActions();
     /*!
      * \brief Enable or disable actions according to number of search results displayed and selected
      */
