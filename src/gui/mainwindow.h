@@ -91,6 +91,7 @@ private slots:
      * \brief Update the general settings for the application.
      */
     void updateSettings();
+
     /*!
      * \brief Update results list in the search results view.
      * Called when user change the item selected in the library view. Connected to the
@@ -99,7 +100,8 @@ private slots:
      * \param deselected the unselected element in library view
      * \sa QItemSelectionModel::currentRowChanged()
      */
-    void updateSearchResults(const QModelIndex &selected, const QModelIndex &deselected);
+    void updateSearchResults(const QModelIndex &selected = QModelIndex(),
+                             const QModelIndex &d = QModelIndex());
     /*!
      * \brief Update informations displayed in the TrackInfosView widget.
      * Called when search results view's selectionModel() emit its currentRowChanged() signal.
@@ -107,7 +109,8 @@ private slots:
      * \param deselected the unselected elements in search result view
      * \sa QItemSelectionModel::currentRowChanged()
      */
-    void updateTrackInfos(const QModelIndex &selected, const QModelIndex &deselected);
+    void updateTrackInfos(const QModelIndex &selected = QModelIndex(),
+                          const QModelIndex &deselected = QModelIndex());
     /*!
      * \brief Enable or disable actions according to number of library elements currently selected
      */

@@ -289,17 +289,21 @@ void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelI
         } else {
             ui->searchResultsView->selectRow(0);
         }
-
     } else {
         //When no more results are displayed, we must clear the track infos widget
-        ui->trackInfos->clearData();
+        updateTrackInfos();
     }
 }
 
 void MainWindow::updateTrackInfos(const QModelIndex &selected, const QModelIndex&)
 {
-    QString bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid).toString();
-    ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
+    // SearchResultsView can only have one item selected at a time
+    if(selected.isValid()) {
+        QString bpid = _searchModel->record(selected.row()).value(SearchResults::Bpid).toString();
+        ui->trackInfos->updateInfos(_dbHelper->trackInformations(bpid));
+    } else {
+        ui->trackInfos->clearData();
+    }
 }
 
 void MainWindow::updateLibraryActions()
@@ -353,6 +357,7 @@ void MainWindow::afterLibraryViewReset()
     _expandedItems.clear();
 
     updateLibraryActions();
+    updateSearchResults(ui->libraryView->selectionModel()->currentIndex());
 }
 
 void MainWindow::selectSpecificLibraryElements(int comboIndex)
