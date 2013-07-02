@@ -18,7 +18,7 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-set(TYM_SETUP_TARGET_NAME "setup")
+set(TYM_SETUP_TARGET_NAME "deliverable")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(CURRENT_CONFIGURATION DEBUG)
@@ -53,13 +53,13 @@ elseif(APPLE)
     add_custom_target(${TYM_SETUP_TARGET_NAME}
         COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
         WORKING_DIRECTORY ${TYM_SETUP_OUTPUT_PATH}
-        COMMENT "Build the app package and the final zip"
+        COMMENT "Building the app package and the final zip"
     )
     add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
 elseif(UNIX)
 
-    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
-    set(CPACK_PACKAGE_VENDOR "Me, myself, and I")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple tool to manage DJ audio library")
+    set(CPACK_PACKAGE_VENDOR "Antoine Lorence")
     #set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
     #set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
     set(CPACK_PACKAGE_VERSION_MAJOR ${TYM_MAJOR_VERSION})
@@ -73,6 +73,6 @@ elseif(UNIX)
     set(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
     include(CPack)
     add_custom_target(${TYM_SETUP_TARGET_NAME}
-        COMMAND echo "youpi"
+        COMMAND echo "TBD - Unix package creation is not supported for the moment"
     )
 endif()

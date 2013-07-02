@@ -34,6 +34,12 @@ find_package(Qt5LinguistTools REQUIRED)
 
 option(TYM_UPDATE_TRANSLATIONS OFF)
 
+if(NOT CMAKE_BUILD_TYPE)
+    message(STATUS "Tag You Music will be build with default build type")
+else()
+    message(STATUS "Tag You Music will be build with build type ${CMAKE_BUILD_TYPE}")
+endif()
+
 if(MSVC) # MSVC
     # Display more warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
