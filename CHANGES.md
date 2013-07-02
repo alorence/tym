@@ -37,7 +37,7 @@
     - All kinds of informations can be retrieved (artists, remixers, title, label, genres, picture, etc.)
     - Filenames are used to extract terms used to perform search
  - Link each track with a search result
- - **Rename*** tracks according to result linked
+ - **Rename** tracks according to result linked
     - Some simple patterns are predefined
     - Simple replacement for platform dependent non-supported characters
  - **Export** information as *.nml playlist(s) to display some informations in Native Instrument Traktor Pro 2
