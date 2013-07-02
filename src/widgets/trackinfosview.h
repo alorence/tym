@@ -37,12 +37,30 @@ public:
     ~TrackInfosView();
 
 public slots:
+    /*!
+     * \brief Delete all information from the widget. Clear each inputs, remove the picture,
+     * reset member variables.
+     */
     void clearData();
-    void updateInfos(QSqlRecord);
-    void displayDownloadedPicture(QString url);
+    /*!
+     * \brief Update informations in the widget, from the given record.
+     * \param record A QSqlRecord containg all information from a file / track
+     */
+    void updateInfos(QSqlRecord record);
+    /*!
+     * \brief Check if given picture id is the one corresponding to information currently
+     * displayed by the widget. If yes, display the picture after loading it from hard drive.
+     * \param picId
+     */
+    void displayDownloadedPicture(QString picId);
 
 signals:
-    void downloadPicture(const QString &picId);
+    /*!
+     * \brief Signal emmitted when a new track is loaded, and its corresponding picture
+     * is not already stored in the local hard drive.
+     * \param The id of the track
+     */
+    void needDownloadPicture(const QString &picId);
 
 private:
     Ui::TrackInfosView *ui;

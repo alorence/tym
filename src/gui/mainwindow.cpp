@@ -112,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
             _searchModel, &SearchResultsModel::refresh);
 
     // Download pictures when needed
-    connect(ui->trackInfos, &TrackInfosView::downloadPicture,
+    connect(ui->trackInfos, &TrackInfosView::needDownloadPicture,
             _pictureDownloader, &PictureDownloader::downloadTrackPicture);
     connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
             ui->trackInfos, &TrackInfosView::displayDownloadedPicture);

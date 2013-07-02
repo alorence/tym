@@ -39,8 +39,6 @@ TrackInfosView::~TrackInfosView()
 
 void TrackInfosView::updateInfos(QSqlRecord result)
 {
-    QSettings settings;
-
     ui->d_artists->setText(result.value(TrackFullInfos::Artists).toString());
     ui->d_remixers->setText(result.value(TrackFullInfos::Remixers).toString());
     ui->d_genres->setText(result.value(TrackFullInfos::Genres).toString());
@@ -66,7 +64,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
 
     QString picPath = TYM_ALBUMARTS_LOCATION + '/' + _currentPictureId + ".jpg";
     if( ! QFile(picPath).exists()) {
-        emit downloadPicture(_currentPictureId);
+        emit needDownloadPicture(_currentPictureId);
         ui->imageArea->setPixmap(_defaultAlbumArt);
     } else {
         displayDownloadedPicture(_currentPictureId);
