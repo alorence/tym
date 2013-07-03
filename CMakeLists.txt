@@ -23,6 +23,17 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
 cmake_minimum_required(VERSION 2.8.9)
 
+############# Build Settings ##############
+option(TYM_UPDATE_TRANSLATIONS OFF)
+
+# Setup the version numbers
+set(TYM_MAJOR_VERSION 0)
+set(TYM_MINOR_VERSION 2)
+set(TYM_PATCH_VERSION 1)
+
+set(TYM_BETA 1)
+################## END ####################
+
 # Include some macros usable accross cmake projects
 include(resources/config/TymUsefulMacros.cmake)
 
@@ -32,12 +43,10 @@ find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
-option(TYM_UPDATE_TRANSLATIONS OFF)
-
 if(NOT CMAKE_BUILD_TYPE)
-    message(STATUS "Tag You Music will be build with default build type")
+    message(STATUS "Build type: Default (No optimizations, no debug symbols)")
 else()
-    message(STATUS "Tag You Music will be build with build type ${CMAKE_BUILD_TYPE}")
+    message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 
 if(MSVC) # MSVC
@@ -53,25 +62,18 @@ elseif(UNIX OR CMAKE_COMPILER_IS_GNUCXX)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mmacosx-version-min=10.7")
     endif(APPLE)
 
-endif(MSVC)
+endif()
 
-# Setup the version numbers
-set(TYM_MAJOR_VERSION 0)
-set(TYM_MINOR_VERSION 2)
-set(TYM_PATCH_VERSION 1)
 today(TYM_BUILD_DATE)
-
-set(TYM_BETA 1)
-
 set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}")
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
 
 set(TYM_NAME "Tag Your Music")
 if(APPLE)
     set(TYM_EXECUTABLE_FILENAME "Tag Your Music")
-else(APPLE)
+else()
     set(TYM_EXECUTABLE_FILENAME tym)
-endif(APPLE)
+endif()
 set(TYM_BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 # Path where all dlls will be copied before compiling package
 set(TYM_SETUP_TREE_PATH ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
@@ -80,9 +82,9 @@ set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
 # Resulting package filename
 if(TYM_BETA)
     set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION}-beta)
-else(TYM_BETA)
+else()
     set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
-endif(TYM_BETA)
+endif()
 
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)
