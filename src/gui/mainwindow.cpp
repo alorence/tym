@@ -362,20 +362,16 @@ void MainWindow::afterLibraryViewReset()
 
 void MainWindow::selectSpecificLibraryElements(int comboIndex)
 {
-    if(comboIndex == LibraryModel::AllTracks) {
-        ui->libraryView->selectionModel()->select(QModelIndex(),
-                                                  QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        return;
-    } else if (comboIndex == LibraryModel::Neither) {
+    LibraryModel::GroupSelection selectionGroup =
+            (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
+    if (selectionGroup == LibraryModel::Neither) {
         ui->libraryView->selectionModel()->clear();
     } else {
         ui->libraryView->selectionModel()->clear();
-        LibraryModel::GroupSelection selectionGroup =
-                (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
-        QModelIndexList indexes = _libraryModel->indexesForGroup((LibraryModel::GroupSelection)selectionGroup);
+        QModelIndexList indexes = _libraryModel->indexesForGroup(selectionGroup);
         for(QModelIndex index : indexes) {
             ui->libraryView->selectionModel()->select(index,
-                                            QItemSelectionModel::Select | QItemSelectionModel::Rows);
+                                            QItemSelectionModel::Select|QItemSelectionModel::Rows);
 
             // TODO: [settings] Add choice to use this or not
             if(_libraryModel->rowCount(index)) {
