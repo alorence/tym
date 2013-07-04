@@ -40,6 +40,7 @@ qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
 add_library(TymGui OBJECT ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
+add_dependencies(TymGui TymWidgets)
 
 tym_qt5_use_modules(TymGui
     Widgets
