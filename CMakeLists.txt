@@ -49,6 +49,10 @@ else()
     message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 
+if(Qt5Core_FOUND)
+    message(STATUS "Qt found, version ${Qt5Core_VERSION_STRING}")
+endif()
+
 if(MSVC) # MSVC
     # Display more warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")

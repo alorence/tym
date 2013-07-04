@@ -22,9 +22,9 @@ set(TYM_SETUP_TARGET_NAME "deliverable")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(CURRENT_CONFIGURATION DEBUG)
-else(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+else()
     set(CURRENT_CONFIGURATION RELEASE)
-endif(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+endif()
 
 set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
 
@@ -73,6 +73,6 @@ elseif(UNIX)
     set(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
     include(CPack)
     add_custom_target(${TYM_SETUP_TARGET_NAME}
-        COMMAND echo "TBD - Unix package creation is not supported for the moment"
+        COMMAND echo "TBD - Linux package creation is not supported for now"
     )
 endif()
