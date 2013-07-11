@@ -31,7 +31,7 @@ set(TYM_MAJOR_VERSION 0)
 set(TYM_MINOR_VERSION 2)
 set(TYM_PATCH_VERSION 1)
 
-set(TYM_BETA 1)
+set(TYM_BETA 0)
 ################## END ####################
 
 # Include some macros usable accross cmake projects

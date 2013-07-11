@@ -3,15 +3,14 @@
 ##### Known bugs
  - [Windows ] Wizards have a too large title size. Qt 5.0.x bug, should be resolved in a future version (see https://bugreports.qt-project.org/browse/QTBUG-28099)
 
-#### 0.2.1 - Next release
-###### New features
+#### 0.2.1 - 2013-07-11
 ###### Minor improvements
  - Native shortucts have been set for common actions
  - Checkboxes are not displayed anymore. Classic selection is used to specify files to use for the next action
 
 ###### Bug fixes
- - The MS Windows package works now. In the previous version, a DLL was missing and prevented to run the application
- - [#2] When some audio files are missing at startup, library content is now displayed immediatly
+ - The MS Windows package works now. In the previous version, a missing DLL was preventing to run the application
+ - [[#2](https://github.com/alorence/tym/issues/2)] When some audio files are missing at startup, library content is now displayed immediatly
  - Actions are correctly disabled after a refresh, when selection is reset
 
 #### 0.2.0 - 2013-06-09
