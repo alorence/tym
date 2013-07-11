@@ -12,6 +12,7 @@
  - The MS Windows package works now. In the previous version, a missing DLL was preventing to run the application
  - [[#2](https://github.com/alorence/tym/issues/2)] When some audio files are missing at startup, library content is now displayed immediatly
  - Actions are correctly disabled after a refresh, when selection is reset
+ - Qt version has been updated to 5.1.0
 
 #### 0.2.0 - 2013-06-09
 ###### New features
