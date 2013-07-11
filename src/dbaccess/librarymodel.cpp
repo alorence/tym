@@ -268,10 +268,12 @@ void LibraryModel::updateSettings()
             settings.value(TYM_PATH_DISPLAY_COLORS, TYM_DEFAULT_DISPLAY_COLORS).toBool();
 
     QVector<int> changes;
-    if(colorsEnabled != _colorsEnabled)
+    if(colorsEnabled != _colorsEnabled) {
         changes << Qt::BackgroundColorRole;
+        _colorsEnabled = colorsEnabled;
+    }
 
-    _colorsEnabled = colorsEnabled;
+    // If other settings have to been handled here, add more roles to changes
 
     if( ! changes.isEmpty()) {
         const QModelIndex invalid;
