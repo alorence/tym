@@ -89,11 +89,7 @@ qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
     Network
 )
 
-if(MSVC)
-    # Link with Qt WinMain, ensuring that the entry function will have
-    # signature required by MSVC
-    target_link_libraries(${TYM_EXECUTABLE_FILENAME} Qt5::WinMain)
-elseif(APPLE)
+if(APPLE)
     # configure some properties on Info.plist
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_ICON_FILE tym.icns)
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_INFO_STRING "Tag Your Music bundle")
@@ -103,4 +99,4 @@ elseif(APPLE)
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING ${TYM_SHORT_VERSION})
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${TYM_VERSION})
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012 Antoine Lorence")
-endif(MSVC)
+endif()
