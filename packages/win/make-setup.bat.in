@@ -7,6 +7,7 @@
 @set DLL_SUFFIX=${DEBUG_SUFFIX}
 
 del /Q /S /F "%SKELETON_PATH%"
+rmdir /S /Q "%SKELETON_PATH%"
 
 mkdir "%SKELETON_PATH%"
 mkdir "%SKELETON_PATH%/platforms"
