@@ -22,7 +22,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
 cmake_minimum_required(VERSION 2.8.9)
-cmake_policy(SET CMP0020 NEW)
 
 ############# Build Settings ##############
 option(TYM_UPDATE_TRANSLATIONS OFF)
