@@ -42,6 +42,13 @@ option(TYM_UPDATE_TRANSLATIONS OFF)
 # Include some macros usable accross cmake projects
 include(resources/config/TymUsefulMacros.cmake)
 
+# Detect current architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(TYM_ARCH "x64")
+else()
+    set(TYM_ARCH "x86")
+endif()
+
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Build type: Default (No optimizations, no debug symbols)")
 else()
