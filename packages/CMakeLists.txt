@@ -18,6 +18,7 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
+# Name of the generated target
 set(TYM_SETUP_TARGET_NAME "deliverable")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
