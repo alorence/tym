@@ -18,25 +18,44 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
+cmake_minimum_required(VERSION 2.8.9)
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
-cmake_minimum_required(VERSION 2.8.9)
-cmake_policy(SET CMP0020 NEW)
 
 ############# Build Settings ##############
-option(TYM_UPDATE_TRANSLATIONS OFF)
+
+# Main name of the application
+set(TYM_NAME "Tag Your Music")
+# Main name of the application
+set(TYM_DESCRIPTION "A graphical tool to manage DJ library's audio files.")
 
 # Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
 set(TYM_MINOR_VERSION 2)
 set(TYM_PATCH_VERSION 1)
 
-set(TYM_BETA 0)
+option(TYM_BETA OFF)
+option(TYM_UPDATE_TRANSLATIONS OFF)
 ################## END ####################
 
 # Include some macros usable accross cmake projects
 include(resources/config/TymUsefulMacros.cmake)
+
+# Detect current architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(TYM_ARCH "x64")
+else()
+    set(TYM_ARCH "x86")
+endif()
+
+# Configure build type (Release when no one is selected)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+    set(BUILDTYPE_MSG "Release (set by default)")
+else()
+    set(BUILDTYPE_MSG "${CMAKE_BUILD_TYPE}")
+endif()
 
 # Configure projects to use Qt5
 find_package(Qt5Widgets REQUIRED)
@@ -44,53 +63,43 @@ find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
-if(NOT CMAKE_BUILD_TYPE)
-    message(STATUS "Build type: Default (No optimizations, no debug symbols)")
-else()
-    message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-endif()
-
-if(Qt5Core_FOUND)
-    message(STATUS "Qt found, version ${Qt5Core_VERSION_STRING}")
-endif()
-
+# Configure compile flags and various platform dependent variables
+set(TYM_EXECUTABLE_FILENAME "tym")
 if(MSVC) # MSVC
     # Display more warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
-
 elseif(UNIX OR CMAKE_COMPILER_IS_GNUCXX)
     # Enable C++11 and displays all warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
-
     if(APPLE)
         # Required on OSX to compile c++11
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mmacosx-version-min=10.7")
+        set(TYM_EXECUTABLE_FILENAME ${TYM_NAME})
     endif(APPLE)
-
 endif()
 
+# Get the current date
 today(TYM_BUILD_DATE)
 set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}")
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
+set(TYM_DELIVERABLES_OUTPUT "${CMAKE_SOURCE_DIR}/deliverables")
 
-set(TYM_NAME "Tag Your Music")
-if(APPLE)
-    set(TYM_EXECUTABLE_FILENAME "Tag Your Music")
+# Display summarry for configuration
+message(STATUS "==============================================")
+message(STATUS "Architecture:       ${TYM_ARCH}")
+message(STATUS "Build type:         ${BUILDTYPE_MSG}")
+message(STATUS "Build flags:        ${CMAKE_CXX_FLAGS}")
+message(STATUS "Version:            ${TYM_SHORT_VERSION}")
+message(STATUS "Beta release:       ${TYM_BETA}")
+message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
+if(Qt5Core_FOUND)
+    message(STATUS "Qt:                 Found (${Qt5Core_VERSION_STRING})")
 else()
-    set(TYM_EXECUTABLE_FILENAME tym)
+    message(SEND_ERROR "Qt has not been found! Unable to build anything.")
 endif()
-set(TYM_BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
-# Path where all dlls will be copied before compiling package
-set(TYM_SETUP_TREE_PATH ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
-# Directory were resulting package will be generated
-set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
-# Resulting package filename
-if(TYM_BETA)
-    set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION}-beta)
-else()
-    set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
-endif()
+message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
 
+# Build dependencies
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)
 
@@ -98,6 +107,7 @@ add_subdirectory(libs/cutelogger)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)
+message(STATUS "==============================================")
 
 add_custom_target(docs
     COMMAND doxygen ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile

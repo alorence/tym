@@ -18,61 +18,70 @@
 #
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
-set(TYM_SETUP_TARGET_NAME "deliverable")
+# Name of the generated target
+set(TYM_DELIVERABLE_TARGET "deliverable")
 
+# Build the package basename
+set(TYM_DELIVERABLE_BASENAME TagYourMusic-${TYM_SHORT_VERSION})
+if(TYM_BETA)
+    set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-beta)
+endif()
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-    set(CURRENT_CONFIGURATION DEBUG)
-else()
-    set(CURRENT_CONFIGURATION RELEASE)
+    # Used for windows deliverable, to include the right version of Qt Dlls in the setup
+    set(DEBUG_SUFFIX "d")
+    set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-debug)
 endif()
 
+# Get the Qt base dir
 set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
-
+# Path where all dlls will be copied before compiling package
+set(TYM_DELIVERABLE_TREE "${CMAKE_CURRENT_BINARY_DIR}/package-skeleton")
+# Get the path of build executable name
 get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
 
 if(WIN32)
 
-    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-        set(DEBUG_SUFFIX "d")
+    if(${TYM_ARCH} STREQUAL "x64")
+        set(TYM_ARCH_64 "ArchitecturesInstallIn64BitMode=x64")
+        set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-${TYM_ARCH})
     endif()
 
     configure_file(win/tym-setup.iss.in tym-setup.iss)
     configure_file(win/make-setup.bat.in make-setup.bat)
-    configure_file(win/GPL3licence.txt ${TYM_SETUP_TREE_PATH}/GPL3licence.txt COPYONLY)
+    configure_file(win/GPL3licence.txt ${TYM_DELIVERABLE_TREE}/GPL3licence.txt COPYONLY)
 
-    add_custom_target(${TYM_SETUP_TARGET_NAME}
+    add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND cmd /C make-setup.bat
         COMMENT "Building installer with Inno Setup compiler (iscc)."
     )
-
-    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
+    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
 elseif(APPLE)
 
     configure_file(osx/make-bundle.sh.in make-bundle.sh @ONLY)
 
-    add_custom_target(${TYM_SETUP_TARGET_NAME}
+    add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
-        WORKING_DIRECTORY ${TYM_SETUP_OUTPUT_PATH}
-        COMMENT "Building the app package and the final zip"
+        WORKING_DIRECTORY ${TYM_DELIVERABLES_OUTPUT}
+        COMMENT "Building package ${TYM_EXECUTABLE_FILENAME}.app and the final ${TYM_DELIVERABLE_BASENAME}.zip"
     )
-    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
+    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
 elseif(UNIX)
 
-    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple tool to manage DJ audio library")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${TYM_DESCRIPTION})
     set(CPACK_PACKAGE_VENDOR "Antoine Lorence")
     #set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
     #set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
     set(CPACK_PACKAGE_VERSION_MAJOR ${TYM_MAJOR_VERSION})
     set(CPACK_PACKAGE_VERSION_MINOR ${TYM_MINOR_VERSION})
     set(CPACK_PACKAGE_VERSION_PATCH ${TYM_PATCH_VERSION})
-    set(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${TYM_SHORT_VERSION}")
 
     set(CPACK_STRIP_FILES ${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME})
     set(CPACK_SOURCE_STRIP_FILES "")
 
     set(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
     include(CPack)
-    add_custom_target(${TYM_SETUP_TARGET_NAME}
-        COMMAND echo "TBD - Linux package creation is not supported for now"
+    add_custom_target(${TYM_DELIVERABLE_TARGET}
+        COMMAND echo "Linux package creation is not supported for the moment"
     )
 endif()

@@ -18,7 +18,7 @@
 ;
 
 [Setup]
-SourceDir=${TYM_SETUP_TREE_PATH}
+SourceDir=${TYM_DELIVERABLE_TREE}
 AppName=${TYM_NAME}
 AppVersion=${TYM_SHORT_VERSION}
 AppPublisher=Antoine Lorence
@@ -27,7 +27,7 @@ AppSupportURL=https://github.com/alorence/tym/issues
 AppUpdatesURL=http://www.tagyourmusic.org
 LicenseFile=GPL3licence.txt
 
-;ArchitecturesInstallIn64BitMode=x64 if program is compiled for x64 systems
+${TYM_ARCH_64}
 DefaultDirName={pf}\TagYourMusic
 DefaultGroupName=${TYM_NAME}
 UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
@@ -39,17 +39,17 @@ UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
 MinVersion=0,5.0
 ShowLanguageDialog=auto
 
-OutputDir=${TYM_SETUP_OUTPUT_PATH}
-OutputBaseFilename=${TYM_SETUP_FILENAME}
+OutputDir=${TYM_DELIVERABLES_OUTPUT}
+OutputBaseFilename=${TYM_DELIVERABLE_BASENAME}
 VersionInfoVersion=${TYM_SHORT_VERSION}
 
 [Files]
-Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";     	DestDir: {app}
-Source: "${TYM_SETUP_TREE_PATH}/*.exe";         	DestDir: {app}
-Source: "${TYM_SETUP_TREE_PATH}/*.dll";       		DestDir: {app}
-Source: "${TYM_SETUP_TREE_PATH}/platforms/*";		DestDir: {app}/platforms
-Source: "${TYM_SETUP_TREE_PATH}/sqldrivers/*";  	DestDir: {app}/sqldrivers
-Source: "${TYM_SETUP_TREE_PATH}/imageformats/*";	DestDir: {app}/imageformats
+Source: "${CMAKE_SOURCE_DIR}/LICENCE.html";            DestDir: {app}
+Source: "${TYM_DELIVERABLE_TREE}/*.exe";               DestDir: {app}
+Source: "${TYM_DELIVERABLE_TREE}/*.dll";               DestDir: {app}
+Source: "${TYM_DELIVERABLE_TREE}/platforms/*";         DestDir: {app}/platforms
+Source: "${TYM_DELIVERABLE_TREE}/sqldrivers/*";        DestDir: {app}/sqldrivers
+Source: "${TYM_DELIVERABLE_TREE}/imageformats/*";      DestDir: {app}/imageformats
 
 [CustomMessages]
 en.ApplicationName=Tag Your Music
