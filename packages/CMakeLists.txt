@@ -54,7 +54,6 @@ if(WIN32)
         COMMAND cmd /C make-setup.bat
         COMMENT "Building installer with Inno Setup compiler (iscc)."
     )
-
     add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
 elseif(APPLE)
 
@@ -63,19 +62,19 @@ elseif(APPLE)
     add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
         WORKING_DIRECTORY ${TYM_DELIVERABLES_OUTPUT}
-        COMMENT "Building the app package and the final zip"
+        COMMENT "Building package ${TYM_EXECUTABLE_FILENAME}.app and the final ${TYM_DELIVERABLE_BASENAME}.zip"
     )
     add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
 elseif(UNIX)
 
-    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple tool to manage DJ audio library")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${TYM_DESCRIPTION})
     set(CPACK_PACKAGE_VENDOR "Antoine Lorence")
     #set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
     #set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
     set(CPACK_PACKAGE_VERSION_MAJOR ${TYM_MAJOR_VERSION})
     set(CPACK_PACKAGE_VERSION_MINOR ${TYM_MINOR_VERSION})
     set(CPACK_PACKAGE_VERSION_PATCH ${TYM_PATCH_VERSION})
-    set(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "TagYourMusic ${TYM_SHORT_VERSION}")
 
     set(CPACK_STRIP_FILES ${EXECUTABLE_OUTPUT_PATH}/${TYM_EXECUTABLE_FILENAME})
     set(CPACK_SOURCE_STRIP_FILES "")
@@ -83,6 +82,6 @@ elseif(UNIX)
     set(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
     include(CPack)
     add_custom_target(${TYM_DELIVERABLE_TARGET}
-        COMMAND echo "TBD - Linux package creation is not supported for now"
+        COMMAND echo "Linux package creation is not supported for the moment"
     )
 endif()

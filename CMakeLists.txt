@@ -27,7 +27,7 @@ project(tym CXX)
 
 # Main name of the application
 set(TYM_NAME "Tag Your Music")
-# Main name of the application (unused for now)
+# Main name of the application
 set(TYM_DESCRIPTION "A graphical tool to manage DJ library's audio files.")
 
 # Setup the version numbers
