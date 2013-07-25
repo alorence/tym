@@ -19,6 +19,10 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 cmake_minimum_required(VERSION 2.8.9)
+if(POLICY CMP0020)
+   cmake_policy(SET CMP0020 OLD)
+endif()
+
 # Automatically add to each subdir the current source and binary dirs to include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
