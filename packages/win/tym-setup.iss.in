@@ -40,7 +40,7 @@ MinVersion=0,5.0
 ShowLanguageDialog=auto
 
 OutputDir=${TYM_SETUP_OUTPUT_PATH}
-OutputBaseFilename=${TYM_SETUP_FILENAME}
+OutputBaseFilename=${TYM_DELIVERABLE_FILENAME}
 VersionInfoVersion=${TYM_SHORT_VERSION}
 
 [Files]

@@ -21,6 +21,13 @@
 # Name of the generated target
 set(TYM_SETUP_TARGET_NAME "deliverable")
 
+# Resulting package filename
+if(TYM_BETA)
+    set(TYM_DELIVERABLE_FILENAME TagYourMusic-${TYM_SHORT_VERSION}-beta)
+else()
+    set(TYM_DELIVERABLE_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
+endif()
+
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(CURRENT_CONFIGURATION DEBUG)
 else()
@@ -29,6 +36,10 @@ endif()
 
 set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
 
+# Path where all dlls will be copied before compiling package
+set(TYM_SETUP_TREE_PATH ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
+# Directory were resulting package will be generated
+set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
 get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
 
 if(WIN32)

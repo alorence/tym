@@ -82,17 +82,6 @@ else()
     set(TYM_EXECUTABLE_FILENAME "tym")
 endif()
 
-# Path where all dlls will be copied before compiling package
-set(TYM_SETUP_TREE_PATH ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
-# Directory were resulting package will be generated
-set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
-# Resulting package filename
-if(TYM_BETA)
-    set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION}-beta)
-else()
-    set(TYM_SETUP_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
-endif()
-
 # Build dependencies
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)
