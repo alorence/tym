@@ -22,7 +22,7 @@
 set(TYM_DELIVERABLE_TARGET "deliverable")
 
 # Build the package basename
-set(TYM_DELIVERABLE_BASENAME TagYourMusic-${TYM_SHORT_VERSION}-${TYM_ARCH})
+set(TYM_DELIVERABLE_BASENAME TagYourMusic-${TYM_SHORT_VERSION})
 if(TYM_BETA)
     set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-beta)
 endif()
@@ -40,6 +40,12 @@ set(TYM_DELIVERABLE_TREE "${CMAKE_CURRENT_BINARY_DIR}/package-skeleton")
 get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
 
 if(WIN32)
+
+    if(${TYM_ARCH} STREQUAL "x64")
+        set(TYM_ARCH_64 "ArchitecturesInstallIn64BitMode=x64")
+        set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-${TYM_ARCH})
+    endif()
+
     configure_file(win/tym-setup.iss.in tym-setup.iss)
     configure_file(win/make-setup.bat.in make-setup.bat)
     configure_file(win/GPL3licence.txt ${TYM_DELIVERABLE_TREE}/GPL3licence.txt COPYONLY)

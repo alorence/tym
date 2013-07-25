@@ -28,7 +28,6 @@ xcopy "%QT_PLUGINDIR%/sqldrivers/qsqlite%DLL_SUFFIX%.dll" "%SKELETON_PATH%/sqldr
 xcopy "%QT_PLUGINDIR%/imageformats/qjpeg%DLL_SUFFIX%.dll" "%SKELETON_PATH%/imageformats" /y /f
 xcopy "%QT_PLUGINDIR%/platforms/qwindows%DLL_SUFFIX%.dll" "%SKELETON_PATH%/platforms" /y /f
 
-:: No debug version in Qt5.0.2
 xcopy "%QT_BINDIR%/icudt51.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/icuin51.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/icuuc51.dll" "%SKELETON_PATH%" /y /f

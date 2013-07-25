@@ -27,7 +27,7 @@ AppSupportURL=https://github.com/alorence/tym/issues
 AppUpdatesURL=http://www.tagyourmusic.org
 LicenseFile=GPL3licence.txt
 
-;ArchitecturesInstallIn64BitMode=x64 if program is compiled for x64 systems
+${TYM_ARCH_64}
 DefaultDirName={pf}\TagYourMusic
 DefaultGroupName=${TYM_NAME}
 UninstallDisplayIcon={app}\${EXECUTABLE_FILENAME}.exe
