@@ -21,31 +21,25 @@
 # Name of the generated target
 set(TYM_DELIVERABLE_TARGET "deliverable")
 
-# Resulting package filename
+# Build the package basename
+set(TYM_DELIVERABLE_BASENAME TagYourMusic-${TYM_SHORT_VERSION}-${TYM_ARCH})
 if(TYM_BETA)
-    set(TYM_DELIVERABLE_FILENAME TagYourMusic-${TYM_SHORT_VERSION}-beta)
-else()
-    set(TYM_DELIVERABLE_FILENAME TagYourMusic-${TYM_SHORT_VERSION})
+    set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-beta)
 endif()
-
 if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-    set(CURRENT_CONFIGURATION DEBUG)
-else()
-    set(CURRENT_CONFIGURATION RELEASE)
+    # Used for windows deliverable, to include the right version of Qt Dlls in the setup
+    set(DEBUG_SUFFIX "d")
+    set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-debug)
 endif()
 
+# Get the Qt base dir
 set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
-
 # Path where all dlls will be copied before compiling package
-set(TYM_DELIVERABLE_TREE ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
+set(TYM_DELIVERABLE_TREE "${CMAKE_CURRENT_BINARY_DIR}/package-skeleton")
+# Get the path of build executable name
 get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
 
 if(WIN32)
-
-    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-        set(DEBUG_SUFFIX "d")
-    endif()
-
     configure_file(win/tym-setup.iss.in tym-setup.iss)
     configure_file(win/make-setup.bat.in make-setup.bat)
     configure_file(win/GPL3licence.txt ${TYM_DELIVERABLE_TREE}/GPL3licence.txt COPYONLY)
