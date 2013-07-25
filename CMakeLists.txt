@@ -52,9 +52,9 @@ endif()
 # Configure build type (Release when no one is selected)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
-    message(STATUS "Build type: Release (set by default)")
+    set(BUILDTYPE_MSG "Release (set by default)")
 else()
-    message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+    set(BUILDTYPE_MSG "${CMAKE_BUILD_TYPE}")
 endif()
 
 # Configure projects to use Qt5
@@ -62,11 +62,9 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
-if(Qt5Core_FOUND)
-    message(STATUS "Qt found, version ${Qt5Core_VERSION_STRING}")
-endif()
 
-# Configure various compile flags
+# Configure compile flags and various platform dependent variables
+set(TYM_EXECUTABLE_FILENAME "tym")
 if(MSVC) # MSVC
     # Display more warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
@@ -76,6 +74,7 @@ elseif(UNIX OR CMAKE_COMPILER_IS_GNUCXX)
     if(APPLE)
         # Required on OSX to compile c++11
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mmacosx-version-min=10.7")
+        set(TYM_EXECUTABLE_FILENAME ${TYM_NAME})
     endif(APPLE)
 endif()
 
@@ -85,11 +84,20 @@ set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VER
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
 set(TYM_BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 
-if(APPLE)
-    set(TYM_EXECUTABLE_FILENAME ${TYM_NAME})
+# Display summarry for configuration
+message(STATUS "==============================================")
+message(STATUS "Architecture:       ${TYM_ARCH}")
+message(STATUS "Build type:         ${BUILDTYPE_MSG}")
+message(STATUS "Build flags:        ${CMAKE_CXX_FLAGS}")
+message(STATUS "Version:            ${TYM_SHORT_VERSION}")
+message(STATUS "Beta release:       ${TYM_BETA}")
+message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
+if(Qt5Core_FOUND)
+    message(STATUS "Qt:                 Found (${Qt5Core_VERSION_STRING})")
 else()
-    set(TYM_EXECUTABLE_FILENAME "tym")
+    message(SEND_ERROR "Qt has not been found! Unable to build anything.")
 endif()
+message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
 
 # Build dependencies
 include_directories(libs/cutelogger/include)
@@ -99,6 +107,7 @@ add_subdirectory(libs/cutelogger)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)
+message(STATUS "==============================================")
 
 add_custom_target(docs
     COMMAND doxygen ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
