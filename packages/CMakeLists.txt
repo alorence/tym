@@ -41,9 +41,9 @@ get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
 
 if(WIN32)
 
+    set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-${TYM_ARCH})
     if(${TYM_ARCH} STREQUAL "x64")
         set(TYM_ARCH_64 "ArchitecturesInstallIn64BitMode=x64")
-        set(TYM_DELIVERABLE_BASENAME ${TYM_DELIVERABLE_BASENAME}-${TYM_ARCH})
     endif()
 
     configure_file(win/tym-setup.iss.in tym-setup.iss)
