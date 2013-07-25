@@ -2,7 +2,7 @@
 .DS_Store
 
 # Executables are genrated here
-bin/
+deliverables/
 
 # Documentation is genrated here
 docs/

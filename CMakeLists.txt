@@ -82,7 +82,7 @@ endif()
 today(TYM_BUILD_DATE)
 set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}")
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
-set(TYM_BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
+set(TYM_DELIVERABLES_OUTPUT "${CMAKE_SOURCE_DIR}/deliverables")
 
 # Display summarry for configuration
 message(STATUS "==============================================")

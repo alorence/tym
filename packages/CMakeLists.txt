@@ -19,7 +19,7 @@
 # Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 # Name of the generated target
-set(TYM_SETUP_TARGET_NAME "deliverable")
+set(TYM_DELIVERABLE_TARGET "deliverable")
 
 # Resulting package filename
 if(TYM_BETA)
@@ -37,9 +37,7 @@ endif()
 set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
 
 # Path where all dlls will be copied before compiling package
-set(TYM_SETUP_TREE_PATH ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
-# Directory were resulting package will be generated
-set(TYM_SETUP_OUTPUT_PATH ${TYM_BIN_DIR})
+set(TYM_DELIVERABLE_TREE ${CMAKE_CURRENT_BINARY_DIR}/package-skeleton)
 get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
 
 if(WIN32)
@@ -50,24 +48,24 @@ if(WIN32)
 
     configure_file(win/tym-setup.iss.in tym-setup.iss)
     configure_file(win/make-setup.bat.in make-setup.bat)
-    configure_file(win/GPL3licence.txt ${TYM_SETUP_TREE_PATH}/GPL3licence.txt COPYONLY)
+    configure_file(win/GPL3licence.txt ${TYM_DELIVERABLE_TREE}/GPL3licence.txt COPYONLY)
 
-    add_custom_target(${TYM_SETUP_TARGET_NAME}
+    add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND cmd /C make-setup.bat
         COMMENT "Building installer with Inno Setup compiler (iscc)."
     )
 
-    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
+    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
 elseif(APPLE)
 
     configure_file(osx/make-bundle.sh.in make-bundle.sh @ONLY)
 
-    add_custom_target(${TYM_SETUP_TARGET_NAME}
+    add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
-        WORKING_DIRECTORY ${TYM_SETUP_OUTPUT_PATH}
+        WORKING_DIRECTORY ${TYM_DELIVERABLES_OUTPUT}
         COMMENT "Building the app package and the final zip"
     )
-    add_dependencies(${TYM_SETUP_TARGET_NAME} ${TYM_EXECUTABLE_FILENAME})
+    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
 elseif(UNIX)
 
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple tool to manage DJ audio library")
@@ -84,7 +82,7 @@ elseif(UNIX)
 
     set(CPACK_PACKAGE_EXECUTABLES "tym" "TagYourMusic")
     include(CPack)
-    add_custom_target(${TYM_SETUP_TARGET_NAME}
+    add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND echo "TBD - Linux package creation is not supported for now"
     )
 endif()
