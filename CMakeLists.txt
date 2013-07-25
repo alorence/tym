@@ -84,21 +84,6 @@ set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VER
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
 set(TYM_DELIVERABLES_OUTPUT "${CMAKE_SOURCE_DIR}/deliverables")
 
-# Display summarry for configuration
-message(STATUS "==============================================")
-message(STATUS "Architecture:       ${TYM_ARCH}")
-message(STATUS "Build type:         ${BUILDTYPE_MSG}")
-message(STATUS "Build flags:        ${CMAKE_CXX_FLAGS}")
-message(STATUS "Version:            ${TYM_SHORT_VERSION}")
-message(STATUS "Beta release:       ${TYM_BETA}")
-message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
-if(Qt5Core_FOUND)
-    message(STATUS "Qt:                 Found (${Qt5Core_VERSION_STRING})")
-else()
-    message(SEND_ERROR "Qt has not been found! Unable to build anything.")
-endif()
-message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
-
 # Build dependencies
 include_directories(libs/cutelogger/include)
 add_subdirectory(libs/cutelogger)
@@ -107,6 +92,21 @@ add_subdirectory(libs/cutelogger)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)
+
+# Display summarry for configuration
+message(STATUS "==============================================")
+message(STATUS "Architecture:       ${TYM_ARCH}")
+if(Qt5Core_FOUND)
+    message(STATUS "Qt:                 Found (${Qt5Core_VERSION_STRING}) in directory ${Qt5Core_DIR}")
+else()
+    message(SEND_ERROR "Qt has not been found! Unable to build anything.")
+endif()
+message(STATUS "Build type:         ${BUILDTYPE_MSG}")
+message(STATUS "Build flags:        ${CMAKE_CXX_FLAGS}")
+message(STATUS "Version:            ${TYM_SHORT_VERSION}")
+message(STATUS "Beta release:       ${TYM_BETA}")
+message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
+message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
 message(STATUS "==============================================")
 
 add_custom_target(docs
