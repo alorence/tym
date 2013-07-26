@@ -59,6 +59,8 @@ elseif(APPLE)
 
     configure_file(osx/make-bundle.sh.in make-bundle.sh @ONLY)
 
+    file(MAKE_DIRECTORY ${TYM_DELIVERABLES_OUTPUT})
+
     add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
         WORKING_DIRECTORY ${TYM_DELIVERABLES_OUTPUT}
