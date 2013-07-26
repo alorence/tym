@@ -117,12 +117,14 @@ add_custom_target(docs
     COMMAND doxygen ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
 )
 
-# Uninstall target
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/config/TymUninstall.cmake.in"
-    "${CMAKE_BINARY_DIR}/TymUninstall.cmake"
-    IMMEDIATE @ONLY
-)
-add_custom_target(uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/TymUninstall.cmake
-)
+if(NOT APPLE)
+    # Uninstall target
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/config/TymUninstall.cmake.in"
+        "${CMAKE_BINARY_DIR}/TymUninstall.cmake"
+        IMMEDIATE @ONLY
+    )
+    add_custom_target(uninstall
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/TymUninstall.cmake
+    )
+endif()
