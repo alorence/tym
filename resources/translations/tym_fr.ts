@@ -277,39 +277,39 @@
 <context>
     <name>LibraryModel</name>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="38"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="38"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
         <location filename="../../src/dbaccess/librarymodel.old.cpp" line="150"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="38"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
         <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="38"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
         <source>Infos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="265"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="288"/>
         <source>Unable to refresh library model : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="298"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="322"/>
         <source>My Computer</source>
         <extracomment>On Windows only, defines the system top level folder (above disks)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/librarymodel.cpp" line="313"/>
+        <location filename="../../src/dbaccess/librarymodel.cpp" line="337"/>
         <source>&lt;empty&gt;</source>
         <extracomment>Used as displayed root dir when library is empty (no tracks in the database)</extracomment>
         <translation type="unfinished"></translation>
@@ -534,33 +534,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="360"/>
-        <source>Check selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/gui/mainwindow.ui" line="369"/>
-        <source>Uncheck selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/gui/mainwindow.cpp" line="71"/>
         <source>Impossible to connect with database...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="259"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="265"/>
         <source>Hide console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="261"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="267"/>
         <source>Show console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="377"/>
-        <source>Check</source>
+        <location filename="../../src/gui/mainwindow.cpp" line="405"/>
+        <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1004,8 +994,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="56"/>
         <location filename="../../src/widgets/trackinfosview.cpp" line="58"/>
-        <location filename="../../src/widgets/trackinfosview.cpp" line="60"/>
         <source>yyyy-MM-dd</source>
         <translation type="unfinished"></translation>
     </message>
