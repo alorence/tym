@@ -41,6 +41,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "gui/ui_mainwindow.h"
 #include "gui/mainwindow.h"
+#include "tools/langmanager.h"
 #include "commons.h"
 #include "version.h"
 
@@ -95,6 +96,8 @@ int main(int argc, char *argv[])
     int returnCode = a.exec();
 
     LOG_DEBUG(QObject::tr("Application ends with return code %1").arg(returnCode));
+
+    LangManager::destroy();
 
     return returnCode;
 }
