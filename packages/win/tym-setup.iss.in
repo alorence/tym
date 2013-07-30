@@ -55,10 +55,8 @@ Source: "@TYM_DELIVERABLE_TREE@/lang/*";      	      DestDir: {app}/lang
 [CustomMessages]
 en.ApplicationName=Tag Your Music
 en.LaunchProgram=Start Tag Your Music
-en.VCRedistInstall=Installing Microsoft Visual Studio 2010 Redistributable
 fr.ApplicationName=Tag Your Music
 fr.LaunchProgram=Démarrer Tag Your Music
-fr.VCRedistInstall=Installation de Microsoft Visual Studio 2010 Redistributable
 
 [Run]
 Filename: {app}/@TYM_EXECUTABLE_FILENAME@.exe; Description: {cm:LaunchProgram,{cm:ApplicationName}};       Flags: nowait postinstall skipifsilent
