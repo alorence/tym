@@ -40,4 +40,5 @@ set(TYM_LOGO_MINI ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym_logo_mini.png PARENT_SCO
 
 # Set the list of translations (*.ts) files to compile them in src directory
 file(GLOB TRANSLATIONS_FILES translations/*.ts)
+set(TRANSLATION_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/translations/template.ts" PARENT_SCOPE)
 set(TRANSLATIONS_FILES ${TRANSLATIONS_FILES} PARENT_SCOPE)

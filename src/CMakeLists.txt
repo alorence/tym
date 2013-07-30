@@ -48,6 +48,8 @@ if(TYM_UPDATE_TRANSLATIONS)
     message(STATUS "*********************************************************************")
     qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_CURRENT_SOURCE_DIR} ${TRANSLATIONS_FILES})
 else()
+    # Do not add template to supported language. Only used to create new ones
+    list(REMOVE_ITEM TRANSLATIONS_FILES ${TRANSLATION_TEMPLATE})
     qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 endif()
 set(TRANSLATIONS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE)
