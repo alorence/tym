@@ -172,4 +172,25 @@ private:
     QList<QRadioButton*> _widgets;
 };
 
+class ComboBoxObserver : public WidgetChangesObserver
+{
+    Q_OBJECT
+public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a \l QComboBox
+     */
+    ComboBoxObserver(const QString &settingsKey, QComboBox *comboBox, const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
+    QVariant getWidgetValue() const override;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
+    void setWidgetValue(const QVariant &value) override;
+private:
+    QComboBox *_widget;
+};
+
 #endif // WIDGETCHANGESOBSERVER_H

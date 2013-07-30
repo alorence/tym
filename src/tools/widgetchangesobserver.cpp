@@ -142,3 +142,21 @@ void RadioButtonListObserver::setWidgetValue(const QVariant &value)
 {
     _widgets.value(value.toInt())->setChecked(true);
 }
+
+
+ComboBoxObserver::ComboBoxObserver(const QString &settingsKey, QComboBox *comboBox,
+                                   const QVariant &defaultValue, QObject *parent) :
+    WidgetChangesObserver(settingsKey, defaultValue, parent),
+    _widget(comboBox)
+{
+}
+
+QVariant ComboBoxObserver::getWidgetValue() const
+{
+    return _widget->currentIndex();
+}
+
+void ComboBoxObserver::setWidgetValue(const QVariant &value)
+{
+    _widget->setCurrentIndex(value.toInt());
+}
