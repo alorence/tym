@@ -73,6 +73,10 @@ int main(int argc, char *argv[])
     a.setOrganizationDomain("tagyourmusic.org");
     a.setApplicationVersion(TYM_VERSION);
 
+    // Need to configure lang after setting application name (for QSettings)
+    // and Logger has been initialized.
+    LangManager::instance()->updateTranslationsFromSettings();
+
     LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName())
              .arg(a.applicationVersion()));
     LOG_DEBUG(QObject::tr("Compiled with Qt %1, run with Qt library version %2")
