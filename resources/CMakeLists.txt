@@ -27,10 +27,13 @@ if(MSVC)
     list(APPEND RES_OBJ logos/tym.rc)
 else(APPLE)
     set(OSX_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.icns PARENT_SCOPE)
-endif(MSVC)
+endif()
 
 add_library(TymResources OBJECT ${RES_OBJ})
 tym_qt5_use_modules(TymResources Core)
+
+set(TYM_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym_logo.png PARENT_SCOPE)
+set(TYM_LOGO_MINI ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym_logo_mini.png PARENT_SCOPE)
 
 # TRANSLATIONS ================================================================
 # Only set a global variable with a list of all .ts files. qt5_add_translation or

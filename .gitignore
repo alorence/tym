@@ -5,7 +5,10 @@
 deliverables/
 
 # Documentation is genrated here
-docs/
+docs/*
+!docs/Doxyfile.in
+!docs/CMakeLists.txt
+
 
 # Often used to generate CMake cache entries
 *build*/

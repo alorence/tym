@@ -96,6 +96,7 @@ add_subdirectory(libs/cutelogger)
 add_subdirectory(resources)
 add_subdirectory(src)
 add_subdirectory(packages)
+add_subdirectory(docs)
 
 # Display summarry for configuration
 message(STATUS "==============================================")
@@ -112,10 +113,6 @@ message(STATUS "Beta release:       ${TYM_BETA}")
 message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
 message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
 message(STATUS "==============================================")
-
-add_custom_target(docs
-    COMMAND doxygen ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
-)
 
 if(NOT APPLE)
     # Uninstall target
