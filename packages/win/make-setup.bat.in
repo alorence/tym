@@ -1,41 +1,37 @@
-@set SKELETON_PATH=@TYM_DELIVERABLE_TREE@
-
 @set QT_DIR=@QT5_INSTALL_DIR@
 @set QT_BINDIR=%QT_DIR%/bin
 @set QT_PLUGINDIR=%QT_DIR%\plugins
 
-@set DLL_SUFFIX=@DEBUG_SUFFIX@
+del /Q /S /F "@TYM_DELIVERABLE_TREE@"
+rmdir /S /Q "@TYM_DELIVERABLE_TREE@"
 
-del /Q /S /F "%SKELETON_PATH%"
-rmdir /S /Q "%SKELETON_PATH%"
+mkdir "@TYM_DELIVERABLE_TREE@"
+mkdir "@TYM_DELIVERABLE_TREE@/platforms"
+mkdir "@TYM_DELIVERABLE_TREE@/sqldrivers"
+mkdir "@TYM_DELIVERABLE_TREE@/imageformats"
+mkdir "@TYM_DELIVERABLE_TREE@/lang"
 
-mkdir "%SKELETON_PATH%"
-mkdir "%SKELETON_PATH%/platforms"
-mkdir "%SKELETON_PATH%/sqldrivers"
-mkdir "%SKELETON_PATH%/imageformats"
-mkdir "%SKELETON_PATH%/lang"
+xcopy "@CMAKE_CURRENT_SOURCE_DIR@/win/GPL3licence.txt" "@TYM_DELIVERABLE_TREE@" /y /f
 
-xcopy "@CMAKE_CURRENT_SOURCE_DIR@/win/GPL3licence.txt" "%SKELETON_PATH%" /y /f
+xcopy "%QT_BINDIR%/Qt5Core@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/Qt5Widgets@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/Qt5Gui@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/Qt5Network@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/Qt5Sql@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/libGLESv2@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/libEGL@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@" /y /f
 
-xcopy "%QT_BINDIR%/Qt5Core%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/Qt5Widgets%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/Qt5Gui%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/Qt5Network%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/Qt5Sql%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/libGLESv2%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/libEGL%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
+xcopy "%QT_PLUGINDIR%/sqldrivers/qsqlite@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@/sqldrivers" /y /f
+xcopy "%QT_PLUGINDIR%/imageformats/qjpeg@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@/imageformats" /y /f
+xcopy "%QT_PLUGINDIR%/platforms/qwindows@DEBUG_SUFFIX@.dll" "@TYM_DELIVERABLE_TREE@/platforms" /y /f
 
-xcopy "%QT_PLUGINDIR%/sqldrivers/qsqlite%DLL_SUFFIX%.dll" "%SKELETON_PATH%/sqldrivers" /y /f
-xcopy "%QT_PLUGINDIR%/imageformats/qjpeg%DLL_SUFFIX%.dll" "%SKELETON_PATH%/imageformats" /y /f
-xcopy "%QT_PLUGINDIR%/platforms/qwindows%DLL_SUFFIX%.dll" "%SKELETON_PATH%/platforms" /y /f
+xcopy "%QT_BINDIR%/icudt51.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/icuin51.dll" "@TYM_DELIVERABLE_TREE@" /y /f
+xcopy "%QT_BINDIR%/icuuc51.dll" "@TYM_DELIVERABLE_TREE@" /y /f
 
-xcopy "%QT_BINDIR%/icudt51.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/icuin51.dll" "%SKELETON_PATH%" /y /f
-xcopy "%QT_BINDIR%/icuuc51.dll" "%SKELETON_PATH%" /y /f
-
-xcopy "@TRANSLATIONS_OUTPUT_DIR@/*.qm" "%SKELETON_PATH%/lang" /y /f
+xcopy "@TRANSLATIONS_OUTPUT_DIR@/*.qm" "@TYM_DELIVERABLE_TREE@/lang" /y /f
 
 :: Final executable
-xcopy "@TYM_FULL_PATH@" "%SKELETON_PATH%" /y /f
+xcopy "@TYM_FULL_PATH@" "@TYM_DELIVERABLE_TREE@" /y /f
 
 iscc tym-setup.iss

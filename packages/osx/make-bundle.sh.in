@@ -4,7 +4,7 @@ app="@TYM_EXECUTABLE_FILENAME@.app"
 zip="@TYM_DELIVERABLE_BASENAME@.zip"
 
 rm -fr "${app}"
-rm -f ${zip}
+rm -f "${zip}"
 
 cp -r "@tym_BINARY_DIR@/src/${app}" .
 
