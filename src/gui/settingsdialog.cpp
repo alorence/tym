@@ -19,6 +19,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include "tools/langmanager.h"
 
 #include "commons.h"
 
@@ -38,6 +39,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Interface
      ********************************/
+    ui->langSelection->addItem(tr("Default"));
+    for(QString lang : LangManager::instance()->translationsAvailable()) {
+        ui->langSelection->addItem(lang);
+    }
+    _widgetObservers << new ComboBoxObserver(TYM_PATH_LANGUAGE, ui->langSelection,
+                                             TYM_DEFAULT_LANGUAGE, this);
     _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_COLORS, ui->libColors,
                                                     TYM_DEFAULT_DISPLAY_COLORS, this);
     QList<QRadioButton*> keyStyleValueList;
