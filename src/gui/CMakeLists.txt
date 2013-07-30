@@ -15,8 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
-#
-# Help on using CMake for Qt projects : https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 set(HDRS
     about.h
