@@ -13,6 +13,7 @@ mkdir "%SKELETON_PATH%"
 mkdir "%SKELETON_PATH%/platforms"
 mkdir "%SKELETON_PATH%/sqldrivers"
 mkdir "%SKELETON_PATH%/imageformats"
+mkdir "%SKELETON_PATH%/lang"
 
 xcopy "${CMAKE_CURRENT_SOURCE_DIR}/win/GPL3licence.txt" "%SKELETON_PATH%" /y /f
 
@@ -31,6 +32,8 @@ xcopy "%QT_PLUGINDIR%/platforms/qwindows%DLL_SUFFIX%.dll" "%SKELETON_PATH%/platf
 xcopy "%QT_BINDIR%/icudt51.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/icuin51.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/icuuc51.dll" "%SKELETON_PATH%" /y /f
+
+xcopy "${TRANSLATIONS_OUTPUT_DIR}/*.qm" "%SKELETON_PATH%/lang" /y /f
 
 :: Final executable
 xcopy "${TYM_FULL_PATH}" "%SKELETON_PATH%" /y /f

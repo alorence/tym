@@ -50,6 +50,7 @@ Source: "${TYM_DELIVERABLE_TREE}/*.dll";               DestDir: {app}
 Source: "${TYM_DELIVERABLE_TREE}/platforms/*";         DestDir: {app}/platforms
 Source: "${TYM_DELIVERABLE_TREE}/sqldrivers/*";        DestDir: {app}/sqldrivers
 Source: "${TYM_DELIVERABLE_TREE}/imageformats/*";      DestDir: {app}/imageformats
+Source: "${TYM_DELIVERABLE_TREE}/lang/*";      	       DestDir: {app}/lang
 
 [CustomMessages]
 en.ApplicationName=Tag Your Music

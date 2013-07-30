@@ -11,4 +11,7 @@ cp -r "@tym_BINARY_DIR@/src/${app}" .
 # Need to aply command on tym.app and not TagYourMusic.app, to help the tool to find binary
 @QT5_INSTALL_DIR@/bin/macdeployqt "${app}"
 
+mkdir "${app}/Contents/Resources/lang"
+cp "@TRANSLATIONS_OUTPUT_DIR@/*.qm" "${app}/Contents/Resources/lang"
+
 zip -v -r -X "${zip}" "${app}"

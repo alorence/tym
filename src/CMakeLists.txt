@@ -44,14 +44,15 @@ set(SOURCES
 )
 
 if(TYM_UPDATE_TRANSLATIONS)
-    qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_CURRENT_SOURCE_DIR} ${TRANSLATIONS_FILES})
     message(STATUS "*********************************************************************")
     message(STATUS "* TS files will be updated. To prevent their deletion, please don't *")
     message(STATUS "* forget to set TYM_UPDATE_TRANSLATIONS to OFF                      *")
     message(STATUS "*********************************************************************")
-else(TYM_UPDATE_TRANSLATIONS)
+    qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_CURRENT_SOURCE_DIR} ${TRANSLATIONS_FILES})
+else()
     qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
-endif(TYM_UPDATE_TRANSLATIONS)
+endif()
+set(TRANSLATIONS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE)
 
 
 if(WIN32)
@@ -61,7 +62,7 @@ elseif(APPLE)
     # CMake will copy icon to Resource folder at build time
     set_source_files_properties(${OSX_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     list(APPEND SOURCES ${OSX_ICON_FILE})
-endif(WIN32)
+endif()
 
 # Configure final executable building
 add_executable(${TYM_EXECUTABLE_FILENAME}
@@ -69,6 +70,7 @@ add_executable(${TYM_EXECUTABLE_FILENAME}
     ${SOURCES}
     ${BASIC_HDRS}
     ${TYM_TRANSLATIONS}
+    ${TRANSLATIONS_FILES}
     $<TARGET_OBJECTS:TymConcretetasks>
     $<TARGET_OBJECTS:TymDbaccess>
     $<TARGET_OBJECTS:TymGui>
