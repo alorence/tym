@@ -26,14 +26,20 @@ class LangManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit LangManager(QObject *parent = 0);
+
+    static LangManager *instance();
+    static void destroy();
 
     QMap<QString, QTranslator*> translationsFiles() const;
     bool updateTranslation(const QString &lang) const;
 
 private:
+    explicit LangManager(QObject *parent = 0);
     QMap<QString, QTranslator*> _qmFiles;
     QTranslator* _currentTranslator;
+
+    static LangManager *_instance;
+    static QMutex _mutex;
 };
 
 #endif // LANGMANAGER_H
