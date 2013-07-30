@@ -176,7 +176,7 @@
 <context>
     <name>CheckBoxChangesObserver</name>
     <message>
-        <location filename="../../src/tools/widgetchangesobserver.cpp" line="91"/>
+        <location filename="../../src/tools/widgetchangesobserver.cpp" line="95"/>
         <source>Try to assign a non-bool value (%1) to the QCheckbox %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -184,12 +184,12 @@
 <context>
     <name>CheckableGroupBoxObserver</name>
     <message>
-        <location filename="../../src/tools/widgetchangesobserver.cpp" line="100"/>
+        <location filename="../../src/tools/widgetchangesobserver.cpp" line="106"/>
         <source>Try to observe a non-checkable QGroupBox state (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/tools/widgetchangesobserver.cpp" line="114"/>
+        <location filename="../../src/tools/widgetchangesobserver.cpp" line="121"/>
         <source>Try to assign a non-bool value (%1) to the QGroupBox %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -275,11 +275,19 @@
     </message>
 </context>
 <context>
+    <name>LangManager</name>
+    <message>
+        <location filename="../../src/tools/langmanager.cpp" line="109"/>
+        <source>Update with %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LibraryModel</name>
     <message>
         <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nom</translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
@@ -295,7 +303,7 @@
     <message>
         <location filename="../../src/dbaccess/librarymodel.cpp" line="36"/>
         <source>Infos</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Infos</translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/librarymodel.cpp" line="288"/>
@@ -355,6 +363,7 @@
         <comment>Display number of results available for one library element</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -370,7 +379,7 @@
     <message>
         <location filename="../../src/dbaccess/librarymodel.old.cpp" line="149"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fichier</translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/librarymodel.old.cpp" line="151"/>
@@ -394,7 +403,7 @@
 <context>
     <name>LineEditChangesObserver</name>
     <message>
-        <location filename="../../src/tools/widgetchangesobserver.cpp" line="71"/>
+        <location filename="../../src/tools/widgetchangesobserver.cpp" line="73"/>
         <source>Try to assign a non-string value (%1) to the QLineEdit %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -533,22 +542,22 @@
         <translation>Exporter les morceaux séléctionnés vers une playlist</translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="71"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="72"/>
         <source>Impossible to connect with database...</source>
         <translation>Impossible de se connecter à la base de données...</translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="265"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="267"/>
         <source>Hide console</source>
         <translation>Cacher la console</translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="267"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="269"/>
         <source>Show console</source>
         <translation>Afficher la console</translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="405"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="407"/>
         <source>Select</source>
         <translation>Séléctionner</translation>
     </message>
@@ -617,23 +626,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="75"/>
+        <location filename="../../src/main.cpp" line="80"/>
         <source>%1 is starting, version %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="76"/>
+        <location filename="../../src/main.cpp" line="82"/>
         <source>Compiled with Qt %1, run with Qt library version %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="86"/>
+        <location filename="../../src/main.cpp" line="93"/>
         <source>data location : %1 - pictures location : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="97"/>
-        <source>Applciation ends with return code %1</source>
+        <location filename="../../src/main.cpp" line="104"/>
+        <source>Application ends with return code %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -670,7 +679,7 @@
     <message>
         <location filename="../../src/wizards/renamewizard.ui" line="61"/>
         <source>Pattern</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Format</translation>
     </message>
     <message>
         <location filename="../../src/wizards/renamewizard.ui" line="75"/>
@@ -819,7 +828,7 @@
     <message>
         <location filename="../../src/wizards/searchwizard.cpp" line="151"/>
         <source>Finished successfully</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Terminé avec succès</translation>
     </message>
 </context>
 <context>
@@ -827,7 +836,7 @@
     <message>
         <location filename="../../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametres</translation>
     </message>
     <message>
         <location filename="../../src/gui/settingsdialog.ui" line="74"/>
@@ -865,47 +874,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="173"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="225"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Interface&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="193"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="245"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/settingsdialog.ui" line="251"/>
+        <source>Select your preferred language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/settingsdialog.ui" line="173"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="202"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="182"/>
         <source>Enable colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="215"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="195"/>
         <source>Tracks Informations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="221"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="201"/>
         <source>Beatport style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="228"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="208"/>
         <source>MixedInKey style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.ui" line="235"/>
+        <location filename="../../src/gui/settingsdialog.ui" line="215"/>
         <source>How keys must be displayed ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="96"/>
+        <location filename="../../src/gui/settingsdialog.cpp" line="42"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/gui/settingsdialog.cpp" line="103"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="99"/>
+        <location filename="../../src/gui/settingsdialog.cpp" line="106"/>
         <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
