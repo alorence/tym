@@ -31,6 +31,7 @@ public:
     static void destroy();
 
     QMap<QString, QTranslator*> translationsFiles() const;
+    QList<QString> translationsAvailable() const;
     bool updateTranslation(const QString &lang) const;
 
 private:

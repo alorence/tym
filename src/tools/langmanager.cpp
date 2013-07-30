@@ -78,6 +78,11 @@ QMap<QString, QTranslator *> LangManager::translationsFiles() const
     return _qmFiles;
 }
 
+QList<QString> LangManager::translationsAvailable() const
+{
+    return _qmFiles.keys();
+}
+
 bool LangManager::updateTranslation(const QString &lang) const
 {
     qApp->removeTranslator(_qmFiles[lang]);
