@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Antoine Lorence. All right reserved.
+# Copyright 2012-2013 Antoine Lorence. All right reserved.
 #
 # This file is part of TYM (Tag Your Music).
 #
@@ -104,7 +104,7 @@ elseif(APPLE)
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME ${TYM_NAME})
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING ${TYM_SHORT_VERSION})
     set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${TYM_VERSION})
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012 Antoine Lorence")
+    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012-2013 Antoine Lorence")
 endif()
 
 if(NOT APPLE)
