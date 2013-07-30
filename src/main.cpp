@@ -48,8 +48,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 /*!
  * \brief Software entry point
  *
- * Configure logging tools, set some software propertie, initialize mandatory
- * components, build the MainWindow and show it. This method use the QApplication::exec()
+ * Configure logging tools, set some software properties, initialize mandatory
+ * components, build the MainWindow and show it. This method uses the QApplication::exec()
  * method to launch the default Qt event loop
  * \param argc
  * \param argv
@@ -73,8 +73,10 @@ int main(int argc, char *argv[])
     a.setOrganizationDomain("tagyourmusic.org");
     a.setApplicationVersion(TYM_VERSION);
 
-    LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName()).arg(a.applicationVersion()));
-    LOG_DEBUG(QObject::tr("Compiled with Qt %1, run with Qt library version %2").arg(QT_VERSION_STR).arg(qVersion()));
+    LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName())
+             .arg(a.applicationVersion()));
+    LOG_DEBUG(QObject::tr("Compiled with Qt %1, run with Qt library version %2")
+              .arg(QT_VERSION_STR).arg(qVersion()));
 
     {
         // Initialize some mandatory software items

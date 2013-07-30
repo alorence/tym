@@ -40,7 +40,7 @@ public:
 
     /*!
      * \brief Initialize the widget's internal state.
-     * Get the initial widget value in QSettings, and use _defaultValue if it doeas not exists.
+     * Get the initial widget value in QSettings, and use _defaultValue if it does not exists.
      */
     void init();
 
