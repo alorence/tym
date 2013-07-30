@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     w.show();
     int returnCode = a.exec();
 
-    LOG_DEBUG(QObject::tr("Applciation ends with return code %1").arg(returnCode));
+    LOG_DEBUG(QObject::tr("Application ends with return code %1").arg(returnCode));
 
     return returnCode;
 }

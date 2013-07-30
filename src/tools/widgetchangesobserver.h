@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 
 /*!
- * \brief Base class for monitoring whenges performed by user on some widgets' state
+ * \brief Base class for monitoring changes performed by user on some widgets' state
  */
 class WidgetChangesObserver : public QObject
 {
@@ -54,7 +54,7 @@ public:
 protected:
     /*!
      * \brief Return a boolean value representing the current state of the widget.
-     * If it state has beem modified and is different from its stae at the initialisation,
+     * If it state has beem modified and is different from its state at the initialization,
      * return true. Otherwise return false.
      */
     bool widgetValueChanged() const;

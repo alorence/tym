@@ -21,7 +21,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <Logger.h>
 #include "widgetchangesobserver.h"
 
-WidgetChangesObserver::WidgetChangesObserver(const QString &settingsKey, const QVariant &defaultValue, QObject *parent) :
+WidgetChangesObserver::WidgetChangesObserver(const QString &settingsKey,
+                                             const QVariant &defaultValue, QObject *parent) :
     QObject(parent),
     _settingsKey(settingsKey),
     _defaultValue(defaultValue)
@@ -52,7 +53,8 @@ bool WidgetChangesObserver::widgetValueChanged() const
     return _registeredValue != getWidgetValue();
 }
 
-LineEditChangesObserver::LineEditChangesObserver(const QString &settingsKey, QLineEdit *lineEdit, const QVariant &defaultValue, QObject *parent) :
+LineEditChangesObserver::LineEditChangesObserver(const QString &settingsKey, QLineEdit *lineEdit,
+                                                 const QVariant &defaultValue, QObject *parent) :
     WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widget(lineEdit)
 {
@@ -68,11 +70,13 @@ void LineEditChangesObserver::setWidgetValue(const QVariant &value)
     if(value.canConvert<QString>()) {
         _widget->setText(value.toString());
     } else {
-        LOG_WARNING(tr("Try to assign a non-string value (%1) to the QLineEdit %2").arg(value.toString()).arg(_widget->objectName()));
+        LOG_WARNING(tr("Try to assign a non-string value (%1) to the QLineEdit %2")
+                    .arg(value.toString()).arg(_widget->objectName()));
     }
 }
 
-CheckBoxChangesObserver::CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, const QVariant &defaultValue, QObject *parent):
+CheckBoxChangesObserver::CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox,
+                                                 const QVariant &defaultValue, QObject *parent):
     WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widget(checkbox)
 {
@@ -88,16 +92,19 @@ void CheckBoxChangesObserver::setWidgetValue(const QVariant &value)
     if(value.canConvert<bool>()) {
         _widget->setChecked(value.toBool());
     } else {
-        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QCheckbox %2").arg(value.toString()).arg(_widget->objectName()));
+        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QCheckbox %2")
+                    .arg(value.toString()).arg(_widget->objectName()));
     }
 }
 
-CheckableGroupBoxObserver::CheckableGroupBoxObserver(const QString &settingsKey, QGroupBox *groupbox, const QVariant &defaultValue, QObject *parent) :
+CheckableGroupBoxObserver::CheckableGroupBoxObserver(const QString &settingsKey,
+        QGroupBox *groupbox, const QVariant &defaultValue, QObject *parent) :
     WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widget(groupbox)
 {
     if( ! groupbox->isCheckable()) {
-        LOG_WARNING(tr("Try to observe a non-checkable QGroupBox state (%1)").arg(_widget->objectName()));
+        LOG_WARNING(tr("Try to observe a non-checkable QGroupBox state (%1)")
+                    .arg(_widget->objectName()));
     }
 }
 
@@ -111,11 +118,13 @@ void CheckableGroupBoxObserver::setWidgetValue(const QVariant &value)
     if(value.canConvert<bool>()) {
         _widget->setChecked(value.toBool());
     } else {
-        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QGroupBox %2").arg(value.toString()).arg(_widget->objectName()));
+        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QGroupBox %2")
+                    .arg(value.toString()).arg(_widget->objectName()));
     }
 }
 
-RadioButtonListObserver::RadioButtonListObserver(const QString &settingsKey, QList<QRadioButton *> radioButtonList, const QVariant &defaultValue, QObject *parent) :
+RadioButtonListObserver::RadioButtonListObserver(const QString &settingsKey,
+        QList<QRadioButton *> radioButtonList, const QVariant &defaultValue, QObject *parent) :
     WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widgets(radioButtonList)
 {
