@@ -1,10 +1,10 @@
-@set SKELETON_PATH=${TYM_DELIVERABLE_TREE}
+@set SKELETON_PATH=@TYM_DELIVERABLE_TREE@
 
-@set QT_DIR=${QT5_INSTALL_DIR}
+@set QT_DIR=@QT5_INSTALL_DIR@
 @set QT_BINDIR=%QT_DIR%/bin
 @set QT_PLUGINDIR=%QT_DIR%\plugins
 
-@set DLL_SUFFIX=${DEBUG_SUFFIX}
+@set DLL_SUFFIX=@DEBUG_SUFFIX@
 
 del /Q /S /F "%SKELETON_PATH%"
 rmdir /S /Q "%SKELETON_PATH%"
@@ -15,7 +15,7 @@ mkdir "%SKELETON_PATH%/sqldrivers"
 mkdir "%SKELETON_PATH%/imageformats"
 mkdir "%SKELETON_PATH%/lang"
 
-xcopy "${CMAKE_CURRENT_SOURCE_DIR}/win/GPL3licence.txt" "%SKELETON_PATH%" /y /f
+xcopy "@CMAKE_CURRENT_SOURCE_DIR@/win/GPL3licence.txt" "%SKELETON_PATH%" /y /f
 
 xcopy "%QT_BINDIR%/Qt5Core%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/Qt5Widgets%DLL_SUFFIX%.dll" "%SKELETON_PATH%" /y /f
@@ -33,9 +33,9 @@ xcopy "%QT_BINDIR%/icudt51.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/icuin51.dll" "%SKELETON_PATH%" /y /f
 xcopy "%QT_BINDIR%/icuuc51.dll" "%SKELETON_PATH%" /y /f
 
-xcopy "${TRANSLATIONS_OUTPUT_DIR}/*.qm" "%SKELETON_PATH%/lang" /y /f
+xcopy "@TRANSLATIONS_OUTPUT_DIR@/*.qm" "%SKELETON_PATH%/lang" /y /f
 
 :: Final executable
-xcopy "${TYM_FULL_PATH}" "%SKELETON_PATH%" /y /f
+xcopy "@TYM_FULL_PATH@" "%SKELETON_PATH%" /y /f
 
 iscc tym-setup.iss

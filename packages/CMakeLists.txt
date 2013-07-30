@@ -46,8 +46,8 @@ if(WIN32)
         set(TYM_ARCH_64 "ArchitecturesInstallIn64BitMode=x64")
     endif()
 
-    configure_file(win/tym-setup.iss.in tym-setup.iss)
-    configure_file(win/make-setup.bat.in make-setup.bat)
+    configure_file(win/tym-setup.iss.in tym-setup.iss @ONLY)
+    configure_file(win/make-setup.bat.in make-setup.bat @ONLY)
     configure_file(win/GPL3licence.txt ${TYM_DELIVERABLE_TREE}/GPL3licence.txt COPYONLY)
 
     add_custom_target(${TYM_DELIVERABLE_TARGET}
