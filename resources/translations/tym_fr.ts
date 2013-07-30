@@ -24,7 +24,7 @@
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="41"/>
         <source>Create connection %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="49"/>
@@ -915,88 +915,88 @@
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="20"/>
         <source>Infos</source>
-        <translation type="unfinished"></translation>
+        <translation>Infos</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="64"/>
         <source>Artist(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Artiste(s)</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="81"/>
         <source>Remixer(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Remixeur(s)</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="98"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="115"/>
         <source>Full Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre complet</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="132"/>
         <source>Mix Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du Mix</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="149"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Label</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="40"/>
         <source>Genres</source>
-        <translation type="unfinished"></translation>
+        <translation>Genres</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="33"/>
         <source>Release</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortir</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="57"/>
         <source>Published</source>
-        <translation type="unfinished"></translation>
+        <translation>Publié le</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="220"/>
         <source>Released</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorti le</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="243"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="250"/>
         <source>Tempo</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="257"/>
         <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation>Longueur</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="264"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clé</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="271"/>
         <source>Beatport ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Beatport</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.cpp" line="56"/>
         <location filename="../../src/widgets/trackinfosview.cpp" line="58"/>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished"></translation>
+        <translation>dd/MM/yyyy</translation>
     </message>
 </context>
 </TS>
