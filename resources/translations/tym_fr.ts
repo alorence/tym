@@ -24,12 +24,12 @@
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="41"/>
         <source>Create connection %1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="49"/>
         <source>Unable to initialise database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;initialiser la base de données.</translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="54"/>
@@ -404,17 +404,17 @@
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="45"/>
         <source>Root:</source>
-        <translation>Dossier parent</translation>
+        <translation>Dossier parent :</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="52"/>
         <source>Select:</source>
-        <translation type="unfinished"></translation>
+        <translation>Séléctionner:</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="65"/>
         <source>&lt;dir&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;dossier&gt;</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="177"/>
@@ -558,7 +558,7 @@
     <message>
         <location filename="../../src/widgets/patternbutton.cpp" line="31"/>
         <source>Pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>Format</translation>
     </message>
 </context>
 <context>
@@ -566,7 +566,7 @@
     <message>
         <location filename="../../src/network/picturedownloader.cpp" line="74"/>
         <source>Error on request %1: [%2] %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur avec la requête %1 : [%2] %3</translation>
     </message>
 </context>
 <context>
