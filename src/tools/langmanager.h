@@ -22,19 +22,50 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore>
 
+/*!
+ * \brief Singleton class used to manage translations files supported by the application.
+ * This class build a list of translations files (*.qm) by searching in the same directory than
+ * the executable itself (when program is launched from an IDE) and in a "lang" subfolder (Win)
+ * or the <Bundle>/Content/Resources/lang folder (MacOS). Once this list is built, this class
+ * provides methods to access this list and to dynamically update current localization for
+ * the program.
+ */
 class LangManager : public QObject
 {
     Q_OBJECT
 public:
-
+    /*!
+     * \brief Get the unique instance of this class (Singleton design pattern)
+     * \return The instance of LangManager
+     */
     static LangManager *instance();
+    /*!
+     * \brief Destroy the current instance and set the internal pointer to "nullptr"
+     */
     static void destroy();
 
+    /*!
+     * \brief Provides a QMap of the translator objects managed by this class.
+     * Keys are strings corresponding to the language. Values are pointers to QTranslator instances.
+     * \return A QMap<QString, QTranslator*>
+     */
     QMap<QString, QTranslator*> translationsFiles() const;
+    /*!
+     * \brief Returns all translations available as a QList of QString.
+     * \return
+     */
     QList<QString> translationsAvailable() const;
+    /*!
+     * \brief Update current QApplication with the QTranslator corresponding to the given string.
+     * \param lang
+     * \return true if everything worked as expected
+     */
     bool updateTranslation(const QString &lang) const;
 
 public slots:
+    /*!
+     * \brief Check in current application settings to update translation according to user choice.
+     */
     void updateTranslationsFromSettings() const;
 
 private:
