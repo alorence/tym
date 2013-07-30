@@ -34,6 +34,9 @@ public:
     QList<QString> translationsAvailable() const;
     bool updateTranslation(const QString &lang) const;
 
+public slots:
+    void updateTranslationsFromSettings() const;
+
 private:
     explicit LangManager(QObject *parent = 0);
     QMap<QString, QTranslator*> _qmFiles;

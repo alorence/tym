@@ -19,6 +19,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "Logger.h"
 #include "langmanager.h"
+#include "commons.h"
 
 LangManager * LangManager::_instance = nullptr;
 QMutex LangManager::_mutex;
@@ -93,4 +94,16 @@ bool LangManager::updateTranslation(const QString &lang) const
     }
 
     return false;
+}
+
+void LangManager::updateTranslationsFromSettings() const
+{
+    QSettings settings;
+    QString langBaseName = settings.value(TYM_PATH_LANGUAGE, TYM_DEFAULT_LANGUAGE).toString();
+
+    LOG_DEBUG(tr("Update with %1").arg(langBaseName));
+
+    if(!langBaseName.isEmpty() || TYM_DEFAULT_LANGUAGE == langBaseName) {
+        updateTranslation(langBaseName);
+    }
 }
