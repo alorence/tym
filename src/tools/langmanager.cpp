@@ -56,6 +56,11 @@ LangManager::LangManager(QObject *parent) :
     }
 }
 
+LangManager::~LangManager()
+{
+    qDeleteAll(_qmFiles);
+}
+
 LangManager *LangManager::instance()
 {
     _mutex.lock();

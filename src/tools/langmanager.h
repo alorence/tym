@@ -39,6 +39,7 @@ public slots:
 
 private:
     explicit LangManager(QObject *parent = 0);
+    ~LangManager();
     QMap<QString, QTranslator*> _qmFiles;
     QTranslator* _currentTranslator;
 
