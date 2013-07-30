@@ -39,9 +39,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Interface
      ********************************/
-    ui->langSelection->addItem(tr("Default"));
+    ui->langSelection->addItem(tr("Default"), TYM_DEFAULT_LANGUAGE);
     for(QString lang : LangManager::instance()->translationsAvailable()) {
-        ui->langSelection->addItem(lang);
+        ui->langSelection->addItem(lang, lang);
     }
     _widgetObservers << new ComboBoxObserver(TYM_PATH_LANGUAGE, ui->langSelection,
                                              TYM_DEFAULT_LANGUAGE, this);

@@ -153,10 +153,10 @@ ComboBoxObserver::ComboBoxObserver(const QString &settingsKey, QComboBox *comboB
 
 QVariant ComboBoxObserver::getWidgetValue() const
 {
-    return _widget->currentIndex();
+    return _widget->itemData(_widget->currentIndex());
 }
 
 void ComboBoxObserver::setWidgetValue(const QVariant &value)
 {
-    _widget->setCurrentIndex(value.toInt());
+    _widget->setCurrentIndex(_widget->findData(value));
 }
