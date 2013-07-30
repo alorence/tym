@@ -21,6 +21,7 @@
 set(HDRS
     patterntool.h
     widgetchangesobserver.h
+    langmanager.h
 )
 
 set(CPP
@@ -28,6 +29,7 @@ set(CPP
     patterntool.cpp
     utils.cpp
     widgetchangesobserver.cpp
+    langmanager.cpp
 )
 
 set(BASIC_HDRS

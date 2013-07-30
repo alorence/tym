@@ -37,6 +37,8 @@ namespace Settings {
 }
 
 // Settings - interface
+#define TYM_PATH_LANGUAGE "settings/interface/language"
+#define TYM_DEFAULT_LANGUAGE "default"
 #define TYM_PATH_DISPLAY_COLORS "settings/interface/library/colors"
 #define TYM_DEFAULT_DISPLAY_COLORS false
 #define TYM_PATH_KEY_STYLE "settings/interface/keystyle"

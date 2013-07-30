@@ -6,17 +6,17 @@
     <message>
         <location filename="../../src/gui/about.ui" line="27"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <location filename="../../src/gui/about.ui" line="33"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;This program is open source, distrubuted under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GPL 3 licence&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fugue Icons pack&lt;/span&gt;&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;More informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;This program use a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Cutelogger library&lt;/span&gt;&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;LGPL 2.1 licence&lt;/span&gt;&lt;/a&gt;. Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;Ceci est un programme open source distribué selon les termes de la &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;licence GPL 3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Les icônes utilisés dans ce programme proviennent du &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pack Fugue Icons&lt;/span&gt;&lt;/a&gt; par Yusuke Kamiyamane. Il est distribué selon les termes de la &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;licence Creative Commons Attribution 3.0&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;Pour plus d&apos;informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Ce programme utilise une version modifiée de la &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;librairie Cutelogger&lt;/span&gt;&lt;/a&gt; de Boris Moiseev, distribué sous &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;licence LGPL 2.1&lt;/span&gt;&lt;/a&gt;. Les modifications sont accessibles sur &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../src/gui/about.ui" line="50"/>
         <source>Thanks</source>
-        <translation type="unfinished"></translation>
+        <translation>Remerciements</translation>
     </message>
 </context>
 <context>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="41"/>
         <source>Create connection %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/dbaccess/bpdatabase.cpp" line="49"/>
@@ -355,7 +355,6 @@
         <comment>Display number of results available for one library element</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -405,7 +404,7 @@
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="45"/>
         <source>Root:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier parent</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="52"/>
@@ -420,138 +419,138 @@
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="177"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="186"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="199"/>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barre d&apos;outils</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="228"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="231"/>
         <source>Import files into library</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer des fichiers dans la librairie</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="234"/>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="243"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="252"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametres</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="261"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="270"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="273"/>
         <source>Search on Beatport from files name&apos;s informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher sur Beatport les informations sur les fichiers</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="276"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="285"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="288"/>
         <source>Remove selected tracks from library</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer les fichiers séléctionnés de la libraire</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="291"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="303"/>
         <location filename="../../src/gui/mainwindow.ui" line="306"/>
         <source>Display console</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la console</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="309"/>
         <source>Ctrl+Alt+C</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="318"/>
         <source>Link this result</source>
-        <translation type="unfinished"></translation>
+        <translation>Lier ce résultat</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="321"/>
         <source>Set as default result for the current track</source>
-        <translation type="unfinished"></translation>
+        <translation>Associer ce résulat au morceau courant</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="330"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="339"/>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="348"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="351"/>
         <source>Export selected tracks as playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter les morceaux séléctionnés vers une playlist</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.cpp" line="71"/>
         <source>Impossible to connect with database...</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de se connecter à la base de données...</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.cpp" line="265"/>
         <source>Hide console</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher la console</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.cpp" line="267"/>
         <source>Show console</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la console</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.cpp" line="405"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Séléctionner</translation>
     </message>
 </context>
 <context>
@@ -701,22 +700,22 @@
     <message>
         <location filename="../../src/wizards/renamewizard.ui" line="115"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Renaming result:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Résultat du renommage :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../src/wizards/renamewizard.cpp" line="57"/>
         <source>Original filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom original</translation>
     </message>
     <message>
         <location filename="../../src/wizards/renamewizard.cpp" line="57"/>
         <source>New filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau nom</translation>
     </message>
     <message>
         <location filename="../../src/wizards/renamewizard.cpp" line="141"/>
         <source>Finished successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminé avec succès</translation>
     </message>
 </context>
 <context>
@@ -916,88 +915,88 @@
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="20"/>
         <source>Infos</source>
-        <translation type="unfinished"></translation>
+        <translation>Infos</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="64"/>
         <source>Artist(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Artiste(s)</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="81"/>
         <source>Remixer(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Remixeur(s)</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="98"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="115"/>
         <source>Full Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre complet</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="132"/>
         <source>Mix Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du Mix</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="149"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Label</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="40"/>
         <source>Genres</source>
-        <translation type="unfinished"></translation>
+        <translation>Genres</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="33"/>
         <source>Release</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortir</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="57"/>
         <source>Published</source>
-        <translation type="unfinished"></translation>
+        <translation>Publié le</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="220"/>
         <source>Released</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorti le</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="243"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="250"/>
         <source>Tempo</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="257"/>
         <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation>Longueur</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="264"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clé</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="271"/>
         <source>Beatport ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Beatport</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.cpp" line="56"/>
         <location filename="../../src/widgets/trackinfosview.cpp" line="58"/>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished"></translation>
+        <translation>dd/MM/yyyy</translation>
     </message>
 </context>
 </TS>

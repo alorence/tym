@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 
 /*!
- * \brief Base class for monitoring whenges performed by user on some widgets' state
+ * \brief Base class for monitoring changes performed by user on some widgets' state
  */
 class WidgetChangesObserver : public QObject
 {
@@ -40,7 +40,7 @@ public:
 
     /*!
      * \brief Initialize the widget's internal state.
-     * Get the initial widget value in QSettings, and use _defaultValue if it doeas not exists.
+     * Get the initial widget value in QSettings, and use _defaultValue if it does not exists.
      */
     void init();
 
@@ -54,7 +54,7 @@ public:
 protected:
     /*!
      * \brief Return a boolean value representing the current state of the widget.
-     * If it state has beem modified and is different from its stae at the initialisation,
+     * If it state has beem modified and is different from its state at the initialization,
      * return true. Otherwise return false.
      */
     bool widgetValueChanged() const;
@@ -170,6 +170,27 @@ public:
 
 private:
     QList<QRadioButton*> _widgets;
+};
+
+class ComboBoxObserver : public WidgetChangesObserver
+{
+    Q_OBJECT
+public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a \l QComboBox
+     */
+    ComboBoxObserver(const QString &settingsKey, QComboBox *comboBox, const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
+    QVariant getWidgetValue() const override;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
+    void setWidgetValue(const QVariant &value) override;
+private:
+    QComboBox *_widget;
 };
 
 #endif // WIDGETCHANGESOBSERVER_H

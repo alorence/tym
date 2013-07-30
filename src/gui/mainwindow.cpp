@@ -32,6 +32,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "wizards/renamewizard.h"
 #include "wizards/exportplaylistwizard.h"
 #include "tools/patterntool.h"
+#include "tools/langmanager.h"
 #include "network/picturedownloader.h"
 
 #include "concretetasks/librarystatusupdater.h"
@@ -157,6 +158,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
     connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
     connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
+    connect(_settings, &QDialog::accepted, LangManager::instance(), &LangManager::updateTranslationsFromSettings);
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
