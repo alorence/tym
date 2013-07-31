@@ -12,6 +12,6 @@ cp -r "@tym_BINARY_DIR@/src/${app}" .
 @QT5_INSTALL_DIR@/bin/macdeployqt "${app}"
 
 mkdir "${app}/Contents/Resources/lang"
-cp "@TRANSLATIONS_OUTPUT_DIR@/*.qm" "${app}/Contents/Resources/lang"
+cp @TRANSLATIONS_OUTPUT_DIR@/*.qm "${app}/Contents/Resources/lang"
 
 zip -v -r -X "${zip}" "${app}"
