@@ -34,6 +34,7 @@ public:
     explicit About(QWidget *parent = 0);
     ~About();
 
+    void changeEvent(QEvent *e) override;
 private:
     Ui::About *ui;
 };

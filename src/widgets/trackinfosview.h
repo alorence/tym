@@ -36,6 +36,11 @@ public:
     explicit TrackInfosView(QWidget *parent = 0);
     ~TrackInfosView();
 
+    /*!
+     * \brief Call ui->retranslateUi() when the current QTranslator change
+     */
+    void changeEvent(QEvent *) override;
+
 public slots:
     /*!
      * \brief Delete all information from the widget. Clear each inputs, remove the picture,
@@ -67,6 +72,8 @@ private:
 
     QString _currentPictureId;
     QPixmap _defaultAlbumArt;
+
+    QSqlRecord _result;
 };
 
 #endif // TRACKINFOSVIEW_H

@@ -56,7 +56,6 @@ PatternButton::~PatternButton()
 {
 }
 
-
 void PatternButton::menuActionTriggered(QAction *action)
 {
     QString decoratedPattern = QString("%%1%").arg(_patternElementMap.value(action));

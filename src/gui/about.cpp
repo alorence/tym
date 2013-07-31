@@ -35,6 +35,16 @@ About::About(QWidget *parent) :
     ((QGridLayout*)this->layout())->addWidget(ui->aboutText, 0, 0);
 }
 
+
+void About::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        ui->aboutText->setText(ui->aboutText->text().replace("%VERSION%", TYM_VERSION));
+    }
+    QWidget::changeEvent(e);
+}
+
 About::~About()
 {
     delete ui;

@@ -37,6 +37,11 @@ public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
+    /*!
+     * \brief Call ui->retranslateUi() when the current QTranslator change
+     */
+    void changeEvent(QEvent *) override;
+
 protected:
     /*!
      * \brief Initialize all registered widgets to the right state.

@@ -78,7 +78,10 @@ public:
      * result only here.
      */
     void showEvent(QShowEvent *) override;
-
+    /*!
+     * \brief Call ui->retranslateUi() when the current QTranslator change
+     */
+    void changeEvent(QEvent *) override;
     void closeEvent(QCloseEvent *) override;
 
 private slots:

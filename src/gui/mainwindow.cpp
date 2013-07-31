@@ -253,6 +253,16 @@ void MainWindow::showEvent(QShowEvent *e)
     QWidget::showEvent(e);
 }
 
+void MainWindow::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::LanguageChange) {
+        QString rootTextSave = ui->rootDirLabel->text();
+        ui->retranslateUi(this);
+        ui->rootDirLabel->setText(rootTextSave);
+    }
+    QWidget::changeEvent(e);
+}
+
 void MainWindow::closeEvent(QCloseEvent *e)
 {
     QSettings settings;

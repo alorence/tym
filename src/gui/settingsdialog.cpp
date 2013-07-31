@@ -80,6 +80,14 @@ void SettingsDialog::showEvent(QShowEvent *)
     }
 }
 
+void SettingsDialog::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    QWidget::changeEvent(e);
+}
+
 void SettingsDialog::changeDisplayedStack()
 {
     ui->content->setCurrentWidget(_menuPagesMap[ui->menu->selectedItems().first()]);

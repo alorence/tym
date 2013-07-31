@@ -37,8 +37,23 @@ TrackInfosView::~TrackInfosView()
     delete ui;
 }
 
+void TrackInfosView::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        QDateTime d = QDateTime::fromTime_t(_result.value(TrackFullInfos::ReleaseDate).toInt());
+        ui->d_releaseDate->setText(d.toString(tr("yyyy-MM-dd")));
+        d = QDateTime::fromTime_t(_result.value(TrackFullInfos::PublishDate).toInt());
+        ui->d_publishdate->setText(d.toString(tr("yyyy-MM-dd")));
+    }
+    QWidget::changeEvent(e);
+}
+
 void TrackInfosView::updateInfos(QSqlRecord result)
 {
+    // Will be used later, when modifying form of texts
+    _result = result;
+
     ui->d_artists->setText(result.value(TrackFullInfos::Artists).toString());
     ui->d_remixers->setText(result.value(TrackFullInfos::Remixers).toString());
     ui->d_genres->setText(result.value(TrackFullInfos::Genres).toString());

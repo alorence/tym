@@ -42,6 +42,16 @@ public:
     ~ConsoleWidget() {
         delete ui;
     }
+
+    /*!
+     * \brief Call ui->retranslateUi() when the current QTranslator change
+     */
+    void changeEvent(QEvent *e) override {
+        if(e->type() == QEvent::LanguageChange) {
+            ui->retranslateUi(this);
+        }
+        QWidget::changeEvent(e);
+    }
     
 private:
     Ui::ConsoleWidget *ui;
