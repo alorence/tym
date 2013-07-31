@@ -20,18 +20,21 @@ set(HDRS
     about.h
     mainwindow.h
     settingsdialog.h
+    taskmonitor.h
 )
 
 set(CPP
     about.cpp
     mainwindow.cpp
     settingsdialog.cpp
+    taskmonitor.cpp
 )
 
 set(UIS
     about.ui
     mainwindow.ui
     settingsdialog.ui
+    taskmonitor.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
