@@ -27,7 +27,7 @@ QMutex LangManager::_mutex;
 LangManager::LangManager(QObject *parent) :
     QObject(parent)
 {
-    //: Fill this with your language (ex: English, Deutch, Français, etc)
+    //: Fill this with your language (ex: English, Deutch, FranÃ§ais, etc)
     tr("__LANG__");
     //: Fill this with the country your language is for (United-States, France, etc.)
     tr("__COUNTRY__");
