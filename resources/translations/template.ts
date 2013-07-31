@@ -277,8 +277,17 @@
 <context>
     <name>LangManager</name>
     <message>
-        <location filename="../../src/tools/langmanager.cpp" line="109"/>
-        <source>Update with %1</source>
+        <location filename="../../src/tools/langmanager.cpp" line="31"/>
+        <location filename="../../src/tools/langmanager.cpp" line="66"/>
+        <source>__LANG__</source>
+        <extracomment>Fill this with your language (ex: English, Deutch, Français, etc)</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/langmanager.cpp" line="33"/>
+        <location filename="../../src/tools/langmanager.cpp" line="67"/>
+        <source>__COUNTRY__</source>
+        <extracomment>Fill this with the country your language is for (United-States, France, etc.)</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -918,17 +927,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="42"/>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="103"/>
+        <location filename="../../src/gui/settingsdialog.cpp" line="104"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="106"/>
+        <location filename="../../src/gui/settingsdialog.cpp" line="107"/>
         <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
