@@ -82,6 +82,10 @@ public:
      * \brief Call ui->retranslateUi() when the current QTranslator change
      */
     void changeEvent(QEvent *) override;
+    /*!
+     * \brief Save in QSettings the geometry (size, position) of the window
+     * Called when the window is closed.
+     */
     void closeEvent(QCloseEvent *) override;
 
 private slots:
@@ -123,7 +127,15 @@ private slots:
      */
     void updateSearchResultsActions();
 
+    /*!
+     * \brief Save expanded items in the view, to restore them later.
+     * It is called when library model starts to be resetted.
+     */
     void beforeLibraryViewReset();
+    /*!
+     * \brief Restore expanded items in the library tree view.
+     * It is called when library model has been resetted.
+     */
     void afterLibraryViewReset();
 
     /*!
