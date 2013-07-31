@@ -56,10 +56,15 @@ LangManager::LangManager(QObject *parent) :
         }
     }
 
+    // Insert default translation. By doing this here, we ensure the LanguageEvent will
+    // correctly be posted when switching from any language to default.
+    _langMap.insert(TYM_DEFAULT_LANGUAGE, "English (United States)");
+    _translatorMap.insert(TYM_DEFAULT_LANGUAGE, new QTranslator(this));
+
     for(QFileInfo f : files) {
         QString key = f.baseName();
 
-        QTranslator* transl = new QTranslator();
+        QTranslator* transl = new QTranslator(this);
         transl->load(f.fileName(), f.absolutePath());
         _translatorMap.insert(key, transl);
 
@@ -126,9 +131,8 @@ void LangManager::updateTranslationsFromSettings()
     QString langBaseName = settings.value(TYM_PATH_LANGUAGE, TYM_DEFAULT_LANGUAGE).toString();
 
 
-    if(!(langBaseName.isEmpty() || TYM_DEFAULT_LANGUAGE == langBaseName)
-            && _langMap.contains(langBaseName)) {
-        LOG_DEBUG(QString("%1 found as preferred language in the settings").arg(langBaseName));
+    if(!langBaseName.isEmpty() && _langMap.contains(langBaseName)) {
+        LOG_DEBUG(QString("\"%1\" found as preferred language in the settings").arg(langBaseName));
         updateTranslation(langBaseName);
     }
 }
