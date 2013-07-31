@@ -39,9 +39,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     /********************************
      * Interface
      ********************************/
-    ui->langSelection->addItem(tr("Default"), TYM_DEFAULT_LANGUAGE);
-    for(QString lang : LangManager::instance()->translationsAvailable()) {
-        ui->langSelection->addItem(lang, lang);
+    ui->langSelection->addItem("English (United States)", TYM_DEFAULT_LANGUAGE);
+    QMap<QString, QString> translations = LangManager::instance()->translationsAvailable();
+    for(QString lang : translations.keys()) {
+        ui->langSelection->addItem(translations[lang], lang);
     }
     _widgetObservers << new ComboBoxObserver(TYM_PATH_LANGUAGE, ui->langSelection,
                                              TYM_DEFAULT_LANGUAGE, this);

@@ -54,25 +54,32 @@ public:
      * \brief Returns all translations available as a QList of QString.
      * \return
      */
-    QList<QString> translationsAvailable() const;
+    QMap<QString, QString> translationsAvailable() const;
     /*!
      * \brief Update current QApplication with the QTranslator corresponding to the given string.
      * \param lang
      * \return true if everything worked as expected
      */
-    bool updateTranslation(const QString &lang) const;
+    bool updateTranslation(const QString &lang);
 
 public slots:
     /*!
      * \brief Check in current application settings to update translation according to user choice.
      */
-    void updateTranslationsFromSettings() const;
+    void updateTranslationsFromSettings();
 
 private:
+    /*!
+     * \brief Initialize the manager. This constructor is private.
+     * Search for available translations (*.qm files) in specific directories and build maps
+     * used to store translations names and Qtranslator instances.
+     * \param parent
+     */
     explicit LangManager(QObject *parent = 0);
     ~LangManager();
-    QMap<QString, QTranslator*> _qmFiles;
-    QTranslator* _currentTranslator;
+    QMap<QString, QTranslator*> _translatorMap;
+    QMap<QString, QString> _langMap;
+    QString _currentTranslation;
 
     static LangManager *_instance;
     static QMutex _mutex;

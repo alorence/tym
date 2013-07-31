@@ -27,13 +27,18 @@ QMutex LangManager::_mutex;
 LangManager::LangManager(QObject *parent) :
     QObject(parent)
 {
+    //: Fill this with your language (ex: English, Deutch, Français, etc)
+    tr("__LANG__");
+    //: Fill this with the country your language is for (United-States, France, etc.)
+    tr("__COUNTRY__");
+
     QStringList searchDirs;
-    searchDirs << qApp->applicationDirPath()
 #ifdef Q_OS_MAC
-               << qApp->applicationDirPath() + "../Resources/lang";
+    searchDirs << qApp->applicationDirPath() + "../Resources/lang"
 #else
-               << qApp->applicationDirPath() + QDir::separator() + "lang";
+    searchDirs << qApp->applicationDirPath() + "/lang"
 #endif
+               << qApp->applicationDirPath();
 
     QDir searchDir;
     searchDir.setFilter(QDir::Files);
@@ -44,21 +49,29 @@ LangManager::LangManager(QObject *parent) :
         searchDir.setCurrent(dir);
         files = searchDir.entryInfoList();
         if(files.count()) {
+            LOG_INFO(QString("%1 translations found in the directory %2")
+                     .arg(files.count())
+                     .arg(searchDir.absolutePath()));
             break;
         }
     }
 
     for(QFileInfo f : files) {
+        QString key = f.baseName();
 
         QTranslator* transl = new QTranslator();
-        transl->load(f.fileName(), searchDir.canonicalPath());
-        _qmFiles.insert(f.baseName(), transl);
+        transl->load(f.fileName(), f.absolutePath());
+        _translatorMap.insert(key, transl);
+
+        QString langName = transl->translate("LangManager", "__LANG__")
+                + " (" + transl->translate("LangManager", "__COUNTRY__") + ")";
+        _langMap.insert(key, langName);
     }
 }
 
 LangManager::~LangManager()
 {
-    qDeleteAll(_qmFiles);
+    qDeleteAll(_translatorMap);
 }
 
 LangManager *LangManager::instance()
@@ -81,34 +94,41 @@ void LangManager::destroy()
 
 QMap<QString, QTranslator *> LangManager::translationsFiles() const
 {
-    return _qmFiles;
+    return _translatorMap;
 }
 
-QList<QString> LangManager::translationsAvailable() const
+QMap<QString, QString> LangManager::translationsAvailable() const
 {
-    return _qmFiles.keys();
+    return _langMap;
 }
 
-bool LangManager::updateTranslation(const QString &lang) const
+bool LangManager::updateTranslation(const QString &lang)
 {
-    qApp->removeTranslator(_qmFiles[lang]);
+    if(!_currentTranslation.isEmpty()) {
+        qApp->removeTranslator(_translatorMap[_currentTranslation]);
+    }
 
-    if(_qmFiles.contains(lang)) {
-        qApp->installTranslator(_qmFiles[lang]);
+    if(_translatorMap.contains(lang)) {
+        qApp->installTranslator(_translatorMap[lang]);
+        _currentTranslation = lang;
         return true;
+    } else {
+        LOG_WARNING(QString("Trying to set translation \"%1\" which is unknown by the manager")
+                    .arg(lang));
     }
 
     return false;
 }
 
-void LangManager::updateTranslationsFromSettings() const
+void LangManager::updateTranslationsFromSettings()
 {
     QSettings settings;
     QString langBaseName = settings.value(TYM_PATH_LANGUAGE, TYM_DEFAULT_LANGUAGE).toString();
 
-    LOG_DEBUG(tr("Update with %1").arg(langBaseName));
 
-    if(!langBaseName.isEmpty() || TYM_DEFAULT_LANGUAGE == langBaseName) {
+    if(!(langBaseName.isEmpty() || TYM_DEFAULT_LANGUAGE == langBaseName)
+            && _langMap.contains(langBaseName)) {
+        LOG_DEBUG(QString("%1 found as preferred language in the settings").arg(langBaseName));
         updateTranslation(langBaseName);
     }
 }
