@@ -42,7 +42,7 @@ set(SOURCES
 )
 
 # Generate template.qm in another folder, to prevent its inclusion in a deliverable
-set_source_files_properties(${TRANSLATION_TEMPLATE} PROPERTIES OUTPUT_LOCATION ${CMAKE_FILES_DIRECTORY})
+set_source_files_properties(${TRANSLATION_TEMPLATE} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY})
 # Used to localize the resulting *.qm files when building deliverables
 set(TRANSLATIONS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE)
 if(TYM_UPDATE_TRANSLATIONS)
