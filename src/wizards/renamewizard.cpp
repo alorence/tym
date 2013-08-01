@@ -26,7 +26,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include "tools/utils.h"
 #include "dbaccess/bpdatabase.h"
-#include "concretetasks/renametask.h"
+#include "tasks/rename/renametask.h"
 
 RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     QWizard(parent),

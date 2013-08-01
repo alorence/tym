@@ -25,7 +25,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "Logger.h"
 #include "WidgetAppender.h"
 
-#include "concretetasks/exportplaylisttask.h"
+#include "tasks/export/exportplaylisttask.h"
 #include "commons.h"
 
 ExportPlaylistWizard::ExportPlaylistWizard(const QList<QSqlRecord> &selected, QWidget *parent) :

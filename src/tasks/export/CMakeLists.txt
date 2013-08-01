@@ -17,35 +17,19 @@
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
 set(HDRS
-    task.h
     exportplaylisttask.h
-    renametask.h
-    searchtask.h
-    librarystatusupdater.h
-    taskmonitor.h
 )
 
 set(CPP
-    task.cpp
     exportplaylisttask.cpp
-    renametask.cpp
-    searchtask.cpp
-    librarystatusupdater.cpp
-    taskmonitor.cpp
-)
-
-set(UIS
-    taskmonitor.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
-qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymConcretetasks OBJECT ${CPP} ${MOCS} ${HDRS} ${UIS_HDRS})
-add_dependencies(TymConcretetasks TymWizards TymGui)
+add_library(TymExportTask OBJECT ${CPP} ${MOCS} ${HDRS})
+add_dependencies(TymExportTask TymTasks)
 
-tym_qt5_use_modules(TymConcretetasks
+tym_qt5_use_modules(TymExportTask
     Widgets
     Sql
-    Network
 )

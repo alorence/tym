@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "taskmonitor.h"
 #include "ui_taskmonitor.h"
 
-#include "concretetasks/task.h"
+#include "tasks/task.h"
 
 TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     QDialog(parent),

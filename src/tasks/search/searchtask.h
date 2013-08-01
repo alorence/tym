@@ -22,7 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QSqlRecord>
 #include "commons.h"
-#include "task.h"
+#include "tasks/task.h"
 #include "wizards/searchwizard.h"
 
 class Task;

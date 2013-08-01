@@ -35,7 +35,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
 
-#include "concretetasks/librarystatusupdater.h"
+#include "tasks/libupdater/librarystatusupdater.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

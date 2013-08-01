@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef EXPORTPLAYLISTTASK_H
 #define EXPORTPLAYLISTTASK_H
 
-#include "task.h"
+#include "tasks/task.h"
 #include "wizards/exportplaylistwizard.h"
 
 class BPDatabase;

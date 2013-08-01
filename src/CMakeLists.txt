@@ -20,7 +20,7 @@ configure_file(version.h.in version.h)
 
 # In source files, all includes are relative to src (in cmlake source or binary directory)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-add_subdirectory(concretetasks)
+add_subdirectory(tasks)
 add_subdirectory(dbaccess)
 add_subdirectory(network)
 add_subdirectory(gui)
@@ -71,7 +71,7 @@ add_executable(${TYM_FINAL_TARGET}
     ${BASIC_HDRS}
     ${TYM_TRANSLATIONS}
     ${TRANSLATIONS_FILES}
-    $<TARGET_OBJECTS:TymConcretetasks>
+    $<TARGET_OBJECTS:TymTasks>
     $<TARGET_OBJECTS:TymDbaccess>
     $<TARGET_OBJECTS:TymGui>
     $<TARGET_OBJECTS:TymNetwork>

@@ -23,7 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <Logger.h>
 #include <WidgetAppender.h>
 
-#include "concretetasks/searchtask.h"
+#include "tasks/search/searchtask.h"
 #include "tools/patterntool.h"
 
 SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
