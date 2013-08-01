@@ -126,12 +126,9 @@
   <zorder>buttonBox</zorder>
   <zorder>line</zorder>
   <zorder>previewTable</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget_2</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
   <zorder>label_4</zorder>
-  <zorder>horizontalSpacer</zorder>
  </widget>
  <resources/>
  <connections>
