@@ -29,7 +29,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/searchresultsmodel.h"
 #include "dbaccess/bpdatabase.h"
 #include "wizards/searchwizard.h"
-#include "wizards/renamewizard.h"
+#include "tasks/rename/renameconfigurator.h"
 #include "wizards/exportplaylistwizard.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
@@ -487,8 +487,8 @@ void MainWindow::on_actionRename_triggered()
     QList<QSqlRecord> selectedRecords;
     _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
                                      selectedRecords);
-    RenameWizard wizard(selectedRecords);
-    if(wizard.exec() == QWizard::Rejected) {
+    RenameConfigurator configurator(selectedRecords);
+    if(configurator.exec() == QWizard::Rejected) {
         return;
     }
     _libraryModel->refresh();

@@ -24,7 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 
-RenameTask::RenameTask(QList<QPair<QFileInfo, QString> > renameMap, QObject *parent) :
+RenameTask::RenameTask(QList<QPair<QFileInfo, QString>> renameMap, QObject *parent) :
     Task(parent)
 {
     _renameMap = renameMap;
