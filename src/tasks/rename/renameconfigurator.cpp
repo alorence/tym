@@ -113,11 +113,13 @@ void RenameConfigurator::updatePattern(int comboBoxIndex)
 {
     // If current selection is "Custom"
     if(comboBoxIndex == ui->patternSelection->count()-1) {
-        if(_customPattern.isEmpty()) {
+        // Restore the customized pattern if necessary
+        if(!_customPattern.isEmpty()) {
             ui->pattern->setText(_customPattern);
         }
         _currentIsCustom = true;
     } else {
+        // Save the customized pattern if necessary
         if(_currentIsCustom) {
             _customPattern = ui->pattern->text();
         }
