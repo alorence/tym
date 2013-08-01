@@ -32,6 +32,10 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
 {
     ui->setupUi(this);
 
+    // Must be initialized after ui has been initialized
+    _patternHelperButton = new PatternButton(_formatter, ui->pattern, this);
+    ui->customPatternArea->addWidget(_patternHelperButton);
+
     // Configure pattern selection comboBox
     ui->patternSelection->addItem("%ARTISTS% - %NAME% (%MIXNAME%)");
     ui->patternSelection->addItem("%ARTISTS% - %TITLE%");
@@ -41,7 +45,6 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
     ui->patternSelection->addItem(tr("Customize"));
     connect(ui->patternSelection, SIGNAL(currentIndexChanged(int)),
             this, SLOT(updatePattern(int)));
-
     connect(ui->pattern, &QLineEdit::textChanged,
             this, &RenameConfigurator::updateTargetNames);
 
@@ -102,6 +105,7 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
 RenameConfigurator::~RenameConfigurator()
 {
     delete ui;
+    delete _patternHelperButton;
 }
 
 QList<QPair<QFileInfo, QString> > RenameConfigurator::renameMap() const
@@ -118,6 +122,8 @@ void RenameConfigurator::updatePattern(int comboBoxIndex)
             ui->pattern->setText(_customPattern);
         }
         _currentIsCustom = true;
+        ui->pattern->setReadOnly(false);
+        _patternHelperButton->setVisible(true);
     } else {
         // Save the customized pattern if necessary
         if(_currentIsCustom) {
@@ -125,6 +131,8 @@ void RenameConfigurator::updatePattern(int comboBoxIndex)
         }
         _currentIsCustom = false;
         ui->pattern->setText(ui->patternSelection->itemText(comboBoxIndex));
+        ui->pattern->setReadOnly(true);
+        _patternHelperButton->setVisible(false);
     }
 }
 
