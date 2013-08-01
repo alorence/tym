@@ -35,7 +35,7 @@ set(CPP
 qt5_wrap_cpp(MOCS ${HDRS})
 
 add_library(TymConcretetasks OBJECT ${CPP} ${MOCS} ${HDRS})
-add_dependencies(TymConcretetasks TymWizards)
+add_dependencies(TymConcretetasks TymWizards TymGui)
 
 tym_qt5_use_modules(TymConcretetasks
     Widgets

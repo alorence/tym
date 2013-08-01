@@ -21,9 +21,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 Task::Task(QObject *parent) :
     QObject(parent),
-    _progressValue(0),
     _longTask(true),
-    _hasSubTasks(true)
+    _hasSubTasks(true),
+    _progressValue(0)
 {
 }
 

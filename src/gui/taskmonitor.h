@@ -21,7 +21,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define RESULTDIALOG_H
 
 #include <QDialog>
-#include "concretetasks/task.h"
+
+class Task;
 
 namespace Ui {
 class TaskMonitor;
