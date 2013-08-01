@@ -52,7 +52,6 @@ public:
 private slots:
     void customSearchSelected(bool);
     void updateSearchPattern(bool);
-    void insertPatternText(const QString&);
     void printEndText();
     void initializeProgressBar(int value);
 

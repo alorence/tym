@@ -46,7 +46,6 @@ protected:
     
 private slots:
     void updateRenamePreview();
-    void insertPatternText(const QString&);
     void printEndText() const;
     void on_patternSelection_currentIndexChanged(int index);
 

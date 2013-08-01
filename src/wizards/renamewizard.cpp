@@ -42,10 +42,9 @@ RenameWizard::RenameWizard(QList<QSqlRecord> selected, QWidget *parent) :
     logger->registerAppender(_widgetAppender);
 
     // Configure pattern button
-    _patternHelperButton = new PatternButton(_filenameFormatter, this);
+    _patternHelperButton = new PatternButton(_filenameFormatter, ui->pattern, this);
     ui->patternHorizLayout->addWidget(_patternHelperButton);
     _patternHelperButton->hide();
-    connect(_patternHelperButton, SIGNAL(patternSelected(QString)), this, SLOT(insertPatternText(QString)));
 
     // Initilize preview table
     on_patternSelection_currentIndexChanged(ui->patternSelection->currentIndex());
@@ -129,11 +128,6 @@ void RenameWizard::updateRenamePreview()
         item->setData(Qt::UserRole, shouldBeUsed);
         ui->previewTable->setItem(row, TargetFileName, item);
     }
-}
-
-void RenameWizard::insertPatternText(const QString & patternText)
-{
-    ui->pattern->insert(patternText);
 }
 
 void RenameWizard::printEndText() const
