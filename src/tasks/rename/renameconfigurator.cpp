@@ -23,7 +23,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/librarymodel.h"
 #include "tools/utils.h"
 
-RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records, QWidget *parent) :
+RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
+                                       QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RenameConfigurator),
     _libraryRecords(records),
@@ -57,10 +58,10 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records, QWidget
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
 
         QSqlRecord record = records[row];
-        QFileInfo original(record.value(Library::FilePath).toString());
+        QFileInfo orig(record.value(Library::FilePath).toString());
 
         // Create first cell, displaying original filename
-        QTableWidgetItem * origNameItem = new QTableWidgetItem(original.fileName());
+        QTableWidgetItem * origNameItem = new QTableWidgetItem(orig.fileName());
         // Ensure original filename can't be edited
         origNameItem->setFlags(origNameItem->flags() & ~Qt::ItemIsEditable);
         // origName->setData(Qt::UserRole, bpid);
@@ -79,15 +80,16 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records, QWidget
         }
 
         // Build the final renameMap
-        _renameMap << QPair<QFileInfo, QString>(original, "");
+        _renameMap << QPair<QFileInfo, QString>(orig, "");
     }
 
     // Fill the map with all informations about tracks linked to results
     {
         BPDatabase dbHelper("renameWizard");
-        QSqlQuery tracksInfos = dbHelper.tracksInformations(bpids);
-        while(tracksInfos.next()) {
-            _tracksFullInfos[tracksInfos.value(TrackFullInfos::Bpid).toString()] = tracksInfos.record();
+        QSqlQuery infos = dbHelper.tracksInformations(bpids);
+        while(infos.next()) {
+            _tracksFullInfos[infos.value(TrackFullInfos::Bpid).toString()]
+                    = infos.record();
         }
     }
 
@@ -126,52 +128,59 @@ void RenameConfigurator::updatePattern(int comboBoxIndex)
 
 void RenameConfigurator::updateTargetNames(const QString &pattern)
 {
-    _filenameFormatter.setPattern(pattern);
+    _formatter.setPattern(pattern);
 
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-
+        // Original file on disk
         QFileInfo original = _renameMap[row].first;
-
-        QString originalTargetName = ui->previewTable->item(row, TargetNameCol)->text();
-        QString newTargetName;
-
+        // Beatport ID linked with the library entry
         QString bpid = _libraryRecords[row].value(Library::Bpid).toString();
-        if(!bpid.isEmpty()) {
-            QString newTargetBaseName = _filenameFormatter.format(_tracksFullInfos[bpid]);
-            Utils::osFilenameSanitize(newTargetBaseName);
-            Utils::simplifySpaces(newTargetBaseName);
+        QString targetName;
 
-            newTargetName = newTargetBaseName + '.' + original.suffix();
-
-            QTableWidgetItem *item = ui->previewTable->item(row, TargetNameCol);
-            item->setText(newTargetName);
-        } else {
-            QPair<Utils::StatusType, QString> issue;
-            issue.first = Utils::Error;
-            issue.second = tr("This file has no information attached.\n"
-                              "It is impossible to generate a new filename.");
-            _issues[row].append(issue);
-        }
-
+        // Check if the original file exists on disk
         if(!original.exists()) {
             QPair<Utils::StatusType, QString> issue;
             issue.first = Utils::Error;
-            issue.second = tr("This file does not exists");
+            issue.second = tr("This file does not exists on the disk. "
+                              "It will not be renamed.");
             continue;
         }
-
-        if(originalTargetName == newTargetName) {
+        // Check if the library entry has no information attached
+        else if(bpid.isEmpty()) {
             QPair<Utils::StatusType, QString> issue;
-            issue.first = Utils::Info;
-            issue.second = tr("Same name");
+            issue.first = Utils::Error;
+            issue.second = tr("This file has no information attached. "
+                              "It is impossible to generate a new filename.");
+            _issues[row].append(issue);
+            continue;
+        }
+        // New name for the file can be generated
+        else {
+            QString targetBaseName = _formatter.format(_tracksFullInfos[bpid]);
+            Utils::osFilenameSanitize(targetBaseName);
+            Utils::simplifySpaces(targetBaseName);
+
+            // Build the new target name
+            targetName = targetBaseName + '.' + original.suffix();
+
+            // Update the second cell in the table with the target name
+            ui->previewTable->item(row, TargetNameCol)->setText(targetName);
         }
 
+        // Check if new filename is different than the original one
+        if(ui->previewTable->item(row, OriginalNameCol)->text() == targetName) {
+            QPair<Utils::StatusType, QString> issue;
+            issue.first = Utils::Info;
+            issue.second = tr("The target filename is the same than the "
+                              "original one. Nothing to do");
+        }
     }
 }
 
 void RenameConfigurator::fillRenameMap()
 {
     for(int row = 0 ; row < _renameMap.count() ; ++row) {
-        _renameMap[row].second = ui->previewTable->item(row, TargetNameCol)->text();
+        _renameMap[row].second
+                = ui->previewTable->item(row, TargetNameCol)->text();
     }
 }

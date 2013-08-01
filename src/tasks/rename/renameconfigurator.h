@@ -58,7 +58,7 @@ private:
     QList<QSqlRecord> _libraryRecords;
     QMap<QString, QSqlRecord> _tracksFullInfos;
 
-    FileBasenameFormatter _filenameFormatter;
+    FileBasenameFormatter _formatter;
     PatternButton * _patternHelperButton;
 
     QString _customPattern;
