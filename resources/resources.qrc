@@ -42,4 +42,10 @@
         <file>fugues-icons-3.5/icons/blue-document-music.png</file>
         <file>fugues-icons-3.5/icons/blue-document-music-playlist.png</file>
     </qresource>
+    <qresource prefix="/status">
+        <file alias="error">fugues-icons-3.5/icons/cross-button.png</file>
+        <file alias="warning">fugues-icons-3.5/icons/exclamation-button.png</file>
+        <file alias="info">fugues-icons-3.5/icons/information-button.png</file>
+        <file alias="success">fugues-icons-3.5/icons/tick-button.png</file>
+    </qresource>
 </RCC>

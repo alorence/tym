@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+#include <QPixmap>
 
 #include "utils.h"
 #include "commons.h"
@@ -83,4 +84,26 @@ QString &Utils::osFilenameSanitize(QString &fileName)
     const QRegularExpression forbiddenChars("[/]", QRegularExpression::CaseInsensitiveOption);
 #endif
     return fileName.replace(forbiddenChars, " ");
+}
+
+QPixmap Utils::iconForStatusType(Utils::StatusType type)
+{
+
+    switch(type){
+    case Info:
+        return QPixmap(":/status/info");
+        break;
+    case Warning:
+        return QPixmap(":/status/warning");
+        break;
+    case Error:
+        return QPixmap(":/status/error");
+        break;
+    case Success:
+        return QPixmap(":/status/success");
+        break;
+    default:
+        return QPixmap();
+        break;
+    }
 }
