@@ -22,6 +22,7 @@ set(HDRS
     renametask.h
     searchtask.h
     librarystatusupdater.h
+    taskmonitor.h
 )
 
 set(CPP
@@ -30,11 +31,17 @@ set(CPP
     renametask.cpp
     searchtask.cpp
     librarystatusupdater.cpp
+    taskmonitor.cpp
+)
+
+set(UIS
+    taskmonitor.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
+qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymConcretetasks OBJECT ${CPP} ${MOCS} ${HDRS})
+add_library(TymConcretetasks OBJECT ${CPP} ${MOCS} ${HDRS} ${UIS_HDRS})
 add_dependencies(TymConcretetasks TymWizards TymGui)
 
 tym_qt5_use_modules(TymConcretetasks

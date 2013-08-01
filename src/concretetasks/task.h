@@ -23,7 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QRunnable>
 
-#include "gui/taskmonitor.h"
+#include "taskmonitor.h"
 
 /*!
  * @brief Define an atomic task.
