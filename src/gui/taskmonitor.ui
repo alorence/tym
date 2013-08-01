@@ -33,6 +33,12 @@
      <property name="text">
       <string>More</string>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="2" column="0" colspan="2">

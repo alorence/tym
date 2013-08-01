@@ -21,8 +21,20 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 Task::Task(QObject *parent) :
     QObject(parent),
-    _progressValue(0)
+    _progressValue(0),
+    _longTask(true),
+    _hasSubTasks(true)
 {
+}
+
+bool Task::isLongTask() const
+{
+    return _longTask;
+}
+
+bool Task::hasSubTasks() const
+{
+    return _hasSubTasks;
 }
 
 void Task::increaseProgressStep(int step)

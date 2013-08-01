@@ -46,6 +46,9 @@ public slots:
     void updateCurrentState(const QString &state);
     void logEvent(const QString &key, EventType type, const QString &msg);
 
+private slots:
+    void toggleLogTree(bool checked);
+
 private:
     Ui::TaskMonitor *ui;
 

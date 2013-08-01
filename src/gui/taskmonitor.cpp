@@ -27,7 +27,16 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    if(_task->isLongTask()) {
+        connect(_task, &Task::notifyProgression, ui->progressBar, &QProgressBar::setValue);
+    } else {
+        ui->progressBar->hide();
+    }
 
+    connect(ui->moreButton, &QPushButton::toggled, this, &TaskMonitor::toggleLogTree);
+
+    // TODO: Implements pause in Task with QMutex/QWaitcondition
+    ui->pauseButton->hide();
 }
 
 TaskMonitor::~TaskMonitor()
@@ -43,4 +52,16 @@ void TaskMonitor::updateCurrentState(const QString &state)
 void TaskMonitor::logEvent(const QString &key, TaskMonitor::EventType type, const QString &msg)
 {
 
+}
+
+void TaskMonitor::toggleLogTree(bool checked)
+{
+    if(checked) {
+        //: Text displayed on the button used to display/hide log tree frame (when it is visible)
+        ui->moreButton->setText(tr("Hide details"));
+    } else {
+        //: Text displayed on the button used to display/hide log tree frame (when it is hidden)
+        ui->moreButton->setText(tr("Show details"));
+    }
+    ui->resultTree->setVisible(checked);
 }
