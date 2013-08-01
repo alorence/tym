@@ -17,8 +17,8 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef RESULTDIALOG_H
-#define RESULTDIALOG_H
+#ifndef TASKMONITOR_H
+#define TASKMONITOR_H
 
 #include <QDialog>
 
@@ -56,4 +56,4 @@ private:
     Task * _task;
 };
 
-#endif // RESULTDIALOG_H
+#endif // TASKMONITOR_H
