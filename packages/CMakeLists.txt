@@ -35,7 +35,7 @@ set(QT5_INSTALL_DIR "${Qt5Core_DIR}/../../..")
 # Path where all dlls will be copied before compiling package
 set(TYM_DELIVERABLE_TREE "${CMAKE_CURRENT_BINARY_DIR}/package-skeleton")
 # Get the path of build executable name
-get_property(TYM_FULL_PATH TARGET ${TYM_EXECUTABLE_FILENAME} PROPERTY LOCATION)
+get_property(TYM_FULL_PATH TARGET ${TYM_FINAL_TARGET} PROPERTY LOCATION)
 
 if(WIN32)
 
@@ -52,7 +52,7 @@ if(WIN32)
         COMMAND cmd /C make-setup.bat
         COMMENT "Building installer with Inno Setup compiler (iscc)."
     )
-    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
+    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_FINAL_TARGET})
 elseif(APPLE)
 
     configure_file(osx/make-bundle.sh.in make-bundle.sh @ONLY)
@@ -64,7 +64,7 @@ elseif(APPLE)
         WORKING_DIRECTORY ${TYM_DELIVERABLES_OUTPUT}
         COMMENT "Building package ${TYM_EXECUTABLE_FILENAME}.app and the final ${TYM_DELIVERABLE_BASENAME}.zip"
     )
-    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_EXECUTABLE_FILENAME})
+    add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_FINAL_TARGET})
 elseif(UNIX)
 
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${TYM_DESCRIPTION})
