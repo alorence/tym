@@ -17,9 +17,23 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 #include <QPixmap>
+#include <QIcon>
 
 #include "utils.h"
 #include "commons.h"
+
+Utils * Utils::_instance = nullptr;
+QMutex Utils::_mutex;
+
+Utils *Utils::instance()
+{
+    _mutex.lock();
+    if(_instance == nullptr) {
+        _instance = new Utils;
+    }
+    _mutex.unlock();
+    return _instance;
+}
 
 QString Utils::formatKey(const QString &classicKey)
 {
@@ -86,24 +100,57 @@ QString &Utils::osFilenameSanitize(QString &fileName)
     return fileName.replace(forbiddenChars, " ");
 }
 
-QPixmap Utils::iconForStatusType(Utils::StatusType type)
-{
+QPixmap Utils::pixForStatusType(Utils::StatusType type)
 
+{
     switch(type){
     case Info:
-        return QPixmap(":/status/info");
+        return _infoPix;
         break;
     case Warning:
-        return QPixmap(":/status/warning");
+        return _warningPix;
         break;
     case Error:
-        return QPixmap(":/status/error");
+        return _errorPix;
         break;
     case Success:
-        return QPixmap(":/status/success");
+        return _successPix;
         break;
     default:
         return QPixmap();
         break;
     }
+}
+
+QIcon Utils::iconForStatusType(Utils::StatusType type)
+{
+    switch(type){
+    case Info:
+        return _infoIcon;
+        break;
+    case Warning:
+        return _warningIcon;
+        break;
+    case Error:
+        return _errorIcon;
+        break;
+    case Success:
+        return _successIcon;
+        break;
+    default:
+        return QIcon();
+        break;
+    }
+}
+
+Utils::Utils(QObject *parent) :
+    _infoPix(":/status/info"),
+    _warningPix(":/status/warning"),
+    _errorPix(":/status/error"),
+    _successPix(":/status/success"),
+    _infoIcon(_infoPix),
+    _warningIcon(_warningPix),
+    _errorIcon(_errorPix),
+    _successIcon(_successPix)
+{
 }

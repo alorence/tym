@@ -130,7 +130,7 @@ void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
         QString text = searchList.value();
 
         // Replace underscores by spaces (and prevent multiple spaces)
-        Utils::simplifySpaces(text.replace('_', ' '));
+        Utils::instance()->simplifySpaces(text.replace('_', ' '));
 
         QUrlQuery query;
         query.addQueryItem("query", text);

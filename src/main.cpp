@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
                   .arg(TYM_ALBUMARTS_LOCATION));
     }
 
+    // Allow QItemSelection to be stored in a QVariant
     qRegisterMetaType<QItemSelection>("QItemSelection");
 
     MainWindow w;

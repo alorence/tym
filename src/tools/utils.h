@@ -21,10 +21,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define UTILS_H
 
 #include <QtCore>
+#include <QPixmap>
+#include <QIcon>
 
 class Utils
 {
 public:
+
+    /*!
+     * \brief Get the unique instance of this class (Singleton design pattern)
+     * \return The instance of Utils class
+     */
+    static Utils *instance();
 
     enum StatusType {
         Info,
@@ -39,23 +47,32 @@ public:
      * \param classicKey The original key, in the format used in database
      * \return The formatted key, as string
      */
-    static QString formatKey(const QString &classicKey);
+    QString formatKey(const QString &classicKey);
     /*!
      * \brief Modify subject replacing multiple spaces into only one
      * \param subject The string to sanitize
      * \return
      */
-    static QString &simplifySpaces(QString &subject);
+    QString &simplifySpaces(QString &subject);
     /*!
      * \brief Modify given fileName to remove characters unsupported on current
      * OS, regarding to file system used.
      * \param fileName The fileName to sanitize
      * \return
      */
-    static QString &osFilenameSanitize(QString &fileName);
+    QString &osFilenameSanitize(QString &fileName);
 
-    static QPixmap iconForStatusType(StatusType type);
+    QPixmap pixForStatusType(StatusType type);
+    QIcon iconForStatusType(StatusType type);
 
+private:
+    explicit Utils(QObject *parent = 0);
+
+    static Utils * _instance;
+    static QMutex _mutex;
+
+    QPixmap _infoPix, _warningPix, _errorPix, _successPix;
+    QIcon _infoIcon, _warningIcon, _errorIcon, _successIcon;
 };
 
 #endif // UTILS_H

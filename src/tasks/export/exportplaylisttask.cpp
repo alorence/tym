@@ -131,7 +131,7 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
     xmlDoc.writeAttribute("CATALOG_NO", trackInfos.value(TrackFullInfos::Bpid).toString());
     xmlDoc.writeAttribute("GENRE", trackInfos.value(TrackFullInfos::Genres).toString());
 
-    xmlDoc.writeAttribute("KEY", Utils::formatKey(trackInfos.value(TrackFullInfos::Key).toString()));
+    xmlDoc.writeAttribute("KEY", Utils::instance()->formatKey(trackInfos.value(TrackFullInfos::Key).toString()));
 
     xmlDoc.writeAttribute("LABEL", trackInfos.value(TrackFullInfos::LabelName).toString());
     xmlDoc.writeAttribute("MIX", trackInfos.value(TrackFullInfos::MixName).toString());
