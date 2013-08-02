@@ -40,6 +40,8 @@ public:
                                 QWidget *parent = 0);
     ~RenameConfigurator();
 
+    void showEvent(QShowEvent *) override;
+
     /*!
      * \brief Build and return the final renameMap
      * Each QPair in the list contains on the first a QFileInfo representing

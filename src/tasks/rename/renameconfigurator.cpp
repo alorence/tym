@@ -41,7 +41,7 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
     ui->patternSelection->addItem("%ARTISTS% (%LABEL%) - %TITLE%");
     // "Custom" entry MUST be the last one
     //: Specific value in list of formats, allowing user to create its own
-    ui->patternSelection->addItem(tr("Customize"));
+    ui->patternSelection->addItem(tr("Custom"));
     connect(ui->patternSelection, SIGNAL(currentIndexChanged(int)),
             this, SLOT(updatePattern(int)));
     connect(ui->pattern, &QLineEdit::textChanged,
@@ -138,6 +138,12 @@ RenameConfigurator::~RenameConfigurator()
 {
     delete ui;
     delete _patternHelperButton;
+}
+
+void RenameConfigurator::showEvent(QShowEvent *)
+{
+    // Details message will be 2 lines height
+    ui->detailsMsg->setMinimumHeight(ui->detailsMsg->height()*2);
 }
 
 QList<QPair<QFileInfo, QString>> RenameConfigurator::renameMap()
