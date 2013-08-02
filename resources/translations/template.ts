@@ -205,22 +205,22 @@
 <context>
     <name>ExportPlaylistTask</name>
     <message>
-        <location filename="../../src/concretetasks/exportplaylisttask.cpp" line="35"/>
+        <location filename="../../src/tasks/export/exportplaylisttask.cpp" line="35"/>
         <source>ExportPlaylistTask must be configured with a file path instead of a dir path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/exportplaylisttask.cpp" line="43"/>
+        <location filename="../../src/tasks/export/exportplaylisttask.cpp" line="43"/>
         <source>File %1 exists, it will be overwritten</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/exportplaylisttask.cpp" line="47"/>
+        <location filename="../../src/tasks/export/exportplaylisttask.cpp" line="47"/>
         <source>Unable to open %1 in write mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/exportplaylisttask.cpp" line="101"/>
+        <location filename="../../src/tasks/export/exportplaylisttask.cpp" line="101"/>
         <source>File %1 has been correctly written</source>
         <translation type="unfinished"></translation>
     </message>
@@ -278,14 +278,14 @@
     <name>LangManager</name>
     <message>
         <location filename="../../src/tools/langmanager.cpp" line="31"/>
-        <location filename="../../src/tools/langmanager.cpp" line="66"/>
+        <location filename="../../src/tools/langmanager.cpp" line="71"/>
         <source>__LANG__</source>
-        <extracomment>Fill this with your language (ex: English, Deutch, Français, etc)</extracomment>
+        <extracomment>Fill this with your language (ex: English, Deutch, FranÃ§ais, etc)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/tools/langmanager.cpp" line="33"/>
-        <location filename="../../src/tools/langmanager.cpp" line="67"/>
+        <location filename="../../src/tools/langmanager.cpp" line="72"/>
         <source>__COUNTRY__</source>
         <extracomment>Fill this with the country your language is for (United-States, France, etc.)</extracomment>
         <translation type="unfinished"></translation>
@@ -403,7 +403,7 @@
 <context>
     <name>LibraryStatusUpdater</name>
     <message>
-        <location filename="../../src/concretetasks/librarystatusupdater.cpp" line="51"/>
+        <location filename="../../src/tasks/libupdater/librarystatusupdater.cpp" line="51"/>
         <source>Track %1 missing, status will be updated.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -555,17 +555,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="267"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="277"/>
         <source>Hide console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="269"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="279"/>
         <source>Show console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="407"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="417"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
@@ -573,7 +573,7 @@
 <context>
     <name>PatternButton</name>
     <message>
-        <location filename="../../src/widgets/patternbutton.cpp" line="31"/>
+        <location filename="../../src/widgets/patternbutton.cpp" line="33"/>
         <source>Pattern</source>
         <translation type="unfinished"></translation>
     </message>
@@ -649,89 +649,100 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="104"/>
+        <location filename="../../src/main.cpp" line="105"/>
         <source>Application ends with return code %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RenameConfigurator</name>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.ui" line="14"/>
+        <source>Rename your files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.ui" line="20"/>
+        <source>Choose a predefined format for the renamed files or create your own by selecting &quot;Cusom&quot; in the below list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.ui" line="32"/>
+        <source>Select the output format for your tracks :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.ui" line="59"/>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.ui" line="78"/>
+        <source>Preview:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="44"/>
+        <source>Custom</source>
+        <extracomment>Specific value in list of formats, allowing user to create its own</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="52"/>
+        <source>Original filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="52"/>
+        <source>New filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="88"/>
+        <source>This file does not exists on the disk. It will not be renamed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="95"/>
+        <source>This file has no information attached. It is impossible to generate a new filename. Please use the search function to retrieve information on this track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="224"/>
+        <source>The target filename is the same than the original one. Nothing to do</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="229"/>
+        <source>The file will be renamed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>RenameTask</name>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="42"/>
+        <location filename="../../src/tasks/rename/renametask.cpp" line="42"/>
         <source>Error, file %1 does not exists, it can&apos;t be renamed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="48"/>
+        <location filename="../../src/tasks/rename/renametask.cpp" line="48"/>
         <source>Error when renaming file %1, file %2 already exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="56"/>
+        <location filename="../../src/tasks/rename/renametask.cpp" line="56"/>
         <source>File %1 renamed to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="60"/>
+        <location filename="../../src/tasks/rename/renametask.cpp" line="60"/>
         <source>Your file %1 seems to have been renamed, but the new one (%2) can&apos;t be found on disk !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/renametask.cpp" line="65"/>
+        <location filename="../../src/tasks/rename/renametask.cpp" line="65"/>
         <source>Error when renaming file %1 into %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RenameWizard</name>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="61"/>
-        <source>Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="75"/>
-        <source>Select the output format for your tracks :</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="83"/>
-        <source>Artists - Name (Mix name)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="88"/>
-        <source>Artists - Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="93"/>
-        <source>Artists (Label) - Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="98"/>
-        <source>Custom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.ui" line="115"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Renaming result:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.cpp" line="57"/>
-        <source>Original filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.cpp" line="57"/>
-        <source>New filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/wizards/renamewizard.cpp" line="141"/>
-        <source>Finished successfully</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -761,17 +772,17 @@
 <context>
     <name>SearchTask</name>
     <message>
-        <location filename="../../src/concretetasks/searchtask.cpp" line="49"/>
+        <location filename="../../src/tasks/search/searchtask.cpp" line="48"/>
         <source>Start search task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/searchtask.cpp" line="56"/>
+        <location filename="../../src/tasks/search/searchtask.cpp" line="55"/>
         <source>Number of library entries selected and number of search terms does not match...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/concretetasks/searchtask.cpp" line="92"/>
+        <location filename="../../src/tasks/search/searchtask.cpp" line="91"/>
         <source>Unable to extract information from %1 file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,7 +845,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/wizards/searchwizard.cpp" line="151"/>
+        <location filename="../../src/wizards/searchwizard.cpp" line="146"/>
         <source>Finished successfully</source>
         <translation type="unfinished"></translation>
     </message>
@@ -927,13 +938,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="104"/>
+        <location filename="../../src/gui/settingsdialog.cpp" line="111"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/settingsdialog.cpp" line="107"/>
+        <location filename="../../src/gui/settingsdialog.cpp" line="114"/>
         <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TaskMonitor</name>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.ui" line="20"/>
+        <source>&lt;status&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.ui" line="34"/>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.ui" line="74"/>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.ui" line="81"/>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.ui" line="88"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.cpp" line="63"/>
+        <source>Hide details</source>
+        <extracomment>Text displayed on the button used to display/hide log tree frame (when it is visible)</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/tasks/taskmonitor.cpp" line="66"/>
+        <source>Show details</source>
+        <extracomment>Text displayed on the button used to display/hide log tree frame (when it is hidden)</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1020,8 +1076,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/widgets/trackinfosview.cpp" line="56"/>
-        <location filename="../../src/widgets/trackinfosview.cpp" line="58"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="45"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="47"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="71"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="73"/>
         <source>yyyy-MM-dd</source>
         <translation type="unfinished"></translation>
     </message>
