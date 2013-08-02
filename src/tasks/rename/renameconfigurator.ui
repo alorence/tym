@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>760</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Rename your files</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
