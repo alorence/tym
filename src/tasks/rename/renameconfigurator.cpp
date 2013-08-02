@@ -27,7 +27,6 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RenameConfigurator),
-    _libraryRecords(records),
     _currentIsCustom(false)
 {
     ui->setupUi(this);
@@ -63,24 +62,50 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
         QSqlRecord record = records[row];
         QFileInfo orig(record.value(Library::FilePath).toString());
 
-        // Create first cell, displaying original filename
-        QTableWidgetItem * origNameItem = new QTableWidgetItem(orig.fileName());
-        // Ensure original filename can't be edited
-        origNameItem->setFlags(origNameItem->flags() & ~Qt::ItemIsEditable);
-        // origName->setData(Qt::UserRole, bpid);
-
-        // Create second cell, displaying target filename
-        QTableWidgetItem * targetNameItem = new QTableWidgetItem("");
-
-        // Add items to the preview table widget
-        ui->previewTable->setItem(row, OriginalNameCol, origNameItem);
-        ui->previewTable->setItem(row, TargetNameCol, targetNameItem);
-
         // Fill the bpids list
         QString bpid = record.value(Library::Bpid).toString();
         if(!bpid.isEmpty()) {
             bpids << bpid;
         }
+
+        // Cretate cells for the current row
+        QTableWidgetItem * origItem = new QTableWidgetItem(orig.fileName());
+        QTableWidgetItem * trgtItem = new QTableWidgetItem("");
+        // By default, cells can't be edited
+        origItem->setFlags(origItem->flags() & ~Qt::ItemIsEditable);
+        trgtItem->setFlags(origItem->flags() & ~Qt::ItemIsEditable);
+
+        // Store various information in first cell as UserData
+        // It will be used when updating target names on second cells
+        origItem->setData(Bpid, bpid);
+        origItem->setData(Suffix, orig.suffix());
+        origItem->setData(Exists, orig.exists());
+
+        // Configure status that will not change later
+        if(!orig.exists()) {
+            origItem->setIcon(Utils::instance()->iconForStatusType(Utils::Error));
+            origItem->setData(StatusType, Utils::Error);
+            origItem->setData(Message, tr("This file does not exists on the "
+                                          "disk. It will not be renamed."));
+            trgtItem->setText(tr("Missing file"));
+        }
+        // Check if the library entry has no information attached
+        else if(bpid.isEmpty()) {
+            origItem->setIcon(Utils::instance()->iconForStatusType(Utils::Error));
+            origItem->setData(StatusType, Utils::Error);
+            origItem->setData(Message, tr("This file has no information "
+                "attached. It is impossible to generate a new filename. "
+                "Please use the search function to retrieve information "
+                                          "on this track"));
+            trgtItem->setText(tr("No information"));
+        } else {
+            // Target filename will be editable
+            trgtItem->setFlags(origItem->flags() | Qt::ItemIsEditable);
+        }
+
+        // Insert created cells into preview table
+        ui->previewTable->setItem(row, OrgnlNameCol, origItem);
+        ui->previewTable->setItem(row, TrgtNameCol, trgtItem);
 
         // Build the final renameMap
         _renameMap << QPair<QFileInfo, QString>(orig, "");
@@ -96,6 +121,13 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
         }
     }
 
+    // When a cell is modified, update related message/picture
+    connect(ui->previewTable, &QTableWidget::cellChanged,
+            this, &RenameConfigurator::updateCellInfos);
+    // Update details according the selection
+    connect(ui->previewTable, &QTableWidget::currentCellChanged,
+            this, &RenameConfigurator::updateDetails);
+    // Select the first row
     // Finally, select the first entry of pattern selection comboBox
     ui->patternSelection->setCurrentIndex(0);
     // Update all other fields and preview table
@@ -108,8 +140,13 @@ RenameConfigurator::~RenameConfigurator()
     delete _patternHelperButton;
 }
 
-QList<QPair<QFileInfo, QString> > RenameConfigurator::renameMap() const
+QList<QPair<QFileInfo, QString>> RenameConfigurator::renameMap()
 {
+    for(int row = 0 ; row < _renameMap.count() ; ++row) {
+        _renameMap[row].second
+                = ui->previewTable->item(row, TrgtNameCol)
+                ->data(Qt::EditRole).toString();
+    }
     return _renameMap;
 }
 
@@ -141,56 +178,75 @@ void RenameConfigurator::updateTargetNames(const QString &pattern)
     _formatter.setPattern(pattern);
 
     for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
-        // Original file on disk
-        QFileInfo original = _renameMap[row].first;
+
+        QTableWidgetItem * origItem = ui->previewTable->item(row, OrgnlNameCol);
+        QTableWidgetItem * trgtItem = ui->previewTable->item(row, TrgtNameCol);
+
         // Beatport ID linked with the library entry
-        QString bpid = _libraryRecords[row].value(Library::Bpid).toString();
-        QString targetName;
+        QString bpid = origItem->data(Bpid).toString();
+        // We can't do nothing without bpid defined
+        if(bpid.isEmpty()) continue;
+        // Suffix of original file (_formatter works on basenames)
+        QString suffix = origItem->data(Suffix).toString();
 
-        // Check if the original file exists on disk
-        if(!original.exists()) {
-            QPair<Utils::StatusType, QString> issue;
-            issue.first = Utils::Error;
-            issue.second = tr("This file does not exists on the disk. "
-                              "It will not be renamed.");
-            continue;
-        }
-        // Check if the library entry has no information attached
-        else if(bpid.isEmpty()) {
-            QPair<Utils::StatusType, QString> issue;
-            issue.first = Utils::Error;
-            issue.second = tr("This file has no information attached. "
-                              "It is impossible to generate a new filename.");
-            _issues[row].append(issue);
-            continue;
-        }
-        // New name for the file can be generated
-        else {
-            QString targetBaseName = _formatter.format(_tracksFullInfos[bpid]);
-            Utils::osFilenameSanitize(targetBaseName);
-            Utils::simplifySpaces(targetBaseName);
+        // We generate the new target name for file
+        QString targetBaseName = _formatter.format(_tracksFullInfos[bpid]);
+        Utils::instance()->osFilenameSanitize(targetBaseName);
+        Utils::instance()->simplifySpaces(targetBaseName);
 
-            // Build the new target name
-            targetName = targetBaseName + '.' + original.suffix();
+        // Build the new target name
+        QString targetName = targetBaseName + '.' + suffix;
 
-            // Update the second cell in the table with the target name
-            ui->previewTable->item(row, TargetNameCol)->setText(targetName);
-        }
-
-        // Check if new filename is different than the original one
-        if(ui->previewTable->item(row, OriginalNameCol)->text() == targetName) {
-            QPair<Utils::StatusType, QString> issue;
-            issue.first = Utils::Info;
-            issue.second = tr("The target filename is the same than the "
-                              "original one. Nothing to do");
-        }
+        // Update the second cell in the table with the target name
+        trgtItem->setData(Qt::EditRole, targetName);
     }
 }
 
-void RenameConfigurator::fillRenameMap()
+void RenameConfigurator::updateCellInfos(int row, int col)
 {
-    for(int row = 0 ; row < _renameMap.count() ; ++row) {
-        _renameMap[row].second
-                = ui->previewTable->item(row, TargetNameCol)->text();
+    QTableWidgetItem * origItem = ui->previewTable->item(row, OrgnlNameCol);
+    QTableWidgetItem * trgtItem = ui->previewTable->item(row, TrgtNameCol);
+
+    // We will modify an item, avoid infinite loop
+    ui->previewTable->blockSignals(true);
+
+    // Status on second cell will be initialized when updating all content
+    // of preview table, and when user will manually modify content for a cell
+    if(col == TrgtNameCol) {
+        // Check if new filename is different than the original one
+        if(origItem->text() == trgtItem->data(Qt::EditRole).toString()) {
+            origItem->setIcon(Utils::instance()->iconForStatusType(Utils::Info));
+            origItem->setData(StatusType, Utils::Info);
+            origItem->setData(Message, tr("The target filename is the same "
+                                       "than the original one. Nothing to do"));
+            trgtItem->setText(tr("Identical"));
+        } else if (origItem->data(Exists).toBool()) {
+            origItem->setIcon(Utils::instance()->iconForStatusType(Utils::Success));
+            origItem->setData(StatusType, Utils::Success);
+            origItem->setData(Message, tr("The file will be renamed"));
+        }
+
+        // Update details fields
+        if(ui->previewTable->currentRow() == row)
+            updateDetails(row, col);
+    }
+
+    // Restore signal system
+    ui->previewTable->blockSignals(false);
+}
+
+
+void RenameConfigurator::updateDetails(int row, int)
+{
+    qDebug() << row;
+
+    if(row != -1) {
+        QTableWidgetItem *item = ui->previewTable->item(row, OrgnlNameCol);
+        ui->detailsMsg->setText(item->data(Message).toString());
+        Utils::StatusType s = (Utils::StatusType) item->data(StatusType).toInt();
+        ui->detailsPix->setPixmap(Utils::instance()->pixForStatusType(s));
+    } else {
+        ui->detailsMsg->clear();
+        ui->detailsPix->clear();
     }
 }

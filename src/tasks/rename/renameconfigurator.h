@@ -40,32 +40,66 @@ public:
                                 QWidget *parent = 0);
     ~RenameConfigurator();
 
-    QList<QPair<QFileInfo, QString>> renameMap() const;
+    /*!
+     * \brief Build and return the final renameMap
+     * Each QPair in the list contains on the first a QFileInfo representing
+     * the original file to rename and on the second the new name for this file.
+     * The list contains all entries selected by the user, even if files are
+     * missing on the disk, or information have not been retrieved before.
+     * \return
+     */
+    QList<QPair<QFileInfo, QString>> renameMap();
 
 private slots:
+    /*!
+     * \brief Update ui->pattern value according to entry selected in
+     * the pattern combo box
+     * \param comboBoxIndex
+     */
     void updatePattern(int comboBoxIndex);
+    /*!
+     * \brief Update target names in the preview table
+     * \param pattern Value of ui->pattern->text()
+     */
     void updateTargetNames(const QString &pattern);
-    void fillRenameMap();
+    /*!
+     * \brief Update message and status associated with each row in the preview
+     * table. This mainly set the status to ok or identical target name.
+     * \param row
+     * \param col
+     */
+    void updateCellInfos(int row, int col);
+    /*!
+     * \brief Update details* labels with information retrieved from item
+     * at given row and col.
+     * \param row
+     * \param col
+     */
+    void updateDetails(int row, int col);
 
 private:
     enum Columns {
-        OriginalNameCol,
-        TargetNameCol
+        OrgnlNameCol,
+        TrgtNameCol
+    };
+
+    enum UserRoles {
+        Bpid = Qt::UserRole + 1,
+        Suffix,
+        Exists,
+        StatusType,
+        Message
     };
 
     Ui::RenameConfigurator *ui;
-
-    QList<QSqlRecord> _libraryRecords;
-    QMap<QString, QSqlRecord> _tracksFullInfos;
-
     FileBasenameFormatter _formatter;
     PatternButton * _patternHelperButton;
 
+    QList<QPair<QFileInfo, QString>> _renameMap;
+    QMap<QString, QSqlRecord> _tracksFullInfos;
+
     QString _customPattern;
     bool _currentIsCustom;
-
-    QList<QPair<QFileInfo, QString>> _renameMap;
-    QMap<int, QList<QPair<Utils::StatusType, QString>>> _issues;
 };
 
 
