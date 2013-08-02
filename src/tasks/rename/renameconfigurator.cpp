@@ -87,7 +87,6 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
             origItem->setData(StatusType, Utils::Error);
             origItem->setData(Message, tr("This file does not exists on the "
                                           "disk. It will not be renamed."));
-            trgtItem->setText(tr("Missing file"));
         }
         // Check if the library entry has no information attached
         else if(bpid.isEmpty()) {
@@ -97,7 +96,6 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
                 "attached. It is impossible to generate a new filename. "
                 "Please use the search function to retrieve information "
                                           "on this track"));
-            trgtItem->setText(tr("No information"));
         } else {
             // Target filename will be editable
             trgtItem->setFlags(origItem->flags() | Qt::ItemIsEditable);
@@ -225,7 +223,6 @@ void RenameConfigurator::updateCellInfos(int row, int col)
             origItem->setData(StatusType, Utils::Info);
             origItem->setData(Message, tr("The target filename is the same "
                                        "than the original one. Nothing to do"));
-            trgtItem->setText(tr("Identical"));
         } else if (origItem->data(Exists).toBool()) {
             origItem->setIcon(Utils::instance()->iconForStatusType(Utils::Success));
             origItem->setData(StatusType, Utils::Success);
@@ -244,8 +241,6 @@ void RenameConfigurator::updateCellInfos(int row, int col)
 
 void RenameConfigurator::updateDetails(int row, int)
 {
-    qDebug() << row;
-
     if(row != -1) {
         QTableWidgetItem *item = ui->previewTable->item(row, OrgnlNameCol);
         ui->detailsMsg->setText(item->data(Message).toString());
