@@ -22,6 +22,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDialog>
 
+#include "tools/utils.h"
+
 class Task;
 
 namespace Ui {
@@ -36,16 +38,10 @@ public:
     explicit TaskMonitor(Task * task, QWidget *parent = 0);
     ~TaskMonitor();
 
-    enum EventType {
-        Info,
-        Warning,
-        Error,
-        Success
-    };
 
 public slots:
     void updateCurrentState(const QString &state);
-    void logEvent(const QString &key, EventType type, const QString &msg);
+    void logEvent(const QString &key, Utils::StatusType type, const QString &msg);
 
 private slots:
     void toggleLogTree(bool checked);

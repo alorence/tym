@@ -491,6 +491,10 @@ void MainWindow::on_actionRename_triggered()
     if(configurator.exec() == QWizard::Rejected) {
         return;
     }
+
+    TaskMonitor monitor(configurator.task());
+    monitor.show();
+
     _libraryModel->refresh();
 }
 

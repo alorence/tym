@@ -23,6 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QRunnable>
 
+#include "tools/utils.h"
 #include "taskmonitor.h"
 
 /*!
@@ -77,7 +78,7 @@ signals:
     void notifyProgression(int newValue);
 
     void initSubTask(QString key, QString label);
-    void subTaskEvent(QString key, TaskMonitor::EventType type, QString text);
+    void subTaskEvent(QString key, Utils::StatusType type, QString text);
 
 protected:
     void increaseProgressStep(int step = 1);

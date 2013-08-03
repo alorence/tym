@@ -51,7 +51,7 @@ void TaskMonitor::updateCurrentState(const QString &state)
 
 }
 
-void TaskMonitor::logEvent(const QString &key, TaskMonitor::EventType type, const QString &msg)
+void TaskMonitor::logEvent(const QString &key, Utils::StatusType type, const QString &msg)
 {
 
 }
