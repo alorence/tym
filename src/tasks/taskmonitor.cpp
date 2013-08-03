@@ -35,10 +35,7 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
         ui->progressBar->hide();
     }
 
-    connect(ui->moreButton, &QPushButton::toggled, this, &TaskMonitor::toggleLogTree);
 
-    // TODO: Implements pause in Task with QMutex/QWaitcondition
-    ui->pauseButton->hide();
 }
 
 TaskMonitor::~TaskMonitor()

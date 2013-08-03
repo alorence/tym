@@ -40,7 +40,7 @@ set(CPP
 
 set(UIS
     taskmonitor.ui
-rename/renameconfigurator.ui
+    rename/renameconfigurator.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})

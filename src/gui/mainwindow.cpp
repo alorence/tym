@@ -493,7 +493,7 @@ void MainWindow::on_actionRename_triggered()
     }
 
     TaskMonitor monitor(configurator.task());
-    monitor.show();
+    monitor.exec();
 
     _libraryModel->refresh();
 }
