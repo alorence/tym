@@ -22,6 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "dbaccess/librarymodel.h"
 #include "tools/utils.h"
+#include "renametask.h"
 
 RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
@@ -106,7 +107,7 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
         ui->previewTable->setItem(row, TrgtNameCol, trgtItem);
 
         // Build the final renameMap
-        _renameMap << QPair<QFileInfo, QString>(orig, "");
+        _fileInfoList << orig;
     }
 
     // Fill the map with all informations about tracks linked to results
@@ -144,14 +145,17 @@ void RenameConfigurator::showEvent(QShowEvent *)
     ui->detailsMsg->setMinimumHeight(ui->detailsMsg->height()*2);
 }
 
-QList<QPair<QFileInfo, QString>> RenameConfigurator::renameMap()
+Task *RenameConfigurator::task() const
 {
-    for(int row = 0 ; row < _renameMap.count() ; ++row) {
-        _renameMap[row].second
-                = ui->previewTable->item(row, TrgtNameCol)
+    QList<QPair<QFileInfo, QString>> renameMap;
+    for(int row = 0 ; row < ui->previewTable->rowCount() ; ++row) {
+        QString trgt = ui->previewTable->item(row, TrgtNameCol)
                 ->data(Qt::EditRole).toString();
+        QPair<QFileInfo, QString> entry(_fileInfoList[row], trgt);
+        renameMap << entry;
     }
-    return _renameMap;
+    RenameTask *task = new RenameTask(renameMap);
+    return task;
 }
 
 void RenameConfigurator::updatePattern(int comboBoxIndex)

@@ -31,6 +31,8 @@ namespace Ui {
 class RenameConfigurator;
 }
 
+class Task;
+
 class RenameConfigurator : public QDialog
 {
     Q_OBJECT
@@ -43,14 +45,10 @@ public:
     void showEvent(QShowEvent *) override;
 
     /*!
-     * \brief Build and return the final renameMap
-     * Each QPair in the list contains on the first a QFileInfo representing
-     * the original file to rename and on the second the new name for this file.
-     * The list contains all entries selected by the user, even if files are
-     * missing on the disk, or information have not been retrieved before.
+     * \brief Build and return the RenameTask this dialog configure.
      * \return
      */
-    QList<QPair<QFileInfo, QString>> renameMap();
+    Task *task() const;
 
 private slots:
     /*!
@@ -97,7 +95,7 @@ private:
     FileBasenameFormatter _formatter;
     PatternButton * _patternHelperButton;
 
-    QList<QPair<QFileInfo, QString>> _renameMap;
+    QList<QFileInfo> _fileInfoList;
     QMap<QString, QSqlRecord> _tracksFullInfos;
 
     QString _customPattern;
