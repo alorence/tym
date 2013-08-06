@@ -34,8 +34,6 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     } else {
         ui->progressBar->hide();
     }
-
-
 }
 
 TaskMonitor::~TaskMonitor()
@@ -51,16 +49,4 @@ void TaskMonitor::updateCurrentState(const QString &state)
 void TaskMonitor::logEvent(const QString &key, Utils::StatusType type, const QString &msg)
 {
 
-}
-
-void TaskMonitor::toggleLogTree(bool checked)
-{
-    if(checked) {
-        //: Text displayed on the button used to display/hide log tree frame (when it is visible)
-        ui->moreButton->setText(tr("Hide details"));
-    } else {
-        //: Text displayed on the button used to display/hide log tree frame (when it is hidden)
-        ui->moreButton->setText(tr("Show details"));
-    }
-    ui->resultTree->setVisible(checked);
 }
