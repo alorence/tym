@@ -74,5 +74,38 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>TaskMonitor</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>546</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>TaskMonitor</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>386</x>
+     <y>468</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>572</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
