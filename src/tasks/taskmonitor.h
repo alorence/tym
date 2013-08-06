@@ -21,6 +21,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TASKMONITOR_H
 
 #include <QDialog>
+#include <QTreeWidgetItem>
+#include <QThread>
 
 #include "tools/utils.h"
 
@@ -38,16 +40,19 @@ public:
     explicit TaskMonitor(Task * task, QWidget *parent = 0);
     ~TaskMonitor();
 
+    void showEvent(QShowEvent *);
 
 public slots:
-    void updateCurrentState(const QString &state);
-    void addIntermediateResult(const QString &key, const QString &label);
-    void logEvent(const QString &key, Utils::StatusType type, const QString &msg);
+    void updateCurrentStatus(const QString &state);
+    void initResultElement(const QString &key, const QString &label);
+    void appendResult(const QString &key, Utils::StatusType type, const QString &msg);
 
 private:
     Ui::TaskMonitor *ui;
 
     Task * _task;
+    QHash<QString, QTreeWidgetItem*> _resultsItems;
+    QThread * _thread;
 };
 
 #endif // TASKMONITOR_H

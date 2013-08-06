@@ -25,7 +25,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TaskMonitor),
-    _task(task)
+    _task(task),
+    _thread(new QThread)
 {
     ui->setupUi(this);
 
@@ -36,7 +37,8 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     });
 
     if(_task->isLongTask()) {
-        connect(_task, &Task::notifyProgression, ui->progressBar, &QProgressBar::setValue);
+        connect(_task, &Task::notifyProgression,
+                ui->progressBar, &QProgressBar::setValue);
     } else {
         ui->progressBar->hide();
     }
@@ -49,24 +51,37 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
         ui->resultTree->hide();
     }
 
+    _task->moveToThread(_thread);
 }
 
 TaskMonitor::~TaskMonitor()
 {
+    _thread->terminate();
     delete ui;
+    _thread->wait();
+    _thread->deleteLater();
+}
+
+void TaskMonitor::showEvent(QShowEvent *)
+{
+    _thread->start();
 }
 
 void TaskMonitor::updateCurrentStatus(const QString &state)
 {
-
+    ui->statusLabel->setText(state);
 }
 
 void TaskMonitor::initResultElement(const QString &key, const QString &label)
 {
-
+    QTreeWidgetItem *item = new QTreeWidgetItem(ui->resultTree,
+                                                QStringList() << label);
+    _resultsItems.insert(key, item);
 }
 
 void TaskMonitor::appendResult(const QString &key, Utils::StatusType type, const QString &msg)
 {
-
+    QTreeWidgetItem *item = _resultsItems[key];
+    QTreeWidgetItem *child = new QTreeWidgetItem(item, QStringList() << msg);
+    child->setData(0, Qt::DecorationRole, Utils::instance()->pixForStatusType(type));
 }
