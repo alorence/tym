@@ -41,6 +41,7 @@ public:
 
 public slots:
     void updateCurrentState(const QString &state);
+    void addIntermediateResult(const QString &key, const QString &label);
     void logEvent(const QString &key, Utils::StatusType type, const QString &msg);
 
 private:

@@ -56,11 +56,11 @@ public:
 
     /*!
      * \brief Informs if that task has multiple subtasks.
-     * The default is true, but concrete tasks can set _hasSubTasks or
+     * The default is true, but concrete tasks can set _hasMultiResults or
      * reimplements this method to change this property.
      * \return A boolean value
      */
-    virtual bool hasSubTasks() const;
+    virtual bool hasMultiResults() const;
 
 public slots:
     /**
@@ -77,13 +77,14 @@ signals:
     void initializeProgression(int value);
     void notifyProgression(int newValue);
 
-    void initSubTask(QString key, QString label);
-    void subTaskEvent(QString key, Utils::StatusType type, QString text);
+    void currentStatusChanged(QString state);
+    void notifyNewTaskEntity(QString key, QString label);
+    void newTaskEntityResult(QString key, Utils::StatusType type, QString text);
 
 protected:
     void increaseProgressStep(int step = 1);
     bool _longTask;
-    bool _hasSubTasks;
+    bool _hasMultiResults;
 
 private:
     int _progressValue;

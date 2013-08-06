@@ -29,11 +29,26 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(_task, &Task::currentStatusChanged,
+            this, &TaskMonitor::updateCurrentStatus);
+    connect(_task, &Task::finished, [=](){
+        ui->progressBar->setValue(ui->progressBar->maximum());
+    });
+
     if(_task->isLongTask()) {
         connect(_task, &Task::notifyProgression, ui->progressBar, &QProgressBar::setValue);
     } else {
         ui->progressBar->hide();
     }
+    if(_task->hasMultiResults()) {
+        connect(_task, &Task::notifyNewTaskEntity,
+                this, &TaskMonitor::initResultElement);
+        connect(_task, &Task::newTaskEntityResult,
+                this, &TaskMonitor::appendResult);
+    } else {
+        ui->resultTree->hide();
+    }
+
 }
 
 TaskMonitor::~TaskMonitor()
@@ -41,12 +56,17 @@ TaskMonitor::~TaskMonitor()
     delete ui;
 }
 
-void TaskMonitor::updateCurrentState(const QString &state)
+void TaskMonitor::updateCurrentStatus(const QString &state)
 {
 
 }
 
-void TaskMonitor::logEvent(const QString &key, Utils::StatusType type, const QString &msg)
+void TaskMonitor::initResultElement(const QString &key, const QString &label)
+{
+
+}
+
+void TaskMonitor::appendResult(const QString &key, Utils::StatusType type, const QString &msg)
 {
 
 }
