@@ -52,6 +52,7 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     }
 
     _task->moveToThread(_thread);
+    connect(_thread, &QThread::started, _task, &Task::run);
 }
 
 TaskMonitor::~TaskMonitor()
