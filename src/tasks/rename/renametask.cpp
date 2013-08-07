@@ -25,49 +25,70 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/bpdatabase.h"
 
 RenameTask::RenameTask(QList<QPair<QFileInfo, QString>> renameMap, QObject *parent) :
-    Task(parent)
+    Task(parent),
+    _renameMap(renameMap)
 {
-    _renameMap = renameMap;
+    _hasMultiResults = true;
+    _longTask = true;
 }
 
 void RenameTask::run()
 {
     BPDatabase db("renameThread");
 
+    emit initializeProgression(_renameMap.size());
+
     for(QPair<QFileInfo,QString> pair : _renameMap) {
         QFileInfo from(pair.first);
         QString to = from.canonicalPath() + '/' + pair.second;
 
+        QString key = from.filePath();
+        emit notifyNewTaskEntity(key, from.fileName());
+        emit currentStatusChanged(tr("Renaming file %1").arg(from.fileName()));
+
+        // Progress by steps of 1
+        increaseProgressStep();
+
+        // Check if original file exists on disk
         if( ! from.exists()) {
-            LOG_WARNING(tr("Error, file %1 does not exists, it can't be renamed.")
-                        .arg(from.canonicalFilePath()));
+            emit newTaskEntityResult(key, Utils::Error,
+                                     tr("%1 does not exists, it "
+                                        "can't be renamed.")
+                                     .arg(from.canonicalFilePath()));
             continue;
         }
 
+        // Check if target file already exists
         if(QFile::exists(to)) {
-            LOG_WARNING(tr("Error when renaming file %1, file %2 already exists.")
-                        .arg(from.canonicalFilePath())
-                        .arg(to));
+            emit newTaskEntityResult(key, Utils::Error,
+                                     tr("Target file %1 already exists.")
+                                     .arg(to));
             continue;
         }
 
-        if(QFile(from.canonicalFilePath()).rename(to)) {
-            if(QFile::exists(to)) {
-                LOG_INFO(tr("File %1 renamed to %2")
-                         .arg(from.canonicalFilePath())
-                         .arg(QFileInfo(to).fileName()));
-            } else {
-                LOG_WARNING(tr("Your file %1 seems to have been renamed, but the new one (%2) can't be found on disk !")
-                            .arg(from.canonicalFilePath())
-                            .arg(QFileInfo(to).fileName()));
-            }
-        } else {
-            LOG_WARNING(tr("Error when renaming file %1 into %2")
-                        .arg(from.canonicalFilePath())
-                        .arg(to));
+        // Rename the file
+        if( ! QFile(from.canonicalFilePath()).rename(to)) {
+            emit newTaskEntityResult(key, Utils::Error,
+                                     tr("Error when renaming file %1 into %2")
+                                     .arg(from.canonicalFilePath())
+                                     .arg(to));
             continue;
         }
 
+        // Check if new file exists on the system
+        if( ! QFile::exists(to)) {
+            emit newTaskEntityResult(key, Utils::Error,
+                                     tr("The file seems to have been renamed, but the "
+                                        "new one (%2) can't be found on disk !")
+                                     .arg(from.canonicalFilePath())
+                                     .arg(pair.second));
+            continue;
+        }
+
+        emit newTaskEntityResult(key, Utils::Success,
+                                 tr("File %1 renamed to %2")
+                                 .arg(from.canonicalFilePath())
+                                 .arg(QFileInfo(to).fileName()));
         db.renameFile(from.canonicalFilePath(), to);
 
     }
