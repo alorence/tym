@@ -29,7 +29,6 @@ RenameTask::RenameTask(QList<QPair<QFileInfo, QString>> renameMap, QObject *pare
     _renameMap(renameMap)
 {
     _hasMultiResults = true;
-    _longTask = true;
 }
 
 void RenameTask::run()

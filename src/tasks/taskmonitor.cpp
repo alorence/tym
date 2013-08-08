@@ -32,18 +32,16 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
 
     connect(_task, &Task::currentStatusChanged,
             this, &TaskMonitor::updateCurrentStatus);
+    connect(_task, &Task::initializeProgression,
+            this, &TaskMonitor::initializeProgressBar);
     connect(_task, &Task::finished, [=](){
         ui->progressBar->setValue(ui->progressBar->maximum());
     });
-    connect(_task, &Task::initializeProgression,
-            ui->progressBar, &QProgressBar::setMaximum);
 
-    if(_task->isLongTask()) {
-        connect(_task, &Task::notifyProgression,
-                ui->progressBar, &QProgressBar::setValue);
-    } else {
-        ui->progressBar->hide();
-    }
+    // By default, progress bar is not shown. If initializeProgression
+    // is emitted, show the widget
+    ui->progressBar->hide();
+
     if(_task->hasMultiResults()) {
         connect(_task, &Task::notifyNewTaskEntity,
                 this, &TaskMonitor::initResultElement);
@@ -70,6 +68,14 @@ void TaskMonitor::showEvent(QShowEvent *e)
 {
     QDialog::showEvent(e);
     _thread->start();
+}
+
+void TaskMonitor::initializeProgressBar(int max)
+{
+    ui->progressBar->setMaximum(max);
+    connect(_task, &Task::notifyProgression,
+            ui->progressBar, &QProgressBar::setValue);
+    ui->progressBar->show();
 }
 
 void TaskMonitor::updateCurrentStatus(const QString &state)

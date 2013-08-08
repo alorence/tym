@@ -46,15 +46,6 @@ public:
     explicit Task(QObject *parent = 0);
 
     /*!
-     * \brief Informs if that tasks take a minimum amount of time to achieve.
-     * Default value is true, but concrete tasks can set _longTask or
-     * reimplements this method to specify a quick task.
-     * \return A boolean value informaing that the task is quick (false)
-     * or long (true)
-     */
-    virtual bool isLongTask() const;
-
-    /*!
      * \brief Informs if that task has multiple subtasks.
      * The default is true, but concrete tasks can set _hasMultiResults or
      * reimplements this method to change this property.
@@ -83,7 +74,6 @@ signals:
 
 protected:
     void increaseProgressStep(int step = 1);
-    bool _longTask;
     bool _hasMultiResults;
 
 private:

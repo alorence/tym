@@ -43,6 +43,7 @@ public:
     void showEvent(QShowEvent *);
 
 public slots:
+    void initializeProgressBar(int max);
     void updateCurrentStatus(const QString &state);
     void initResultElement(const QString &key, const QString &label);
     void appendResult(const QString &key, Utils::StatusType type, const QString &msg);
