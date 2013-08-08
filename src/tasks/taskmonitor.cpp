@@ -35,6 +35,8 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     connect(_task, &Task::finished, [=](){
         ui->progressBar->setValue(ui->progressBar->maximum());
     });
+    connect(_task, &Task::initializeProgression,
+            ui->progressBar, &QProgressBar::setMaximum);
 
     if(_task->isLongTask()) {
         connect(_task, &Task::notifyProgression,
@@ -53,6 +55,7 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
 
     _task->moveToThread(_thread);
     connect(_thread, &QThread::started, _task, &Task::run);
+    connect(_task, &Task::finished, _thread, &QThread::quit);
 }
 
 TaskMonitor::~TaskMonitor()
@@ -63,8 +66,9 @@ TaskMonitor::~TaskMonitor()
     _thread->deleteLater();
 }
 
-void TaskMonitor::showEvent(QShowEvent *)
+void TaskMonitor::showEvent(QShowEvent *e)
 {
+    QDialog::showEvent(e);
     _thread->start();
 }
 
