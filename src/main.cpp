@@ -42,6 +42,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "gui/ui_mainwindow.h"
 #include "gui/mainwindow.h"
 #include "tools/langmanager.h"
+#include "tools/utils.h"
 #include "commons.h"
 #include "version.h"
 
@@ -97,6 +98,7 @@ int main(int argc, char *argv[])
 
     // Allow QItemSelection to be stored in a QVariant
     qRegisterMetaType<QItemSelection>("QItemSelection");
+    qRegisterMetaType<Utils::StatusType>("Utils::StatusType");
 
     MainWindow w;
     w.show();
