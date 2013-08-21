@@ -35,6 +35,7 @@ add_subdirectory(wizards)
 set(BASIC_HDRS
     version.h.in
     commons.h
+    interfaces/taskfactory.h
 )
 
 set(SOURCES

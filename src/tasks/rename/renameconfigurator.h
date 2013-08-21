@@ -23,9 +23,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QDialog>
 #include <QtSql>
 
+#include "interfaces/taskfactory.h"
+#include "tools/utils.h"
 #include "tools/patterntool.h"
 #include "widgets/patternbutton.h"
-#include "tools/utils.h"
 
 namespace Ui {
 class RenameConfigurator;
@@ -33,7 +34,7 @@ class RenameConfigurator;
 
 class Task;
 
-class RenameConfigurator : public QDialog
+class RenameConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT
     
@@ -48,7 +49,7 @@ public:
      * \brief Build and return the RenameTask this dialog configure.
      * \return
      */
-    Task *task() const;
+    Task *task() const override;
 
 private slots:
     /*!
