@@ -54,7 +54,7 @@ if(WIN32)
     )
     add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_FINAL_TARGET})
 elseif(APPLE)
-
+    get_target_property(TYM_BUNDLE_NAME ${TYM_FINAL_TARGET} OUTPUT_NAME)
     configure_file(osx/make-bundle.sh.in make-bundle.sh @ONLY)
 
     file(MAKE_DIRECTORY ${TYM_DELIVERABLES_OUTPUT})
@@ -62,7 +62,7 @@ elseif(APPLE)
     add_custom_target(${TYM_DELIVERABLE_TARGET}
         COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/make-bundle.sh
         WORKING_DIRECTORY ${TYM_DELIVERABLES_OUTPUT}
-        COMMENT "Building package ${TYM_EXECUTABLE_FILENAME}.app and the final ${TYM_DELIVERABLE_BASENAME}.zip"
+        COMMENT "Building package ${TYM_BUNDLE_NAME}.app and the final ${TYM_DELIVERABLE_BASENAME}.zip"
     )
     add_dependencies(${TYM_DELIVERABLE_TARGET} ${TYM_FINAL_TARGET})
 elseif(UNIX)

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-app="@TYM_EXECUTABLE_FILENAME@.app"
+app="@TYM_BUNDLE_NAME@.app"
 zip="@TYM_DELIVERABLE_BASENAME@.zip"
 
 rm -fr "${app}"
