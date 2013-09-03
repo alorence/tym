@@ -24,11 +24,14 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"
 
-ExportPlaylistTask::ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString& filePath,  QObject *parent) :
+ExportPlaylistTask::ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords,
+                                       const QString& filePath, bool exportPlaylist,
+                                       QObject *parent) :
     Task(parent),
     _outputFile(filePath),
     _records(selectedRecords),
-    _dbHelper(new BPDatabase("exportPlaylistTask", this))
+    _dbHelper(new BPDatabase("exportPlaylistTask", this)),
+    _exportPlaylist(exportPlaylist)
 {
     QFileInfo fileInfo(_outputFile);
     if(fileInfo.isDir()) {
@@ -81,11 +84,16 @@ void ExportPlaylistTask::run()
     xmlDoc.writeAttribute("NAME", QFileInfo(_outputFile).completeBaseName());
     xmlDoc.writeAttribute("TYPE", "PLAYLIST");
     xmlDoc.writeStartElement("PLAYLIST");
-    xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
-    xmlDoc.writeAttribute("TYPE", "LIST");
+    if(_exportPlaylist) {
+        xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
+        xmlDoc.writeAttribute("TYPE", "LIST");
 
-    for(QSqlRecord record : _records) {
-        writePlaylistEntry(xmlDoc, record);
+        for(QSqlRecord record : _records) {
+            writePlaylistEntry(xmlDoc, record);
+        }
+    } else {
+        xmlDoc.writeAttribute("ENTRIES", "0");
+        xmlDoc.writeAttribute("TYPE", "LIST");
     }
     xmlDoc.writeEndElement(); // PLAYLIST
     xmlDoc.writeEndElement(); // NODE

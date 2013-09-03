@@ -29,7 +29,8 @@ class ExportPlaylistTask : public Task
 {
     Q_OBJECT
 public:
-    explicit ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath, QObject *parent = 0);
+    explicit ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath,
+                                bool exportPlaylist = false, QObject *parent = 0);
 
     void run() override;
 
@@ -42,6 +43,7 @@ private:
     QList<QSqlRecord> _records;
     BPDatabase * _dbHelper;
     QSettings _settings;
+    bool _exportPlaylist;
 };
 
 #endif // EXPORTPLAYLISTTASK_H
