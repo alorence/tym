@@ -22,6 +22,7 @@ set(HDRS
     task.h
     taskmonitor.h
     export/exportplaylisttask.h
+    export/exportconfigurator.h
     libupdater/librarystatusupdater.h
     rename/renametask.h
     rename/renameconfigurator.h
@@ -32,6 +33,7 @@ set(CPP
     task.cpp
     taskmonitor.cpp
     export/exportplaylisttask.cpp
+    export/exportconfigurator.cpp
     libupdater/librarystatusupdater.cpp
     rename/renametask.cpp
     rename/renameconfigurator.cpp
@@ -41,6 +43,7 @@ set(CPP
 set(UIS
     taskmonitor.ui
     rename/renameconfigurator.ui
+    export/exportconfigurator.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
