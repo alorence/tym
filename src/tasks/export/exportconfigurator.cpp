@@ -22,10 +22,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QFileDialog>
 
+#include "exportplaylisttask.h"
+
 ExportConfigurator::ExportConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ExportConfigurator)
+    ui(new Ui::ExportConfigurator),
+    _records(records)
 {
     ui->setupUi(this);
     connect(ui->browseButton, &QPushButton::clicked, this, &ExportConfigurator::askForTargetFile);
@@ -38,7 +41,8 @@ ExportConfigurator::~ExportConfigurator()
 
 Task *ExportConfigurator::task() const
 {
-    return nullptr;
+    Task *task = new ExportPlaylistTask(_records, ui->targetFilePath->text());
+    return task;
 }
 
 void ExportConfigurator::askForTargetFile()
@@ -54,5 +58,10 @@ void ExportConfigurator::askForTargetFile()
     if( ! filePath.isEmpty()) {
         ui->targetFilePath->setText(filePath);
         settings.setValue("export/lastOutputPath", filePath);
+
+        QFile target(filePath);
+        if(target.exists()) {
+            // TODO: inform user that the file will be overwritten
+        }
     }
 }

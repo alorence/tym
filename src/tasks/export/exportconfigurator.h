@@ -51,6 +51,8 @@ private slots:
 
 private:
     Ui::ExportConfigurator *ui;
+
+    QList<QSqlRecord> _records;
 };
 
 
