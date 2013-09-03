@@ -27,6 +27,7 @@ set(HDRS
     rename/renametask.h
     rename/renameconfigurator.h
     search/searchtask.h
+    # search/searchconfigurator.h
 )
 
 set(CPP
@@ -38,12 +39,14 @@ set(CPP
     rename/renametask.cpp
     rename/renameconfigurator.cpp
     search/searchtask.cpp
+    # search/searchconfigurator.cpp
 )
 
 set(UIS
     taskmonitor.ui
     rename/renameconfigurator.ui
     export/exportconfigurator.ui
+    # search/searchconfigurator.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
