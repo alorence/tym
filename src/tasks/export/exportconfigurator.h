@@ -47,6 +47,7 @@ public:
     Task *task() const override;
 
 private slots:
+    void askForTargetFile();
 
 private:
     Ui::ExportConfigurator *ui;

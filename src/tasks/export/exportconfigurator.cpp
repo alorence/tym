@@ -20,12 +20,15 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "exportconfigurator.h"
 #include "ui_exportconfigurator.h"
 
+#include <QFileDialog>
+
 ExportConfigurator::ExportConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ExportConfigurator)
 {
     ui->setupUi(this);
+    connect(ui->browseButton, &QPushButton::clicked, this, &ExportConfigurator::askForTargetFile);
 }
 
 ExportConfigurator::~ExportConfigurator()
@@ -36,4 +39,20 @@ ExportConfigurator::~ExportConfigurator()
 Task *ExportConfigurator::task() const
 {
     return nullptr;
+}
+
+void ExportConfigurator::askForTargetFile()
+{
+    QSettings settings;
+    QString defaultDir = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+    QString lastOpenedDir = settings.value("lastOpenedDir", defaultDir).toString();
+    QString targetDir = settings.value("export/lastOutputPath", lastOpenedDir).toString();
+
+    QString filePath = QFileDialog::getSaveFileName(this,
+                                tr("Select file name"), targetDir, "Traktor collection (*.nml)");
+
+    if( ! filePath.isEmpty()) {
+        ui->targetFilePath->setText(filePath);
+        settings.setValue("export/lastOutputPath", filePath);
+    }
 }
