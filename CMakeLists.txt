@@ -26,7 +26,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
 
 ############# Build Settings ##############
-
 # Main name of the application
 set(TYM_NAME "Tag Your Music")
 # Main name of the application

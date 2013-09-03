@@ -1,4 +1,3 @@
-#include "renameconfigurator.h"
 /*****************************************************************************
 Copyright 2012-2013 Antoine Lorence. All right reserved.
 
@@ -18,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#include "renameconfigurator.h"
 #include "ui_renameconfigurator.h"
 
 #include "dbaccess/librarymodel.h"
