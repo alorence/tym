@@ -30,6 +30,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/bpdatabase.h"
 #include "wizards/searchwizard.h"
 #include "tasks/rename/renameconfigurator.h"
+#include "tasks/export/exportconfigurator.h"
 #include "wizards/exportplaylistwizard.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
@@ -504,8 +505,14 @@ void MainWindow::on_actionExport_triggered()
     QList<QSqlRecord> selectedRecords;
     _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
                                      selectedRecords);
-    ExportPlaylistWizard wizard(selectedRecords);
-    wizard.exec();
+
+    ExportConfigurator configurator(selectedRecords);
+    if(configurator.exec() == QWizard::Rejected) {
+        return;
+    }
+
+    TaskMonitor monitor(configurator.task());
+    monitor.exec();
 }
 
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
