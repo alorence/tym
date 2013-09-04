@@ -40,7 +40,7 @@ class WidgetAppender;
 class SearchWizard : public QWizard
 {
     Q_OBJECT
-    
+
 public:
     explicit SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent = 0);
     ~SearchWizard();

@@ -26,6 +26,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/utils.h"
 #include "taskmonitor.h"
 
+//NOTE: Missing doc on some methods
 /*!
  * @brief Define an atomic task.
  * This class is an interface to define asynchronous tasks. It extends QRunnable

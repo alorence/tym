@@ -34,7 +34,7 @@ class Task;
 class SearchConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT
-    
+
 public:
     explicit SearchConfigurator(const QList<QSqlRecord> &records,
                                 QWidget *parent = 0);

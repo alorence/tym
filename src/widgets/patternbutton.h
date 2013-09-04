@@ -32,15 +32,15 @@ class PatternTool;
 class PatternButton : public QPushButton
 {
     Q_OBJECT
-    
+
 public:
     explicit PatternButton(const PatternTool &patterntool, QLineEdit *line, QWidget *parent = 0);
     ~PatternButton();
-    
+
 private slots:
     /*!
-     * \brief menuActionTriggered
-     * \param action
+     * \brief Write the text corresponding to the given action in the lineEdit.
+     * \param action The instance of menu antry action selected by user
      */
     void menuActionTriggered(QAction *action);
 

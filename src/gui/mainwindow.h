@@ -41,7 +41,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     /*!
      * \brief Build the main window.

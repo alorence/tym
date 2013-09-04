@@ -21,6 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define SEARCHTHREAD_H
 
 #include <QSqlRecord>
+
 #include "commons.h"
 #include "tasks/task.h"
 #include "wizards/searchwizard.h"

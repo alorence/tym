@@ -20,10 +20,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef LIBRARYENTRY_H
 #define LIBRARYENTRY_H
 
+//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QObject>
 #include <QtSql>
 
 #include "commons.h"
+
+//NOTE: Missing doc on all methods
 
 class LibraryEntry
 {

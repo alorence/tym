@@ -24,6 +24,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QIcon>
 #include <QMutex>
 
+//NOTE: Missing doc on some methods
+
 class Utils
 {
 public:

@@ -20,9 +20,12 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef SEARCHPROVIDER_H
 #define SEARCHPROVIDER_H
 
+//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QtCore>
 #include <QtNetwork>
 #include <Logger.h>
+
+//NOTE: Missing doc on all methods
 
 class SearchProvider : public QObject
 {
@@ -30,7 +33,7 @@ class SearchProvider : public QObject
 public:
     explicit SearchProvider(QObject *parent = 0);
     ~SearchProvider();
-    
+
 signals:
     void searchResultAvailable(QString libId, QJsonValue result) const;
 

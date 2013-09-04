@@ -20,11 +20,15 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef PATTERNTOOL_H
 #define PATTERNTOOL_H
 
+//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QtCore>
 #include <QtSql>
 
 #include "commons.h"
 #include "patternelement.h"
+
+//NOTE: Missing doc on some methods
+
 /*!
  * \brief The PatternTool class is the base class for pattern manipulation.
  */

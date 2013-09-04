@@ -26,6 +26,8 @@ namespace Ui{
 class About;
 }
 
+//NOTE: Missing doc on all methods
+
 class About : public QDialog
 {
     Q_OBJECT

@@ -32,6 +32,8 @@ namespace Ui {
 class TaskMonitor;
 }
 
+//NOTE: Missing doc on all methods
+
 class TaskMonitor : public QDialog
 {
     Q_OBJECT

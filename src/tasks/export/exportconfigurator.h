@@ -34,7 +34,7 @@ class Task;
 class ExportConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT
-    
+
 public:
     explicit ExportConfigurator(const QList<QSqlRecord> &records,
                                 QWidget *parent = 0);

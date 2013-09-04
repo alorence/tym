@@ -20,6 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef RENAMECONFIGURATOR_H
 #define RENAMECONFIGURATOR_H
 
+//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QDialog>
 #include <QtSql>
 
@@ -37,7 +38,7 @@ class Task;
 class RenameConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT
-    
+
 public:
     explicit RenameConfigurator(const QList<QSqlRecord> &records,
                                 QWidget *parent = 0);

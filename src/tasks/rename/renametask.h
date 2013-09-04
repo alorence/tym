@@ -21,6 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define RENAMETHREAD_H
 
 #include <QFileInfo>
+
 #include "tasks/task.h"
 
 /*!

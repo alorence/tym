@@ -20,6 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef TRACKINFOSVIEW_H
 #define TRACKINFOSVIEW_H
 
+//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QtWidgets>
 #include <QtCore>
 #include <QtSql>
@@ -31,7 +32,7 @@ class TrackInfosView;
 class TrackInfosView : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit TrackInfosView(QWidget *parent = 0);
     ~TrackInfosView();
