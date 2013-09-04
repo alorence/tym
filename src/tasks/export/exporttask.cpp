@@ -33,6 +33,7 @@ ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
     _dbHelper(new BPDatabase("exportPlaylistTask", this)),
     _exportPlaylist(exportPlaylist)
 {
+    _hasMultiResults = false;
     QFileInfo fileInfo(_outputFile);
     if(fileInfo.isDir()) {
         LOG_WARNING(tr("ExportPlaylistTask must be configured with a file path instead of a dir path"));
