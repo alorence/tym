@@ -25,11 +25,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 class BPDatabase;
 
-class ExportPlaylistTask : public Task
+class ExportTask : public Task
 {
     Q_OBJECT
 public:
-    explicit ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath,
+    explicit ExportTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath,
                                 bool exportPlaylist = false, QObject *parent = 0);
 
     void run() override;

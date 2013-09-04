@@ -25,7 +25,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "Logger.h"
 #include "WidgetAppender.h"
 
-#include "tasks/export/exportplaylisttask.h"
+#include "tasks/export/exporttask.h"
 #include "commons.h"
 
 ExportPlaylistWizard::ExportPlaylistWizard(const QList<QSqlRecord> &selected, QWidget *parent) :
@@ -89,7 +89,7 @@ void ExportPlaylistWizard::initializePage(int id)
                 QString path = it.next().key();
                 QList<QSqlRecord> records = it.value();
 
-                ExportPlaylistTask * task = new ExportPlaylistTask(records, path);
+                ExportTask * task = new ExportTask(records, path);
                 QThreadPool::globalInstance()->start(task);
             }
 
@@ -104,8 +104,8 @@ void ExportPlaylistWizard::initializePage(int id)
                 }
             }
 
-            ExportPlaylistTask * task = new ExportPlaylistTask(records, ui->outputPath->text());
-            connect(task, &ExportPlaylistTask::finished, this, &ExportPlaylistWizard::printEndText);
+            ExportTask * task = new ExportTask(records, ui->outputPath->text());
+            connect(task, &ExportTask::finished, this, &ExportPlaylistWizard::printEndText);
 
             QThreadPool::globalInstance()->start(task);
         }

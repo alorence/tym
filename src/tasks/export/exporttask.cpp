@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "exportplaylisttask.h"
+#include "exporttask.h"
 
 #include "Logger.h"
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"
 
-ExportPlaylistTask::ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords,
+ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
                                        const QString& filePath, bool exportPlaylist,
                                        QObject *parent) :
     Task(parent),
@@ -39,7 +39,7 @@ ExportPlaylistTask::ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords,
     }
 }
 
-void ExportPlaylistTask::run()
+void ExportTask::run()
 {
     if(_outputFile.exists()) {
         // TODO: Inform user that his file will be overwritten
@@ -111,7 +111,7 @@ void ExportPlaylistTask::run()
     emit finished();
 }
 
-void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
+void ExportTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
 {
     QFileInfo path(record.value(Library::FilePath).toString());
     QString bpid = record.value(Library::Bpid).toString();
@@ -154,7 +154,7 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
 
 }
 
-void ExportPlaylistTask::writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
+void ExportTask::writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
 {
     QString traktorFormattedPath = record.value(Library::FilePath).toString().replace('/', "/:");
 

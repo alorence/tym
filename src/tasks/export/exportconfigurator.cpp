@@ -22,7 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QFileDialog>
 
-#include "exportplaylisttask.h"
+#include "exporttask.h"
 
 ExportConfigurator::ExportConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
@@ -41,7 +41,7 @@ ExportConfigurator::~ExportConfigurator()
 
 Task *ExportConfigurator::task() const
 {
-    Task *task = new ExportPlaylistTask(_records, ui->targetFilePath->text());
+    Task *task = new ExportTask(_records, ui->targetFilePath->text());
     return task;
 }
 

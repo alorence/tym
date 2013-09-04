@@ -21,7 +21,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 set(HDRS
     task.h
     taskmonitor.h
-    export/exportplaylisttask.h
+    export/exporttask.h
     export/exportconfigurator.h
     libupdater/librarystatusupdater.h
     rename/renametask.h
@@ -33,7 +33,7 @@ set(HDRS
 set(CPP
     task.cpp
     taskmonitor.cpp
-    export/exportplaylisttask.cpp
+    export/exporttask.cpp
     export/exportconfigurator.cpp
     libupdater/librarystatusupdater.cpp
     rename/renametask.cpp
