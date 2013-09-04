@@ -31,7 +31,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "wizards/searchwizard.h"
 #include "tasks/rename/renameconfigurator.h"
 #include "tasks/export/exportconfigurator.h"
-#include "wizards/exportplaylistwizard.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
