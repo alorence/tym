@@ -20,9 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <QtCore>
 #include <QPixmap>
 #include <QIcon>
+#include <QMutex>
 
 class Utils
 {

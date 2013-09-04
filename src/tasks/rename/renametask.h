@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef RENAMETHREAD_H
 #define RENAMETHREAD_H
 
-#include <QtCore>
+#include <QFileInfo>
 #include "tasks/task.h"
 
 /*!
