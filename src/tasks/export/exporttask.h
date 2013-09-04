@@ -31,12 +31,23 @@ class ExportTask : public Task
 public:
     explicit ExportTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath,
                                 bool exportPlaylist = false, QObject *parent = 0);
-
+    /**
+     * @brief Reimplementation of Task::run()
+     */
     void run() override;
 
 private:
-
+    /**
+     * @brief Write in the \i xmlDoc stream the collection tag corresponding to the given \i record.
+     * @param xmlDoc
+     * @param record
+     */
     void writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record);
+    /**
+     * @brief Write in the \i xmlDoc stream the playlist tag corresponding to the given \i record.
+     * @param xmlDoc
+     * @param record
+     */
     void writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record);
 
     QFile _outputFile;

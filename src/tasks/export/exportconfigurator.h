@@ -47,6 +47,9 @@ public:
     Task *task() const override;
 
 private slots:
+    /**
+     * @brief Open the dialog box to choose the target file where write content.
+     */
     void askForTargetFile();
 
 private:
