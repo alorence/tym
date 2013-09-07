@@ -131,6 +131,7 @@ void ExportTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord
     xmlDoc.writeEmptyElement("LOCATION");
     xmlDoc.writeAttribute("DIR", tractorFormattedPath);
     xmlDoc.writeAttribute("FILE", path.fileName());
+    // FIXME #3: Mac OS Volume is not correctly written
     xmlDoc.writeAttribute("VOLUME", volume);
 
     xmlDoc.writeEmptyElement("ALBUM");
