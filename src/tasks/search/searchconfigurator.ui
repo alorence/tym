@@ -2,11 +2,101 @@
 <ui version="4.0">
  <class>SearchConfigurator</class>
  <widget class="QDialog" name="SearchConfigurator">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>613</width>
+    <height>450</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Rename your files</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
+    <widget class="QCheckBox" name="bpidSearch">
+     <property name="text">
+      <string>Try to detect Beatport id in tracks filenames</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="automaticSearch">
+     <property name="title">
+      <string>Automatic search, based on files names</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="predefinedPatternArea_3">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Select the usual format of your tracks:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>115</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QComboBox" name="patternSelection_3"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="customPatternArea_3">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Format:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="pattern"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="manualSearch">
+     <property name="title">
+      <string>Manual search</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Type a search term for each file</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QTableWidget" name="manualSearchTable"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
