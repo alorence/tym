@@ -109,17 +109,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &MainWindow::updateTrackInfos);
 
-    // TODO: Maybe useless when LibraryModel::refresh(int row) will work
-    connect(_dbHelper, &BPDatabase::referenceForTrackUpdated,
-            _searchModel, &SearchResultsModel::refresh);
-
     // Download pictures when needed
     connect(ui->trackInfos, &TrackInfosView::needDownloadPicture,
             _pictureDownloader, &PictureDownloader::downloadTrackPicture);
     connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
             ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
-
-    connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
     ui->actionRemove->setShortcut(QKeySequence::Delete);
     ui->actionImport->setShortcut(QKeySequence::Open);

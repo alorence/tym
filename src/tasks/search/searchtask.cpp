@@ -34,7 +34,6 @@ SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &
 {
 
     connect(_search, &SearchProvider::searchResultAvailable, _dbHelper, &BPDatabase::storeSearchResults);
-    connect(_dbHelper, &BPDatabase::searchResultStored, this, &SearchTask::checkCountResults);
 }
 
 SearchTask::~SearchTask()

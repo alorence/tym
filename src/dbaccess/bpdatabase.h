@@ -150,23 +150,6 @@ public slots:
      */
     void setLibraryTrackReference(const QString &libUid, const QString &bpid) const;
 
-signals:
-    /*!
-     * \brief Emitted when a Library entry has been modified
-     * \param uid Library uid of the entry
-     */
-    void libraryEntryUpdated(const QString &uid = QString()) const;
-    /*!
-     * \brief Emitted when a Library entry has just been linked to a BPTracks entry.
-     * \param uid Library uid of the entry
-     */
-    void referenceForTrackUpdated(const QString &uid) const;
-    /*!
-     * \brief Emitted when a search result has been stored.
-     * \param uid Library entry's uid which has just been updated
-     */
-    void searchResultStored(const QString& uid) const;
-
 private :
     /*!
      * \brief Initialize tables in databse
