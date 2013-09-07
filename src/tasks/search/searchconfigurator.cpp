@@ -44,6 +44,40 @@ SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
     ui->patternSelection->addItem(tr("Custom"));
     connect(ui->patternSelection, SIGNAL(currentIndexChanged(int)),
             this, SLOT(updatePattern(int)));
+
+    // Configure manual search table widget
+    QStringList headers;
+    headers << tr("Track") << tr("Search terms");
+    ui->manualSearchTable->setHorizontalHeaderLabels(headers);
+    ui->manualSearchTable->setRowCount(records.count());
+    // Disable default TAB navigation, we will customize it after
+    ui->manualSearchTable->setTabKeyNavigation(false);
+
+    QLineEdit *previousLineEdit = nullptr;
+    for(int row = 0 ; row < ui->manualSearchTable->rowCount() ; ++row) {
+        QFileInfo fileInfo(records[row].value(Library::FilePath).toString());
+
+        // First cell is a classic widget
+        QTableWidgetItem *label = new QTableWidgetItem(fileInfo.fileName());
+        // It must not be editable
+        label->setFlags(label->flags() & ~Qt::ItemIsEditable & ~Qt::ItemIsSelectable);
+        ui->manualSearchTable->setItem(row, File, label);
+
+        // Second cell is a QLineEdit
+        QLineEdit *lineEdit = new QLineEdit;
+        ui->manualSearchTable->setCellWidget(row, SearchTerms, lineEdit);
+
+        // Configure the next lineEdit focused when TAB key is used
+        if (previousLineEdit != nullptr) {
+            ui->manualSearchTable->setTabOrder(previousLineEdit, lineEdit);
+            previousLineEdit = lineEdit;
+        }
+    }
+
+    // Select the first entry of pattern selection comboBox
+    ui->patternSelection->setCurrentIndex(0);
+    // Update all other fields and preview table
+    updatePattern(0);
 }
 
 SearchConfigurator::~SearchConfigurator()

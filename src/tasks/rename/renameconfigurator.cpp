@@ -126,8 +126,7 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
     // Update details according the selection
     connect(ui->previewTable, &QTableWidget::currentCellChanged,
             this, &RenameConfigurator::updateDetails);
-    // Select the first row
-    // Finally, select the first entry of pattern selection comboBox
+    // Select the first entry of pattern selection comboBox
     ui->patternSelection->setCurrentIndex(0);
     // Update all other fields and preview table
     updatePattern(0);

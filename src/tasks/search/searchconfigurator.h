@@ -58,6 +58,11 @@ private slots:
     void updatePattern(int comboBoxIndex);
 
 private:
+    enum Columns {
+        File,
+        SearchTerms
+    };
+
     Ui::SearchConfigurator *ui;
 
     QList<QSqlRecord> _records;

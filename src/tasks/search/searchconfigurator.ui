@@ -97,7 +97,28 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QTableWidget" name="manualSearchTable"/>
+       <widget class="QTableWidget" name="manualSearchTable">
+        <property name="columnCount">
+         <number>2</number>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>400</number>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>18</number>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>18</number>
+        </attribute>
+        <column/>
+        <column/>
+       </widget>
       </item>
      </layout>
     </widget>
