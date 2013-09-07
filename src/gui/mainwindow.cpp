@@ -31,6 +31,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "wizards/searchwizard.h"
 #include "tasks/rename/renameconfigurator.h"
 #include "tasks/export/exportconfigurator.h"
+#include "tasks/search/searchconfigurator.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
@@ -403,10 +404,15 @@ void MainWindow::on_actionSearch_triggered()
     QList<QSqlRecord> selectedRecords;
     _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
                                      selectedRecords);
-    SearchWizard wizard(selectedRecords);
-    if(wizard.exec() == QWizard::Rejected) {
+
+    SearchConfigurator configurator(selectedRecords);
+    if(configurator.exec() == QWizard::Rejected) {
         return;
     }
+
+    TaskMonitor monitor(configurator.task());
+    monitor.exec();
+
     _libraryModel->refresh();
 }
 

@@ -139,7 +139,7 @@ private slots:
     void afterLibraryViewReset();
 
     /*!
-     * \brief Check library elements, according to entry selected by user in the combobox
+     * \brief Select library elements, according to entry selected by user in the combobox
      *
      * \param checkGroup index of the combo element selected
      */
