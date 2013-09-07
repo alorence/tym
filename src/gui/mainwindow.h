@@ -60,6 +60,7 @@ public:
      */
     ~MainWindow();
 
+protected:
     /*!
      * \brief Define if elements dragged to this windows can or not be accepted.
      * \sa QWidget::dragEnterEvent()
@@ -137,28 +138,17 @@ private slots:
      * It is called when library model has been resetted.
      */
     void afterLibraryViewReset();
-
     /*!
      * \brief Select library elements, according to entry selected by user in the combobox
      *
      * \param checkGroup index of the combo element selected
      */
     void selectSpecificLibraryElements(int checkGroup);
-
     /*!
      * \brief Open the context menu on library table view
      * \param pos Global mouse position
      */
     void on_libraryView_customContextMenuRequested(const QPoint &pos);
-
-    /*!
-     * \brief Open the import dialog and import files in database
-     */
-    void on_actionImport_triggered();
-    /*!
-     * \brief Delete a library entry in database
-     */
-    void on_actionRemove_triggered();
 
     /*!
      * \brief Open the context menu on search result table view
@@ -174,6 +164,7 @@ private slots:
      */
     void on_actionSearchResultDelete_triggered();
 
+
     /*!
      * \brief Open the search wizard
      */
@@ -182,11 +173,18 @@ private slots:
      * \brief Open the rename wizard
      */
     void on_actionRename_triggered();
-
     /*!
      * \brief Open the export playlist wizard
      */
     void on_actionExport_triggered();
+    /*!
+     * \brief Open the import dialog and import files in database
+     */
+    void on_actionImport_triggered();
+    /*!
+     * \brief Delete a library entry in database
+     */
+    void on_actionRemove_triggered();
 
 private:
     /*!
