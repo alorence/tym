@@ -24,6 +24,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 
 #include "interfaces/taskfactory.h"
+#include "widgets/patternbutton.h"
+#include "tools/patterntool.h"
 
 namespace Ui {
 class SearchConfigurator;
@@ -49,9 +51,19 @@ public:
     Task *task() const override;
 
 private slots:
+    /**
+     * @brief updatePattern
+     * @param comboBoxIndex
+     */
+    void updatePattern(int comboBoxIndex);
 
 private:
     Ui::SearchConfigurator *ui;
+
+    bool _currentIsCustom;
+    PatternButton * _patternHelperButton;
+    FileBasenameParser _formatter;
+    QString _customPattern;
 };
 
 

@@ -23,9 +23,24 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SearchConfigurator)
+    ui(new Ui::SearchConfigurator),
+    _currentIsCustom(false)
 {
     ui->setupUi(this);
+
+    // Must be initialized after ui has been initialized
+    _patternHelperButton = new PatternButton(_formatter, ui->pattern, this);
+    ui->customPatternArea->addWidget(_patternHelperButton);
+
+    // Configure pattern selection comboBox
+    ui->patternSelection->addItem("%ARTISTS% - %NAME% (%MIXNAME%)");
+    ui->patternSelection->addItem("%ARTISTS% - %TITLE%");
+    ui->patternSelection->addItem("%ARTISTS% (%LABEL%) - %TITLE%");
+    // "Custom" entry MUST be the last one
+    //: Specific value in list of formats, allowing user to create its own
+    ui->patternSelection->addItem(tr("Custom"));
+    connect(ui->patternSelection, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(updatePattern(int)));
 }
 
 SearchConfigurator::~SearchConfigurator()
@@ -36,4 +51,27 @@ SearchConfigurator::~SearchConfigurator()
 Task *SearchConfigurator::task() const
 {
     return nullptr;
+}
+
+void SearchConfigurator::updatePattern(int comboBoxIndex)
+{
+    // If current selection is "Custom"
+    if(comboBoxIndex == ui->patternSelection->count()-1) {
+        // Restore the customized pattern if necessary
+        if(!_customPattern.isEmpty()) {
+            ui->pattern->setText(_customPattern);
+        }
+        _currentIsCustom = true;
+        ui->pattern->setReadOnly(false);
+        _patternHelperButton->setVisible(true);
+    } else {
+        // Save the customized pattern if necessary
+        if(_currentIsCustom) {
+            _customPattern = ui->pattern->text();
+        }
+        _currentIsCustom = false;
+        ui->pattern->setText(ui->patternSelection->itemText(comboBoxIndex));
+        ui->pattern->setReadOnly(true);
+        _patternHelperButton->setVisible(false);
+    }
 }

@@ -19,6 +19,9 @@
      <property name="text">
       <string>Try to detect Beatport id in tracks filenames</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="1" column="0">
@@ -53,12 +56,12 @@
          </spacer>
         </item>
         <item>
-         <widget class="QComboBox" name="patternSelection_3"/>
+         <widget class="QComboBox" name="patternSelection"/>
         </item>
        </layout>
       </item>
       <item row="1" column="0">
-       <layout class="QHBoxLayout" name="customPatternArea_3">
+       <layout class="QHBoxLayout" name="customPatternArea">
         <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
@@ -81,6 +84,9 @@
      </property>
      <property name="checkable">
       <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
