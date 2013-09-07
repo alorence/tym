@@ -60,6 +60,8 @@ private slots:
 private:
     Ui::SearchConfigurator *ui;
 
+    QList<QSqlRecord> _records;
+
     bool _currentIsCustom;
     PatternButton * _patternHelperButton;
     FileBasenameParser _formatter;

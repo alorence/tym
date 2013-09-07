@@ -20,10 +20,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "searchconfigurator.h"
 #include "ui_searchconfigurator.h"
 
+#include "searchtask.h"
+
 SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SearchConfigurator),
+    _records(records),
     _currentIsCustom(false)
 {
     ui->setupUi(this);
@@ -50,7 +53,9 @@ SearchConfigurator::~SearchConfigurator()
 
 Task *SearchConfigurator::task() const
 {
-    return nullptr;
+    // TODO: modify SearchTask to allow multiple combination of searchs
+    Task * task = new SearchTask(_records, "PATTERN");
+    return task;
 }
 
 void SearchConfigurator::updatePattern(int comboBoxIndex)
