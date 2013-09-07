@@ -129,6 +129,8 @@ void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
         QString libId = searchList.key();
         QString text = searchList.value();
 
+        if(text.isEmpty()) return;
+
         // Replace underscores by spaces (and prevent multiple spaces)
         Utils::instance()->simplifySpaces(text.replace('_', ' '));
 
