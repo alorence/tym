@@ -88,7 +88,22 @@ SearchConfigurator::~SearchConfigurator()
 Task *SearchConfigurator::task() const
 {
     // TODO: modify SearchTask to allow multiple combination of searchs
-    Task * task = new SearchTask(_records, "PATTERN");
+    SearchTask * task = new SearchTask(_records);
+    if(ui->bpidSearch->isChecked()) {
+        task->setSearchFromId(true);
+    }
+    if(ui->automaticSearch->isChecked()) {
+        task->setAutomaticSearch(true, ui->pattern->text());
+    }
+    if(ui->manualSearch->isChecked()) {
+        QMap<QString, QString> searchMap;
+        for(int row = 0 ; row < ui->manualSearchTable->rowCount() ; ++row) {
+            searchMap.insert(
+                _records[row].value(Library::Uid).toString(),
+                ((QLineEdit*) ui->manualSearchTable->cellWidget(row, SearchTerms))->text());
+        }
+        task->setManualSearch(true, searchMap);
+    }
     return task;
 }
 

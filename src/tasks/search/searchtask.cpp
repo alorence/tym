@@ -23,151 +23,171 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "network/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
-SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern, const QStringList &searchTerms, QObject *parent) :
+SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, QObject *parent) :
     Task(parent),
-    _searchPattern(searchPattern),
     _selectedRecords(selectedRecords),
-    _searchTerms(searchTerms),
     _dbHelper(new BPDatabase("searchTask", this)),
-    _search(new SearchProvider(this)),
-    _numTracksToUpdate(0)
+    _searchProvider(nullptr)
 {
-
-    connect(_search, &SearchProvider::searchResultAvailable, _dbHelper, &BPDatabase::storeSearchResults);
 }
 
 SearchTask::~SearchTask()
 {
     delete _dbHelper;
-    delete _search;
+    delete _searchProvider;
+}
+
+void SearchTask::setSearchFromId(bool enabled)
+{
+    _bpidSearchEnabled = enabled;
+}
+
+void SearchTask::setAutomaticSearch(bool enabled, const QString &pattern)
+{
+    _autoSearchEnabled = enabled;
+    _searchPattern = pattern;
+}
+
+void SearchTask::setManualSearch(bool enabled, QMap<QString, QString> searchTerms)
+{
+    _manualSearchEnabled = enabled;
+    _searchTerms = searchTerms;
 }
 
 void SearchTask::run()
 {
     LOG_TRACE(tr("Start search task"));
 
-    if( ! _searchTerms.isEmpty()) {
+    _searchProvider = new SearchProvider(this);
+    connect(_searchProvider, &SearchProvider::searchResultAvailable,
+            this, &SearchTask::updateLibraryWithResults);
 
-        emit initializeProgression(1);
 
-        if(_selectedRecords.count() != _searchTerms.count()) {
-            LOG_ERROR(tr("Number of library entries selected and number of search terms does not match..."));
-            emit finished();
-            return;
-        }
+    auto bpidSearchMap = new QMap<QString, QString>();
+    auto fullInfosSearchMap = new QMap<QString, QString>();
+    auto manualSearchMap = new QMap<QString, QString>();
 
-        auto searchMap = new QMap<QString, QString>();
-        for(int i = 0 ; i < _selectedRecords.count() ; ++i) {
-            (*searchMap)[_selectedRecords.value(i).value(Library::Uid).toString()] = _searchTerms.value(i);
-        }
+    if(_bpidSearchEnabled) {
 
-        _numTracksToUpdate += searchMap->count();
-        _search->searchManually(searchMap);
+        FileBasenameParser parser(TYM_BEATPORT_DEFAULT_FORMAT);
 
-    } else {
-        auto bpidSearchMap = new QMap<QString, QString>();
-        auto fullInfosSearchMap = new QMap<QString, QString>();
-
-        int numTracksToAutoLink = 0;
-
-        FileBasenameParser bpidParser(TYM_BEATPORT_DEFAULT_FORMAT);
-        FileBasenameParser fullInfosParser(_searchPattern);
         for(QSqlRecord record : _selectedRecords) {
-
             QString uid = record.value(Library::Uid).toString();
             QString baseName = QFileInfo(record.value(Library::FilePath).toString()).completeBaseName();
 
-            if(bpidParser.hasMatch(baseName)) {
-                (*bpidSearchMap)[uid] = bpidParser.parse(baseName)[TrackFullInfos::Bpid];
-                ++_numTracksToUpdate;
-            } else if(fullInfosParser.hasMatch(baseName)) {
-                // Keep track of parsing result, to use it in selectBetterResult()
-                _trackParsedInformation[uid] = fullInfosParser.parse(baseName);
-                (*fullInfosSearchMap)[uid] = ((QStringList)_trackParsedInformation[uid].values()).join(' ');
-                ++_numTracksToUpdate;
-                ++numTracksToAutoLink;
-            } else {
-                LOG_INFO(tr("Unable to extract information from %1 file").arg(baseName));
+            if(parser.hasMatch(baseName)) {
+                bpidSearchMap->insert(uid, parser.parse(baseName)[TrackFullInfos::Bpid]);
+
+                ++_nbResultsToReceive;
+            }
+        }
+    }
+
+    if(_autoSearchEnabled) {
+
+        FileBasenameParser parser(_searchPattern);
+
+        for(QSqlRecord record : _selectedRecords) {
+            QString uid = record.value(Library::Uid).toString();
+            QString baseName = QFileInfo(record.value(Library::FilePath).toString()).completeBaseName();
+
+            if(parser.hasMatch(baseName)) {
+                auto parseResult = parser.parse(baseName);
+                _trackParsedInformation.insert(uid, parseResult);
+                fullInfosSearchMap->insert(uid, ((QStringList) parseResult.values()).join(' '));
+
+                ++_nbResultsToReceive;
             }
         }
 
-        emit initializeProgression(_numTracksToUpdate * 3 + numTracksToAutoLink);
+    }
 
-        _dbHelper->dbObject().transaction();
-        if( ! bpidSearchMap->empty()) {
-            _search->searchFromIds(bpidSearchMap);
+    if(_manualSearchEnabled) {
+
+        for(QString uid : _searchTerms.keys()) {
+            QString searchTerm = _searchTerms[uid];
+            if(!searchTerm.isEmpty()) {
+                manualSearchMap->insert(uid, searchTerm);
+                ++_nbResultsToReceive;
+            }
         }
-        if( ! fullInfosSearchMap->empty()) {
-            _search->searchManually(fullInfosSearchMap);
-        }
+    }
+
+    // Configure prograssBar in the monitor
+    emit initializeProgression(_nbResultsToReceive * 3 + _trackParsedInformation.count());
+
+    if( ! bpidSearchMap->empty()) {
+        _searchProvider->searchFromIds(bpidSearchMap);
+    }
+    if( ! fullInfosSearchMap->empty()) {
+        _searchProvider->searchManually(fullInfosSearchMap);
+    }
+    if( ! manualSearchMap->empty()) {
+        _searchProvider->searchManually(manualSearchMap);
     }
 }
 
-void SearchTask::checkCountResults()
+void SearchTask::updateLibraryWithResults(QString libId, QJsonValue result)
 {
-    --_numTracksToUpdate;
-    increaseProgressStep(3);
+    increaseProgressStep(2);
+    _dbHelper->storeSearchResults(libId, result);
 
-    if(_numTracksToUpdate <= 0) {
-        if( ! _searchPattern.isNull()) {
-            selectBetterResult();
-        }
+    increaseProgressStep();
 
-        _dbHelper->dbObject().commit();
+    if(_trackParsedInformation.contains(libId)) {
+        selectBetterResult(libId);
+    }
+
+    if(--_nbResultsToReceive <= 0) {
         emit finished();
     }
 }
 
-void SearchTask::selectBetterResult()
+// TODO: try to limit bad behavior on this method
+void SearchTask::selectBetterResult(const QString &uid)
 {
-
     QRegularExpression stringPurifyRegexp("[-\\[\\](),&'_ +?]");
 
-    for(QSqlRecord record : _selectedRecords) {
-        QString uid = record.value(Library::Uid).toString();
+    QSqlQuery results = _dbHelper->resultsForTrack(uid);
 
-        QSqlQuery results = _dbHelper->resultsForTrack(uid);
+    // This map link each result (with its bpid) with a score, to find the better one
+    QMap<QString, int> resultScore;
+    while(results.next()) {
+        QSqlRecord result = results.record();
+        int score = 0;
 
-        // This map link each result (with its bpid) with a score, to find the better one
-        QMap<QString, int> resultScore;
-        while(results.next()) {
-            QSqlRecord result = results.record();
-            int score = 0;
+        QMapIterator<TrackFullInfos::TableIndexes, QString> it(_trackParsedInformation[uid]);
 
-            QMapIterator<TrackFullInfos::TableIndexes, QString> it(_trackParsedInformation[uid]);
+        // Check for each parsed information, for a corresponding result
+        while(it.hasNext()) {
+            TrackFullInfos::TableIndexes index = it.next().key();
 
-            // Check for each parsed information, for a corresponding result
-            while(it.hasNext()) {
-                TrackFullInfos::TableIndexes index = it.next().key();
+            // To ensure minor differences will not affect the string compare
+            QString value = it.value();
+            value = value.remove(stringPurifyRegexp).normalized(QString::NormalizationForm_D);
+            QString resultValue = result.value(index).toString().remove(stringPurifyRegexp).normalized(QString::NormalizationForm_D);
 
-                // To ensure minor differences will not affect the string compare
-                QString value = it.value();
-                value = value.remove(stringPurifyRegexp).normalized(QString::NormalizationForm_D);
-                QString resultValue = result.value(index).toString().remove(stringPurifyRegexp).normalized(QString::NormalizationForm_D);
-
-                if(value.compare(resultValue, Qt::CaseInsensitive) == 0) {
-                    ++score;
-                }
-            }
-
-            resultScore[result.value(TrackFullInfos::Bpid).toString()] = score;
-        }
-
-        QMapIterator<QString, int> resultScoreIt(resultScore);
-        QString betterResult = "";
-        int betterScore = 0;
-        while(resultScoreIt.hasNext()) {
-            if(resultScoreIt.next().value() > betterScore) {
-                betterScore = resultScoreIt.value();
-                betterResult = resultScoreIt.key();
+            if(value.compare(resultValue, Qt::CaseInsensitive) == 0) {
+                ++score;
             }
         }
 
-        if(betterScore > 0) {
-            _dbHelper->setLibraryTrackReference(uid, betterResult);
-        }
-        increaseProgressStep(1);
-
+        resultScore[result.value(TrackFullInfos::Bpid).toString()] = score;
     }
+
+    QMapIterator<QString, int> resultScoreIt(resultScore);
+    QString betterResult = "";
+    int betterScore = 0;
+    while(resultScoreIt.hasNext()) {
+        if(resultScoreIt.next().value() > betterScore) {
+            betterScore = resultScoreIt.value();
+            betterResult = resultScoreIt.key();
+        }
+    }
+
+    if(betterScore > 0) {
+        _dbHelper->setLibraryTrackReference(uid, betterResult);
+    }
+    increaseProgressStep();
 }
 

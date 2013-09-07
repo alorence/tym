@@ -26,7 +26,6 @@ add_subdirectory(network)
 add_subdirectory(gui)
 add_subdirectory(tools)
 add_subdirectory(widgets)
-add_subdirectory(wizards)
 
 # These headers doesn't define QObject children,
 # they does not need to be parsed with moc tool.
@@ -78,7 +77,6 @@ add_executable(${TYM_FINAL_TARGET}
     $<TARGET_OBJECTS:TymNetwork>
     $<TARGET_OBJECTS:TymTools>
     $<TARGET_OBJECTS:TymWidgets>
-    $<TARGET_OBJECTS:TymWizards>
     $<TARGET_OBJECTS:TymResources>
 )
 
