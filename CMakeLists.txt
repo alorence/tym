@@ -64,9 +64,9 @@ find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
+# Default name for target executable
+set(TYM_TARGET "tym")
 # Configure compile flags and various platform dependent variables
-set(TYM_FINAL_TARGET "TymFinalBinary")
-set(TYM_EXECUTABLE_FILENAME "tym")
 if(MSVC) # MSVC
     # Display more warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
@@ -108,7 +108,6 @@ message(STATUS "Build flags:        ${CMAKE_CXX_FLAGS}")
 message(STATUS "Version:            ${TYM_SHORT_VERSION}")
 message(STATUS "Beta release:       ${TYM_BETA}")
 message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
-message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
 message(STATUS "==============================================")
 
 if(NOT APPLE)

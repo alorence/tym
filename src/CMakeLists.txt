@@ -65,7 +65,7 @@ elseif(APPLE)
 endif()
 
 # Configure final executable building
-add_executable(${TYM_FINAL_TARGET}
+add_executable(${TYM_TARGET}
     ${EXECUTABLE_OPTION}
     ${SOURCES}
     ${BASIC_HDRS}
@@ -80,10 +80,10 @@ add_executable(${TYM_FINAL_TARGET}
     $<TARGET_OBJECTS:TymResources>
 )
 
-target_link_libraries(${TYM_FINAL_TARGET} Logger)
+target_link_libraries(${TYM_TARGET} Logger)
 
 # Add Qt5 modules dependencies
-qt5_use_modules(${TYM_FINAL_TARGET}
+qt5_use_modules(${TYM_TARGET}
     Core
     Widgets
     Sql
@@ -93,20 +93,20 @@ qt5_use_modules(${TYM_FINAL_TARGET}
 if(MSVC)
     # Link with Qt WinMain, ensuring that the entry function will have
     # signature required by MSVC
-    target_link_libraries(${TYM_FINAL_TARGET} Qt5::WinMain)
+    target_link_libraries(${TYM_TARGET} Qt5::WinMain)
 elseif(APPLE)
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES OUTPUT_NAME ${TYM_NAME})
+    set_target_properties(${TYM_TARGET} PROPERTIES OUTPUT_NAME ${TYM_NAME})
     # configure some properties on Info.plist
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_ICON_FILE tym.icns)
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_INFO_STRING "Tag Your Music bundle")
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.tym.gui")
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_LONG_VERSION_STRING ${TYM_VERSION})
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME ${TYM_NAME})
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING ${TYM_SHORT_VERSION})
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${TYM_VERSION})
-    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012-2013 Antoine Lorence")
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_ICON_FILE tym.icns)
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_INFO_STRING "Tag Your Music bundle")
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.tym.gui")
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_LONG_VERSION_STRING ${TYM_VERSION})
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME ${TYM_NAME})
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING ${TYM_SHORT_VERSION})
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${TYM_VERSION})
+    set_target_properties(${TYM_TARGET} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012-2013 Antoine Lorence")
 endif()
 
 if(NOT APPLE)
-    install(TARGETS ${TYM_FINAL_TARGET} RUNTIME DESTINATION bin)
+    install(TARGETS ${TYM_TARGET} RUNTIME DESTINATION bin)
 endif()
