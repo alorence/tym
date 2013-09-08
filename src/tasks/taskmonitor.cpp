@@ -34,9 +34,6 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
             this, &TaskMonitor::updateCurrentStatus);
     connect(_task, &Task::initializeProgression,
             this, &TaskMonitor::initializeProgressBar);
-    connect(_task, &Task::finished, [=](){
-        ui->progressBar->setValue(ui->progressBar->maximum());
-    });
 
     // By default, progress bar is not shown. If initializeProgression
     // is emitted, show the widget
@@ -53,12 +50,13 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
 
     _task->moveToThread(_thread);
     connect(_thread, &QThread::started, _task, &Task::run);
-    connect(_task, &Task::finished, _thread, &QThread::quit);
+    connect(_task, &Task::finished,
+            this, &TaskMonitor::finalizeMonitoring);
 }
 
 TaskMonitor::~TaskMonitor()
 {
-    _thread->terminate();
+    _thread->quit();
     delete ui;
     _thread->wait();
     _thread->deleteLater();
@@ -95,4 +93,11 @@ void TaskMonitor::appendResult(const QString &key, Utils::StatusType type, const
     QTreeWidgetItem *item = _resultsItems[key];
     QTreeWidgetItem *child = new QTreeWidgetItem(item, QStringList() << msg);
     child->setData(0, Qt::DecorationRole, Utils::instance()->pixForStatusType(type));
+}
+
+void TaskMonitor::finalizeMonitoring() {
+    if(!ui->progressBar->isHidden()) {
+        ui->progressBar->setValue(ui->progressBar->maximum());
+    }
+    _thread->quit();
 }

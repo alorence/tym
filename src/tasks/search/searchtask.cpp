@@ -27,8 +27,11 @@ SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, QObject *parent
     Task(parent),
     _selectedRecords(selectedRecords),
     _dbHelper(new BPDatabase("searchTask", this)),
-    _searchProvider(nullptr)
+    _searchProvider(new SearchProvider(this))
 {
+    connect(_searchProvider, &SearchProvider::searchResultAvailable,
+            this, &SearchTask::updateLibraryWithResults);
+
 }
 
 SearchTask::~SearchTask()
@@ -57,10 +60,6 @@ void SearchTask::setManualSearch(bool enabled, QMap<QString, QString> searchTerm
 void SearchTask::run()
 {
     LOG_TRACE(tr("Start search task"));
-
-    _searchProvider = new SearchProvider(this);
-    connect(_searchProvider, &SearchProvider::searchResultAvailable,
-            this, &SearchTask::updateLibraryWithResults);
 
 
     auto bpidSearchMap = new QMap<QString, QString>();
@@ -129,6 +128,8 @@ void SearchTask::run()
 
 void SearchTask::updateLibraryWithResults(QString libId, QJsonValue result)
 {
+
+
     increaseProgressStep(2);
     _dbHelper->storeSearchResults(libId, result);
 

@@ -87,7 +87,6 @@ SearchConfigurator::~SearchConfigurator()
 
 Task *SearchConfigurator::task() const
 {
-    // TODO: modify SearchTask to allow multiple combination of searchs
     SearchTask * task = new SearchTask(_records);
     if(ui->bpidSearch->isChecked()) {
         task->setSearchFromId(true);
