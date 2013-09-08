@@ -85,9 +85,9 @@ set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VER
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
 set(TYM_DELIVERABLES_OUTPUT "${CMAKE_SOURCE_DIR}/deliverables")
 
-# Build dependencies
-include_directories(libs/cutelogger/include)
-add_subdirectory(libs/cutelogger)
+# Build library dependencies
+add_subdirectory(libs)
+include_directories(${TYM_LIBS_INCLUDES})
 
 # Parse subdirectories
 add_subdirectory(resources)
