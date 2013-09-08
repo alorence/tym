@@ -17,13 +17,13 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef SEARCHTHREAD_H
-#define SEARCHTHREAD_H
+#ifndef SEARCHTASK_H
+#define SEARCHTASK_H
 
 #include <QSqlRecord>
+
 #include "commons.h"
-#include "task.h"
-#include "wizards/searchwizard.h"
+#include "tasks/task.h"
 
 class Task;
 class BPDatabase;
@@ -45,8 +45,12 @@ public:
      * \param searchPattern Search terms to use in case of manual search
      * \param parent
      */
-    explicit SearchTask(const QList<QSqlRecord> &selectedRecords, const QString &searchPattern = QString(), const QStringList &searchTerms = QStringList(), QObject *parent = 0);
+    explicit SearchTask(const QList<QSqlRecord> &selectedRecords, QObject *parent = 0);
     ~SearchTask();
+
+    void setSearchFromId(bool enabled);
+    void setAutomaticSearch(bool enabled, const QString &pattern);
+    void setManualSearch(bool enabled, QMap<QString, QString> searchTerms);
 
 public slots:
     /*!
@@ -57,25 +61,33 @@ public slots:
      * to store results into SQLite database.
      */
     void run() override;
+
+private slots:
     /*!
-     * \brief Used to check number of results received, and emit the finished() signal when last result has arrived.
+     * \brief TODO
      */
-    void checkCountResults();
+    void updateLibraryWithResults(QString libId, QJsonValue result);
 
 private:
     /*!
      * \brief Try to find the better result for each selected tracks, and link it to the track.
      */
-    void selectBetterResult();
+    void selectBetterResult(const QString &uid);
 
-    QString _searchPattern;
     QList<QSqlRecord> _selectedRecords;
-    QStringList _searchTerms;
-    QMap<QString, QMap<TrackFullInfos::TableIndexes, QString> > _trackParsedInformation;
-    BPDatabase* _dbHelper;
-    SearchProvider* _search;
+    int _nbResultsToReceive;
 
-    int _numTracksToUpdate;
+    bool _bpidSearchEnabled;
+
+    bool _autoSearchEnabled;
+    QString _searchPattern;
+
+    bool _manualSearchEnabled;
+    QMap<QString, QString> _searchTerms;
+
+    QMap<QString, QMap<TrackFullInfos::TableIndexes, QString>> _trackParsedInformation;
+    BPDatabase* _dbHelper;
+    SearchProvider* _searchProvider;
 };
 
-#endif // SEARCHTHREAD_H
+#endif // SEARCHTASK_H

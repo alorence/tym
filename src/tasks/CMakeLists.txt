@@ -16,28 +16,46 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+
 set(HDRS
     task.h
-    exportplaylisttask.h
-    renametask.h
-    searchtask.h
-    librarystatusupdater.h
+    taskmonitor.h
+    export/exporttask.h
+    export/exportconfigurator.h
+    libupdater/librarystatusupdater.h
+    rename/renametask.h
+    rename/renameconfigurator.h
+    search/searchtask.h
+    search/searchconfigurator.h
 )
 
 set(CPP
     task.cpp
-    exportplaylisttask.cpp
-    renametask.cpp
-    searchtask.cpp
-    librarystatusupdater.cpp
+    taskmonitor.cpp
+    export/exporttask.cpp
+    export/exportconfigurator.cpp
+    libupdater/librarystatusupdater.cpp
+    rename/renametask.cpp
+    rename/renameconfigurator.cpp
+    search/searchtask.cpp
+    search/searchconfigurator.cpp
+)
+
+set(UIS
+    taskmonitor.ui
+    rename/renameconfigurator.ui
+    export/exportconfigurator.ui
+    search/searchconfigurator.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})
+qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymConcretetasks OBJECT ${CPP} ${MOCS} ${HDRS})
-add_dependencies(TymConcretetasks TymWizards)
+add_library(TymTasks OBJECT ${CPP} ${MOCS} ${HDRS} ${UIS_HDRS})
+add_dependencies(TymTasks TymWidgets)
 
-tym_qt5_use_modules(TymConcretetasks
+tym_qt5_use_modules(TymTasks
     Widgets
     Sql
     Network

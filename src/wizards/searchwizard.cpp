@@ -23,17 +23,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <Logger.h>
 #include <WidgetAppender.h>
 
-#include "concretetasks/searchtask.h"
+#include "tasks/search/searchtask.h"
 #include "tools/patterntool.h"
 
 SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::SearchWizard),
     _selectedRecords(selectedRecords),
-    _patternHelperButton(new PatternButton(FileBasenameParser(), this)),
     _thread(nullptr)
 {
     ui->setupUi(this);
+
+    _patternHelperButton = new PatternButton(FileBasenameParser(), ui->pattern, this);
 
     _widgetAppender = new WidgetAppender(ui->outputConsole);
     _widgetAppender->setFormat("%{message}\n");
@@ -47,7 +48,6 @@ SearchWizard::SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent) :
 
     ui->patternHorizLayout->addWidget(_patternHelperButton);
     _patternHelperButton->hide();
-    connect(_patternHelperButton, &PatternButton::patternSelected, this, &SearchWizard::insertPatternText);
 
     setStartId(_selectedRecords.count() > 1 ? AutoOptionsPage : SearchTypePage);
 
@@ -139,11 +139,6 @@ void SearchWizard::updateSearchPattern(bool selected)
         QRadioButton *radio = static_cast<QRadioButton*>(sender());
         ui->pattern->setText(radio->text());
     }
-}
-
-void SearchWizard::insertPatternText(const QString & patternText)
-{
-    ui->pattern->insert(patternText);
 }
 
 void SearchWizard::printEndText()

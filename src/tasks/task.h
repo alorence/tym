@@ -23,13 +23,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QRunnable>
 
+#include "tools/utils.h"
+#include "taskmonitor.h"
+
+//NOTE: Missing doc on some methods
 /*!
  * @brief Define an atomic task.
- * This class is used as an interface to asynchronous tasks. It extends QRunnable
+ * This class is an interface to define asynchronous tasks. It extends QRunnable
  * to define run() method, and QObject to implements signals / slots mechanism.
  *
- * Taks can be launched directly in a QThread, or via a QThreadPool, depending on how
- * it work and if it needs to launch a event loop or not.
+ * Tasks can be launched directly in a QThread (which run a Qt envent loop),
+ * via a QThreadPool or directly without thread, depending on how it works and
+ * if it needs to launch a event loop or not.
  */
 class Task : public QObject, public QRunnable
 {
@@ -40,6 +45,14 @@ public:
      * @param parent
      */
     explicit Task(QObject *parent = 0);
+
+    /*!
+     * \brief Informs if that task has multiple subtasks.
+     * The default is true, but concrete tasks can set _hasMultiResults or
+     * reimplements this method to change this property.
+     * \return A boolean value
+     */
+    virtual bool hasMultiResults() const;
 
 public slots:
     /**
@@ -56,8 +69,13 @@ signals:
     void initializeProgression(int value);
     void notifyProgression(int newValue);
 
+    void currentStatusChanged(QString state);
+    void notifyNewTaskEntity(QString key, QString label);
+    void newTaskEntityResult(QString key, Utils::StatusType type, QString text);
+
 protected:
     void increaseProgressStep(int step = 1);
+    bool _hasMultiResults;
 
 private:
     int _progressValue;

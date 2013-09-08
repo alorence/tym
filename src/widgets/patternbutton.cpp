@@ -25,23 +25,24 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "tools/patterntool.h"
 
-PatternButton::PatternButton(const PatternTool &patterntool, QWidget *parent) :
-    QPushButton(parent)
+PatternButton::PatternButton(const PatternTool &patterntool, QLineEdit * line,
+                             QWidget *parent) :
+    QPushButton(parent),
+    _lineEdit(line)
 {
     setText(tr("Pattern"));
 
-
     QMenu * menu = new QMenu(this);
 
-    QMapIterator<QString, PatternElement> it(patterntool.availablesPatterns());
-    while(it.hasNext()) {
+    QMap<QString, PatternElement> patterns = patterntool.availablesPatterns();
+    for(auto patternString : patterns.keys()) {
 
-        QString patternString = it.next().key();
-        PatternElement pe = it.value();
+        PatternElement pe = patterns[patternString];
+        QString actionLabel = QString("%1 (%%2%)")
+                .arg(pe.displayName())
+                .arg(patternString);
 
-        QString text = QString("%1 (%%2%)").arg(pe.displayName()).arg(patternString);
-
-        QAction *action = new QAction(text, menu);
+        QAction *action = new QAction(actionLabel, menu);
         action->setIconVisibleInMenu(false);
         action->setStatusTip(pe.description());
         menu->addAction(action);
@@ -49,7 +50,7 @@ PatternButton::PatternButton(const PatternTool &patterntool, QWidget *parent) :
         _patternElementMap[action] = patternString;
     }
     setMenu(menu);
-    connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(menuActionTriggered(QAction*)));
+    connect(menu, &QMenu::triggered, this, &PatternButton::menuActionTriggered);
 }
 
 PatternButton::~PatternButton()
@@ -59,5 +60,5 @@ PatternButton::~PatternButton()
 void PatternButton::menuActionTriggered(QAction *action)
 {
     QString decoratedPattern = QString("%%1%").arg(_patternElementMap.value(action));
-    emit patternSelected(decoratedPattern);
+    _lineEdit->insert(decoratedPattern);
 }

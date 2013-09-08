@@ -17,26 +17,30 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "exportplaylisttask.h"
+#include "exporttask.h"
 
 #include "Logger.h"
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"
 
-ExportPlaylistTask::ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString& filePath,  QObject *parent) :
+ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
+                                       const QString& filePath, bool exportPlaylist,
+                                       QObject *parent) :
     Task(parent),
     _outputFile(filePath),
     _records(selectedRecords),
-    _dbHelper(new BPDatabase("exportPlaylistTask", this))
+    _dbHelper(new BPDatabase("exportPlaylistTask", this)),
+    _exportPlaylist(exportPlaylist)
 {
+    _hasMultiResults = false;
     QFileInfo fileInfo(_outputFile);
     if(fileInfo.isDir()) {
         LOG_WARNING(tr("ExportPlaylistTask must be configured with a file path instead of a dir path"));
     }
 }
 
-void ExportPlaylistTask::run()
+void ExportTask::run()
 {
     if(_outputFile.exists()) {
         // TODO: Inform user that his file will be overwritten
@@ -81,11 +85,16 @@ void ExportPlaylistTask::run()
     xmlDoc.writeAttribute("NAME", QFileInfo(_outputFile).completeBaseName());
     xmlDoc.writeAttribute("TYPE", "PLAYLIST");
     xmlDoc.writeStartElement("PLAYLIST");
-    xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
-    xmlDoc.writeAttribute("TYPE", "LIST");
+    if(_exportPlaylist) {
+        xmlDoc.writeAttribute("ENTRIES", QString::number(_records.count()));
+        xmlDoc.writeAttribute("TYPE", "LIST");
 
-    for(QSqlRecord record : _records) {
-        writePlaylistEntry(xmlDoc, record);
+        for(QSqlRecord record : _records) {
+            writePlaylistEntry(xmlDoc, record);
+        }
+    } else {
+        xmlDoc.writeAttribute("ENTRIES", "0");
+        xmlDoc.writeAttribute("TYPE", "LIST");
     }
     xmlDoc.writeEndElement(); // PLAYLIST
     xmlDoc.writeEndElement(); // NODE
@@ -103,7 +112,7 @@ void ExportPlaylistTask::run()
     emit finished();
 }
 
-void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
+void ExportTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
 {
     QFileInfo path(record.value(Library::FilePath).toString());
     QString bpid = record.value(Library::Bpid).toString();
@@ -122,6 +131,7 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
     xmlDoc.writeEmptyElement("LOCATION");
     xmlDoc.writeAttribute("DIR", tractorFormattedPath);
     xmlDoc.writeAttribute("FILE", path.fileName());
+    // FIXME #3: Mac OS Volume is not correctly written
     xmlDoc.writeAttribute("VOLUME", volume);
 
     xmlDoc.writeEmptyElement("ALBUM");
@@ -131,7 +141,7 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
     xmlDoc.writeAttribute("CATALOG_NO", trackInfos.value(TrackFullInfos::Bpid).toString());
     xmlDoc.writeAttribute("GENRE", trackInfos.value(TrackFullInfos::Genres).toString());
 
-    xmlDoc.writeAttribute("KEY", Utils::formatKey(trackInfos.value(TrackFullInfos::Key).toString()));
+    xmlDoc.writeAttribute("KEY", Utils::instance()->formatKey(trackInfos.value(TrackFullInfos::Key).toString()));
 
     xmlDoc.writeAttribute("LABEL", trackInfos.value(TrackFullInfos::LabelName).toString());
     xmlDoc.writeAttribute("MIX", trackInfos.value(TrackFullInfos::MixName).toString());
@@ -146,7 +156,7 @@ void ExportPlaylistTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QS
 
 }
 
-void ExportPlaylistTask::writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
+void ExportTask::writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)
 {
     QString traktorFormattedPath = record.value(Library::FilePath).toString().replace('/', "/:");
 

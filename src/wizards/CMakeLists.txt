@@ -18,20 +18,14 @@
 
 set(HDRS
     searchwizard.h
-    renamewizard.h
-    exportplaylistwizard.h
 )
 
 set(CPP
     searchwizard.cpp
-    renamewizard.cpp
-    exportplaylistwizard.cpp
 )
 
 set(UIS
     searchwizard.ui
-    renamewizard.ui
-    exportplaylistwizard.ui
 )
 
 qt5_wrap_cpp(MOCS ${HDRS})

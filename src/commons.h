@@ -22,6 +22,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore>
 
+//NOTE: Missing doc on some content
+
 // General
 #define TYM_PICTURE_URL_DOWNLOAD "http://geo-media.beatport.com/image_size/200x200/%1.jpg"
 #define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)

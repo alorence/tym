@@ -29,13 +29,14 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/searchresultsmodel.h"
 #include "dbaccess/bpdatabase.h"
 #include "wizards/searchwizard.h"
-#include "wizards/renamewizard.h"
-#include "wizards/exportplaylistwizard.h"
+#include "tasks/rename/renameconfigurator.h"
+#include "tasks/export/exportconfigurator.h"
+#include "tasks/search/searchconfigurator.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
 
-#include "concretetasks/librarystatusupdater.h"
+#include "tasks/libupdater/librarystatusupdater.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -108,17 +109,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &MainWindow::updateTrackInfos);
 
-    // TODO: Maybe useless when LibraryModel::refresh(int row) will work
-    connect(_dbHelper, &BPDatabase::referenceForTrackUpdated,
-            _searchModel, &SearchResultsModel::refresh);
-
     // Download pictures when needed
     connect(ui->trackInfos, &TrackInfosView::needDownloadPicture,
             _pictureDownloader, &PictureDownloader::downloadTrackPicture);
     connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
             ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
-
-    connect(_dbHelper, &BPDatabase::libraryEntryUpdated, _libraryModel, &LibraryModel::refresh);
 
     ui->actionRemove->setShortcut(QKeySequence::Delete);
     ui->actionImport->setShortcut(QKeySequence::Open);
@@ -190,25 +185,9 @@ MainWindow::~MainWindow()
     qDeleteAll(_selectActionsList);
 }
 
-void MainWindow::updateSettings()
-{
-    QSettings settings;
-    bool proxyEnabled = settings.value(TYM_PATH_PROXY_ENABLED, TYM_DEFAULT_PROXY_ENABLED).toBool();
-    if(proxyEnabled) {
-
-        QString proxyHost = settings.value(TYM_PATH_PROXY_HOST, TYM_DEFAULT_PROXY_HOST).toString();
-        quint16 proxyPort = settings.value(TYM_PATH_PROXY_PORT, TYM_DEFAULT_PROXY_PORT).toUInt();
-        QString proxyUser = settings.value(TYM_PATH_PROXY_USER, TYM_DEFAULT_PROXY_USER).toString();
-        QString proxyPass = settings.value(TYM_PATH_PROXY_PWD, TYM_DEFAULT_PROXY_PWD).toString();
-
-        QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, proxyHost, proxyPort, proxyUser, proxyPass);
-        QNetworkProxy::setApplicationProxy(proxy);
-    } else if(QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy) {
-        QNetworkProxy proxy(QNetworkProxy::NoProxy);
-        QNetworkProxy::setApplicationProxy(proxy);
-    }
-}
-
+/********************************************************
+ * Events reimplemented from parent classes [protected] *
+ ********************************************************/
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     if(event->mimeData()->hasUrls()) {
@@ -271,6 +250,9 @@ void MainWindow::closeEvent(QCloseEvent *e)
     QWidget::closeEvent(e);
 }
 
+/*********************************************************************
+ * Private slots, used internally with signal called by user actions *
+ *********************************************************************/
 void MainWindow::toggleConsoleDisplaying(bool show) const
 {
     if(show) {
@@ -280,6 +262,25 @@ void MainWindow::toggleConsoleDisplaying(bool show) const
     }
 
     ui->outputConsole->setVisible(show);
+}
+
+void MainWindow::updateSettings()
+{
+    QSettings settings;
+    bool proxyEnabled = settings.value(TYM_PATH_PROXY_ENABLED, TYM_DEFAULT_PROXY_ENABLED).toBool();
+    if(proxyEnabled) {
+
+        QString proxyHost = settings.value(TYM_PATH_PROXY_HOST, TYM_DEFAULT_PROXY_HOST).toString();
+        quint16 proxyPort = settings.value(TYM_PATH_PROXY_PORT, TYM_DEFAULT_PROXY_PORT).toUInt();
+        QString proxyUser = settings.value(TYM_PATH_PROXY_USER, TYM_DEFAULT_PROXY_USER).toString();
+        QString proxyPass = settings.value(TYM_PATH_PROXY_PWD, TYM_DEFAULT_PROXY_PWD).toString();
+
+        QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, proxyHost, proxyPort, proxyUser, proxyPass);
+        QNetworkProxy::setApplicationProxy(proxy);
+    } else if(QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy) {
+        QNetworkProxy proxy(QNetworkProxy::NoProxy);
+        QNetworkProxy::setApplicationProxy(proxy);
+    }
 }
 
 void MainWindow::updateSearchResults(const QModelIndex & selected, const QModelIndex &)
@@ -336,6 +337,9 @@ void MainWindow::updateSearchResultsActions()
     ui->actionSearchResultDelete->setDisabled(numSel == 0);
 }
 
+/**************************
+ * Actions on LibraryView *
+ **************************/
 void MainWindow::beforeLibraryViewReset()
 {
     // Save expanded folder, as a list of unique identifiers
@@ -398,18 +402,6 @@ void MainWindow::selectSpecificLibraryElements(int comboIndex)
     ui->groupSelectionCombo->setCurrentIndex(0);
 }
 
-void MainWindow::on_actionSearch_triggered()
-{
-    QList<QSqlRecord> selectedRecords;
-    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
-                                     selectedRecords);
-    SearchWizard wizard(selectedRecords);
-    if(wizard.exec() == QWizard::Rejected) {
-        return;
-    }
-    _libraryModel->refresh();
-}
-
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
@@ -422,6 +414,90 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
     contextMenu.addSeparator();
     contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionRemove);
     contextMenu.exec(ui->libraryView->mapToGlobal(pos));
+}
+
+/************************************
+ * Actions on SearchResultsView     *
+ ************************************/
+void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
+{
+    QMenu contextMenu;
+    contextMenu.addActions(QList<QAction*>() << ui->actionSetDefaultResult << ui->actionSearchResultDelete);
+    contextMenu.exec(ui->searchResultsView->mapToGlobal(pos));
+}
+
+void MainWindow::on_actionSetDefaultResult_triggered()
+{
+    int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
+
+    QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
+    QString bpid = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
+
+    _dbHelper->setLibraryTrackReference(libId, bpid);
+    ui->searchResultsView->selectRow(row);
+}
+
+void MainWindow::on_actionSearchResultDelete_triggered()
+{
+    int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
+
+    QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
+    QString trackId = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
+    _dbHelper->deleteSearchResult(libId, trackId);
+    _libraryModel->refresh();
+    ui->searchResultsView->selectRow(row-1);
+}
+
+/************************************
+ * Launch main tasks of the program *
+ ************************************/
+void MainWindow::on_actionSearch_triggered()
+{
+    QList<QSqlRecord> selectedRecords;
+    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                     selectedRecords);
+
+    SearchConfigurator configurator(selectedRecords);
+    if(configurator.exec() == QWizard::Rejected) {
+        return;
+    }
+
+    TaskMonitor monitor(configurator.task());
+    monitor.exec();
+
+    _libraryModel->refresh();
+}
+
+void MainWindow::on_actionRename_triggered()
+{
+    QList<QSqlRecord> selectedRecords;
+    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                     selectedRecords);
+    RenameConfigurator configurator(selectedRecords);
+    if(configurator.exec() == QWizard::Rejected) {
+        return;
+    }
+
+    TaskMonitor monitor(configurator.task());
+    monitor.exec();
+
+    _libraryModel->refresh();
+}
+
+void MainWindow::on_actionExport_triggered()
+
+{
+    QList<QSqlRecord> selectedRecords;
+    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
+                                     selectedRecords);
+
+    ExportConfigurator configurator(selectedRecords);
+    if(configurator.exec() == QWizard::Rejected) {
+        return;
+    }
+
+    TaskMonitor monitor(configurator.task());
+    monitor.exec();
 }
 
 void MainWindow::on_actionImport_triggered()
@@ -453,57 +529,9 @@ void MainWindow::on_actionRemove_triggered()
     _libraryModel->refresh();
 }
 
-void MainWindow::on_searchResultsView_customContextMenuRequested(const QPoint &pos)
-{
-    QMenu contextMenu;
-    contextMenu.addActions(QList<QAction*>() << ui->actionSetDefaultResult << ui->actionSearchResultDelete);
-    contextMenu.exec(ui->searchResultsView->mapToGlobal(pos));
-}
-
-void MainWindow::on_actionSetDefaultResult_triggered()
-{
-    int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
-
-    QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
-    QString bpid = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
-
-    _dbHelper->setLibraryTrackReference(libId, bpid);
-    ui->searchResultsView->selectRow(row);
-}
-
-void MainWindow::on_actionSearchResultDelete_triggered()
-{
-    int row = ui->searchResultsView->selectionModel()->selectedRows().first().row();
-
-    QString libId = _searchModel->data(_searchModel->index(row, SearchResults::LibId)).toString();
-    QString trackId = _searchModel->data(_searchModel->index(row, SearchResults::Bpid)).toString();
-    _dbHelper->deleteSearchResult(libId, trackId);
-    _libraryModel->refresh();
-    ui->searchResultsView->selectRow(row-1);
-}
-
-void MainWindow::on_actionRename_triggered()
-{
-    QList<QSqlRecord> selectedRecords;
-    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
-                                     selectedRecords);
-    RenameWizard wizard(selectedRecords);
-    if(wizard.exec() == QWizard::Rejected) {
-        return;
-    }
-    _libraryModel->refresh();
-}
-
-void MainWindow::on_actionExport_triggered()
-
-{
-    QList<QSqlRecord> selectedRecords;
-    _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
-                                     selectedRecords);
-    ExportPlaylistWizard wizard(selectedRecords);
-    wizard.exec();
-}
-
+/*******************************
+ * Private methods (utilities) *
+ *******************************/
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 {
     QFileInfoList result;

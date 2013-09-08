@@ -17,36 +17,40 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef PICTUREDOWNLOADER_H
-#define PICTUREDOWNLOADER_H
+#ifndef RENAMETHREAD_H
+#define RENAMETHREAD_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QObject>
-#include <QtNetwork>
+#include <QFileInfo>
 
-//NOTE: Missing doc on all methods
+#include "tasks/task.h"
 
-class PictureDownloader : public QObject
+/*!
+ * \brief Rename files according to QMap gived as parameter.
+ *
+ * \sa RenameTask::run()
+ */
+class RenameTask : public Task
 {
     Q_OBJECT
+
 public:
-    explicit PictureDownloader(QObject *parent = 0);
-    ~PictureDownloader();
+    /*!
+     * \brief Construct a new RenameTask
+     * \param renameMap The map defining which track must be renamed with whioch name
+     * \param parent
+     * \sa RenameTask::run()
+     */
+    explicit RenameTask(QList<QPair<QFileInfo, QString> > renameMap, QObject *parent = 0);
 
-signals:
-    void pictureDownloadFinished(const QString &picId) const;
-
-public slots:
-    void downloadTrackPicture(const QString &picId);
-
-private slots:
-    void writeTrackPicture() const;
-    void sendFinalNotification();
-    void requestError(QNetworkReply::NetworkError error) const;
-
-private :
-    QNetworkAccessManager * _manager;
-    QMap<QNetworkReply*, QString> _downloadManagaer;
+    /*!
+     * \brief Execute the rename task.
+     *
+     * According to the QMap<QString, QString> used to create the class, rename each @a key
+     * into @value and update database with new file names.
+     */
+    void run() override;
+private:
+    QList<QPair<QFileInfo, QString> > _renameMap;
 };
 
-#endif // PICTUREDOWNLOADER_H
+#endif // RENAMETHREAD_H

@@ -17,58 +17,61 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef SEARCHWIZARD_H
-#define SEARCHWIZARD_H
+#ifndef SEARCHCONFIGURATOR_H
+#define SEARCHCONFIGURATOR_H
 
-#include <QWizard>
-#include <QtCore>
-#include <QSqlRecord>
+#include <QDialog>
+#include <QtSql>
 
+#include "interfaces/taskfactory.h"
 #include "widgets/patternbutton.h"
+#include "tools/patterntool.h"
 
 namespace Ui {
-class SearchWizard;
+class SearchConfigurator;
 }
 
-class WidgetAppender;
+class Task;
 
-/*!
- * \brief The Wizard used to perform a search.
- *
- *
- */
-class SearchWizard : public QWizard
+//TODO: Implements a dynamic pattern list, based on user settings
+
+class SearchConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT
 
 public:
-    explicit SearchWizard(QList<QSqlRecord> selectedRecords, QWidget *parent = 0);
-    ~SearchWizard();
-    void initializePage(int id) override;
-    int nextId() const override;
+    explicit SearchConfigurator(const QList<QSqlRecord> &records,
+                                QWidget *parent = 0);
+    ~SearchConfigurator();
 
-    QString pattern() const;
+    /*!
+     * \brief Build and return the SearchTask this dialog configure.
+     * \return
+     */
+    Task *task() const override;
 
 private slots:
-    void customSearchSelected(bool);
-    void updateSearchPattern(bool);
-    void printEndText();
-    void initializeProgressBar(int value);
+    /**
+     * @brief updatePattern
+     * @param comboBoxIndex
+     */
+    void updatePattern(int comboBoxIndex);
 
 private:
-    void setPattern(QString value);
-    enum WizardPages {
-        SearchTypePage = 0,
-        AutoOptionsPage,
-        ManualOptionsPage,
-        ResultPage
+    enum Columns {
+        File,
+        SearchTerms
     };
-    Ui::SearchWizard* ui;
-    QList<QSqlRecord> _selectedRecords;
 
+    Ui::SearchConfigurator *ui;
+
+    QList<QSqlRecord> _records;
+
+    bool _currentIsCustom;
     PatternButton * _patternHelperButton;
-    QThread * _thread;
-    WidgetAppender* _widgetAppender;
+    FileBasenameParser _formatter;
+    QString _customPattern;
 };
 
-#endif // SEARCHWIZARD_H
+
+#endif // SEARCHCONFIGURATOR_H

@@ -17,16 +17,46 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "task.h"
+#ifndef TASKMONITOR_H
+#define TASKMONITOR_H
 
-Task::Task(QObject *parent) :
-    QObject(parent),
-    _progressValue(0)
-{
+#include <QDialog>
+#include <QTreeWidgetItem>
+#include <QThread>
+
+#include "tools/utils.h"
+
+class Task;
+
+namespace Ui {
+class TaskMonitor;
 }
 
-void Task::increaseProgressStep(int step)
+//NOTE: Missing doc on all methods
+
+class TaskMonitor : public QDialog
 {
-    _progressValue += step;
-    emit notifyProgression(_progressValue);
-}
+    Q_OBJECT
+
+public:
+    explicit TaskMonitor(Task * task, QWidget *parent = 0);
+    ~TaskMonitor();
+
+    void showEvent(QShowEvent *);
+
+private slots:
+    void initializeProgressBar(int max);
+    void updateCurrentStatus(const QString &state);
+    void initResultElement(const QString &key, const QString &label);
+    void appendResult(const QString &key, Utils::StatusType type, const QString &msg);
+    void finalizeMonitoring();
+
+private:
+    Ui::TaskMonitor *ui;
+
+    Task * _task;
+    QHash<QString, QTreeWidgetItem*> _resultsItems;
+    QThread * _thread;
+};
+
+#endif // TASKMONITOR_H

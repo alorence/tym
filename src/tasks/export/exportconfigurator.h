@@ -17,58 +17,46 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef RENAMEWIZARD_H
-#define RENAMEWIZARD_H
+#ifndef EXPORTCONFIGURATOR_H
+#define EXPORTCONFIGURATOR_H
 
-#include <QtCore>
-#include <QtWidgets>
+#include <QDialog>
 #include <QtSql>
 
-#include "widgets/patternbutton.h"
-#include "tools/patterntool.h"
+#include "interfaces/taskfactory.h"
 
 namespace Ui {
-class RenameWizard;
+class ExportConfigurator;
 }
 
-class WidgetAppender;
+class Task;
 
-class RenameWizard : public QWizard
+class ExportConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT
-    
-public:
-    explicit RenameWizard(QList<QSqlRecord> selected, QWidget *parent = 0);
-    ~RenameWizard();
 
-protected:
-    void initializePage(int id) override;
-    
+public:
+    explicit ExportConfigurator(const QList<QSqlRecord> &records,
+                                QWidget *parent = 0);
+    ~ExportConfigurator();
+
+    /*!
+     * \brief Build and return the ExportTask this dialog configure.
+     * \return
+     */
+    Task *task() const override;
+
 private slots:
-    void updateRenamePreview();
-    void insertPatternText(const QString&);
-    void printEndText() const;
-    void on_patternSelection_currentIndexChanged(int index);
+    /**
+     * @brief Open the dialog box to choose the target file where write content.
+     */
+    void askForTargetFile();
 
 private:
-    Ui::RenameWizard* ui;
+    Ui::ExportConfigurator *ui;
 
-    FileBasenameFormatter _filenameFormatter;
-    PatternButton * _patternHelperButton;
-
-    QMap<QString, QSqlRecord> _tracksInformations;
-    QMap<int, QFileInfo> _fileInfosList;
-
-    enum WizardPages {
-        PreviewPage = 0,
-        ResultPage
-    };
-
-    enum PreviewColumns {
-        OrigFileName,
-        TargetFileName
-    };
-    WidgetAppender* _widgetAppender;
+    QList<QSqlRecord> _records;
 };
 
-#endif // RENAMEWIZARD_H
+
+#endif // EXPORTCONFIGURATOR_H

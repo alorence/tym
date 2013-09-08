@@ -17,39 +17,42 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef RENAMETHREAD_H
-#define RENAMETHREAD_H
+#ifndef LIBRARYSTATUSUPDATER_H
+#define LIBRARYSTATUSUPDATER_H
 
-#include <QtCore>
-#include "task.h"
+#include "tasks/task.h"
+
+class BPDatabase;
 
 /*!
- * \brief Rename files according to QMap gived as parameter.
- *
- * \sa RenameTask::run()
+ * \brief Define a task to update some Library informations.
  */
-class RenameTask : public Task
+class LibraryStatusUpdater : public Task
 {
     Q_OBJECT
 
 public:
     /*!
-     * \brief Construct a new RenameTask
-     * \param renameMap The map defining which track must be renamed with whioch name
+     * \brief Create the task
      * \param parent
-     * \sa RenameTask::run()
      */
-    explicit RenameTask(QList<QPair<QFileInfo, QString> > renameMap, QObject *parent = 0);
-
+    explicit LibraryStatusUpdater(QObject *parent = 0);
     /*!
-     * \brief Execute the rename task.
+     * Destroy the task and all its members
+     */
+    ~LibraryStatusUpdater();
+
+public slots:
+    /*!
+     * \brief Check and update Library entries if needed.
      *
-     * According to the QMap<QString, QString> used to create the class, rename each @a key
-     * into @value and update database with new file names.
+     * Check all files in Library SQLite table, and update "flags" column
+     * if some tracks can't be found on the disk at the path specified.
      */
     void run() override;
+
 private:
-    QList<QPair<QFileInfo, QString> > _renameMap;
+    BPDatabase* _dbHelper;
 };
 
-#endif // RENAMETHREAD_H
+#endif // LIBRARYSTATUSUPDATER_H

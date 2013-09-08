@@ -22,9 +22,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPushButton>
 #include <QAction>
+#include <QLineEdit>
 
 class PatternTool;
-
 
 /*!
  * \brief Define a button to help user to build a file pattern
@@ -32,19 +32,21 @@ class PatternTool;
 class PatternButton : public QPushButton
 {
     Q_OBJECT
-    
+
 public:
-    explicit PatternButton(const PatternTool &patterntool, QWidget *parent = 0);
+    explicit PatternButton(const PatternTool &patterntool, QLineEdit *line, QWidget *parent = 0);
     ~PatternButton();
 
-signals:
-    void patternSelected(const QString &pattern);
-    
 private slots:
+    /*!
+     * \brief Write the text corresponding to the given action in the lineEdit.
+     * \param action The instance of menu antry action selected by user
+     */
     void menuActionTriggered(QAction *action);
 
 private:
     QMap<QAction*, QString> _patternElementMap;
+    QLineEdit *_lineEdit;
 };
 
 #endif // PATTERNBUTTON_H

@@ -84,7 +84,6 @@ QMap<TrackFullInfos::TableIndexes, QString> FileBasenameParser::parse(const QStr
             result[availablesPatterns().value(upCasePatternElt).sqlIndex()] = matchResult.captured(upCasePatternElt);
         }
     }
-    qDebug() << result;
     return result;
 }
 
@@ -110,6 +109,5 @@ QString FileBasenameFormatter::format(const QSqlRecord &trackInfoRecord) const
             result.append(patternElt);
         }
     }
-    qDebug() << result;
     return result;
 }

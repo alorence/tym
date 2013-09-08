@@ -31,7 +31,7 @@ class ConsoleWidget;
 class ConsoleWidget : public QPlainTextEdit
 {
     Q_OBJECT
-    
+
 public:
     explicit ConsoleWidget(QWidget *parent = 0):
         QPlainTextEdit(parent),
@@ -52,7 +52,7 @@ public:
         }
         QWidget::changeEvent(e);
     }
-    
+
 private:
     Ui::ConsoleWidget *ui;
 };

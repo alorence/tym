@@ -26,7 +26,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 project(tym CXX)
 
 ############# Build Settings ##############
-
 # Main name of the application
 set(TYM_NAME "Tag Your Music")
 # Main name of the application
@@ -66,6 +65,7 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
 # Configure compile flags and various platform dependent variables
+set(TYM_FINAL_TARGET "TymFinalBinary")
 set(TYM_EXECUTABLE_FILENAME "tym")
 if(MSVC) # MSVC
     # Display more warnings
@@ -76,7 +76,6 @@ elseif(UNIX OR CMAKE_COMPILER_IS_GNUCXX)
     if(APPLE)
         # Required on OSX to compile c++11
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mmacosx-version-min=10.7")
-        set(TYM_EXECUTABLE_FILENAME ${TYM_NAME})
     endif(APPLE)
 endif()
 

@@ -32,7 +32,7 @@ class SettingsDialog;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
-    
+
 public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
@@ -49,7 +49,7 @@ protected:
      * \sa WidgetChangesObserver::init()
      */
     void showEvent(QShowEvent *) override;
-    
+
 private slots:
     /*!
      * \brief Load the setting page corresponding to the current selected item in the menu

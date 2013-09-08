@@ -20,28 +20,44 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef EXPORTPLAYLISTTASK_H
 #define EXPORTPLAYLISTTASK_H
 
-#include "task.h"
-#include "wizards/exportplaylistwizard.h"
+#include <QSqlRecord>
+#include <QXmlStreamWriter>
+#include <QFile>
+#include <QSettings>
+#include "tasks/task.h"
 
 class BPDatabase;
 
-class ExportPlaylistTask : public Task
+class ExportTask : public Task
 {
     Q_OBJECT
 public:
-    explicit ExportPlaylistTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath, QObject *parent = 0);
-
+    explicit ExportTask(const QList<QSqlRecord> &selectedRecords, const QString &filePath,
+                                bool exportPlaylist = false, QObject *parent = 0);
+    /**
+     * @brief Reimplementation of Task::run()
+     */
     void run() override;
 
 private:
-
+    /**
+     * @brief Write in the \i xmlDoc stream the collection tag corresponding to the given \i record.
+     * @param xmlDoc
+     * @param record
+     */
     void writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record);
+    /**
+     * @brief Write in the \i xmlDoc stream the playlist tag corresponding to the given \i record.
+     * @param xmlDoc
+     * @param record
+     */
     void writePlaylistEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record);
 
     QFile _outputFile;
     QList<QSqlRecord> _records;
     BPDatabase * _dbHelper;
     QSettings _settings;
+    bool _exportPlaylist;
 };
 
 #endif // EXPORTPLAYLISTTASK_H

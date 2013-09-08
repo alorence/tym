@@ -269,8 +269,6 @@ void BPDatabase::storeSearchResults(const QString &libUid, const QJsonValue &res
     _dbMutex->unlock();
 
     updateLibraryStatus(libUid, Library::Searched);
-
-    emit searchResultStored(libUid);
 }
 
 void BPDatabase::importFile(const QString &path) const
@@ -280,13 +278,9 @@ void BPDatabase::importFile(const QString &path) const
     query.bindValue(":path", path);
     query.bindValue(":status", Library::New);
 
-    _dbMutex->lock();
+    QMutexLocker locker(_dbMutex);
     if( ! query.exec()){
-        _dbMutex->unlock();
         LOG_WARNING(tr("Unable to import file %1: %2").arg(path).arg(query.lastError().text()));
-    } else {
-        _dbMutex->unlock();
-        emit libraryEntryUpdated();
     }
 }
 
@@ -313,9 +307,6 @@ void BPDatabase::importFiles(const QStringList &pathList) const
     dbObject().commit();
     _dbMutex->unlock();
 
-    // TODO: send uid of newly added entry ? Need to ensure LibraryModel::refresh(QString) works and is efficient
-    emit libraryEntryUpdated();
-
     if(errors) {
         LOG_WARNING(tr("%1 file(s) have not been added due to database error(s)", nullptr, errors).arg(errors));
     }
@@ -336,7 +327,6 @@ void BPDatabase::updateLibraryStatus(const QString &uid, const Library::FileStat
         return;
     }
     _dbMutex->unlock();
-    emit libraryEntryUpdated(uid);
 }
 
 void BPDatabase::setLibraryTrackReference(const QString &libUid, const QString &bpid) const
@@ -346,16 +336,11 @@ void BPDatabase::setLibraryTrackReference(const QString &libUid, const QString &
     query.bindValue(":uid", libUid);
     query.bindValue(":bpid", bpid);
 
-    _dbMutex->lock();
+    QMutexLocker locker(_dbMutex);
     if( ! query.exec()) {
-        _dbMutex->unlock();
         LOG_WARNING(tr("Unable to update library element %1 with the bpid %2: %3")
                     .arg(libUid, bpid)
                     .arg(query.lastError().text()));
-    } else {
-        _dbMutex->unlock();
-        emit libraryEntryUpdated(libUid);
-        emit referenceForTrackUpdated(libUid);
     }
 }
 

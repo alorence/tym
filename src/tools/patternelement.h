@@ -22,6 +22,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "commons.h"
 
+//NOTE: Missing doc on some methods
+
 /*!
  * \brief Encapsulate all informations about a pattern element.
  * Used by \link PatternTool class, a pattern (formatted as %PATTERN%) is used to parse

@@ -20,13 +20,12 @@ configure_file(version.h.in version.h)
 
 # In source files, all includes are relative to src (in cmlake source or binary directory)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-add_subdirectory(concretetasks)
+add_subdirectory(tasks)
 add_subdirectory(dbaccess)
 add_subdirectory(network)
 add_subdirectory(gui)
 add_subdirectory(tools)
 add_subdirectory(widgets)
-add_subdirectory(wizards)
 
 # These headers doesn't define QObject children,
 # they does not need to be parsed with moc tool.
@@ -35,6 +34,7 @@ add_subdirectory(wizards)
 set(BASIC_HDRS
     version.h.in
     commons.h
+    interfaces/taskfactory.h
 )
 
 set(SOURCES
@@ -65,26 +65,25 @@ elseif(APPLE)
 endif()
 
 # Configure final executable building
-add_executable(${TYM_EXECUTABLE_FILENAME}
+add_executable(${TYM_FINAL_TARGET}
     ${EXECUTABLE_OPTION}
     ${SOURCES}
     ${BASIC_HDRS}
     ${TYM_TRANSLATIONS}
     ${TRANSLATIONS_FILES}
-    $<TARGET_OBJECTS:TymConcretetasks>
+    $<TARGET_OBJECTS:TymTasks>
     $<TARGET_OBJECTS:TymDbaccess>
     $<TARGET_OBJECTS:TymGui>
     $<TARGET_OBJECTS:TymNetwork>
     $<TARGET_OBJECTS:TymTools>
     $<TARGET_OBJECTS:TymWidgets>
-    $<TARGET_OBJECTS:TymWizards>
     $<TARGET_OBJECTS:TymResources>
 )
 
-target_link_libraries(${TYM_EXECUTABLE_FILENAME} Logger)
+target_link_libraries(${TYM_FINAL_TARGET} Logger)
 
 # Add Qt5 modules dependencies
-qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
+qt5_use_modules(${TYM_FINAL_TARGET}
     Core
     Widgets
     Sql
@@ -94,19 +93,20 @@ qt5_use_modules(${TYM_EXECUTABLE_FILENAME}
 if(MSVC)
     # Link with Qt WinMain, ensuring that the entry function will have
     # signature required by MSVC
-    target_link_libraries(${TYM_EXECUTABLE_FILENAME} Qt5::WinMain)
+    target_link_libraries(${TYM_FINAL_TARGET} Qt5::WinMain)
 elseif(APPLE)
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES OUTPUT_NAME ${TYM_NAME})
     # configure some properties on Info.plist
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_ICON_FILE tym.icns)
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_INFO_STRING "Tag Your Music bundle")
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.tym.gui")
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_LONG_VERSION_STRING ${TYM_VERSION})
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME ${TYM_NAME})
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING ${TYM_SHORT_VERSION})
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${TYM_VERSION})
-    set_target_properties(${TYM_EXECUTABLE_FILENAME} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012-2013 Antoine Lorence")
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_ICON_FILE tym.icns)
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_INFO_STRING "Tag Your Music bundle")
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.tym.gui")
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_LONG_VERSION_STRING ${TYM_VERSION})
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME ${TYM_NAME})
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING ${TYM_SHORT_VERSION})
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${TYM_VERSION})
+    set_target_properties(${TYM_FINAL_TARGET} PROPERTIES MACOSX_BUNDLE_COPYRIGHT "Copyright 2012-2013 Antoine Lorence")
 endif()
 
 if(NOT APPLE)
-    install(TARGETS ${TYM_EXECUTABLE_FILENAME} RUNTIME DESTINATION bin)
+    install(TARGETS ${TYM_FINAL_TARGET} RUNTIME DESTINATION bin)
 endif()

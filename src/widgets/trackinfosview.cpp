@@ -63,7 +63,7 @@ void TrackInfosView::updateInfos(QSqlRecord result)
     ui->d_mixname->setText(result.value(TrackFullInfos::MixName).toString());
     ui->d_title->setText(result.value(TrackFullInfos::Title).toString());
 
-    QString trackKey = Utils::formatKey(result.value(TrackFullInfos::Key).toString());
+    QString trackKey = Utils::instance()->formatKey(result.value(TrackFullInfos::Key).toString());
     ui->d_key->setText(trackKey);
 
     ui->d_bpm->setText(result.value(TrackFullInfos::Bpm).toString());

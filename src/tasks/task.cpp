@@ -17,42 +17,22 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#ifndef LIBRARYSTATUSUPDATER_H
-#define LIBRARYSTATUSUPDATER_H
-
 #include "task.h"
 
-class BPDatabase;
-
-/*!
- * \brief Define a task to update some Library informations.
- */
-class LibraryStatusUpdater : public Task
+Task::Task(QObject *parent) :
+    QObject(parent),
+    _hasMultiResults(true),
+    _progressValue(0)
 {
-    Q_OBJECT
+}
 
-public:
-    /*!
-     * \brief Create the task
-     * \param parent
-     */
-    explicit LibraryStatusUpdater(QObject *parent = 0);
-    /*!
-     * Destroy the task and all its members
-     */
-    ~LibraryStatusUpdater();
+bool Task::hasMultiResults() const
+{
+    return _hasMultiResults;
+}
 
-public slots:
-    /*!
-     * \brief Check and update Library entries if needed.
-     *
-     * Check all files in Library SQLite table, and update "flags" column
-     * if some tracks can't be found on the disk at the path specified.
-     */
-    void run() override;
-
-private:
-    BPDatabase* _dbHelper;
-};
-
-#endif // LIBRARYSTATUSUPDATER_H
+void Task::increaseProgressStep(int step)
+{
+    _progressValue += step;
+    emit notifyProgression(_progressValue);
+}
