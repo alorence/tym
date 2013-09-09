@@ -65,9 +65,9 @@ find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
+# Default name for target executable
+set(TYM_TARGET "tym")
 # Configure compile flags and various platform dependent variables
-set(TYM_FINAL_TARGET "TymFinalBinary")
-set(TYM_EXECUTABLE_FILENAME "tym")
 if(MSVC) # MSVC
     # Display more warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
@@ -86,9 +86,9 @@ set(TYM_SHORT_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VER
 set(TYM_VERSION "${TYM_MAJOR_VERSION}.${TYM_MINOR_VERSION}.${TYM_PATCH_VERSION}.${TYM_BUILD_DATE}")
 set(TYM_DELIVERABLES_OUTPUT "${CMAKE_SOURCE_DIR}/deliverables")
 
-# Build dependencies
-include_directories(libs/cutelogger/include)
-add_subdirectory(libs/cutelogger)
+# Build library dependencies
+add_subdirectory(libs)
+include_directories(${TYM_LIBS_INCLUDES})
 
 # Parse subdirectories
 add_subdirectory(resources)
@@ -109,7 +109,6 @@ message(STATUS "Build flags:        ${CMAKE_CXX_FLAGS}")
 message(STATUS "Version:            ${TYM_SHORT_VERSION}")
 message(STATUS "Beta release:       ${TYM_BETA}")
 message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
-message(STATUS "Target executable:  ${TYM_EXECUTABLE_FILENAME}")
 message(STATUS "==============================================")
 
 if(NOT APPLE)
