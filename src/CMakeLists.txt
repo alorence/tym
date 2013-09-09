@@ -82,6 +82,7 @@ target_link_libraries(${TYM_TARGET}
     TymTools
     TymWidgets
     Logger
+    o2
 )
 
 # Add Qt5 modules dependencies

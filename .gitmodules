@@ -1,3 +1,6 @@
 [submodule "libs/cutelogger"]
 	path = libs/cutelogger
 	url = git://github.com/alorence/CuteLogger.git
+[submodule "libs/o2"]
+	path = libs/o2
+	url = git@github.com:pipacs/o2.git
