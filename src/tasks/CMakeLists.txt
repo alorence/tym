@@ -49,14 +49,7 @@ set(UIS
     search/searchconfigurator.ui
 )
 
-qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymTasks OBJECT ${CPP} ${MOCS} ${HDRS} ${UIS_HDRS})
-add_dependencies(TymTasks TymWidgets)
-
-tym_qt5_use_modules(TymTasks
-    Widgets
-    Sql
-    Network
-)
+add_library(TymTasks STATIC ${CPP} ${HDRS} ${UIS_HDRS})
+tym_qt5_use_modules(TymTasks Widgets Sql Network)

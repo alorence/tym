@@ -32,13 +32,7 @@ set(UIS
     trackinfosview.ui
 )
 
-qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymWidgets OBJECT ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
-
-tym_qt5_use_modules(TymWidgets
-    Widgets
-    Sql
-    Network
-)
+add_library(TymWidgets STATIC ${CPP} ${UIS_HDRS} ${HDRS})
+tym_qt5_use_modules(TymWidgets Widgets Sql Network)

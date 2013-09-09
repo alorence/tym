@@ -40,6 +40,7 @@ option(TYM_BETA OFF)
 option(TYM_UPDATE_TRANSLATIONS OFF)
 ################## END ####################
 
+set(CMAKE_AUTOMOC ON)
 # Include some macros usable accross cmake projects
 include(resources/config/TymUsefulMacros.cmake)
 

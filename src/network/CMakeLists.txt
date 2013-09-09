@@ -26,13 +26,6 @@ set(CPP
     picturedownloader.cpp
 )
 
-qt5_wrap_cpp(MOCS ${HDRS})
 
-add_library(TymNetwork OBJECT ${CPP} ${MOCS} ${HDRS})
-add_dependencies(TymNetwork TymGui)
-
-tym_qt5_use_modules(TymNetwork
-    Widgets
-    Network
-    Sql
-)
+add_library(TymNetwork STATIC ${CPP} ${HDRS})
+tym_qt5_use_modules(TymNetwork Widgets Network Sql)

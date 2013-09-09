@@ -34,14 +34,7 @@ set(UIS
     settingsdialog.ui
 )
 
-qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
-add_library(TymGui OBJECT ${CPP} ${MOCS} ${UIS_HDRS} ${HDRS})
-add_dependencies(TymGui TymWidgets)
-
-tym_qt5_use_modules(TymGui
-    Widgets
-    Sql
-    Network
-)
+add_library(TymGui STATIC ${CPP} ${UIS_HDRS} ${HDRS})
+tym_qt5_use_modules(TymGui Widgets Sql Network)

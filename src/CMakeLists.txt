@@ -71,24 +71,21 @@ add_executable(${TYM_FINAL_TARGET}
     ${BASIC_HDRS}
     ${TYM_TRANSLATIONS}
     ${TRANSLATIONS_FILES}
-    $<TARGET_OBJECTS:TymTasks>
-    $<TARGET_OBJECTS:TymDbaccess>
-    $<TARGET_OBJECTS:TymGui>
-    $<TARGET_OBJECTS:TymNetwork>
-    $<TARGET_OBJECTS:TymTools>
-    $<TARGET_OBJECTS:TymWidgets>
     $<TARGET_OBJECTS:TymResources>
 )
 
-target_link_libraries(${TYM_FINAL_TARGET} Logger)
+target_link_libraries(${TYM_FINAL_TARGET}
+    TymGui
+    TymTasks
+    TymDbaccess
+    TymNetwork
+    TymTools
+    TymWidgets
+    Logger
+)
 
 # Add Qt5 modules dependencies
-qt5_use_modules(${TYM_FINAL_TARGET}
-    Core
-    Widgets
-    Sql
-    Network
-)
+qt5_use_modules(${TYM_FINAL_TARGET} Core Widgets Sql Network)
 
 if(MSVC)
     # Link with Qt WinMain, ensuring that the entry function will have

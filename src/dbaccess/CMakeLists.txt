@@ -33,11 +33,5 @@ set(BASIC_HDRS
     libraryentry.h
 )
 
-qt5_wrap_cpp(MOCS ${HDRS})
-
-add_library(TymDbaccess OBJECT ${CPP} ${MOCS} ${BASIC_HDRS} ${HDRS})
-
-tym_qt5_use_modules(TymDbaccess
-    Widgets
-    Sql
-)
+add_library(TymDbaccess STATIC ${CPP} ${BASIC_HDRS} ${HDRS})
+tym_qt5_use_modules(TymDbaccess Widgets Sql)
