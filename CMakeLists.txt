@@ -64,6 +64,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5WebKitWidgets REQUIRED)
 
 # Default name for target executable
 set(TYM_TARGET "tym")

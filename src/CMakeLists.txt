@@ -75,10 +75,10 @@ add_executable(${TYM_TARGET}
 )
 
 target_link_libraries(${TYM_TARGET}
+    TymNetwork
     TymGui
     TymTasks
     TymDbaccess
-    TymNetwork
     TymTools
     TymWidgets
     Logger
@@ -86,7 +86,7 @@ target_link_libraries(${TYM_TARGET}
 )
 
 # Add Qt5 modules dependencies
-qt5_use_modules(${TYM_TARGET} Core Widgets Sql Network)
+qt5_use_modules(${TYM_TARGET} Core Widgets Sql Network WebKitWidgets)
 
 if(MSVC)
     # Link with Qt WinMain, ensuring that the entry function will have

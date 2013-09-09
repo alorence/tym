@@ -35,6 +35,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
+#include "network/o1beatport.h"
 
 #include "tasks/libupdater/librarystatusupdater.h"
 
@@ -229,7 +230,14 @@ void MainWindow::showEvent(QShowEvent *e)
     if(settings.contains(TYM_WINDOW_GEOMETRY)) {
         restoreGeometry(settings.value(TYM_WINDOW_GEOMETRY).toByteArray());
     }
+
     QWidget::showEvent(e);
+
+    O1Beatport bpAuth;
+    if(!bpAuth.linked()) {
+        bpAuth.launchDialog();
+    }
+
 }
 
 void MainWindow::changeEvent(QEvent *e)
