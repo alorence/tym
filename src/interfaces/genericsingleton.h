@@ -50,11 +50,12 @@ public:
         _instance = nullptr;
         _mutex.unlock();
     }
+protected:
+    static QMutex _mutex;
 
 private:
     // Unique instance
     static QAtomicPointer<T> *_instance;
-    static QMutex _mutex;
 };
 
 
