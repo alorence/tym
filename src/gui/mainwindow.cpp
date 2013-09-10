@@ -232,12 +232,6 @@ void MainWindow::showEvent(QShowEvent *e)
     }
 
     QWidget::showEvent(e);
-
-    O1Beatport bpAuth;
-    if(!bpAuth.linked()) {
-        bpAuth.launchDialog();
-    }
-
 }
 
 void MainWindow::changeEvent(QEvent *e)

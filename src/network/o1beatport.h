@@ -24,16 +24,16 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDialog>
 
+#include "interfaces/genericsingleton.h"
+
 namespace Ui {
 class BeatportAuthentication;
 }
 
-class O1Beatport : public O1
+class O1Beatport : public O1, public GenericSingleton<O1Beatport>
 {
     Q_OBJECT
 public:
-    explicit O1Beatport(QObject *parent = 0);
-    ~O1Beatport();
 
     void initAuthentication();
     void launchDialog();
@@ -56,6 +56,8 @@ private slots:
     void onLinkingFailed();
 
 private:
+    explicit O1Beatport(QObject *parent = 0);
+    ~O1Beatport();
 
     Ui::BeatportAuthentication *_auth;
     QDialog * _dialog;
