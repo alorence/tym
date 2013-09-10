@@ -31,26 +31,20 @@ add_subdirectory(cutelogger)
 # o2 (OAuth authentication for Qt)
 set(o2_HDRS
 	o2/src/o1.h
-	o2/src/o1requestor.h
-	o2/src/o2.h
+    o2/src/o1requestor.h
 	o2/src/o2abstractstore.h
 	o2/src/o2globals.h
-	o2/src/o2reply.h
-	o2/src/o2replyserver.h
-	o2/src/o2requestor.h
-	o2/src/o2settingsstore.h
+    o2/src/o2replyserver.h
+    o2/src/o2settingsstore.h
 	o2/src/simplecrypt.h
 )
 set(o2_SRC
 	o2/src/o1.cpp
-	o2/src/o1requestor.cpp
-	o2/src/o2.cpp
-	o2/src/o2reply.cpp
-	o2/src/o2replyserver.cpp
-	o2/src/o2requestor.cpp
-	o2/src/o2settingsstore.cpp
+    o2/src/o1requestor.cpp
+    o2/src/o2replyserver.cpp
+    o2/src/o2settingsstore.cpp
 	o2/src/simplecrypt.cpp
 )
 
 add_library(o2 STATIC ${o2_SRC} ${o2_HDRS})
-qt5_use_modules(o2 Network Script)
+qt5_use_modules(o2 Network)
