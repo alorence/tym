@@ -20,14 +20,15 @@ set(BEATPORT_API_KEY CACHE STRING "Beatport API key to use. You can obtain it fo
 set(BEATPORT_API_SECRET CACHE STRING "Beatport API secret to use")
 configure_file(config.h.in config.h)
 
-# In source files, all includes are relative to src (in cmlake source or binary directory)
+# In source files, all includes are relative to src (in cmake source or binary directory)
+# These 2 folders must be in the include list for all submodules
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(tasks)
 add_subdirectory(dbaccess)
 add_subdirectory(network)
+add_subdirectory(widgets)
 add_subdirectory(gui)
 add_subdirectory(tools)
-add_subdirectory(widgets)
 
 # These headers doesn't define QObject children,
 # they does not need to be parsed with moc tool.
@@ -77,12 +78,12 @@ add_executable(${TYM_TARGET}
 )
 
 target_link_libraries(${TYM_TARGET}
+    TymWidgets
     TymGui
     TymTasks
     TymDbaccess
     TymTools
     TymNetwork
-    TymWidgets
     Logger
     o2
 )
