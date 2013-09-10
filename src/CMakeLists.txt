@@ -38,6 +38,7 @@ set(BASIC_HDRS
     config.h.in
     commons.h
     interfaces/taskfactory.h
+    interfaces/genericsingleton.h
 )
 
 set(SOURCES
