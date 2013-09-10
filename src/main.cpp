@@ -44,7 +44,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/langmanager.h"
 #include "tools/utils.h"
 #include "commons.h"
-#include "version.h"
+#include "config.h"
 
 /*!
  * \brief Software entry point

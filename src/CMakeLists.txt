@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
-configure_file(version.h.in version.h)
+set(BEATPORT_API_KEY CACHE STRING "Beatport API key to use. You can obtain it for your fork at https://accounts.beatport.com/developer/request-api-key")
+set(BEATPORT_API_SECRET CACHE STRING "Beatport API secret to use")
+configure_file(config.h.in config.h)
 
 # In source files, all includes are relative to src (in cmlake source or binary directory)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
@@ -32,7 +34,7 @@ add_subdirectory(widgets)
 # They are added to the source list to appear in
 # IDE project (QtCreator, Xcode, etc.)
 set(BASIC_HDRS
-    version.h.in
+    config.h.in
     commons.h
     interfaces/taskfactory.h
 )
@@ -75,11 +77,11 @@ add_executable(${TYM_TARGET}
 )
 
 target_link_libraries(${TYM_TARGET}
-    TymNetwork
     TymGui
     TymTasks
     TymDbaccess
     TymTools
+    TymNetwork
     TymWidgets
     Logger
     o2

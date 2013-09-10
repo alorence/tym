@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "about.h"
 #include "ui_about.h"
 
-#include "version.h"
+#include "config.h"
 
 About::About(QWidget *parent) :
     QDialog(parent),

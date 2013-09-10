@@ -20,3 +20,12 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef TYM_VERSION
 #define TYM_VERSION "${TYM_SHORT_VERSION}"
 #endif
+
+#ifndef BEATPORT_API_KEY
+#define BEATPORT_API_KEY "${BEATPORT_API_KEY}"
+#endif
+
+#ifndef BEATPORT_API_SECRET
+#define BEATPORT_API_SECRET "${BEATPORT_API_SECRET}"
+#endif
+
