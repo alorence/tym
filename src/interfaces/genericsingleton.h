@@ -60,7 +60,7 @@ private:
 
 
 template <typename T>
-T *GenericSingleton<T>::_instance = nullptr;
+QAtomicPointer<T> *GenericSingleton<T>::_instance = nullptr;
 template <typename T>
 QMutex GenericSingleton<T>::_mutex;
 
