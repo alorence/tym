@@ -20,6 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "o1beatport.h"
 #include "ui_o1beatport.h"
 
+#include <Logger.h>
+#include "config.h"
+
 O1Beatport::O1Beatport(QObject *parent) :
     O1(parent),
     _auth(new Ui::BeatportAuthentication),
@@ -44,9 +47,21 @@ O1Beatport::~O1Beatport()
 void O1Beatport::initAuthentication()
 
 {
+    if(QByteArray(BEATPORT_API_KEY).isEmpty() || QByteArray(BEATPORT_API_SECRET).isEmpty()) {
+        LOG_ERROR("CMake variables BEATPORT_API_KEY and BEATPORT_API_SECRET must be set "
+                  "with information\nfrom Beatport. See http://oauth-api.beatport.com/ "
+                  "for more information.");
+        LOG_ERROR("Search on Beatport API will not be available.");
+        onLinkingFailed();
+        return;
+    }
+
     setAccessTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/access-token"));
     setAuthorizeUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/authorize"));
     setRequestTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/request-token"));
+
+    setClientId(BEATPORT_API_KEY);
+    setClientSecret(BEATPORT_API_SECRET);
 
     link();
 }
