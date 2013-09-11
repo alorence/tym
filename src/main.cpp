@@ -39,12 +39,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <Logger.h>
 #include <ConsoleAppender.h>
 
-#include "gui/ui_mainwindow.h"
 #include "gui/mainwindow.h"
 #include "tools/langmanager.h"
 #include "tools/utils.h"
 #include "commons.h"
-#include "version.h"
+#include "config.h"
 
 /*!
  * \brief Software entry point

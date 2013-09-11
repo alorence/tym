@@ -16,25 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
-configure_file(version.h.in version.h)
+set(BEATPORT_API_KEY CACHE STRING "Beatport API key to use. You can obtain it for your fork at https://accounts.beatport.com/developer/request-api-key")
+set(BEATPORT_API_SECRET CACHE STRING "Beatport API secret to use")
+configure_file(config.h.in config.h)
 
-# In source files, all includes are relative to src (in cmlake source or binary directory)
+# In source files, all includes are relative to src (in cmake source or binary directory)
+# These 2 folders must be in the include list for all submodules
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(tasks)
 add_subdirectory(dbaccess)
 add_subdirectory(network)
+add_subdirectory(widgets)
 add_subdirectory(gui)
 add_subdirectory(tools)
-add_subdirectory(widgets)
 
 # These headers doesn't define QObject children,
 # they does not need to be parsed with moc tool.
 # They are added to the source list to appear in
 # IDE project (QtCreator, Xcode, etc.)
 set(BASIC_HDRS
-    version.h.in
+    config.h.in
     commons.h
     interfaces/taskfactory.h
+    interfaces/genericsingleton.h
 )
 
 set(SOURCES
@@ -74,18 +78,21 @@ add_executable(${TYM_TARGET}
     $<TARGET_OBJECTS:TymResources>
 )
 
+# !! Order is important ! Gui depends on Widget, Widget depends on Tools, etc.
+# The lib A depending on lib B must be BEFORE in the folowing list (http://stackoverflow.com/a/409470/1887976)
 target_link_libraries(${TYM_TARGET}
     TymGui
-    TymTasks
-    TymDbaccess
-    TymNetwork
-    TymTools
     TymWidgets
+    TymTools
+    TymTasks
+    TymNetwork
+    TymDbaccess
     Logger
+    o2
 )
 
 # Add Qt5 modules dependencies
-qt5_use_modules(${TYM_TARGET} Core Widgets Sql Network)
+qt5_use_modules(${TYM_TARGET} Core Widgets Sql Network WebKitWidgets)
 
 if(MSVC)
     # Link with Qt WinMain, ensuring that the entry function will have

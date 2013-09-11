@@ -26,6 +26,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 // General
 #define TYM_PICTURE_URL_DOWNLOAD "http://geo-media.beatport.com/image_size/200x200/%1.jpg"
+#define TYM_BEATPORT_API_URL "https://oauth-api.beatport.com"
 #define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
 #define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
 #define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg" << "*.aiff")
@@ -48,6 +49,7 @@ namespace Settings {
 #define TYM_WINDOW_GEOMETRY "settings/interface/window/geometry"
 
 // Settings - network
+//FIXME: remove 2 next parameters
 #define TYM_PATH_API_URL "settings/network/beatport/apihost"
 #define TYM_DEFAULT_API_URL "http://api.beatport.com"
 #define TYM_PATH_PROXY_ENABLED "settings/network/proxy/enabled"

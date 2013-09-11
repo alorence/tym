@@ -17,15 +17,21 @@
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
 set(HDRS
+    o1beatport.h
     searchprovider.h
     picturedownloader.h
 )
 
 set(CPP
+    o1beatport.cpp
     searchprovider.cpp
     picturedownloader.cpp
 )
 
+set(UIS
+    o1beatport.ui
+)
 
-add_library(TymNetwork STATIC ${CPP} ${HDRS})
-tym_qt5_use_modules(TymNetwork Widgets Network Sql)
+qt5_wrap_ui(UIS_HDRS ${UIS})
+add_library(TymNetwork STATIC ${CPP} ${HDRS} ${UIS_HDRS})
+tym_qt5_use_modules(TymNetwork Widgets Network Sql WebKitWidgets)

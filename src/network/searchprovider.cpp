@@ -21,21 +21,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "commons.h"
 #include "tools/utils.h"
-#include "gui/settingsdialog.h"
+#include "o1beatport.h"
+#include "o1requestor.h"
 
 SearchProvider::SearchProvider(QObject *parent) :
     QObject(parent),
     _manager(new QNetworkAccessManager(this)),
+    _tracksPath("/catalog/3/tracks"),
+    _searchPath("/catalog/3/search"),
     _replyMap(),
     _textSearchMapper(new QSignalMapper(this))
 {
-    _tracksPath = "/catalog/3/tracks";
-    _searchPath = "/catalog/3/search";
-
     connect(_textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
-
-    QSettings settings;
-    _apiUrl = settings.value(TYM_PATH_API_URL, TYM_DEFAULT_API_URL).toString();
 }
 
 SearchProvider::~SearchProvider()
@@ -49,10 +46,17 @@ SearchProvider::~SearchProvider()
 
 void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
 {
-    QUrl requestUrl(_apiUrl);
-    requestUrl.setPath(_tracksPath);
+    O1Beatport * oauthManager = O1Beatport::instance();
+    O1Requestor requestManager(_manager, oauthManager);
+    if(!oauthManager->linked()) {
+        LOG_ERROR("Unable to perform a search from IDs, Beatport OAuth is not linked");
+        // TODO: emit an error signal per request
+        return;
+    }
 
+    QUrl requestUrl(TYM_BEATPORT_API_URL + _tracksPath);
     QList<QMap<QString, QString> *> splittedMaps;
+
     int i = 0;
     for (auto it = uidBpidMap->begin() ; it != uidBpidMap->end() ; ++it, ++i) {
 
@@ -65,24 +69,22 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
     }
 
     for(auto tempMap : splittedMaps) {
-        QUrlQuery query;
-        QString idsList = QStringList(tempMap->values()).join(",");
-        query.addQueryItem("ids", idsList);
-        requestUrl.setQuery(query);
 
+        QString idsList = QStringList(tempMap->values()).join(",");
+
+        QList<O1RequestParameter> params;
+        params << O1RequestParameter("ids", idsList.toLatin1());
+
+        requestUrl.setQuery(QUrlQuery(O1::createQueryParams(params)));
         QNetworkRequest request(requestUrl);
 
-        QNetworkReply *reply = _manager->get(request);
-
-        LOG_DEBUG(tr("Request sent for IDs %1").arg(idsList));
-
-        _replyMap.insert(reply, tempMap);
-
+        QNetworkReply *reply = requestManager.get(request, params);
         connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
 
-        tempMap = new QMap<QString, QString>();
+        LOG_DEBUG(QString("Request sent for IDs %1").arg(idsList));
+        _replyMap.insert(reply, tempMap);
     }
 
     delete uidBpidMap;
@@ -96,7 +98,7 @@ void SearchProvider::parseReplyForIdSearch()
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
     QJsonArray resultsArray = response.object()["results"].toArray();
-    LOG_DEBUG(tr("Response received for id search: %1 results").arg(resultsArray.size()));
+    LOG_DEBUG(QString("Response received for id search: %1 results").arg(resultsArray.size()));
 
     QMapIterator<QString, QString> requestPair(*uidBpidMap);
     while(requestPair.hasNext()) {
@@ -120,8 +122,15 @@ void SearchProvider::parseReplyForIdSearch()
 
 void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
 {
-    QUrl requestUrl(_apiUrl);
-    requestUrl.setPath(_searchPath);
+    O1Beatport * oauthManager = O1Beatport::instance();
+    O1Requestor requestManager(_manager, oauthManager);
+    if(!oauthManager->linked()) {
+        LOG_ERROR("Unable to perform a search from text, Beatport OAuth is not linked");
+        // TODO: emit an error signal
+        return;
+    }
+
+    QUrl requestUrl(TYM_BEATPORT_API_URL + _searchPath);
 
     QMapIterator<QString, QString> searchList(*rowNameMap);
     while(searchList.hasNext()) {
@@ -134,21 +143,21 @@ void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
         // Replace underscores by spaces (and prevent multiple spaces)
         Utils::instance()->simplifySpaces(text.replace('_', ' '));
 
-        QUrlQuery query;
-        query.addQueryItem("query", text);
-        query.addQueryItem("facets[]", "fieldType:track");
+        QList<O1RequestParameter> params;
+        params << O1RequestParameter("query", text.toLatin1());
+        params << O1RequestParameter("facets", "fieldType:track");
 
-        requestUrl.setQuery(query);
-
+        requestUrl.setQuery(QUrlQuery(O1::createQueryParams(params)));
         QNetworkRequest request(requestUrl);
 
-        QNetworkReply *reply = _manager->get(request);
+        QNetworkReply *reply = requestManager.get(request, params);
+
         connect(reply, SIGNAL(finished()), _textSearchMapper, SLOT(map()));
         _textSearchMapper->setMapping(reply, libId);
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
 
-        LOG_DEBUG(tr("Send request: %1").arg(request.url().toString()));
+        LOG_DEBUG(QString("Request sent for search \"%1\"").arg(text));
     }
     delete rowNameMap;
 }
@@ -159,7 +168,10 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
-    emit searchResultAvailable(uid, response.object()["results"]);
+    QJsonValue results = response.object()["results"];
+    QString text = reply->request().url().query().split('&')[0].split('=')[1];
+    LOG_DEBUG(QString("Response for \"%1\": %2 results").arg(text).arg(results.toArray().size()));
+    emit searchResultAvailable(uid, results);
 
     reply->deleteLater();
 }
@@ -167,7 +179,7 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 void SearchProvider::requestError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    LOG_WARNING(tr("Error on request %1 : %2")
+    LOG_WARNING(QString("Error on request %1 : %2")
                 .arg(reply->request().url().toString())
                 .arg(error));
     reply->deleteLater();

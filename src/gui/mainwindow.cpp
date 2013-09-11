@@ -32,11 +32,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tasks/rename/renameconfigurator.h"
 #include "tasks/export/exportconfigurator.h"
 #include "tasks/search/searchconfigurator.h"
+#include "tasks/libupdater/librarystatusupdater.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
-
-#include "tasks/libupdater/librarystatusupdater.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,9 +43,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     _aboutDialog(new About(this)),
     _settings(new SettingsDialog(this)),
-    _pictureDownloader(new PictureDownloader(this)),
     _dbHelper(new BPDatabase),
-    _libStatusUpdateThread(new QThread())
+    _pictureDownloader(new PictureDownloader(this)),
+    _libStatusUpdateThread(new QThread()),
+    _networkStatus(new QLabel(this))
 {
     ui->setupUi(this);
 
@@ -162,6 +162,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(libStatusUpdateTask, &Task::finished, _libraryModel, &LibraryModel::refresh);
     connect(_libStatusUpdateThread, &QThread::destroyed, libStatusUpdateTask, &Task::deleteLater);
 
+    // Configure status bar
+    ui->statusBar->addWidget(_networkStatus, 2);
+    O1Beatport::instance()->link();
+    connect(O1Beatport::instance(), &O1Beatport::statusChanged, this, &MainWindow::updateNetworkStatus);
+
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
 
@@ -182,6 +187,8 @@ MainWindow::~MainWindow()
     delete _settings;
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
+    delete _networkStatus;
+    O1Beatport::deleteInstance();
     qDeleteAll(_selectActionsList);
 }
 
@@ -229,6 +236,7 @@ void MainWindow::showEvent(QShowEvent *e)
     if(settings.contains(TYM_WINDOW_GEOMETRY)) {
         restoreGeometry(settings.value(TYM_WINDOW_GEOMETRY).toByteArray());
     }
+
     QWidget::showEvent(e);
 }
 
@@ -280,6 +288,22 @@ void MainWindow::updateSettings()
     } else if(QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy) {
         QNetworkProxy proxy(QNetworkProxy::NoProxy);
         QNetworkProxy::setApplicationProxy(proxy);
+    }
+}
+
+void MainWindow::updateNetworkStatus(O1Beatport::Status status)
+{
+    switch (status) {
+    case O1Beatport::Linked:
+        _networkStatus->setText(tr("Network: OK"));
+        break;
+    case O1Beatport::Notlinked:
+        _networkStatus->setText(tr("Network: Unlinked"));
+        break;
+    case O1Beatport::InitialState:
+    default:
+        _networkStatus->setText(tr("Network: initial state"));
+        break;
     }
 }
 
@@ -518,6 +542,8 @@ void MainWindow::on_actionImport_triggered()
         QFileInfo f(fileList.first());
         settings.setValue("lastOpenedDir", f.absolutePath());
     }
+
+    _libraryModel->refresh();
 }
 
 void MainWindow::on_actionRemove_triggered()

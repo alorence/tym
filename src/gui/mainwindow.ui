@@ -163,7 +163,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -219,6 +219,7 @@
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionImport">
    <property name="icon">
     <iconset resource="../../resources/resources.qrc">

@@ -31,7 +31,6 @@ set(UIS
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
 add_library(TymWizards STATIC ${CPP} ${UIS_HDRS} ${HDRS})
-add_dependencies(TymWizards TymGui)
 
 tym_qt5_use_modules(TymWizards
     Widgets

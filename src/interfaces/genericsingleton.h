@@ -17,35 +17,50 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "about.h"
-#include "ui_about.h"
+#ifndef GENERICSINGLETON_H
+#define GENERICSINGLETON_H
 
-#include "config.h"
+#include <QMutex>
 
-About::About(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::About)
+template <typename T>
+class GenericSingleton
 {
-    ui->setupUi(this);
+protected:
+    GenericSingleton(){}
+    ~GenericSingleton(){}
 
-    ui->aboutText->setText(ui->aboutText->text().replace("%VERSION%", TYM_VERSION));
+private:
+    GenericSingleton(const GenericSingleton &){}
 
-    // TODO: Display tabs when more informations will need to be displayed
-    ui->tabWidget->hide();
-    ((QGridLayout*)this->layout())->addWidget(ui->aboutText, 0, 0);
-}
-
-
-void About::changeEvent(QEvent *e)
-{
-    if(e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-        ui->aboutText->setText(ui->aboutText->text().replace("%VERSION%", TYM_VERSION));
+public:
+    static T *instance() {
+        if(!_instance) {
+            _mutex.lock();
+            if(!_instance)
+                _instance = new T;
+            _mutex.unlock();
+        }
+        return _instance;
     }
-    QWidget::changeEvent(e);
-}
 
-About::~About()
-{
-    delete ui;
-}
+    static void deleteInstance () {
+        _mutex.lock();
+        delete _instance;
+        _instance = nullptr;
+        _mutex.unlock();
+    }
+protected:
+    static QMutex _mutex;
+
+private:
+    static T *_instance;
+    T& operator= (const T&){}
+};
+
+
+template <typename T>
+T *GenericSingleton<T>::_instance = nullptr;
+template <typename T>
+QMutex GenericSingleton<T>::_mutex;
+
+#endif // GENERICSINGLETON_H
