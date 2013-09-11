@@ -26,7 +26,25 @@ set(TYM_LIBS_INCLUDES
 )
 
 # CuteLogger (logging library)
-add_subdirectory(cutelogger)
+include_directories("cutelogger/include")
+set(CuteLogger_HDRS
+  cutelogger/include/Logger.h
+  cutelogger/include/FileAppender.h
+  cutelogger/include/CuteLogger_global.h
+  cutelogger/include/ConsoleAppender.h
+  cutelogger/include/AbstractStringAppender.h
+  cutelogger/include/AbstractAppender.h
+)
+set(CuteLogger_SRCS
+  cutelogger/src/Logger.cpp
+  cutelogger/src/AbstractAppender.cpp
+  cutelogger/src/AbstractStringAppender.cpp
+  cutelogger/src/ConsoleAppender.cpp
+  cutelogger/src/FileAppender.cpp
+)
+
+add_library(CuteLogger STATIC ${CuteLogger_SRCS} ${CuteLogger_HDRS})
+qt5_use_modules(CuteLogger Core)
 
 # o2 (OAuth authentication for Qt)
 set(o2_HDRS

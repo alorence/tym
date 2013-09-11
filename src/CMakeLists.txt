@@ -87,7 +87,7 @@ target_link_libraries(${TYM_TARGET}
     TymTasks
     TymNetwork
     TymDbaccess
-    Logger
+    CuteLogger
     o2
 )
 
