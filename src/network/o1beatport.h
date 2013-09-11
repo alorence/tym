@@ -40,10 +40,8 @@ class O1Beatport : public O1, public GenericSingleton<O1Beatport>
 public:
     enum Status {
         InitialState,
-        BeatportTokenReceived,
         Linked,
-        Unlinked,
-        LinkinFailed
+        Notlinked
     };
 
 private slots:
@@ -62,6 +60,10 @@ private slots:
      * @brief onCloseBrowser
      */
     void onLinkingFailed();
+    /**
+     * @brief onCloseBrowser
+     */
+    void onLinkingChanged();
 
 signals:
     void statusChanged(Status);

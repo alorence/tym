@@ -47,10 +47,11 @@ O1Beatport::O1Beatport(QObject *parent) :
         setClientSecret(BEATPORT_API_SECRET);
     }
 
-//    connect(this, &O1::linkedChanged, this, &O1Beatport::onLinkedChanged);
+    connect(this, &O1::openBrowser, this, &O1Beatport::onOpenBrowser);
+    connect(this, &O1::closeBrowser, _dialog, &QDialog::hide);
+    connect(this, &O1::linkedChanged, this, &O1Beatport::onLinkingChanged);
     connect(this, &O1::linkingSucceeded, this, &O1Beatport::onLinkingSucceeded);
     connect(this, &O1::linkingFailed, this, &O1Beatport::onLinkingFailed);
-    connect(this, &O1::openBrowser, this, &O1Beatport::onOpenBrowser);
 }
 
 O1Beatport::~O1Beatport()
@@ -78,7 +79,7 @@ void O1Beatport::onLinkingSucceeded()
     if(linked()) {
         _status = Linked;
     } else {
-        _status = Unlinked;
+        _status = Notlinked;
     }
     emit statusChanged(_status);
 }
@@ -86,6 +87,16 @@ void O1Beatport::onLinkingSucceeded()
 void O1Beatport::onLinkingFailed()
 {
     _auth->pages->setCurrentWidget(_auth->errorPage);
-    _status = LinkinFailed;
+    _status = Notlinked;
+    emit statusChanged(_status);
+}
+
+void O1Beatport::onLinkingChanged()
+{
+    if(linked()) {
+        _status = Linked;
+    } else {
+        _status = Notlinked;
+    }
     emit statusChanged(_status);
 }

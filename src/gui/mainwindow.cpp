@@ -294,17 +294,15 @@ void MainWindow::updateSettings()
 void MainWindow::updateNetworkStatus(O1Beatport::Status status)
 {
     switch (status) {
-    case O1Beatport::InitialState:
-        _networkStatus->setText(tr("Network: initial state"));
-        break;
     case O1Beatport::Linked:
         _networkStatus->setText(tr("Network: OK"));
         break;
-    case O1Beatport::Unlinked:
+    case O1Beatport::Notlinked:
         _networkStatus->setText(tr("Network: Unlinked"));
         break;
-    case O1Beatport::BeatportTokenReceived:
-        _networkStatus->setText(tr("Network: Need to log"));
+    case O1Beatport::InitialState:
+    default:
+        _networkStatus->setText(tr("Network: initial state"));
         break;
     }
 }
@@ -544,6 +542,8 @@ void MainWindow::on_actionImport_triggered()
         QFileInfo f(fileList.first());
         settings.setValue("lastOpenedDir", f.absolutePath());
     }
+
+    _libraryModel->refresh();
 }
 
 void MainWindow::on_actionRemove_triggered()
