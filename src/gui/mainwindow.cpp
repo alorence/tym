@@ -36,7 +36,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
-#include "network/o1beatport.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -46,7 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _settings(new SettingsDialog(this)),
     _dbHelper(new BPDatabase),
     _pictureDownloader(new PictureDownloader(this)),
-    _libStatusUpdateThread(new QThread())
+    _libStatusUpdateThread(new QThread()),
+    _networkStatus(new QLabel(this))
 {
     ui->setupUi(this);
 
@@ -162,6 +162,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(libStatusUpdateTask, &Task::finished, _libraryModel, &LibraryModel::refresh);
     connect(_libStatusUpdateThread, &QThread::destroyed, libStatusUpdateTask, &Task::deleteLater);
 
+    // Configure status bar
+    ui->statusBar->addWidget(_networkStatus, 2);
+    O1Beatport::instance()->link();
+    connect(O1Beatport::instance(), &O1Beatport::statusChanged, this, &MainWindow::updateNetworkStatus);
+
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
 
@@ -182,6 +187,8 @@ MainWindow::~MainWindow()
     delete _settings;
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
+    delete _networkStatus;
+    O1Beatport::deleteInstance();
     qDeleteAll(_selectActionsList);
 }
 
@@ -281,6 +288,24 @@ void MainWindow::updateSettings()
     } else if(QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy) {
         QNetworkProxy proxy(QNetworkProxy::NoProxy);
         QNetworkProxy::setApplicationProxy(proxy);
+    }
+}
+
+void MainWindow::updateNetworkStatus(O1Beatport::Status status)
+{
+    switch (status) {
+    case O1Beatport::InitialState:
+        _networkStatus->setText(tr("Network: initial state"));
+        break;
+    case O1Beatport::Linked:
+        _networkStatus->setText(tr("Network: OK"));
+        break;
+    case O1Beatport::Unlinked:
+        _networkStatus->setText(tr("Network: Unlinked"));
+        break;
+    case O1Beatport::BeatportTokenReceived:
+        _networkStatus->setText(tr("Network: Need to log"));
+        break;
     }
 }
 

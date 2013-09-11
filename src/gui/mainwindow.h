@@ -23,7 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
-#include "network/searchprovider.h"
+#include "network/o1beatport.h"
 #include "dbaccess/librarymodel.h"
 
 class About;
@@ -35,6 +35,7 @@ class SearchResultsModel;
 namespace Ui {
 class MainWindow;
 }
+
 /*!
  * \brief Define the main application window
  */
@@ -99,6 +100,8 @@ private slots:
      * \brief Update the general settings for the application.
      */
     void updateSettings();
+
+    void updateNetworkStatus(O1Beatport::Status);
 
     /*!
      * \brief Update results list in the search results view.
@@ -219,6 +222,7 @@ private:
     QList<QAction*> _selectActionsList;
 
     QStringList _expandedItems;
+    QLabel * _networkStatus;
 };
 
 #endif // MAINWINDOW_H
