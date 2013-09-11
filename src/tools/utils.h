@@ -22,20 +22,17 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPixmap>
 #include <QIcon>
-#include <QMutex>
+
+#include "interfaces/genericsingleton.h"
 
 //NOTE: Missing doc on some methods
 
-class Utils
+class Utils : public GenericSingleton<Utils>
 {
+    friend Utils* GenericSingleton<Utils>::instance();
+    friend void GenericSingleton<Utils>::deleteInstance();
+
 public:
-
-    /*!
-     * \brief Get the unique instance of this class (Singleton design pattern)
-     * \return The instance of Utils class
-     */
-    static Utils *instance();
-
     enum StatusType {
         Info,
         Warning,
@@ -69,9 +66,6 @@ public:
 
 private:
     explicit Utils(QObject *parent = 0);
-
-    static Utils * _instance;
-    static QMutex _mutex;
 
     QPixmap _infoPix, _warningPix, _errorPix, _successPix;
     QIcon _infoIcon, _warningIcon, _errorIcon, _successIcon;

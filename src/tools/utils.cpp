@@ -22,23 +22,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "utils.h"
 #include "commons.h"
 
-Utils * Utils::_instance = nullptr;
-QMutex Utils::_mutex;
-
-Utils *Utils::instance()
-{
-    _mutex.lock();
-    if(_instance == nullptr) {
-        _instance = new Utils;
-    }
-    _mutex.unlock();
-    return _instance;
-}
-
 QString Utils::formatKey(const QString &classicKey)
 {
     QSettings settings;
-    Settings::KeyStyle keyStyle = (Settings::KeyStyle) settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
+    Settings::KeyStyle keyStyle =
+            (Settings::KeyStyle) settings.value(TYM_PATH_KEY_STYLE, TYM_DEFAULT_KEY_STYLE).toInt();
 
     if(keyStyle != Settings::MixedInKey) {
         return classicKey;
@@ -91,7 +79,8 @@ QString &Utils::simplifySpaces(QString &subject)
 QString &Utils::osFilenameSanitize(QString &fileName)
 {
 #ifdef Q_OS_WIN
-    const QRegularExpression forbiddenChars("[\"\\/:*?<>|]", QRegularExpression::CaseInsensitiveOption);
+    const QRegularExpression forbiddenChars("[\"\\/:*?<>|]",
+                                            QRegularExpression::CaseInsensitiveOption);
 #elif defined Q_OS_MAC
     const QRegularExpression forbiddenChars("[/:]", QRegularExpression::CaseInsensitiveOption);
 #else
