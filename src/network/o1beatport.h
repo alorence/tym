@@ -33,10 +33,18 @@ class BeatportAuthentication;
 class O1Beatport : public O1, public GenericSingleton<O1Beatport>
 {
     Q_OBJECT
-public:
 
-    void initAuthentication();
-    void launchDialog();
+    friend O1Beatport* GenericSingleton<O1Beatport>::instance();
+    friend void GenericSingleton<O1Beatport>::deleteInstance();
+
+public:
+    enum Status {
+        InitialState,
+        BeatportTokenReceived,
+        Linked,
+        Unlinked,
+        LinkinFailed
+    };
 
 private slots:
     /**
@@ -55,12 +63,17 @@ private slots:
      */
     void onLinkingFailed();
 
+signals:
+    void statusChanged(Status);
+
 private:
     explicit O1Beatport(QObject *parent = 0);
     ~O1Beatport();
 
     Ui::BeatportAuthentication *_auth;
     QDialog * _dialog;
+
+    Status _status;
 };
 
 #endif // O1BEATPORT_H
