@@ -43,7 +43,7 @@ public:
         return _instance;
     }
 
-    static void deleteInstance () {
+    static void deleteInstance() {
         _mutex.lock();
         delete _instance;
         _instance = nullptr;

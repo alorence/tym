@@ -66,6 +66,9 @@ public:
 
 private:
     explicit Utils(QObject *parent = 0);
+    Utils & operator=(const Utils &){}
+    ~Utils(){}
+
 
     QPixmap _infoPix, _warningPix, _errorPix, _successPix;
     QIcon _infoIcon, _warningIcon, _errorIcon, _successIcon;
