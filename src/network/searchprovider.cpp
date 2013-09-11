@@ -83,11 +83,8 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
 
-        LOG_DEBUG(tr("Request sent for IDs %1").arg(idsList));
+        LOG_DEBUG(QString("Request sent for IDs %1").arg(idsList));
         _replyMap.insert(reply, tempMap);
-
-
-        tempMap = new QMap<QString, QString>();
     }
 
     delete uidBpidMap;
@@ -101,7 +98,7 @@ void SearchProvider::parseReplyForIdSearch()
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
     QJsonArray resultsArray = response.object()["results"].toArray();
-    LOG_DEBUG(tr("Response received for id search: %1 results").arg(resultsArray.size()));
+    LOG_DEBUG(QString("Response received for id search: %1 results").arg(resultsArray.size()));
 
     QMapIterator<QString, QString> requestPair(*uidBpidMap);
     while(requestPair.hasNext()) {
@@ -128,8 +125,8 @@ void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
     O1Beatport * oauthManager = O1Beatport::instance();
     O1Requestor requestManager(_manager, oauthManager);
     if(!oauthManager->linked()) {
-        LOG_ERROR("Unable to perform a search from IDs, Beatport OAuth is not linked");
-        // TODO: emit an error signal per request
+        LOG_ERROR("Unable to perform a search from text, Beatport OAuth is not linked");
+        // TODO: emit an error signal
         return;
     }
 
@@ -160,7 +157,7 @@ void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
 
-        LOG_DEBUG(tr("Send request: %1").arg(request.url().toString()));
+        LOG_DEBUG(QString("Request sent for search \"%1\"").arg(text));
     }
     delete rowNameMap;
 }
@@ -171,7 +168,10 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 
     QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
 
-    emit searchResultAvailable(uid, response.object()["results"]);
+    QJsonValue results = response.object()["results"];
+    QString text = reply->request().url().query().split('&')[0].split('=')[1];
+    LOG_DEBUG(QString("Response for \"%1\": %2 results").arg(text).arg(results.toArray().size()));
+    emit searchResultAvailable(uid, results);
 
     reply->deleteLater();
 }
@@ -179,7 +179,7 @@ void SearchProvider::parseReplyForNameSearch(QString uid)
 void SearchProvider::requestError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    LOG_WARNING(tr("Error on request %1 : %2")
+    LOG_WARNING(QString("Error on request %1 : %2")
                 .arg(reply->request().url().toString())
                 .arg(error));
     reply->deleteLater();
