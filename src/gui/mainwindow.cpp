@@ -32,12 +32,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "tasks/rename/renameconfigurator.h"
 #include "tasks/export/exportconfigurator.h"
 #include "tasks/search/searchconfigurator.h"
+#include "tasks/libupdater/librarystatusupdater.h"
 #include "tools/patterntool.h"
 #include "tools/langmanager.h"
 #include "network/picturedownloader.h"
 #include "network/o1beatport.h"
-
-#include "tasks/libupdater/librarystatusupdater.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -45,8 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     _aboutDialog(new About(this)),
     _settings(new SettingsDialog(this)),
-    _pictureDownloader(new PictureDownloader(this)),
     _dbHelper(new BPDatabase),
+    _pictureDownloader(new PictureDownloader(this)),
     _libStatusUpdateThread(new QThread())
 {
     ui->setupUi(this);

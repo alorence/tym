@@ -206,12 +206,12 @@ private:
     Ui::MainWindow* ui;
     About * _aboutDialog;
     SettingsDialog* _settings;
-    PictureDownloader* _pictureDownloader;
 
     BPDatabase* _dbHelper;
     LibraryModel* _libraryModel;
     SearchResultsModel* _searchModel;
 
+    PictureDownloader* _pictureDownloader;
     QThread* _libStatusUpdateThread;
 
     QMap<LibraryModel::GroupSelection,QString> _selectActions;
