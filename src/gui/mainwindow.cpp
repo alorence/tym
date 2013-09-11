@@ -21,7 +21,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "ui_mainwindow.h"
 
 #include <Logger.h>
-#include <WidgetAppender.h>
 
 #include "about.h"
 #include "commons.h"
@@ -49,24 +48,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // More space to library view, instead of console
-    ui->verticalSplitter->setStretchFactor(0, 3);
-    ui->verticalSplitter->setStretchFactor(1, 1);
     // More space on library view instead of right panel
     ui->horizontalSplitter->setStretchFactor(0, 4);
     ui->horizontalSplitter->setStretchFactor(1, 1);
 
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
     connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
-
-    // Configure console message displaying
-    connect(ui->actionToggleConsole, &QAction::toggled, this, &MainWindow::toggleConsoleDisplaying);
-    ui->actionToggleConsole->setChecked(_defaultConsoleDisplaying);
-    toggleConsoleDisplaying(_defaultConsoleDisplaying);
-
-    WidgetAppender* widgetAppender = new WidgetAppender(ui->outputConsole);
-    widgetAppender->setFormat("%{message}\n");
-    logger->registerAppender(widgetAppender);
 
     if( ! _dbHelper->initialized()) {
         LOG_ERROR(tr("Impossible to connect with database..."));
@@ -260,17 +247,6 @@ void MainWindow::closeEvent(QCloseEvent *e)
 /*********************************************************************
  * Private slots, used internally with signal called by user actions *
  *********************************************************************/
-void MainWindow::toggleConsoleDisplaying(bool show) const
-{
-    if(show) {
-        ui->actionToggleConsole->setText(tr("Hide console"));
-    } else {
-        ui->actionToggleConsole->setText(tr("Show console"));
-    }
-
-    ui->outputConsole->setVisible(show);
-}
-
 void MainWindow::updateSettings()
 {
     QSettings settings;

@@ -17,7 +17,6 @@
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
 set(HDRS
-    consolewidget.h
     patternbutton.h
     trackinfosview.h
 )
@@ -28,7 +27,6 @@ set(CPP
 )
 
 set(UIS
-    consolewidget.ui
     trackinfosview.ui
 )
 
