@@ -21,7 +21,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define GENERICSINGLETON_H
 
 #include <QMutex>
-#include <QAtomicPointer>
 
 template <typename T>
 class GenericSingleton
@@ -41,7 +40,7 @@ public:
                 _instance = new T;
             _mutex.unlock();
         }
-        return static_cast<T*>(_instance);
+        return _instance;
     }
 
     static void deleteInstance () {
@@ -54,13 +53,13 @@ protected:
     static QMutex _mutex;
 
 private:
-    // Unique instance
-    static QAtomicPointer<T> *_instance;
+    static T *_instance;
+    T& operator= (const T&){}
 };
 
 
 template <typename T>
-QAtomicPointer<T> *GenericSingleton<T>::_instance = nullptr;
+T *GenericSingleton<T>::_instance = nullptr;
 template <typename T>
 QMutex GenericSingleton<T>::_mutex;
 
