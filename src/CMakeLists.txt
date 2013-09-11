@@ -78,13 +78,15 @@ add_executable(${TYM_TARGET}
     $<TARGET_OBJECTS:TymResources>
 )
 
+# !! Order is important ! Gui depends on Widget, Widget depends on Tools, etc.
+# The lib A depending on lib B must be BEFORE in the folowing list (http://stackoverflow.com/a/409470/1887976)
 target_link_libraries(${TYM_TARGET}
-    TymWidgets
     TymGui
-    TymTasks
-    TymDbaccess
+    TymWidgets
     TymTools
+    TymTasks
     TymNetwork
+    TymDbaccess
     Logger
     o2
 )
