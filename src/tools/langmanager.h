@@ -20,7 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef LANGMANAGER_H
 #define LANGMANAGER_H
 
+//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QtCore>
+#include "interfaces/genericsingleton.h"
 
 /*!
  * \brief Singleton class used to manage translations files supported by the application.
@@ -30,19 +32,14 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
  * provides methods to access this list and to dynamically update current localization for
  * the program.
  */
-class LangManager : public QObject
+class LangManager : public QObject, public GenericSingleton<LangManager>
 {
     Q_OBJECT
+
+    friend LangManager* GenericSingleton<LangManager>::instance();
+    friend void GenericSingleton<LangManager>::deleteInstance();
+
 public:
-    /*!
-     * \brief Get the unique instance of this class (Singleton design pattern)
-     * \return The instance of LangManager
-     */
-    static LangManager *instance();
-    /*!
-     * \brief Destroy the current instance and set the internal pointer to "nullptr"
-     */
-    static void destroy();
 
     /*!
      * \brief Provides a QMap of the translator objects managed by this class.
@@ -77,12 +74,11 @@ private:
      */
     explicit LangManager(QObject *parent = 0);
     ~LangManager();
+    LangManager & operator=(const LangManager &){}
+
     QMap<QString, QTranslator*> _translatorMap;
     QMap<QString, QString> _langMap;
     QString _currentTranslation;
-
-    static LangManager *_instance;
-    static QMutex _mutex;
 };
 
 #endif // LANGMANAGER_H

@@ -21,9 +21,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "langmanager.h"
 #include "commons.h"
 
-LangManager * LangManager::_instance = nullptr;
-QMutex LangManager::_mutex;
-
 LangManager::LangManager(QObject *parent) :
     QObject(parent)
 {
@@ -77,24 +74,6 @@ LangManager::LangManager(QObject *parent) :
 LangManager::~LangManager()
 {
     qDeleteAll(_translatorMap);
-}
-
-LangManager *LangManager::instance()
-{
-    _mutex.lock();
-    if(_instance == nullptr) {
-        _instance = new LangManager(qApp);
-    }
-    _mutex.unlock();
-    return _instance;
-}
-
-void LangManager::destroy()
-{
-    _mutex.lock();
-    delete _instance;
-    _instance = nullptr;
-    _mutex.unlock();
 }
 
 QMap<QString, QTranslator *> LangManager::translationsFiles() const

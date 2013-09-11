@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 
     LOG_DEBUG(QObject::tr("Application ends with return code %1").arg(returnCode));
 
-    LangManager::destroy();
+    LangManager::deleteInstance();
 
     return returnCode;
 }
