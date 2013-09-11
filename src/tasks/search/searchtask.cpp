@@ -23,6 +23,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "network/searchprovider.h"
 #include "dbaccess/bpdatabase.h"
 
+#define SEARCH_DURATION       3
+#define DB_STORE_DURATION     4
+#define LINK_RESULT_DURATION  1
+
 SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, QObject *parent) :
     Task(parent),
     _selectedRecords(selectedRecords),
@@ -114,7 +118,8 @@ void SearchTask::run()
     }
 
     // Configure prograssBar in the monitor
-    emit initializeProgression(_nbResultsToReceive * 3 + _trackParsedInformation.count());
+    emit initializeProgression(_nbResultsToReceive * (SEARCH_DURATION+DB_STORE_DURATION)
+                               + _trackParsedInformation.count() * LINK_RESULT_DURATION);
 
     if( ! bpidSearchMap->empty()) {
         _searchProvider->searchFromIds(bpidSearchMap);
@@ -125,21 +130,20 @@ void SearchTask::run()
     if( ! manualSearchMap->empty()) {
         _searchProvider->searchManually(manualSearchMap);
     }
+    _dbHelper->dbObject().transaction();
 }
 
 void SearchTask::updateLibraryWithResults(QString libId, QJsonValue result)
 {
-
-
-    increaseProgressStep(2);
+    increaseProgressStep(SEARCH_DURATION);
     _dbHelper->storeSearchResults(libId, result);
-
-    increaseProgressStep();
+    increaseProgressStep(DB_STORE_DURATION);
 
     if(--_nbResultsToReceive <= 0) {
         for(QString libId : _trackParsedInformation.keys()) {
             selectBetterResult(libId, _trackParsedInformation[libId]);
         }
+        _dbHelper->dbObject().commit();
         emit finished();
     }
 }
@@ -190,6 +194,6 @@ void SearchTask::selectBetterResult(const QString &uid,
     if(betterScore > 0) {
         _dbHelper->setLibraryTrackReference(uid, betterResult);
     }
-    increaseProgressStep();
+    increaseProgressStep(LINK_RESULT_DURATION);
 }
 

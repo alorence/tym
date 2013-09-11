@@ -71,6 +71,7 @@ void TaskMonitor::showEvent(QShowEvent *e)
 void TaskMonitor::initializeProgressBar(int max)
 {
     ui->progressBar->setMaximum(max);
+    ui->progressBar->setValue(0);
     connect(_task, &Task::notifyProgression,
             ui->progressBar, &QProgressBar::setValue);
     ui->progressBar->show();
