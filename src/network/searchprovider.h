@@ -49,7 +49,6 @@ private slots:
 private :
     QNetworkAccessManager *_manager;
 
-    QUrl _apiUrl;
     QString _tracksPath;
     QString _searchPath;
 
