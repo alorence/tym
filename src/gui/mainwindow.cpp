@@ -28,7 +28,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "settingsdialog.h"
 #include "dbaccess/searchresultsmodel.h"
 #include "dbaccess/bpdatabase.h"
-#include "wizards/searchwizard.h"
 #include "tasks/rename/renameconfigurator.h"
 #include "tasks/export/exportconfigurator.h"
 #include "tasks/search/searchconfigurator.h"
