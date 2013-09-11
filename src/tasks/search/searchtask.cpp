@@ -26,12 +26,12 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 SearchTask::SearchTask(const QList<QSqlRecord> &selectedRecords, QObject *parent) :
     Task(parent),
     _selectedRecords(selectedRecords),
+    _nbResultsToReceive(0),
     _dbHelper(new BPDatabase("searchTask", this)),
     _searchProvider(new SearchProvider(this))
 {
     connect(_searchProvider, &SearchProvider::searchResultAvailable,
             this, &SearchTask::updateLibraryWithResults);
-
 }
 
 SearchTask::~SearchTask()
@@ -61,10 +61,11 @@ void SearchTask::run()
 {
     LOG_TRACE(tr("Start search task"));
 
-
     auto bpidSearchMap = new QMap<QString, QString>();
     auto fullInfosSearchMap = new QMap<QString, QString>();
     auto manualSearchMap = new QMap<QString, QString>();
+
+    _nbResultsToReceive = 0;
 
     if(_bpidSearchEnabled) {
 
@@ -135,17 +136,17 @@ void SearchTask::updateLibraryWithResults(QString libId, QJsonValue result)
 
     increaseProgressStep();
 
-    if(_trackParsedInformation.contains(libId)) {
-        selectBetterResult(libId);
-    }
-
     if(--_nbResultsToReceive <= 0) {
+        for(QString libId : _trackParsedInformation.keys()) {
+            selectBetterResult(libId, _trackParsedInformation[libId]);
+        }
         emit finished();
     }
 }
 
 // TODO: try to limit bad behavior on this method
-void SearchTask::selectBetterResult(const QString &uid)
+void SearchTask::selectBetterResult(const QString &uid,
+                                    QMap<TrackFullInfos::TableIndexes, QString> parsedContent)
 {
     QRegularExpression stringPurifyRegexp("[-\\[\\](),&'_ +?]");
 
@@ -157,7 +158,7 @@ void SearchTask::selectBetterResult(const QString &uid)
         QSqlRecord result = results.record();
         int score = 0;
 
-        QMapIterator<TrackFullInfos::TableIndexes, QString> it(_trackParsedInformation[uid]);
+        QMapIterator<TrackFullInfos::TableIndexes, QString> it(parsedContent);
 
         // Check for each parsed information, for a corresponding result
         while(it.hasNext()) {
