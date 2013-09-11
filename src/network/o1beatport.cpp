@@ -55,6 +55,8 @@ O1Beatport::O1Beatport(QObject *parent) :
 
 O1Beatport::~O1Beatport()
 {
+    _auth->webView->page()->deleteLater();
+    _auth->webView->deleteLater();
     _dialog->deleteLater();
     delete _auth;
 }
