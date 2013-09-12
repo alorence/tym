@@ -18,6 +18,10 @@
 
 set(BEATPORT_API_KEY CACHE STRING "Beatport API key to use. You can obtain it for your fork at https://accounts.beatport.com/developer/request-api-key")
 set(BEATPORT_API_SECRET CACHE STRING "Beatport API secret to use")
+if("${BEATPORT_API_KEY}" STREQUAL "" OR "${BEATPORT_API_SECRET}" STREQUAL "")
+    message(WARNING "Variables BEATPORT_API_KEY and BEATPORT_API_SECRET must be set with valid keys in order to obtain a working software.")
+    message(WARNING "Beatport now use OAuth authentication for all search through its API. Please visit https://accounts.beatport.com/developer/request-api-key")
+endif()
 configure_file(config.h.in config.h)
 
 # In source files, all includes are relative to src (in cmake source or binary directory)
