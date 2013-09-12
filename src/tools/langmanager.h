@@ -74,7 +74,6 @@ private:
      */
     explicit LangManager(QObject *parent = 0);
     ~LangManager();
-    LangManager & operator=(const LangManager &){}
 
     QMap<QString, QTranslator*> _translatorMap;
     QMap<QString, QString> _langMap;

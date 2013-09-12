@@ -66,7 +66,6 @@ public:
 
 private:
     explicit Utils(QObject *parent = 0);
-    Utils & operator=(const Utils &){}
     ~Utils(){}
 
 

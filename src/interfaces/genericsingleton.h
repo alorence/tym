@@ -29,9 +29,6 @@ protected:
     GenericSingleton(){}
     ~GenericSingleton(){}
 
-private:
-    GenericSingleton(const GenericSingleton &){}
-
 public:
     static T *instance() {
         if(!_instance) {
@@ -49,12 +46,14 @@ public:
         _instance = nullptr;
         _mutex.unlock();
     }
+
 protected:
     static QMutex _mutex;
 
 private:
-    static T *_instance;
+    GenericSingleton(const GenericSingleton &){}
     T& operator= (const T&){}
+    static T *_instance;
 };
 
 

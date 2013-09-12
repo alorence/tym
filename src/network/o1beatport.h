@@ -70,7 +70,6 @@ signals:
 
 private:
     explicit O1Beatport(QObject *parent = 0);
-    O1Beatport & operator=(const O1Beatport &){}
     ~O1Beatport();
 
     Ui::BeatportAuthentication *_auth;
