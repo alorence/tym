@@ -84,16 +84,19 @@ void TaskMonitor::updateCurrentStatus(const QString &state)
 
 void TaskMonitor::initResultElement(const QString &key, const QString &label)
 {
-    QTreeWidgetItem *item = new QTreeWidgetItem(ui->resultTree,
-                                                QStringList() << label);
+    QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << label);
     _resultsItems.insert(key, item);
 }
 
 void TaskMonitor::appendResult(const QString &key, Utils::StatusType type, const QString &msg)
 {
     QTreeWidgetItem *item = _resultsItems[key];
+    if(item->treeWidget() == 0) {
+        ui->resultTree->addTopLevelItem(item);
+    }
     QTreeWidgetItem *child = new QTreeWidgetItem(item, QStringList() << msg);
     child->setData(0, Qt::DecorationRole, Utils::instance()->pixForStatusType(type));
+
 }
 
 void TaskMonitor::finalizeMonitoring() {
