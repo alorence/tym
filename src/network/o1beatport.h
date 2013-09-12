@@ -41,8 +41,12 @@ public:
     enum Status {
         InitialState,
         Linked,
-        Notlinked
+        Notlinked,
+        APIKeysMissing
     };
+
+public slots:
+    void link() override;
 
 private slots:
     /**

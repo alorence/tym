@@ -25,27 +25,24 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 O1Beatport::O1Beatport(QObject *parent) :
     O1(parent),
-    _auth(new Ui::BeatportAuthentication),
+    _dialogContent(new Ui::BeatportAuthentication),
     _dialog(new QDialog),
     _status(InitialState)
 {
-    _auth->setupUi(_dialog);
-
-    setAccessTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/access-token"));
-    setAuthorizeUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/authorize"));
-    setRequestTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/request-token"));
+    _dialogContent->setupUi(_dialog);
 
     if(QByteArray(BEATPORT_API_KEY).isEmpty() || QByteArray(BEATPORT_API_SECRET).isEmpty()) {
-        LOG_ERROR("CMake variables BEATPORT_API_KEY and BEATPORT_API_SECRET must be set "
-                  "with information\nfrom Beatport. See http://oauth-api.beatport.com/ "
-                  "for more information.");
-        LOG_ERROR("Search on Beatport API will not be available.");
         onLinkingFailed();
+        _status = APIKeysMissing;
         return;
     } else {
         setClientId(BEATPORT_API_KEY);
         setClientSecret(BEATPORT_API_SECRET);
     }
+
+    setAccessTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/access-token"));
+    setAuthorizeUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/authorize"));
+    setRequestTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/request-token"));
 
     connect(this, &O1::openBrowser, this, &O1Beatport::onOpenBrowser);
     connect(this, &O1::closeBrowser, _dialog, &QDialog::hide);
@@ -56,39 +53,48 @@ O1Beatport::O1Beatport(QObject *parent) :
 
 O1Beatport::~O1Beatport()
 {
-    _auth->webView->page()->deleteLater();
-    _auth->webView->deleteLater();
+    _dialogContent->webView->page()->deleteLater();
+    _dialogContent->webView->deleteLater();
     _dialog->deleteLater();
-    delete _auth;
+    delete _dialogContent;
+}
+
+void O1Beatport::link()
+{
+    if(_status == APIKeysMissing) {
+        LOG_ERROR("Beatport API keys are missing. Check the configuration for ");
+        LOG_ERROR("CMake variables BEATPORT_API_KEY and BEATPORT_API_SECRET. You ");
+        LOG_ERROR("can request keys at https://accounts.beatport.com/developer/request-api-key");
+    } else {
+        O1::link();
+    }
 }
 
 void O1Beatport::onOpenBrowser(const QUrl &url)
 {
-    _auth->webView->load(url);
-    _auth->pages->setCurrentWidget(_auth->loginPage);
-
-    if(_dialog->isHidden()) {
-        _dialog->show();
-    }
+    _dialogContent->webView->load(url);
+    _dialog->show();
 }
 
 void O1Beatport::onLinkingSucceeded()
 {
-    _auth->pages->setCurrentWidget(_auth->successPage);
     // This slot is used both at the end of link() and unlink() methods
-    if(linked()) {
+    if(linked() && _status != Linked) {
         _status = Linked;
-    } else {
+    } else if(_status != Notlinked) {
         _status = Notlinked;
+    } else {
+        return;
     }
     emit statusChanged(_status);
 }
 
 void O1Beatport::onLinkingFailed()
 {
-    _auth->pages->setCurrentWidget(_auth->errorPage);
-    _status = Notlinked;
-    emit statusChanged(_status);
+    if(_status != Notlinked) {
+        _status = Notlinked;
+        emit statusChanged(_status);
+    }
 }
 
 void O1Beatport::onLinkingChanged()
