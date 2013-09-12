@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
 
     if( ! _dbHelper->initialized()) {
-        LOG_ERROR(tr("Impossible to connect with database..."));
+        LOG_ERROR(QString("Impossible to connect with database..."));
         return;
     }
 

@@ -63,7 +63,7 @@ void SearchTask::setManualSearch(bool enabled, QMap<QString, QString> searchTerm
 
 void SearchTask::run()
 {
-    LOG_TRACE(tr("Start search task"));
+    LOG_TRACE(QString("Start search task"));
 
     auto bpidSearchMap = new QMap<QString, QString>();
     auto fullInfosSearchMap = new QMap<QString, QString>();

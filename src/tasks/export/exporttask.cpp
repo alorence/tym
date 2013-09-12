@@ -36,7 +36,7 @@ ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
     _hasMultiResults = false;
     QFileInfo fileInfo(_outputFile);
     if(fileInfo.isDir()) {
-        LOG_WARNING(tr("ExportPlaylistTask must be configured with a file path instead of a dir path"));
+        LOG_WARNING(QString("ExportPlaylistTask must be configured with a file path instead of a dir path"));
     }
 }
 
@@ -44,11 +44,11 @@ void ExportTask::run()
 {
     if(_outputFile.exists()) {
         // TODO: Inform user that his file will be overwritten
-        LOG_WARNING(tr("File %1 exists, it will be overwritten").arg(_outputFile.fileName()));
+        LOG_WARNING(QString("File %1 exists, it will be overwritten").arg(_outputFile.fileName()));
     }
 
     if( ! _outputFile.open(QIODevice::WriteOnly)) {
-        LOG_WARNING(tr("Unable to open %1 in write mode").arg(_outputFile.fileName()));
+        LOG_WARNING(QString("Unable to open %1 in write mode").arg(_outputFile.fileName()));
     }
 
     QXmlStreamWriter xmlDoc(&_outputFile);
@@ -107,7 +107,7 @@ void ExportTask::run()
 
     _outputFile.close();
 
-    LOG_INFO(tr("File %1 has been correctly written").arg(_outputFile.fileName()));
+    LOG_INFO(QString("File %1 has been correctly written").arg(_outputFile.fileName()));
 
     emit finished();
 }

@@ -285,7 +285,7 @@ void LibraryModel::updateSettings()
 void LibraryModel::refresh()
 {
     if( ! _elementsList.exec()) {
-        LOG_ERROR(tr("Unable to refresh library model : %1")
+        LOG_ERROR(QString("Unable to refresh library model : %1")
                   .arg(_elementsList.lastError().text()));
     } else {
         // Invalidate all existing ModelIndexes

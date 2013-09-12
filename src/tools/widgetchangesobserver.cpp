@@ -70,7 +70,7 @@ void LineEditChangesObserver::setWidgetValue(const QVariant &value)
     if(value.canConvert<QString>()) {
         _widget->setText(value.toString());
     } else {
-        LOG_WARNING(tr("Try to assign a non-string value (%1) to the QLineEdit %2")
+        LOG_WARNING(QString("Try to assign a non-string value (%1) to the QLineEdit %2")
                     .arg(value.toString()).arg(_widget->objectName()));
     }
 }
@@ -92,7 +92,7 @@ void CheckBoxChangesObserver::setWidgetValue(const QVariant &value)
     if(value.canConvert<bool>()) {
         _widget->setChecked(value.toBool());
     } else {
-        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QCheckbox %2")
+        LOG_WARNING(QString("Try to assign a non-bool value (%1) to the QCheckbox %2")
                     .arg(value.toString()).arg(_widget->objectName()));
     }
 }
@@ -103,7 +103,7 @@ CheckableGroupBoxObserver::CheckableGroupBoxObserver(const QString &settingsKey,
     _widget(groupbox)
 {
     if( ! groupbox->isCheckable()) {
-        LOG_WARNING(tr("Try to observe a non-checkable QGroupBox state (%1)")
+        LOG_WARNING(QString("Try to observe a non-checkable QGroupBox state (%1)")
                     .arg(_widget->objectName()));
     }
 }
@@ -118,7 +118,7 @@ void CheckableGroupBoxObserver::setWidgetValue(const QVariant &value)
     if(value.canConvert<bool>()) {
         _widget->setChecked(value.toBool());
     } else {
-        LOG_WARNING(tr("Try to assign a non-bool value (%1) to the QGroupBox %2")
+        LOG_WARNING(QString("Try to assign a non-bool value (%1) to the QGroupBox %2")
                     .arg(value.toString()).arg(_widget->objectName()));
     }
 }

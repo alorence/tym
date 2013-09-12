@@ -48,7 +48,7 @@ void LibraryStatusUpdater::run()
         QFileInfo fileToCheck(query.value(Library::FilePath).toString());
         if( ! fileToCheck.exists()) {
             missingList << query.record();
-            LOG_INFO(tr("Track %1 missing, status will be updated.").arg(fileToCheck.absoluteFilePath()));
+            LOG_INFO(QString("Track %1 missing, status will be updated.").arg(fileToCheck.absoluteFilePath()));
         }
     }
 
