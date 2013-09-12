@@ -46,6 +46,11 @@ public:
     };
 
 public slots:
+    /**
+     * @brief Try to link with Beatport API.
+     * This is an overloaded method from O1::link() to prevent its execution
+     * when the current status is APIKeysMissing
+     */
     void link() override;
 
 private slots:
@@ -56,7 +61,9 @@ private slots:
     void onOpenBrowser(const QUrl &url);
 
     /**
-     * @brief onLinkingSucceeded
+     * @brief Called when the link succeeded
+     * It update the internal status (if necessary) and notify others
+     * with statusChanged(Status) signal
      */
     void onLinkingSucceeded();
 
@@ -67,15 +74,22 @@ private slots:
     void onLinkingChanged();
 
 signals:
+    /**
+     * @brief Emitted when the internal status changed
+     */
     void statusChanged(Status);
 
 private:
+    // Private constructor/destructor
     explicit O1Beatport(QObject *parent = 0);
     ~O1Beatport();
 
-    Ui::BeatportAuthentication *_auth;
+    Ui::BeatportAuthentication *_dialogContent;
     QDialog * _dialog;
 
+    /**
+     * @brief Internal status of the Beatport API connection
+     */
     Status _status;
 };
 

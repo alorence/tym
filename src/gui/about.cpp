@@ -22,6 +22,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "config.h"
 
+//FIXME: Need to update information with new library used
+
 About::About(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::About)

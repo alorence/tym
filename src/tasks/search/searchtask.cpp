@@ -177,7 +177,7 @@ void SearchTask::startDbStoringTask()
     emit currentStatusChanged(tr("Store results in database"));
 }
 
-// TODO: try to limit bad behavior on this method
+// FIXME: try to limit bad behavior on this method
 void SearchTask::selectBetterResult(const QString &uid,
                                     QMap<TrackFullInfos::TableIndexes, QString> parsedContent)
 {

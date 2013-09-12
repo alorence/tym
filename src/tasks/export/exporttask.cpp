@@ -24,6 +24,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"
 
+//TODO: A specific class should produce content. This task should only write in a file
+
 ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
                                        const QString& filePath, bool exportPlaylist,
                                        QObject *parent) :
@@ -36,14 +38,14 @@ ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
     _hasMultiResults = false;
     QFileInfo fileInfo(_outputFile);
     if(fileInfo.isDir()) {
-        LOG_WARNING(QString("ExportPlaylistTask must be configured with a file path instead of a dir path"));
+        LOG_WARNING("ExportPlaylistTask must be configured with a file path instead of a dir path");
     }
 }
 
 void ExportTask::run()
 {
     if(_outputFile.exists()) {
-        // TODO: Inform user that his file will be overwritten
+        // FIXME: Inform user that his file will be overwritten
         LOG_WARNING(QString("File %1 exists, it will be overwritten").arg(_outputFile.fileName()));
     }
 

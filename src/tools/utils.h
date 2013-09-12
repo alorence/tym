@@ -61,7 +61,17 @@ public:
      */
     QString &osFilenameSanitize(QString &fileName);
 
+    /**
+     * @brief Return a picture corresponding to the given status type
+     * @param type
+     * @return
+     */
     QPixmap pixForStatusType(StatusType type);
+    /**
+     * @brief Return an icon corresponding to the given status type
+     * @param type
+     * @return
+     */
     QIcon iconForStatusType(StatusType type);
 
     /**
