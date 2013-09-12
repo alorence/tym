@@ -49,9 +49,6 @@ namespace Settings {
 #define TYM_WINDOW_GEOMETRY "settings/interface/window/geometry"
 
 // Settings - network
-//FIXME: remove 2 next parameters
-#define TYM_PATH_API_URL "settings/network/beatport/apihost"
-#define TYM_DEFAULT_API_URL "http://api.beatport.com"
 #define TYM_PATH_PROXY_ENABLED "settings/network/proxy/enabled"
 #define TYM_DEFAULT_PROXY_ENABLED false
 #define TYM_PATH_PROXY_HOST "settings/network/proxy/host"

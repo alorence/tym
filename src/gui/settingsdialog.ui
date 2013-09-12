@@ -64,7 +64,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="networkPage">
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -121,29 +121,6 @@
             <widget class="QLabel" name="label_5">
              <property name="text">
               <string>Port</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Beatport</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout_3">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>Api host</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="bpApiHost">
-             <property name="text">
-              <string/>
              </property>
             </widget>
            </item>
