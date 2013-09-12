@@ -174,7 +174,6 @@ MainWindow::~MainWindow()
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
     delete _networkStatus;
-    O1Beatport::deleteInstance();
     qDeleteAll(_selectActionsList);
 }
 

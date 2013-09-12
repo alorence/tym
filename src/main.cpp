@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     a.setApplicationVersion(TYM_VERSION);
 
     // Need to configure lang after setting application name (for QSettings)
-    // and Logger has been initialized.
+    // and Logger (because LangManager display log message) has been initialized.
     LangManager::instance()->updateTranslationsFromSettings();
 
     LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName())
@@ -105,7 +105,10 @@ int main(int argc, char *argv[])
 
     LOG_DEBUG(QObject::tr("Application ends with return code %1").arg(returnCode));
 
+    // Delete all singletons used in the program
     LangManager::deleteInstance();
+    Utils::deleteInstance();
+    O1Beatport::deleteInstance();
 
     return returnCode;
 }

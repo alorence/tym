@@ -109,7 +109,6 @@ void LangManager::updateTranslationsFromSettings()
     QSettings settings;
     QString langBaseName = settings.value(TYM_PATH_LANGUAGE, TYM_DEFAULT_LANGUAGE).toString();
 
-
     if(!langBaseName.isEmpty() && _langMap.contains(langBaseName)) {
         LOG_DEBUG(QString("\"%1\" found as preferred language in the settings").arg(langBaseName));
         updateTranslation(langBaseName);
