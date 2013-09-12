@@ -151,7 +151,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Configure status bar
     ui->statusBar->addWidget(_networkStatus, 2);
     O1Beatport::instance()->link();
-    connect(O1Beatport::instance(), &O1Beatport::statusChanged, this, &MainWindow::updateNetworkStatus);
+    connect(O1Beatport::instance(), &O1Beatport::statusChanged,
+            this, &MainWindow::updateNetworkStatus);
+    connect(O1Beatport::instance(), &O1Beatport::statusChanged,
+            this, &MainWindow::updateLoginLogoutLabel);
 
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
@@ -213,9 +216,18 @@ void MainWindow::showEvent(QShowEvent *e)
     // Configure libraryView filePath column to take as space as possible
     QHeaderView *horizHeader = ui->libraryView->header();
     // Ensure 1st column take as most space as possible
-    ui->libraryView->setColumnWidth(Library::Name, horizHeader->width() - 3 * horizHeader->defaultSectionSize());
+    ui->libraryView->setColumnWidth(Library::Name,
+                                    horizHeader->width() - 3 * horizHeader->defaultSectionSize());
     // Enlarge last column (same size as first one)
     ui->libraryView->setColumnWidth(Library::Infos, ui->libraryView->columnWidth(Library::Name));
+
+    // Customize toolbar to display login/logout button on the right
+    QWidget *spacer = new QWidget(this);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->toolBar->insertWidget(ui->actionLoginLogout, spacer);
+
+    // Initialize label for login/logout button
+    updateLoginLogoutLabel();
 
     QSettings settings;
     if(settings.contains(TYM_WINDOW_GEOMETRY)) {
@@ -278,6 +290,15 @@ void MainWindow::updateNetworkStatus(O1Beatport::Status status)
     default:
         _networkStatus->setText(tr("Network: initial state"));
         break;
+    }
+}
+
+void MainWindow::updateLoginLogoutLabel()
+{
+    if(O1Beatport::instance()->linked()) {
+        ui->actionLoginLogout->setText(tr("Log out"));
+    } else {
+        ui->actionLoginLogout->setText(tr("Log in"));
     }
 }
 
@@ -527,6 +548,15 @@ void MainWindow::on_actionRemove_triggered()
                                   selectedUids);
     _dbHelper->deleteLibraryEntry(selectedUids);
     _libraryModel->refresh();
+}
+
+void MainWindow::on_actionLoginLogout_triggered()
+{
+    if(O1Beatport::instance()->linked()) {
+        O1Beatport::instance()->unlink();
+    } else {
+        O1Beatport::instance()->link();
+    }
 }
 
 /*******************************

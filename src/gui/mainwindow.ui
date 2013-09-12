@@ -33,7 +33,7 @@
       <property name="childrenCollapsible">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QLabel" name="label_2">
@@ -214,6 +214,7 @@
    <addaction name="actionExport"/>
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
+   <addaction name="actionLoginLogout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionImport">
@@ -328,6 +329,11 @@
    </property>
    <property name="toolTip">
     <string>Export selected tracks as playlist</string>
+   </property>
+  </action>
+  <action name="actionLoginLogout">
+   <property name="text">
+    <string>loginLogout</string>
    </property>
   </action>
  </widget>

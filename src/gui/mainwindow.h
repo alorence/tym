@@ -98,6 +98,8 @@ private slots:
 
     void updateNetworkStatus(O1Beatport::Status);
 
+    void updateLoginLogoutLabel();
+
     /*!
      * \brief Update results list in the search results view.
      * Called when user change the item selected in the library view. Connected to the
@@ -183,6 +185,8 @@ private slots:
      * \brief Delete a library entry in database
      */
     void on_actionRemove_triggered();
+
+    void on_actionLoginLogout_triggered();
 
 private:
     /*!
