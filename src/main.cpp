@@ -77,6 +77,9 @@ int main(int argc, char *argv[])
     // and Logger (because LangManager display log message) has been initialized.
     LangManager::instance()->updateTranslationsFromSettings();
 
+    // Clean user persistent storage from useless data
+    Utils::instance()->cleanSomeOldStuff();
+
     LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName())
              .arg(a.applicationVersion()));
     LOG_DEBUG(QObject::tr("Compiled with Qt %1, run with Qt library version %2")

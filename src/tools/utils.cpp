@@ -22,6 +22,18 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "utils.h"
 #include "commons.h"
 
+Utils::Utils(QObject *parent) :
+    _infoPix(":/status/info"),
+    _warningPix(":/status/warning"),
+    _errorPix(":/status/error"),
+    _successPix(":/status/success"),
+    _infoIcon(_infoPix),
+    _warningIcon(_warningPix),
+    _errorIcon(_errorPix),
+    _successIcon(_successPix)
+{
+}
+
 QString Utils::formatKey(const QString &classicKey)
 {
     QSettings settings;
@@ -132,14 +144,10 @@ QIcon Utils::iconForStatusType(Utils::StatusType type)
     }
 }
 
-Utils::Utils(QObject *parent) :
-    _infoPix(":/status/info"),
-    _warningPix(":/status/warning"),
-    _errorPix(":/status/error"),
-    _successPix(":/status/success"),
-    _infoIcon(_infoPix),
-    _warningIcon(_warningPix),
-    _errorIcon(_errorPix),
-    _successIcon(_successPix)
+void Utils::cleanSomeOldStuff()
 {
+    QSettings settings;
+
+    // == Introduced in 0.1. Useless since 0.3 ==
+    settings.remove("settings/network/beatport/apihost");
 }

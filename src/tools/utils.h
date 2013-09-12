@@ -64,10 +64,16 @@ public:
     QPixmap pixForStatusType(StatusType type);
     QIcon iconForStatusType(StatusType type);
 
+    /**
+     * @brief Ensure that all artifacts (settings key/values, db entries/tables, etc.) are cleaned
+     * Remove all stuff that was introduced in previous version and not needed anymore, but
+     * still stored on the user computer
+     */
+    void cleanSomeOldStuff();
+
 private:
     explicit Utils(QObject *parent = 0);
     ~Utils(){}
-
 
     QPixmap _infoPix, _warningPix, _errorPix, _successPix;
     QIcon _infoIcon, _warningIcon, _errorIcon, _successIcon;
