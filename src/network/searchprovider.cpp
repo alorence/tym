@@ -30,9 +30,9 @@ SearchProvider::SearchProvider(QObject *parent) :
     _tracksPath("/catalog/3/tracks"),
     _searchPath("/catalog/3/search"),
     _replyMap(),
-    _textSearchMapper(new QSignalMapper(this))
+    _naturalSearchMapper(new QSignalMapper(this))
 {
-    connect(_textSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
+    connect(_naturalSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
 }
 
 SearchProvider::~SearchProvider()
@@ -40,11 +40,11 @@ SearchProvider::~SearchProvider()
     for(QNetworkReply* reply : _replyMap.keys())
        delete _replyMap.take(reply);
 
-    delete _textSearchMapper;
+    delete _naturalSearchMapper;
     delete _manager;
 }
 
-void SearchProvider::beatportIdsBasedSearch(QMap<QString, QString> * uidBpidMap)
+void SearchProvider::beatportIdsBasedSearch(QMap<QString, QString> * uid_Bpid_Map)
 {
     O1Beatport * oauthManager = O1Beatport::instance();
     O1Requestor requestManager(_manager, oauthManager);
@@ -58,7 +58,7 @@ void SearchProvider::beatportIdsBasedSearch(QMap<QString, QString> * uidBpidMap)
     QList<QMap<QString, QString> *> splittedMaps;
 
     int i = 0;
-    for (auto it = uidBpidMap->begin() ; it != uidBpidMap->end() ; ++it, ++i) {
+    for (auto it = uid_Bpid_Map->begin() ; it != uid_Bpid_Map->end() ; ++it, ++i) {
 
         int listIndex = i / 10;
         if(splittedMaps.size() == listIndex) {
@@ -87,39 +87,17 @@ void SearchProvider::beatportIdsBasedSearch(QMap<QString, QString> * uidBpidMap)
         _replyMap.insert(reply, tempMap);
     }
 
-    delete uidBpidMap;
+    delete uid_Bpid_Map;
 }
 
-void SearchProvider::bpidSearchParseResponce()
-{
-    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QMap<QString, QString> *uidBpidMap = _replyMap.take(reply);
-
-    QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
-
-    QJsonArray resultsArray = response.object()["results"].toArray();
-    LOG_DEBUG(QString("Response received for id search: %1 results").arg(resultsArray.size()));
-
-    QMapIterator<QString, QString> requestPair(*uidBpidMap);
-    while(requestPair.hasNext()) {
-        requestPair.next();
-
-        QString uid = requestPair.key();
-        QString bpid = requestPair.value();
-
-        for(QJsonValue track : resultsArray) {
-            if(bpid == track.toObject().value("id").toVariant().toString()) {
-                emit searchResultAvailable(uid, track);
-                break;
-            }
-        }
-    }
-
-    delete uidBpidMap;
-    reply->deleteLater();
-}
-
-void SearchProvider::naturalSearch(QMap<QString, QString> *rowNameMap)
+/* FIXME: Some requests never receive response
+Need more tests. When searching automatically AND manually on the same track (same libId),
+sometimes one of the responses does not call the slot. Therefore, it should because the requests
+and associated QNetworkReply are totally different objects and should not be in conflict.
+Maybe related to QNetworkSignalMapper. Also, what is the benefit of having a mapper here ? A simple
+QMap<QReply, QString> should be suficient
+*/
+void SearchProvider::naturalSearch(QMap<QString, QString> *id_SearchText_Map)
 {
     O1Beatport * oauthManager = O1Beatport::instance();
     O1Requestor requestManager(_manager, oauthManager);
@@ -131,7 +109,7 @@ void SearchProvider::naturalSearch(QMap<QString, QString> *rowNameMap)
 
     QUrl requestUrl(TYM_BEATPORT_API_URL + _searchPath);
 
-    QMapIterator<QString, QString> searchList(*rowNameMap);
+    QMapIterator<QString, QString> searchList(*id_SearchText_Map);
     while(searchList.hasNext()) {
         searchList.next();
         QString libId = searchList.key();
@@ -151,17 +129,47 @@ void SearchProvider::naturalSearch(QMap<QString, QString> *rowNameMap)
 
         QNetworkReply *reply = requestManager.get(request, params);
 
-        connect(reply, SIGNAL(finished()), _textSearchMapper, SLOT(map()));
-        _textSearchMapper->setMapping(reply, libId);
+        _naturalSearchMapper->setMapping(reply, libId);
+        connect(reply, SIGNAL(finished()),
+                _naturalSearchMapper, SLOT(map()));
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
 
         LOG_DEBUG(QString("Request sent for search \"%1\"").arg(text));
     }
-    delete rowNameMap;
+    delete id_SearchText_Map;
 }
 
-void SearchProvider::parseReplyForNameSearch(QString uid)
+void SearchProvider::bpidSearchParseResponce()
+{
+    QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+    QMap<QString, QString> *uid_Bpid_Map = _replyMap.take(reply);
+
+    QJsonDocument response = QJsonDocument::fromJson(reply->readAll());
+
+    QJsonArray resultsArray = response.object()["results"].toArray();
+    LOG_DEBUG(QString("Response received for id search: %1 results").arg(resultsArray.size()));
+
+    QMapIterator<QString, QString> requestPair(*uid_Bpid_Map);
+    while(requestPair.hasNext()) {
+        requestPair.next();
+
+        QString uid = requestPair.key();
+        QString bpid = requestPair.value();
+
+        for(QJsonValue track : resultsArray) {
+            if(bpid == track.toObject().value("id").toVariant().toString()) {
+                emit searchResultAvailable(uid, track);
+                break;
+            }
+        }
+    }
+
+    delete uid_Bpid_Map;
+    reply->deleteLater();
+}
+
+void SearchProvider::naturalSearchParseResponse(QString uid)
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(static_cast<QSignalMapper *>(sender())->mapping(uid));
 

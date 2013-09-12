@@ -53,7 +53,7 @@ private :
     QString _searchPath;
 
     QMap<QNetworkReply *, QMap<QString, QString>*> _replyMap;
-    QSignalMapper *_textSearchMapper;
+    QSignalMapper *_naturalSearchMapper;
 };
 
 #endif // SEARCHPROVIDER_H
