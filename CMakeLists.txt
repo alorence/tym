@@ -33,8 +33,8 @@ set(TYM_DESCRIPTION "A graphical tool to manage DJ library's audio files.")
 
 # Setup the version numbers
 set(TYM_MAJOR_VERSION 0)
-set(TYM_MINOR_VERSION 2)
-set(TYM_PATCH_VERSION 2)
+set(TYM_MINOR_VERSION 3)
+set(TYM_PATCH_VERSION 0)
 
 option(TYM_BETA OFF)
 option(TYM_UPDATE_TRANSLATIONS OFF)

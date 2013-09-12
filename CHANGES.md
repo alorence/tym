@@ -1,11 +1,17 @@
 ## Tag Your Music: Changelog
 
-##### Known bugs
- - [Windows ] Wizards have a too large title size. Qt 5.0.x bug, should be resolved in a future version (see https://bugreports.qt-project.org/browse/QTBUG-28099)
+#### 0.3 - Next release
+###### Bug fixes
+###### Major improvements / new features
+ - The GUI is now internationalized
+ - Search, rename and export tasks have been rewritten
+   - A new GUI helps to configure and control the results of a task execution
+   - The core of each task have been cleaned and improved
+   - Old wizards, which had a bad rendering on Windows, have been dropped
+ - The new Beatport API, based on OAuth authentication have been implemented. To use the search feature, we now have to login with a valid Beatport account
 
-#### 0.2.2 - Next release
 ###### Minor improvements
- - [Win] A separate setup package is build for x86 and x64 systems
+ - [Win] A separate setup package is built for x86 and x64 systems
 
 #### 0.2.1 - 2013-07-11
 ###### Minor improvements
