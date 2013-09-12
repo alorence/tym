@@ -44,7 +44,7 @@ SearchProvider::~SearchProvider()
     delete _manager;
 }
 
-void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
+void SearchProvider::beatportIdsBasedSearch(QMap<QString, QString> * uidBpidMap)
 {
     O1Beatport * oauthManager = O1Beatport::instance();
     O1Requestor requestManager(_manager, oauthManager);
@@ -79,7 +79,7 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
         QNetworkRequest request(requestUrl);
 
         QNetworkReply *reply = requestManager.get(request, params);
-        connect(reply, SIGNAL(finished()), this, SLOT(parseReplyForIdSearch()));
+        connect(reply, SIGNAL(finished()), this, SLOT(bpidSearchParseResponce()));
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                 this, SLOT(requestError(QNetworkReply::NetworkError)));
 
@@ -90,7 +90,7 @@ void SearchProvider::searchFromIds(QMap<QString, QString> * uidBpidMap)
     delete uidBpidMap;
 }
 
-void SearchProvider::parseReplyForIdSearch()
+void SearchProvider::bpidSearchParseResponce()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
     QMap<QString, QString> *uidBpidMap = _replyMap.take(reply);
@@ -119,8 +119,7 @@ void SearchProvider::parseReplyForIdSearch()
     reply->deleteLater();
 }
 
-
-void SearchProvider::searchManually(QMap<QString, QString> *rowNameMap)
+void SearchProvider::naturalSearch(QMap<QString, QString> *rowNameMap)
 {
     O1Beatport * oauthManager = O1Beatport::instance();
     O1Requestor requestManager(_manager, oauthManager);

@@ -38,12 +38,12 @@ signals:
     void searchResultAvailable(QString libId, QJsonValue result) const;
 
 public slots:
-    void searchFromIds(QMap<QString, QString> *);
-    void searchManually(QMap<QString, QString> *);
+    void beatportIdsBasedSearch(QMap<QString, QString> *);
+    void naturalSearch(QMap<QString, QString> *);
 
 private slots:
-    void parseReplyForIdSearch();
-    void parseReplyForNameSearch(QString);
+    void bpidSearchParseResponce();
+    void naturalSearchParseResponse(QString);
     void requestError(QNetworkReply::NetworkError);
 
 private :

@@ -134,13 +134,13 @@ void SearchTask::run()
 
     emit currentStatusChanged(tr("Send search requests to Beatport"));
     if( ! bpidSearchMap->empty()) {
-        _searchProvider->searchFromIds(bpidSearchMap);
+        _searchProvider->beatportIdsBasedSearch(bpidSearchMap);
     }
     if( ! autoSearchMap->empty()) {
-        _searchProvider->searchManually(autoSearchMap);
+        _searchProvider->naturalSearch(autoSearchMap);
     }
     if( ! manualSearchMap->empty()) {
-        _searchProvider->searchManually(manualSearchMap);
+        _searchProvider->naturalSearch(manualSearchMap);
     }
     _dbHelper->dbObject().transaction();
 }
