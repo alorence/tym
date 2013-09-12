@@ -32,7 +32,6 @@ O1Beatport::O1Beatport(QObject *parent) :
     _dialogContent->setupUi(_dialog);
 
     if(QByteArray(BEATPORT_API_KEY).isEmpty() || QByteArray(BEATPORT_API_SECRET).isEmpty()) {
-        onLinkingFailed();
         _status = APIKeysMissing;
         return;
     } else {
@@ -48,7 +47,6 @@ O1Beatport::O1Beatport(QObject *parent) :
     connect(this, &O1::closeBrowser, _dialog, &QDialog::hide);
     connect(this, &O1::linkedChanged, this, &O1Beatport::onLinkingChanged);
     connect(this, &O1::linkingSucceeded, this, &O1Beatport::onLinkingSucceeded);
-    connect(this, &O1::linkingFailed, this, &O1Beatport::onLinkingFailed);
 }
 
 O1Beatport::~O1Beatport()
@@ -62,6 +60,7 @@ O1Beatport::~O1Beatport()
 void O1Beatport::link()
 {
     if(_status == APIKeysMissing) {
+        emit statusChanged(_status);
         LOG_ERROR("Beatport API keys are missing. Check the configuration for ");
         LOG_ERROR("CMake variables BEATPORT_API_KEY and BEATPORT_API_SECRET. You ");
         LOG_ERROR("can request keys at https://accounts.beatport.com/developer/request-api-key");
@@ -81,20 +80,12 @@ void O1Beatport::onLinkingSucceeded()
     // This slot is used both at the end of link() and unlink() methods
     if(linked() && _status != Linked) {
         _status = Linked;
-    } else if(_status != Notlinked) {
+    } else if(!linked() && _status != Notlinked) {
         _status = Notlinked;
     } else {
         return;
     }
     emit statusChanged(_status);
-}
-
-void O1Beatport::onLinkingFailed()
-{
-    if(_status != Notlinked) {
-        _status = Notlinked;
-        emit statusChanged(_status);
-    }
 }
 
 void O1Beatport::onLinkingChanged()

@@ -150,11 +150,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Configure status bar
     ui->statusBar->addWidget(_networkStatus, 2);
-    O1Beatport::instance()->link();
     connect(O1Beatport::instance(), &O1Beatport::statusChanged,
             this, &MainWindow::updateNetworkStatus);
     connect(O1Beatport::instance(), &O1Beatport::statusChanged,
             this, &MainWindow::updateLoginLogoutLabel);
+    O1Beatport::instance()->link();
 
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
@@ -227,6 +227,7 @@ void MainWindow::showEvent(QShowEvent *e)
     ui->toolBar->insertWidget(ui->actionLoginLogout, spacer);
 
     // Initialize label for login/logout button
+    updateNetworkStatus(O1Beatport::InitialState);
     updateLoginLogoutLabel();
 
     QSettings settings;
@@ -280,15 +281,18 @@ void MainWindow::updateSettings()
 void MainWindow::updateNetworkStatus(O1Beatport::Status status)
 {
     switch (status) {
-    case O1Beatport::Linked:
-        _networkStatus->setText(tr("Network: OK"));
+    case O1Beatport::APIKeysMissing:
+        _networkStatus->setText(tr("Tag Your Music is misconfigured. Connection to "
+                                   "Beatport API is impossible"));
+        ui->actionLoginLogout->setDisabled(true);
         break;
-    case O1Beatport::Notlinked:
-        _networkStatus->setText(tr("Network: Unlinked"));
+    case O1Beatport::Linked:
+        _networkStatus->setText(tr("You are logged on Beatport and will be able to perform search"));
         break;
     case O1Beatport::InitialState:
+    case O1Beatport::Notlinked:
     default:
-        _networkStatus->setText(tr("Network: initial state"));
+        _networkStatus->setText(tr("You need to log in before searching on Beatport"));
         break;
     }
 }

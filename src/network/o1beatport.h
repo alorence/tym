@@ -61,11 +61,8 @@ private slots:
     void onLinkingSucceeded();
 
     /**
-     * @brief onCloseBrowser
-     */
-    void onLinkingFailed();
-    /**
-     * @brief onCloseBrowser
+     * @brief Called when the linking status change in O1 instance
+     * This slot control changes on internal status, and emits statusChanged if necessary
      */
     void onLinkingChanged();
 
