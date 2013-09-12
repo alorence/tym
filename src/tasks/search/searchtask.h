@@ -68,14 +68,19 @@ private slots:
      */
     void updateLibraryWithResults(QString libId, QJsonValue result);
 
+    /*!
+     * \brief TODO
+     */
+    void startDbStoringTask();
+
 private:
     /*!
      * \brief Try to find the better result for each selected tracks, and link it to the track.
      */
     void selectBetterResult(const QString &uid, QMap<TrackFullInfos::TableIndexes, QString> parsedContent);
 
-    QList<QSqlRecord> _selectedRecords;
-    int _nbResultsToReceive;
+    QList<QSqlRecord> _libraryRecords;
+    int _nbResponseExpected;
 
     bool _bpidSearchEnabled;
 
@@ -85,6 +90,7 @@ private:
     bool _manualSearchEnabled;
     QMap<QString, QString> _searchTerms;
 
+    QSet<QString> _libIdInitialized;
     QMap<QString, QMap<TrackFullInfos::TableIndexes, QString>> _trackParsedInformation;
     BPDatabase* _dbHelper;
     SearchProvider* _searchProvider;
