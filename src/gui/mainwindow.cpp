@@ -154,7 +154,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this, &MainWindow::updateNetworkStatus);
     connect(O1Beatport::instance(), &O1Beatport::statusChanged,
             this, &MainWindow::updateLoginLogoutLabel);
-    O1Beatport::instance()->link();
 
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
@@ -229,6 +228,9 @@ void MainWindow::showEvent(QShowEvent *e)
     // Initialize label for login/logout button
     updateNetworkStatus(O1Beatport::InitialState);
     updateLoginLogoutLabel();
+
+    // Try to link for the first time
+    O1Beatport::instance()->link();
 
     QSettings settings;
     if(settings.contains(TYM_WINDOW_GEOMETRY)) {
