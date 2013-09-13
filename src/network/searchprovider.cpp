@@ -32,7 +32,8 @@ SearchProvider::SearchProvider(QObject *parent) :
     _replyMap(),
     _naturalSearchMapper(new QSignalMapper(this))
 {
-    connect(_naturalSearchMapper, SIGNAL(mapped(QString)), this, SLOT(parseReplyForNameSearch(QString)));
+    connect(_naturalSearchMapper, SIGNAL(mapped(QString)),
+            this, SLOT(naturalSearchParseResponse(QString)));
 }
 
 SearchProvider::~SearchProvider()
