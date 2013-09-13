@@ -20,9 +20,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef RENAMECONFIGURATOR_H
 #define RENAMECONFIGURATOR_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
 #include <QDialog>
-#include <QtSql>
+#include <QSqlRecord>
 
 #include "interfaces/taskfactory.h"
 #include "tools/utils.h"

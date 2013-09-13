@@ -20,10 +20,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef SEARCHRESULTSMODEL_H
 #define SEARCHRESULTSMODEL_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
+#include <QSqlTableModel>
+#include <QSqlDatabase>
+#include <QModelIndex>
+#include <QPixmap>
 
 /*!
  * \brief A simple inherited QSqlTableModel, which display images on 1 row.

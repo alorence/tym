@@ -21,6 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "ui_exportconfigurator.h"
 
 #include <QFileDialog>
+#include <QStandardPaths>
 
 #include "exporttask.h"
 

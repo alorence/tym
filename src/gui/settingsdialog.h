@@ -20,8 +20,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include <QtCore>
-#include <QtWidgets>
+#include <QDialog>
+#include <QTreeWidgetItem>
 
 #include "tools/widgetchangesobserver.h"
 

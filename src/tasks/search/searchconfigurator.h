@@ -21,7 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define SEARCHCONFIGURATOR_H
 
 #include <QDialog>
-#include <QtSql>
+#include <QSqlRecord>
 
 #include "interfaces/taskfactory.h"
 #include "widgets/patternbutton.h"

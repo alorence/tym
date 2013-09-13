@@ -20,9 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef PATTERNTOOL_H
 #define PATTERNTOOL_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QtCore>
-#include <QtSql>
+#include <QObject>
+#include <QSqlRecord>
+#include <QRegularExpression>
 
 #include "commons.h"
 #include "patternelement.h"

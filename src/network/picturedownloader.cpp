@@ -20,7 +20,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "picturedownloader.h"
 
 #include <Logger.h>
-
 #include "commons.h"
 
 PictureDownloader::PictureDownloader(QObject *parent) :

@@ -20,10 +20,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef SEARCHPROVIDER_H
 #define SEARCHPROVIDER_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QtCore>
-#include <QtNetwork>
-#include <Logger.h>
+#include <QObject>
+#include <QSignalMapper>
+#include <QNetworkReply>
+#include <QJsonValue>
 
 //NOTE: Missing doc on all methods
 

@@ -19,8 +19,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "renametask.h"
 
-#include <Logger.h>
-
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 

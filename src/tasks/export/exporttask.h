@@ -24,6 +24,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QXmlStreamWriter>
 #include <QFile>
 #include <QSettings>
+
 #include "tasks/task.h"
 
 class BPDatabase;

@@ -19,7 +19,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "exporttask.h"
 
-#include "Logger.h"
+#include <QFileInfo>
+
 #include "commons.h"
 #include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"

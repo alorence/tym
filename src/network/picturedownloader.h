@@ -20,9 +20,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef PICTUREDOWNLOADER_H
 #define PICTUREDOWNLOADER_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QObject>
-#include <QtNetwork>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 //NOTE: Missing doc on all methods
 

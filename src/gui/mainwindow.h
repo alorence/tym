@@ -20,8 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtSql>
-#include <QtWidgets>
+#include <QMainWindow>
+#include <QLabel>
+#include <QSqlRecord>
 
 #include "network/o1beatport.h"
 #include "dbaccess/librarymodel.h"

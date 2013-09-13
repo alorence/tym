@@ -20,7 +20,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "renameconfigurator.h"
 #include "ui_renameconfigurator.h"
 
-#include "dbaccess/librarymodel.h"
+#include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"
 #include "renametask.h"
 

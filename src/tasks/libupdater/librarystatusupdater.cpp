@@ -19,8 +19,6 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "librarystatusupdater.h"
 
-#include <Logger.h>
-
 #include "dbaccess/bpdatabase.h"
 #include "commons.h"
 

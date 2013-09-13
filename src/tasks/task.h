@@ -23,6 +23,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QRunnable>
 
+#include <Logger.h>
 #include "tools/utils.h"
 #include "taskmonitor.h"
 

@@ -19,6 +19,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "searchprovider.h"
 
+#include <QUrlQuery>
+
+#include <Logger.h>
 #include "commons.h"
 #include "tools/utils.h"
 #include "o1beatport.h"

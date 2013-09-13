@@ -20,8 +20,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <Logger.h>
+#include <QNetworkProxy>
+#include <QDragEnterEvent>
+#include <QFileDialog>
 
+#include <Logger.h>
 #include "about.h"
 #include "commons.h"
 #include "settingsdialog.h"
@@ -483,7 +486,7 @@ void MainWindow::on_actionSearch_triggered()
                                      selectedRecords);
 
     SearchConfigurator configurator(selectedRecords);
-    if(configurator.exec() == QWizard::Rejected) {
+    if(configurator.exec() == QDialog::Rejected) {
         return;
     }
 
@@ -499,7 +502,7 @@ void MainWindow::on_actionRename_triggered()
     _libraryModel->recordsForIndexes(ui->libraryView->selectionModel()->selectedRows(),
                                      selectedRecords);
     RenameConfigurator configurator(selectedRecords);
-    if(configurator.exec() == QWizard::Rejected) {
+    if(configurator.exec() == QDialog::Rejected) {
         return;
     }
 
@@ -517,7 +520,7 @@ void MainWindow::on_actionExport_triggered()
                                      selectedRecords);
 
     ExportConfigurator configurator(selectedRecords);
-    if(configurator.exec() == QWizard::Rejected) {
+    if(configurator.exec() == QDialog::Rejected) {
         return;
     }
 

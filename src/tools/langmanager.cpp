@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "Logger.h"
+#include <Logger.h>
 #include "langmanager.h"
 #include "commons.h"
 

@@ -19,7 +19,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "librarymodel.h"
 
-#include <QtWidgets>
+#include <QBrush>
 
 #include <Logger.h>
 #include "commons.h"

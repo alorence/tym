@@ -20,10 +20,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef LIBRARYMODEL_H
 #define LIBRARYMODEL_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
+#include <QAbstractItemModel>
+#include <QColor>
 
 #include <functional>
 

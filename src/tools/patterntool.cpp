@@ -18,6 +18,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
 #include "patterntool.h"
+
 #include <Logger.h>
 
 PatternTool::PatternTool(const QString &pattern, QObject *parent) :

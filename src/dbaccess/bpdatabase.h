@@ -20,9 +20,13 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef BPDATABASE_H
 #define BPDATABASE_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QtCore>
-#include <QtSql>
+#include <QObject>
+#include <QMutex>
+#include <QMap>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlError>
 
 #include "commons.h"
 

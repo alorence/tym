@@ -20,8 +20,11 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef WIDGETCHANGESOBSERVER_H
 #define WIDGETCHANGESOBSERVER_H
 
-#include <QObject>
-#include <QtWidgets>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QRadioButton>
+#include <QGroupBox>
 
 /*!
  * \brief Base class for monitoring changes performed by user on some widgets' state

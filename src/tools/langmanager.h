@@ -20,8 +20,10 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #ifndef LANGMANAGER_H
 #define LANGMANAGER_H
 
-//TODO: Check includes below, remove useless ones and keep only necessary stuff
-#include <QtCore>
+#include <QObject>
+#include <QTranslator>
+#include <QMap>
+
 #include "interfaces/genericsingleton.h"
 
 /*!
