@@ -35,7 +35,7 @@ LangManager::LangManager(QObject *parent) :
 #else
     searchDirs << qApp->applicationDirPath() + "/lang"
 #endif
-               << qApp->applicationDirPath();
+               << qApp->applicationDirPath() + "/../resources";
 
     QDir searchDir;
     searchDir.setFilter(QDir::Files);
@@ -43,7 +43,7 @@ LangManager::LangManager(QObject *parent) :
 
     QFileInfoList files;
     for(QString dir : searchDirs) {
-        searchDir.setCurrent(dir);
+        searchDir.setPath(dir);
         files = searchDir.entryInfoList();
         if(files.count()) {
             LOG_INFO(QString("%1 translations found in the directory %2")

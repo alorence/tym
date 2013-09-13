@@ -49,20 +49,6 @@ set(SOURCES
     main.cpp
 )
 
-# Generate template.qm in another folder, to prevent its inclusion in a deliverable
-set_source_files_properties(${TRANSLATION_TEMPLATE} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY})
-# Used to localize the resulting *.qm files when building deliverables
-set(TRANSLATIONS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE)
-if(TYM_UPDATE_TRANSLATIONS)
-    message(STATUS "*********************************************************************")
-    message(STATUS "* TS files will be updated. To prevent their deletion, please don't *")
-    message(STATUS "* forget to set TYM_UPDATE_TRANSLATIONS to OFF                      *")
-    message(STATUS "*********************************************************************")
-    qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_CURRENT_SOURCE_DIR} ${TRANSLATIONS_FILES})
-else()
-    qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
-endif()
-
 if(WIN32)
     set(EXECUTABLE_OPTION
         WIN32
@@ -80,8 +66,6 @@ add_executable(${TYM_TARGET}
     ${EXECUTABLE_OPTION}
     ${SOURCES}
     ${BASIC_HDRS}
-    ${TYM_TRANSLATIONS}
-    ${TRANSLATIONS_FILES}
     ${TYM_RESOURCES_GENERATED}
 )
 
