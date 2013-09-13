@@ -50,4 +50,4 @@ set(UIS
 qt5_wrap_ui(UIS_HDRS ${UIS})
 
 add_library(TymTasks STATIC ${CPP} ${HDRS} ${UIS_HDRS})
-tym_qt5_use_modules(TymTasks Widgets Sql Network)
+qt5_use_modules(TymTasks Widgets Sql Network)

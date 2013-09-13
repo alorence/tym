@@ -34,4 +34,4 @@ set(BASIC_HDRS
 )
 
 add_library(TymDbaccess STATIC ${CPP} ${BASIC_HDRS} ${HDRS})
-tym_qt5_use_modules(TymDbaccess Widgets Sql)
+qt5_use_modules(TymDbaccess Widgets Sql)

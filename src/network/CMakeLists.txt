@@ -34,4 +34,4 @@ set(UIS
 
 qt5_wrap_ui(UIS_HDRS ${UIS})
 add_library(TymNetwork STATIC ${CPP} ${HDRS} ${UIS_HDRS})
-tym_qt5_use_modules(TymNetwork Widgets Network Sql WebKitWidgets)
+qt5_use_modules(TymNetwork Widgets Network Sql WebKitWidgets)

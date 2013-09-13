@@ -36,4 +36,4 @@ set(BASIC_HDRS
 )
 
 add_library(TymTools STATIC ${CPP} ${BASIC_HDRS} ${HDRS})
-tym_qt5_use_modules(TymTools Widgets Network Sql)
+qt5_use_modules(TymTools Widgets Network Sql)

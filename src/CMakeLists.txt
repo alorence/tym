@@ -64,7 +64,10 @@ else()
 endif()
 
 if(WIN32)
-    set(EXECUTABLE_OPTION WIN32)
+    set(EXECUTABLE_OPTION
+        WIN32
+        ${WIN_ICON_RESOURCE}
+    )
 elseif(APPLE)
     set(EXECUTABLE_OPTION MACOSX_BUNDLE)
     # CMake will copy icon to Resource folder at build time
@@ -79,8 +82,11 @@ add_executable(${TYM_TARGET}
     ${BASIC_HDRS}
     ${TYM_TRANSLATIONS}
     ${TRANSLATIONS_FILES}
-    $<TARGET_OBJECTS:TymResources>
+    ${TYM_RESOURCES_GENERATED}
 )
+
+# Mark cpp file as generated when TymResources target will be built
+set_source_files_properties(${TYM_RESOURCES_GENERATED} PROPERTIES GENERATED true)
 
 # !! Order is important ! Gui depends on Widget, Widget depends on Tools, etc.
 # The lib A depending on lib B must be BEFORE in the folowing list (http://stackoverflow.com/a/409470/1887976)
@@ -91,6 +97,7 @@ target_link_libraries(${TYM_TARGET}
     TymTasks
     TymNetwork
     TymDbaccess
+    TymResources
     CuteLogger
     o2
 )

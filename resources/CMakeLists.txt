@@ -17,18 +17,18 @@
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
 # RESOURCES ===================================================================
-# Create an OBJECT library to ensure qrc_resources.cpp will be properly generated.
-
-qt5_add_resources(RES_OBJ resources.qrc)
+qt5_add_resources(TYM_RESOURCES_GENERATED resources.qrc)
+# Store path of the generated cpp, as it must be compiled against the final executable
+set(TYM_RESOURCES_GENERATED ${TYM_RESOURCES_GENERATED} PARENT_SCOPE)
 
 if(MSVC)
-    list(APPEND RES_OBJ logos/tym.rc)
+    set(WIN_ICON_RESOURCE ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.rc PARENT_SCOPE)
 else(APPLE)
     set(OSX_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.icns PARENT_SCOPE)
 endif()
 
-add_library(TymResources OBJECT ${RES_OBJ})
-tym_qt5_use_modules(TymResources Core)
+add_library(TymResources STATIC ${TYM_RESOURCES_GENERATED})
+qt5_use_modules(TymResources Core)
 
 set(TYM_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym_logo.png PARENT_SCOPE)
 set(TYM_LOGO_MINI ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym_logo_mini.png PARENT_SCOPE)
