@@ -306,8 +306,10 @@ void MainWindow::updateLoginLogoutLabel()
 {
     if(O1Beatport::instance()->linked()) {
         ui->actionLoginLogout->setText(tr("Log out"));
+        ui->actionLoginLogout->setIcon(QIcon(":/action_icons/logout"));
     } else {
         ui->actionLoginLogout->setText(tr("Log in"));
+        ui->actionLoginLogout->setIcon(QIcon(":/action_icons/login"));
     }
 }
 

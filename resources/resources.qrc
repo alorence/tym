@@ -16,6 +16,8 @@
         <file alias="check">fugues-icons-3.5/icons/ui-check-box.png</file>
         <file alias="expand">fugues-icons-3.5/icons/toggle-expand.png</file>
         <file alias="unexpand">fugues-icons-3.5/icons/toggle.png</file>
+        <file alias="login">fugues-icons-3.5/icons/plug-connect.png</file>
+        <file alias="logout">fugues-icons-3.5/icons/door-open-out.png</file>
     </qresource>
     <qresource prefix="/generic_icons">
         <file alias="folder">fugues-icons-3.5/icons/folder-open-document-music.png</file>
