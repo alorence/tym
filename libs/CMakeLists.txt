@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with TYM (Tag Your Music).  If not, see <http://www.gnu.org/licenses/>.
 
-find_package(Qt5Script REQUIRED)
 find_package(Qt5Network REQUIRED)
 
 set(TYM_LIBS_INCLUDES
