@@ -60,6 +60,8 @@ private slots:
      */
     void onOpenBrowser(const QUrl &url);
 
+    void onLinkClickedInsideWebView(const QUrl &url);
+
     /**
      * @brief Called when the link succeeded
      * It update the internal status (if necessary) and notify others

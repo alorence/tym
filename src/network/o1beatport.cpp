@@ -20,6 +20,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "o1beatport.h"
 #include "ui_o1beatport.h"
 
+#include <QDesktopServices>
+
 #include <Logger.h>
 #include "config.h"
 
@@ -29,8 +31,6 @@ O1Beatport::O1Beatport(QObject *parent) :
     _dialog(new QDialog),
     _status(InitialState)
 {
-    _dialogContent->setupUi(_dialog);
-
     if(QByteArray(BEATPORT_API_KEY).isEmpty() || QByteArray(BEATPORT_API_SECRET).isEmpty()) {
         _status = APIKeysMissing;
         return;
@@ -38,6 +38,10 @@ O1Beatport::O1Beatport(QObject *parent) :
         setClientId(BEATPORT_API_KEY);
         setClientSecret(BEATPORT_API_SECRET);
     }
+
+    _dialogContent->setupUi(_dialog);
+    connect(_dialogContent->webView, &QWebView::linkClicked,
+            this, &O1Beatport::onLinkClickedInsideWebView);
 
     setAccessTokenUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/access-token"));
     setAuthorizeUrl(QUrl("https://oauth-api.beatport.com/identity/1/oauth/authorize"));
@@ -72,7 +76,13 @@ void O1Beatport::link()
 void O1Beatport::onOpenBrowser(const QUrl &url)
 {
     _dialogContent->webView->load(url);
+    _dialogContent->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     _dialog->show();
+}
+
+void O1Beatport::onLinkClickedInsideWebView(const QUrl &url)
+{
+    QDesktopServices::openUrl(url);
 }
 
 void O1Beatport::onLinkingSucceeded()

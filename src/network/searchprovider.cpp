@@ -99,7 +99,7 @@ Need more tests. When searching automatically AND manually on the same track (sa
 sometimes one of the responses does not call the slot. Therefore, it should because the requests
 and associated QNetworkReply are totally different objects and should not be in conflict.
 Maybe related to QNetworkSignalMapper. Also, what is the benefit of having a mapper here ? A simple
-QMap<QReply, QString> should be suficient
+QMap<QReply, QString> should be sufficient
 */
 void SearchProvider::naturalSearch(QMap<QString, QString> *id_SearchText_Map)
 {
