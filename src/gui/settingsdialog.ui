@@ -29,6 +29,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>110</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="autoExpandDelay">
        <number>0</number>
       </property>
@@ -66,76 +72,43 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="networkPage">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QGroupBox" name="proxyGroup">
+      <widget class="QWidget" name="generalPage">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_2">
           <property name="title">
-           <string>Enable proxy</string>
+           <string>Preferred patterns</string>
           </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <layout class="QFormLayout" name="formLayout">
-           <property name="fieldGrowthPolicy">
-            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Host</string>
-             </property>
-            </widget>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0" rowspan="2">
+            <widget class="QListWidget" name="listWidget"/>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="proxyHost"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_4">
+            <widget class="QPushButton" name="pushButton">
              <property name="text">
-              <string>User</string>
+              <string>+</string>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="proxyUser"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_3">
+            <widget class="QPushButton" name="pushButton_2">
              <property name="text">
-              <string>Password</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="proxyPwd">
-             <property name="echoMode">
-              <enum>QLineEdit::Password</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="proxyPort"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Port</string>
+              <string>-</string>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item>
-         <spacer name="verticalSpacer_2">
+        <item row="1" column="0">
+         <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>200</height>
            </size>
           </property>
          </spacer>
@@ -234,6 +207,82 @@
            </item>
           </layout>
          </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="networkPage">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QGroupBox" name="proxyGroup">
+          <property name="title">
+           <string>Enable proxy</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Host</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="proxyHost"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>User</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="proxyUser"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="proxyPwd">
+             <property name="echoMode">
+              <enum>QLineEdit::Password</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="proxyPort"/>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Port</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

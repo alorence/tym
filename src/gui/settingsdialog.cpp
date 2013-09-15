@@ -106,12 +106,15 @@ void SettingsDialog::initMenu()
 
     QTreeWidgetItem *item;
 
+    item = new QTreeWidgetItem(ui->menu, QStringList()<<tr("General"));
+    _menuPagesMap[item] = ui->generalPage;
+
     item = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Interface"));
     _menuPagesMap[item] = ui->interfacePage;
 
     item = new QTreeWidgetItem(ui->menu, QStringList()<<tr("Network"));
     _menuPagesMap[item] = ui->networkPage;
 
-    ui->content->setCurrentWidget(ui->interfacePage);
+    ui->content->setCurrentIndex(0);
 }
 
