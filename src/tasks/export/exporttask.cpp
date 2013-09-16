@@ -123,9 +123,8 @@ void ExportTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord
     QSqlRecord trackInfos = _dbHelper->trackInformations(bpid);
 
     QString basePath = path.canonicalPath();
-    int firstSlashIndex = basePath.indexOf('/');
-    QString volume = basePath.mid(0, firstSlashIndex);
-    QString tractorFormattedPath = basePath.append('/').mid(firstSlashIndex).replace('/', "/:");
+    QString volume = Utils::instance()->volumeName(path);
+    QString tractorFormattedPath = basePath.append('/').mid(basePath.indexOf('/')).replace('/', "/:");
 
     xmlDoc.writeStartElement("ENTRY");
     xmlDoc.writeAttribute("ARTIST", trackInfos.value(TrackFullInfos::Artists).toString());
@@ -134,7 +133,6 @@ void ExportTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord
     xmlDoc.writeEmptyElement("LOCATION");
     xmlDoc.writeAttribute("DIR", tractorFormattedPath);
     xmlDoc.writeAttribute("FILE", path.fileName());
-    // FIXME #3: Mac OS Volume is not correctly written
     xmlDoc.writeAttribute("VOLUME", volume);
 
     xmlDoc.writeEmptyElement("ALBUM");

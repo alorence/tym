@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-#include <QPixmap>
-#include <QIcon>
+#include <QtGlobal>
+#include <QDir>
 
 #include "utils.h"
 #include "commons.h"
@@ -92,13 +92,48 @@ QString &Utils::osFilenameSanitize(QString &fileName)
 {
 #ifdef Q_OS_WIN
     const QRegularExpression forbiddenChars("[\"\\/:*?<>|]",
-                                            QRegularExpression::CaseInsensitiveOption);
-#elif defined Q_OS_MAC
-    const QRegularExpression forbiddenChars("[/:]", QRegularExpression::CaseInsensitiveOption);
+                             QRegularExpression::CaseInsensitiveOption);
+#elif defined Q_OS_MACX
+    const QRegularExpression forbiddenChars("[/:]",
+                             QRegularExpression::CaseInsensitiveOption);
 #else
-    const QRegularExpression forbiddenChars("[/]", QRegularExpression::CaseInsensitiveOption);
+    const QRegularExpression forbiddenChars("[/]",
+                             QRegularExpression::CaseInsensitiveOption);
 #endif
     return fileName.replace(forbiddenChars, " ");
+}
+
+QString Utils::volumeName(const QFileInfo &file)
+{
+#if defined Q_OS_MACX
+    int bestResultLength = 0;
+    QString bestResult;
+    // Compute the list of entries in /Volumes system folder
+    QDir volumes("/Volumes");
+    for(QFileInfo volume : volumes.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot)){
+        // We only focus on symbolic inks
+        if(volume.isSymLink()) {
+            QString symLinkTarget = volume.symLinkTarget();
+            // Check the target of symLink, it must be contained in the first
+            // chars of given file, and be as long as possible to ensure for
+            // example /Users/<user> will be a better result than /
+            if(symLinkTarget.size() > bestResultLength
+                    && file.absoluteFilePath().startsWith(symLinkTarget)) {
+                bestResult = volume.fileName();
+                bestResultLength = symLinkTarget.size();
+            }
+        }
+    }
+    return bestResult;
+#elif defined Q_OS_WIN
+    // Take the path of the given file
+    QString basePath = file.canonicalPath();
+    // Return the content before the first '/' (C:, D:, etc.)
+    return basePath.mid(0, basePath.indexOf('/'));
+#else
+    // Linux is not important, since Traktor Pro does not run on this platform
+    return "";
+#endif
 }
 
 QPixmap Utils::pixForStatusType(Utils::StatusType type)

@@ -22,6 +22,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPixmap>
 #include <QIcon>
+#include <QFileInfo>
 
 #include "interfaces/genericsingleton.h"
 
@@ -60,6 +61,15 @@ public:
      * \return
      */
     QString &osFilenameSanitize(QString &fileName);
+
+    /*!
+     * \brief Get the volume name where given file is stored
+     * It returns a string like "Macintosh HD" on OSX and like "D:" or "C:"
+     * on Windows
+     * \param file A file on the disk
+     * \return
+     */
+    QString volumeName(const QFileInfo &file);
 
     /**
      * @brief Return a picture corresponding to the given status type
