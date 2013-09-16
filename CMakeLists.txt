@@ -38,6 +38,7 @@ set(TYM_PATCH_VERSION 0)
 
 option(TYM_BETA OFF)
 option(TYM_UPDATE_TRANSLATIONS OFF)
+option(TYM_COMPILE_TESTS OFF)
 ################## END ####################
 
 set(CMAKE_AUTOMOC ON)
@@ -97,6 +98,11 @@ add_subdirectory(src)
 add_subdirectory(packages)
 add_subdirectory(docs)
 
+if(TYM_COMPILE_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
 # Display summarry for configuration
 message(STATUS "==============================================")
 message(STATUS "Architecture:       ${TYM_ARCH}")
@@ -112,6 +118,7 @@ message(STATUS "Version:            ${TYM_SHORT_VERSION}")
 message(STATUS "Beatport API key:   ${BEATPORT_API_KEY}")
 message(STATUS "Beta release:       ${TYM_BETA}")
 message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
+message(STATUS "Tests compiling:    ${TYM_COMPILE_TESTS}")
 message(STATUS "==============================================")
 
 if(NOT APPLE)
