@@ -140,7 +140,12 @@ QVariant RadioButtonListObserver::getWidgetValue() const
 
 void RadioButtonListObserver::setWidgetValue(const QVariant &value)
 {
-    _widgets.value(value.toInt())->setChecked(true);
+    if(value.toInt() >= 0 && value.toInt() < _widgets.count()) {
+        _widgets.value(value.toInt())->setChecked(true);
+    } else {
+        LOG_WARNING(QString("Try to set an invalid index to a list of QRadioButtons (%1)")
+                    .arg(value.toInt()));
+    }
 }
 
 
