@@ -29,6 +29,8 @@ namespace Ui {
 class SettingsDialog;
 }
 
+class PatternButton;
+
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
@@ -37,12 +39,18 @@ public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
+protected:
     /*!
      * \brief Call ui->retranslateUi() when the current QTranslator change
      */
     void changeEvent(QEvent *) override;
 
-protected:
+    /**
+     * @brief Prevent some keys event to be propagated in specific cases
+     * @param event
+     */
+    void keyPressEvent(QKeyEvent *event);
+
     /*!
      * \brief Initialize all registered widgets to the right state.
      * Try to load QSettings value, or the default one if widget state has never been modified.
@@ -74,6 +82,8 @@ private:
 
     Ui::SettingsDialog *ui;
     QMap<QTreeWidgetItem*, QWidget*> _menuPagesMap;
+
+    PatternButton *_patternButton;
 
     QSet<WidgetChangesObserver*> _widgetObservers;
 };

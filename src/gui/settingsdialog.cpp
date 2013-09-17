@@ -17,15 +17,20 @@ You should have received a copy of the GNU General Public License
 along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#include <QKeyEvent>
+
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 #include "tools/langmanager.h"
+#include "widgets/patternbutton.h"
+#include "tools/patterntool.h"
 
 #include "commons.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SettingsDialog)
+    ui(new Ui::SettingsDialog),
+    _patternButton(nullptr)
 {
     ui->setupUi(this);
 
@@ -46,7 +51,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
      * General
      ********************************/
     _widgetObservers << new ListWidgetObserver(TYM_PATH_PATTERNS, ui->patternList,
-                                               TYM_DEFAULT_PATTERNS, true, this);
+                                               TYM_DEFAULT_PATTERNS, false, this);
 
     /********************************
      * Interface
@@ -81,6 +86,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 SettingsDialog::~SettingsDialog()
 {
     delete ui;
+    delete _patternButton;
 }
 
 void SettingsDialog::showEvent(QShowEvent *)
@@ -98,6 +104,16 @@ void SettingsDialog::changeEvent(QEvent *e)
         ui->retranslateUi(this);
     }
     QWidget::changeEvent(e);
+}
+
+void SettingsDialog::keyPressEvent(QKeyEvent *event)
+{
+    Qt::Key key = (Qt::Key) event->key();
+    // Do not propagate KeyEvent when Enter/Return is pressed inside the patternEdit widget
+    if( (key == Qt::Key_Return || key == Qt::Key_Enter) && ui->patternEdit->hasFocus()) {
+        return;
+    }
+    QDialog::keyPressEvent(event);
 }
 
 void SettingsDialog::changeDisplayedStack()
@@ -135,18 +151,38 @@ void SettingsDialog::initMenu()
 void SettingsDialog::initPatternsConfigurationWidget()
 {
     connect(ui->addButton, &QPushButton::clicked, [this](){
-        QListWidgetItem * item = new QListWidgetItem("", ui->patternList);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        new QListWidgetItem("", ui->patternList);
     });
     connect(ui->removeButton, &QPushButton::clicked, [this](){
         delete ui->patternList->takeItem(ui->patternList->currentRow());
     });
+    // Reset all elements in the list
     connect(ui->resetButton, &QPushButton::clicked, [this](){
         ui->patternList->clear();
         for(QString pattern : QStringList(TYM_DEFAULT_PATTERNS)) {
-            QListWidgetItem *item = new QListWidgetItem(pattern, ui->patternList);
-            item->setFlags(item->flags() | Qt::ItemIsEditable);
+            new QListWidgetItem(pattern, ui->patternList);
         }
     });
+    // Update list item when line edit loose focus or when Enter/Return is pressed (see keyEvent())
+    connect(ui->patternEdit, &QLineEdit::editingFinished,
+        [this](){
+            if(ui->patternList->currentRow() >= 0) {
+                ui->patternList->item(ui->patternList->currentRow())->setText(ui->patternEdit->text());
+            }
+        }
+    );
+    // Display in line edit text corresponding on list item selected
+    connect(ui->patternList, &QListWidget::currentItemChanged,
+        [this](QListWidgetItem * current, QListWidgetItem * previous){
+            if(current != nullptr) {
+                ui->patternEdit->setText(current->text());
+            }
+        }
+    );
+
+    // Initialize the helper button to build patterns and add it to the layout
+    FileBasenameFormatter formatter;
+    _patternButton = new PatternButton(formatter, ui->patternEdit, this);
+    static_cast<QGridLayout*>(ui->patternGroup->layout())->addWidget(_patternButton, 1, 1);
 }
 

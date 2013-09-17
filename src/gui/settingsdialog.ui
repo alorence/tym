@@ -75,33 +75,22 @@
       <widget class="QWidget" name="generalPage">
        <layout class="QGridLayout" name="gridLayout_6">
         <item row="0" column="0">
-         <widget class="QGroupBox" name="groupBox_2">
+         <widget class="QGroupBox" name="patternGroup">
           <property name="title">
            <string>Preferred patterns</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="1" column="1">
-            <widget class="QPushButton" name="removeButton">
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label">
              <property name="text">
-              <string>-</string>
+              <string>Edit this list to define your preferred filename formats. It will be used for renaming and for automatic detection of better result on searches. You can drag &amp; drop to modify the order.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="addButton">
-             <property name="text">
-              <string>+</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QPushButton" name="resetButton">
-             <property name="text">
-              <string>Reset</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" rowspan="3">
+           <item row="2" column="0" rowspan="3">
             <widget class="QListWidget" name="patternList">
              <property name="dragEnabled">
               <bool>true</bool>
@@ -111,6 +100,30 @@
              </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="patternEdit"/>
+           </item>
+           <item row="4" column="1">
+            <widget class="QPushButton" name="resetButton">
+             <property name="text">
+              <string>Reset</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QPushButton" name="removeButton">
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="addButton">
+             <property name="text">
+              <string>+</string>
              </property>
             </widget>
            </item>
@@ -318,6 +331,24 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>menu</tabstop>
+  <tabstop>buttons</tabstop>
+  <tabstop>patternEdit</tabstop>
+  <tabstop>patternList</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>removeButton</tabstop>
+  <tabstop>resetButton</tabstop>
+  <tabstop>langSelection</tabstop>
+  <tabstop>libColors</tabstop>
+  <tabstop>bpStyle</tabstop>
+  <tabstop>mikStyle</tabstop>
+  <tabstop>proxyGroup</tabstop>
+  <tabstop>proxyHost</tabstop>
+  <tabstop>proxyUser</tabstop>
+  <tabstop>proxyPwd</tabstop>
+  <tabstop>proxyPort</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
