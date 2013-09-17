@@ -37,9 +37,11 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
     ui->customPatternArea->addWidget(_patternHelperButton);
 
     // Configure pattern selection comboBox
-    ui->patternSelection->addItem("%ARTISTS% - %NAME% (%MIXNAME%)");
-    ui->patternSelection->addItem("%ARTISTS% - %TITLE%");
-    ui->patternSelection->addItem("%ARTISTS% (%LABEL%) - %TITLE%");
+    QSettings settings;
+    for(QString pattern : settings.value(TYM_PATH_PATTERNS, TYM_DEFAULT_PATTERNS).toStringList()) {
+        ui->patternSelection->addItem(pattern);
+    }
+
     // "Custom" entry MUST be the last one
     //: Specific value in list of formats, allowing user to create its own
     ui->patternSelection->addItem(tr("Custom"));
