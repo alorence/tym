@@ -39,7 +39,9 @@ public:
      * \param defaultValue Default value of the widget
      * \param parent
      */
-    explicit WidgetChangesObserver(const QString &settingsKey, const QVariant &defaultValue, QObject *parent = 0);
+    explicit WidgetChangesObserver(const QString &settingsKey,
+                                   const QVariant &defaultValue,
+                                   QObject *parent = 0);
 
     /*!
      * \brief Initialize the widget's internal state.
@@ -80,7 +82,7 @@ protected:
 /*!
  * \brief Monitor changes performed on a \link QLineEdit text
  */
-class LineEditChangesObserver : public WidgetChangesObserver
+class LineEditObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
@@ -88,7 +90,8 @@ public:
      * \copybrief WidgetChangesObserver::WidgetChangesObserver
      * This observer manage a \link QLineEdit
      */
-    LineEditChangesObserver(const QString &settingsKey, QLineEdit * lineEdit, const QVariant &defaultValue, QObject *parent = 0);
+    LineEditObserver(const QString &settingsKey, QLineEdit * lineEdit,
+                            const QVariant &defaultValue, QObject *parent = 0);
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
@@ -105,7 +108,7 @@ private:
 /*!
  * \brief Monitor changes performed on a \link QCheckBox
  */
-class CheckBoxChangesObserver : public WidgetChangesObserver
+class CheckboxObserver : public WidgetChangesObserver
 {
     Q_OBJECT
 public:
@@ -113,7 +116,8 @@ public:
      * \copybrief WidgetChangesObserver::WidgetChangesObserver
      * This observer manage a \link QCheckBox
      */
-    CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox, const QVariant &defaultValue, QObject *parent = 0);
+    CheckboxObserver(const QString &settingsKey, QCheckBox *checkbox,
+                            const QVariant &defaultValue, QObject *parent = 0);
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
@@ -138,7 +142,8 @@ public:
      * \copybrief WidgetChangesObserver::WidgetChangesObserver
      * This observer manage a chackable \link QGroupBox
      */
-    CheckableGroupBoxObserver(const QString &settingsKey, QGroupBox *groupbox, const QVariant &defaultValue, QObject *parent = 0);
+    CheckableGroupBoxObserver(const QString &settingsKey, QGroupBox *groupbox,
+                            const QVariant &defaultValue, QObject *parent = 0);
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
@@ -161,7 +166,9 @@ public:
      * \copybrief WidgetChangesObserver::WidgetChangesObserver
      * This observer manage a list of \l QRadioButton
      */
-    RadioButtonListObserver(const QString &settingsKey, QList<QRadioButton*> radioButtonList, const QVariant &defaultValue, QObject *parent = 0);
+    RadioButtonListObserver(const QString &settingsKey,
+                            QList<QRadioButton*> radioButtonList,
+                            const QVariant &defaultValue, QObject *parent = 0);
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
@@ -183,7 +190,8 @@ public:
      * \copybrief WidgetChangesObserver::WidgetChangesObserver
      * This observer manage a \l QComboBox
      */
-    ComboBoxObserver(const QString &settingsKey, QComboBox *comboBox, const QVariant &defaultValue, QObject *parent = 0);
+    ComboBoxObserver(const QString &settingsKey, QComboBox *comboBox,
+                     const QVariant &defaultValue, QObject *parent = 0);
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */

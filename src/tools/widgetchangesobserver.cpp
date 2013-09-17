@@ -53,19 +53,19 @@ bool WidgetChangesObserver::widgetValueChanged() const
     return _registeredValue != getWidgetValue();
 }
 
-LineEditChangesObserver::LineEditChangesObserver(const QString &settingsKey, QLineEdit *lineEdit,
+LineEditObserver::LineEditObserver(const QString &settingsKey, QLineEdit *lineEdit,
                                                  const QVariant &defaultValue, QObject *parent) :
     WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widget(lineEdit)
 {
 }
 
-QVariant LineEditChangesObserver::getWidgetValue() const
+QVariant LineEditObserver::getWidgetValue() const
 {
     return _widget->text();
 }
 
-void LineEditChangesObserver::setWidgetValue(const QVariant &value)
+void LineEditObserver::setWidgetValue(const QVariant &value)
 {
     if(value.canConvert<QString>()) {
         _widget->setText(value.toString());
@@ -75,19 +75,19 @@ void LineEditChangesObserver::setWidgetValue(const QVariant &value)
     }
 }
 
-CheckBoxChangesObserver::CheckBoxChangesObserver(const QString &settingsKey, QCheckBox *checkbox,
+CheckboxObserver::CheckboxObserver(const QString &settingsKey, QCheckBox *checkbox,
                                                  const QVariant &defaultValue, QObject *parent):
     WidgetChangesObserver(settingsKey, defaultValue, parent),
     _widget(checkbox)
 {
 }
 
-QVariant CheckBoxChangesObserver::getWidgetValue() const
+QVariant CheckboxObserver::getWidgetValue() const
 {
     return _widget->isChecked();
 }
 
-void CheckBoxChangesObserver::setWidgetValue(const QVariant &value)
+void CheckboxObserver::setWidgetValue(const QVariant &value)
 {
     if(value.canConvert<bool>()) {
         _widget->setChecked(value.toBool());

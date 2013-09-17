@@ -45,7 +45,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     }
     _widgetObservers << new ComboBoxObserver(TYM_PATH_LANGUAGE, ui->langSelection,
                                              TYM_DEFAULT_LANGUAGE, this);
-    _widgetObservers << new CheckBoxChangesObserver(TYM_PATH_DISPLAY_COLORS, ui->libColors,
+    _widgetObservers << new CheckboxObserver(TYM_PATH_DISPLAY_COLORS, ui->libColors,
                                                     TYM_DEFAULT_DISPLAY_COLORS, this);
     QList<QRadioButton*> keyStyleValueList;
     keyStyleValueList << ui->bpStyle << ui->mikStyle;
@@ -56,13 +56,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
      ********************************/
     _widgetObservers << new CheckableGroupBoxObserver(TYM_PATH_PROXY_ENABLED, ui->proxyGroup,
                                                       TYM_DEFAULT_PROXY_ENABLED, this);
-    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_HOST, ui->proxyHost,
+    _widgetObservers << new LineEditObserver(TYM_PATH_PROXY_HOST, ui->proxyHost,
                                                     TYM_DEFAULT_PROXY_HOST, this);
-    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_USER, ui->proxyUser,
+    _widgetObservers << new LineEditObserver(TYM_PATH_PROXY_USER, ui->proxyUser,
                                                     TYM_DEFAULT_PROXY_USER, this);
-    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PWD, ui->proxyPwd,
+    _widgetObservers << new LineEditObserver(TYM_PATH_PROXY_PWD, ui->proxyPwd,
                                                     TYM_DEFAULT_PROXY_PWD, this);
-    _widgetObservers << new LineEditChangesObserver(TYM_PATH_PROXY_PORT, ui->proxyPort,
+    _widgetObservers << new LineEditObserver(TYM_PATH_PROXY_PORT, ui->proxyPort,
                                                     TYM_DEFAULT_PROXY_PORT, this);
 }
 
