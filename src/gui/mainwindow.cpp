@@ -246,9 +246,15 @@ void MainWindow::showEvent(QShowEvent *e)
 void MainWindow::changeEvent(QEvent *e)
 {
     if(e->type() == QEvent::LanguageChange) {
+        // Save the current library root path (/Users/John/Music/mp3)
         QString rootTextSave = ui->rootDirLabel->text();
+        // Retranslate all
         ui->retranslateUi(this);
+        // Restore the path for the library root dir
         ui->rootDirLabel->setText(rootTextSave);
+        // By default, login/logout button has a false text. Prevent from
+        // redisplaying this one after a change on current language
+        updateLoginLogoutLabel();
     }
     QWidget::changeEvent(e);
 }

@@ -51,7 +51,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>&lt;dir&gt;</string>
+           <string notr="true">&lt;dir&gt;</string>
           </property>
          </widget>
         </item>
@@ -333,7 +333,7 @@
   </action>
   <action name="actionLoginLogout">
    <property name="text">
-    <string>loginLogout</string>
+    <string notr="true">loginLogout</string>
    </property>
   </action>
  </widget>
