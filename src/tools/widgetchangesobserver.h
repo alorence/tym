@@ -214,7 +214,7 @@ public:
      * This observer manage a \l QListWidget
      */
     ListWidgetObserver(const QString &settingsKey, QListWidget *listWidget,
-                     const QVariant &defaultValue, QObject *parent = 0);
+                     const QVariant &defaultValue, bool itemsEditable, QObject *parent = 0);
     /*!
      * \copydoc WidgetChangesObserver::getWidgetValue
      */
@@ -225,5 +225,6 @@ public:
     void setWidgetValue(const QVariant &value) override;
 private:
     QListWidget *_widget;
+    bool _itemsEditable;
 };
 #endif // WIDGETCHANGESOBSERVER_H

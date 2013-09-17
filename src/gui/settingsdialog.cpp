@@ -41,7 +41,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
      * General
      ********************************/
     _widgetObservers << new ListWidgetObserver(TYM_PATH_PATTERNS, ui->patternList,
-                                               TYM_DEFAULT_PATTERNS, this);
+                                               TYM_DEFAULT_PATTERNS, true, this);
 
     /********************************
      * Interface

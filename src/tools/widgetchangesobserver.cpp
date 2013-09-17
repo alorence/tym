@@ -163,9 +163,10 @@ void ComboBoxObserver::setWidgetValue(const QVariant &value)
 
 
 ListWidgetObserver::ListWidgetObserver(const QString &settingsKey,
-        QListWidget *listWidget, const QVariant &defaultValue, QObject *parent):
+        QListWidget *listWidget, const QVariant &defaultValue, bool itemsEditable, QObject *parent):
     WidgetChangesObserver(settingsKey, defaultValue, parent),
-    _widget(listWidget)
+    _widget(listWidget),
+    _itemsEditable(itemsEditable)
 {
 }
 
@@ -183,6 +184,9 @@ void ListWidgetObserver::setWidgetValue(const QVariant &value)
     _widget->clear();
     QStringList content = value.toStringList();
     for(QString entry : content) {
-        new QListWidgetItem(entry, _widget);
+        QListWidgetItem *item = new QListWidgetItem(entry, _widget);
+        if(_itemsEditable) {
+            item->setFlags(item->flags() | Qt::ItemIsEditable);
+        }
     }
 }
