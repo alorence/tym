@@ -25,6 +25,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include <QCheckBox>
 #include <QRadioButton>
 #include <QGroupBox>
+#include <QListWidget>
 
 /*!
  * \brief Base class for monitoring changes performed by user on some widgets' state
@@ -204,4 +205,25 @@ private:
     QComboBox *_widget;
 };
 
+class ListWidgetObserver : public WidgetChangesObserver
+{
+    Q_OBJECT
+public:
+    /*!
+     * \copybrief WidgetChangesObserver::WidgetChangesObserver
+     * This observer manage a \l QListWidget
+     */
+    ListWidgetObserver(const QString &settingsKey, QListWidget *listWidget,
+                     const QVariant &defaultValue, QObject *parent = 0);
+    /*!
+     * \copydoc WidgetChangesObserver::getWidgetValue
+     */
+    QVariant getWidgetValue() const override;
+    /*!
+     * \copydoc WidgetChangesObserver::setWidgetValue
+     */
+    void setWidgetValue(const QVariant &value) override;
+private:
+    QListWidget *_widget;
+};
 #endif // WIDGETCHANGESOBSERVER_H

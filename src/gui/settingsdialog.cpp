@@ -34,7 +34,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     initMenu();
 
-    connect(ui->buttons, &QDialogButtonBox::rejected, this, &SettingsDialog::close);
+    connect(ui->buttons, &QDialogButtonBox::rejected,
+            this, &SettingsDialog::close);
+
+    /********************************
+     * General
+     ********************************/
+    _widgetObservers << new ListWidgetObserver(TYM_PATH_PATTERNS, ui->patternList,
+                                               TYM_DEFAULT_PATTERNS, this);
 
     /********************************
      * Interface
@@ -46,7 +53,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     _widgetObservers << new ComboBoxObserver(TYM_PATH_LANGUAGE, ui->langSelection,
                                              TYM_DEFAULT_LANGUAGE, this);
     _widgetObservers << new CheckboxObserver(TYM_PATH_DISPLAY_COLORS, ui->libColors,
-                                                    TYM_DEFAULT_DISPLAY_COLORS, this);
+                                             TYM_DEFAULT_DISPLAY_COLORS, this);
     QList<QRadioButton*> keyStyleValueList;
     keyStyleValueList << ui->bpStyle << ui->mikStyle;
     _widgetObservers << new RadioButtonListObserver(TYM_PATH_KEY_STYLE, keyStyleValueList,

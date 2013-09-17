@@ -28,8 +28,8 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #define TYM_PICTURE_URL_DOWNLOAD "http://geo-media.beatport.com/image_size/200x200/%1.jpg"
 #define TYM_BEATPORT_API_URL "https://oauth-api.beatport.com"
 #define TYM_DATA_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
-#define TYM_ALBUMARTS_LOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/albumarts"
-#define TYM_SUPPORTED_SUFFIXES QStringList(QList<QString>() << "*.wav" << "*.flac" << "*.mp3" << "*.ogg" << "*.aiff")
+#define TYM_ALBUMARTS_LOCATION TYM_DATA_LOCATION + "/albumarts"
+#define TYM_SUPPORTED_SUFFIXES QStringList({"*.wav", "*.flac", "*.mp3", "*.ogg", "*.aiff"})
 #define TYM_BEATPORT_DEFAULT_FORMAT "%ID%_%OTHER%"
 
 namespace Settings {
@@ -38,6 +38,11 @@ namespace Settings {
         MixedInKey
     };
 }
+
+// Settings - general
+#define TYM_PATH_PATTERNS "settings/general/patterns"
+#define TYM_DEFAULT_PATTERNS QStringList({"%ARTISTS% - %NAME% (%MIXNAME%)", \
+    "%ARTISTS% [%LABEL%] - %NAME% (%MIXNAME%)"})
 
 // Settings - interface
 #define TYM_PATH_LANGUAGE "settings/interface/language"

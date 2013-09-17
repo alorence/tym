@@ -160,3 +160,29 @@ void ComboBoxObserver::setWidgetValue(const QVariant &value)
 {
     _widget->setCurrentIndex(_widget->findData(value));
 }
+
+
+ListWidgetObserver::ListWidgetObserver(const QString &settingsKey,
+        QListWidget *listWidget, const QVariant &defaultValue, QObject *parent):
+    WidgetChangesObserver(settingsKey, defaultValue, parent),
+    _widget(listWidget)
+{
+}
+
+QVariant ListWidgetObserver::getWidgetValue() const
+{
+    QStringList content;
+    for(int i = 0 ; i < _widget->count() ; ++i) {
+        content << _widget->item(i)->text();
+    }
+    return content;
+}
+
+void ListWidgetObserver::setWidgetValue(const QVariant &value)
+{
+    _widget->clear();
+    QStringList content = value.toStringList();
+    for(QString entry : content) {
+        new QListWidgetItem(entry, _widget);
+    }
+}
