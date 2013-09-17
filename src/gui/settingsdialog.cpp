@@ -32,8 +32,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->splitter->setStretchFactor(0, 1);
     ui->splitter->setStretchFactor(1, 4);
 
+    // Initialize the menu
     initMenu();
+    // Configure actions related to preferred patterns list
+    initPatternsConfigurationWidget();
 
+    // Simply close the dialog when "Cancel" is pressed
+    // Ok action is connected automatically with on_buttons_accepted()
     connect(ui->buttons, &QDialogButtonBox::rejected,
             this, &SettingsDialog::close);
 
@@ -80,6 +85,8 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::showEvent(QShowEvent *)
 {
+    // All wigets must be initialized each time the settings dialog is opened,
+    // not only when it is built (a unique instance is maintened by MainWindow)
     for(WidgetChangesObserver *observer : _widgetObservers) {
         observer->init();
     }
@@ -123,5 +130,16 @@ void SettingsDialog::initMenu()
     _menuPagesMap[item] = ui->networkPage;
 
     ui->content->setCurrentIndex(0);
+}
+
+void SettingsDialog::initPatternsConfigurationWidget()
+{
+    connect(ui->addButton, &QPushButton::clicked, [this](){
+        QListWidgetItem * item = new QListWidgetItem("", ui->patternList);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+    });
+    connect(ui->removeButton, &QPushButton::clicked, [this](){
+        delete ui->patternList->takeItem(ui->patternList->currentRow());
+    });
 }
 

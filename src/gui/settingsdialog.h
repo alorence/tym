@@ -67,6 +67,11 @@ private:
      */
     void initMenu();
 
+    /**
+     * @brief Initialize the list widget used to configure preferred patterns
+     */
+    void initPatternsConfigurationWidget();
+
     Ui::SettingsDialog *ui;
     QMap<QTreeWidgetItem*, QWidget*> _menuPagesMap;
 
