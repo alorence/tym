@@ -141,5 +141,12 @@ void SettingsDialog::initPatternsConfigurationWidget()
     connect(ui->removeButton, &QPushButton::clicked, [this](){
         delete ui->patternList->takeItem(ui->patternList->currentRow());
     });
+    connect(ui->resetButton, &QPushButton::clicked, [this](){
+        ui->patternList->clear();
+        for(QString pattern : QStringList(TYM_DEFAULT_PATTERNS)) {
+            QListWidgetItem *item = new QListWidgetItem(pattern, ui->patternList);
+            item->setFlags(item->flags() | Qt::ItemIsEditable);
+        }
+    });
 }
 

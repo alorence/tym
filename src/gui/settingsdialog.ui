@@ -80,16 +80,10 @@
            <string>Preferred patterns</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="0" rowspan="2">
-            <widget class="QListWidget" name="patternList">
-             <property name="dragEnabled">
-              <bool>true</bool>
-             </property>
-             <property name="dragDropMode">
-              <enum>QAbstractItemView::InternalMove</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="removeButton">
+             <property name="text">
+              <string>-</string>
              </property>
             </widget>
            </item>
@@ -100,10 +94,23 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="removeButton">
+           <item row="2" column="1">
+            <widget class="QPushButton" name="resetButton">
              <property name="text">
-              <string>-</string>
+              <string>Reset</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" rowspan="3">
+            <widget class="QListWidget" name="patternList">
+             <property name="dragEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::InternalMove</enum>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
