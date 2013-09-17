@@ -31,11 +31,12 @@ LangManager::LangManager(QObject *parent) :
 
     QStringList searchDirs;
 #ifdef Q_OS_MAC
-    searchDirs << qApp->applicationDirPath() + "../Resources/lang"
+    searchDirs << qApp->applicationDirPath() + "/../Resources/lang"
+               << qApp->applicationDirPath() + "/../../../../resources";
 #else
     searchDirs << qApp->applicationDirPath() + "/lang"
-#endif
                << qApp->applicationDirPath() + "/../resources";
+#endif
 
     QDir searchDir;
     searchDir.setFilter(QDir::Files);
@@ -67,6 +68,9 @@ LangManager::LangManager(QObject *parent) :
 
         QString langName = transl->translate("LangManager", "__LANG__")
                 + " (" + transl->translate("LangManager", "__COUNTRY__") + ")";
+        if(langName == " ()") {
+            langName = key;
+        }
         _langMap.insert(key, langName);
     }
 }
