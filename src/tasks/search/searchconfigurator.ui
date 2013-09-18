@@ -6,93 +6,158 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
-    <height>450</height>
+    <width>640</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Rename your files</string>
+   <string>Search information for your tracks</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
-    <widget class="QCheckBox" name="bpidSearch">
-     <property name="text">
-      <string>Try to detect Beatport id in tracks filenames</string>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0">
+   <item row="5" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <property name="checked">
-      <bool>true</bool>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="automaticSearch">
+   <item row="4" column="0">
+    <widget class="QGroupBox" name="detectBetterResult">
      <property name="title">
-      <string>Automatic search, based on files names</string>
+      <string>Try to automatically detect the better result</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_5">
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item row="0" column="0">
-       <layout class="QHBoxLayout" name="predefinedPatternArea_3">
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Select the usual format of your tracks:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>115</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QComboBox" name="patternSelection"/>
-        </item>
-       </layout>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>This option will use file formats you configured in settings to extract informtion from your files which are already formatted. Then, it will try to find the better result and link your track to this one.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
-       <layout class="QHBoxLayout" name="customPatternArea">
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Format:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="pattern"/>
-        </item>
-       </layout>
+       <widget class="QPushButton" name="openSettingsButon">
+        <property name="text">
+         <string>Open settings to configure your preferred patterns</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QGroupBox" name="manualSearch">
+    <widget class="QGroupBox" name="simpleSearch">
      <property name="title">
-      <string>Manual search</string>
+      <string>Simple search, based on filename</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>All words in each filename will be used to perform a classic search on Beatport.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="bpidSearch">
+     <property name="title">
+      <string>Try to extract Beatport ID from filenames</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
      <property name="checked">
-      <bool>false</bool>
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>If you have files with names like 123456_some_title_original_mix, you can enable this option. It will extract the Beatport ID for each file, and search for corresponding track.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="manualSearch">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Manual search</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Type a search term for each file</string>
+         <string>You can enter the words you want to perform a classic search on Beatport</string>
         </property>
        </widget>
       </item>
@@ -123,18 +188,17 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>bpidSearch</tabstop>
+  <tabstop>simpleSearch</tabstop>
+  <tabstop>manualSearch</tabstop>
+  <tabstop>manualSearchTable</tabstop>
+  <tabstop>detectBetterResult</tabstop>
+  <tabstop>openSettingsButon</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -144,8 +208,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>254</x>
+     <y>495</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -160,8 +224,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>322</x>
+     <y>495</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

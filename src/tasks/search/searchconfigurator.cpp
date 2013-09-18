@@ -31,20 +31,6 @@ SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
 {
     ui->setupUi(this);
 
-    // Must be initialized after ui has been initialized
-    _patternHelperButton = new PatternButton(_formatter, ui->pattern, this);
-    ui->customPatternArea->addWidget(_patternHelperButton);
-
-    // Configure pattern selection comboBox
-    ui->patternSelection->addItem("%ARTISTS% - %NAME% (%MIXNAME%)");
-    ui->patternSelection->addItem("%ARTISTS% - %TITLE%");
-    ui->patternSelection->addItem("%ARTISTS% (%LABEL%) - %TITLE%");
-    // "Custom" entry MUST be the last one
-    //: Specific value in list of formats, allowing user to create its own
-    ui->patternSelection->addItem(tr("Custom"));
-    connect(ui->patternSelection, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(updatePattern(int)));
-
     // Configure manual search table widget
     QStringList headers;
     headers << tr("Track") << tr("Search terms");
@@ -73,11 +59,6 @@ SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
             previousLineEdit = lineEdit;
         }
     }
-
-    // Select the first entry of pattern selection comboBox
-    ui->patternSelection->setCurrentIndex(0);
-    // Update all other fields and preview table
-    updatePattern(0);
 }
 
 SearchConfigurator::~SearchConfigurator()
@@ -88,12 +69,9 @@ SearchConfigurator::~SearchConfigurator()
 Task *SearchConfigurator::task() const
 {
     SearchTask * task = new SearchTask(_records);
-    if(ui->bpidSearch->isChecked()) {
-        task->setSearchFromId(true);
-    }
-    if(ui->automaticSearch->isChecked()) {
-        task->setNaiveSearch(true);
-    }
+    task->setSearchFromId(ui->bpidSearch->isChecked());
+    task->setNaiveSearch(ui->simpleSearch->isChecked());
+    task->enableBetterResultDetection(ui->detectBetterResult->isChecked());
     if(ui->manualSearch->isChecked()) {
         QMap<QString, QString> searchMap;
         for(int row = 0 ; row < ui->manualSearchTable->rowCount() ; ++row) {
@@ -103,28 +81,6 @@ Task *SearchConfigurator::task() const
         }
         task->setManualSearch(true, searchMap);
     }
-    return task;
-}
 
-void SearchConfigurator::updatePattern(int comboBoxIndex)
-{
-    // If current selection is "Custom"
-    if(comboBoxIndex == ui->patternSelection->count()-1) {
-        // Restore the customized pattern if necessary
-        if(!_customPattern.isEmpty()) {
-            ui->pattern->setText(_customPattern);
-        }
-        _currentIsCustom = true;
-        ui->pattern->setReadOnly(false);
-        _patternHelperButton->setVisible(true);
-    } else {
-        // Save the customized pattern if necessary
-        if(_currentIsCustom) {
-            _customPattern = ui->pattern->text();
-        }
-        _currentIsCustom = false;
-        ui->pattern->setText(ui->patternSelection->itemText(comboBoxIndex));
-        ui->pattern->setReadOnly(true);
-        _patternHelperButton->setVisible(false);
-    }
+    return task;
 }

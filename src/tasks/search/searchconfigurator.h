@@ -50,13 +50,6 @@ public:
      */
     Task *task() const override;
 
-private slots:
-    /**
-     * @brief updatePattern
-     * @param comboBoxIndex
-     */
-    void updatePattern(int comboBoxIndex);
-
 private:
     enum Columns {
         File,
@@ -68,7 +61,6 @@ private:
     QList<QSqlRecord> _records;
 
     bool _currentIsCustom;
-    PatternButton * _patternHelperButton;
     FileBasenameParser _formatter;
     QString _customPattern;
 };
