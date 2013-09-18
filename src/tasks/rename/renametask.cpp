@@ -40,7 +40,7 @@ void RenameTask::run()
         QString to = from.canonicalPath() + '/' + pair.second;
 
         QString key = from.filePath();
-        emit notifyNewTaskEntity(key, from.fileName());
+        emit newSubResultElement(key, from.fileName());
         emit currentStatusChanged(tr("Renaming file %1").arg(from.fileName()));
 
         // Progress by steps of 1
@@ -48,7 +48,7 @@ void RenameTask::run()
 
         // Check if original file exists on disk
         if( ! from.exists()) {
-            emit newTaskEntityResult(key, Utils::Error,
+            emit subResultAvailable(key, Utils::Error,
                                      tr("%1 does not exists, it "
                                         "can't be renamed.")
                                      .arg(from.canonicalFilePath()));
@@ -57,7 +57,7 @@ void RenameTask::run()
 
         // Check if target file already exists
         if(QFile::exists(to)) {
-            emit newTaskEntityResult(key, Utils::Error,
+            emit subResultAvailable(key, Utils::Error,
                                      tr("Target file %1 already exists.")
                                      .arg(to));
             continue;
@@ -65,7 +65,7 @@ void RenameTask::run()
 
         // Rename the file
         if( ! QFile(from.canonicalFilePath()).rename(to)) {
-            emit newTaskEntityResult(key, Utils::Error,
+            emit subResultAvailable(key, Utils::Error,
                                      tr("Error when renaming file %1 into %2")
                                      .arg(from.canonicalFilePath())
                                      .arg(to));
@@ -74,7 +74,7 @@ void RenameTask::run()
 
         // Check if new file exists on the system
         if( ! QFile::exists(to)) {
-            emit newTaskEntityResult(key, Utils::Error,
+            emit subResultAvailable(key, Utils::Error,
                                      tr("The file seems to have been renamed, but the "
                                         "new one (%2) can't be found on disk !")
                                      .arg(from.canonicalFilePath())
@@ -82,7 +82,7 @@ void RenameTask::run()
             continue;
         }
 
-        emit newTaskEntityResult(key, Utils::Success,
+        emit subResultAvailable(key, Utils::Success,
                                  tr("File %1 renamed to %2")
                                  .arg(from.canonicalFilePath())
                                  .arg(QFileInfo(to).fileName()));

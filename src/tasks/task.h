@@ -71,8 +71,8 @@ signals:
     void notifyProgression(int newValue);
 
     void currentStatusChanged(QString state);
-    void notifyNewTaskEntity(QString key, QString label);
-    void newTaskEntityResult(QString key, Utils::StatusType type, QString text);
+    void newSubResultElement(QString key, QString label);
+    void subResultAvailable(QString key, Utils::StatusType type, QString text);
 
 protected:
     void increaseProgressStep(int step = 1);

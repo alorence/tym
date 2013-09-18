@@ -115,7 +115,7 @@ void SearchTask::run()
 
         // If we expect new results for this track, notify the monitor
         if(savePreviousNbResponse < _nbResponseExpected) {
-            emit notifyNewTaskEntity(uid, file.fileName());
+            emit newSubResultElement(uid, file.fileName());
         }
     }
 
@@ -144,9 +144,9 @@ void SearchTask::updateLibraryWithResults(QString libId, QJsonValue result)
 {
     int nbResults = result.toArray().size();
     if(nbResults == 0) {
-        emit newTaskEntityResult(libId, Utils::Warning, tr("No new result appended"));
+        emit subResultAvailable(libId, Utils::Warning, tr("No new result appended"));
     } else {
-        emit newTaskEntityResult(libId, Utils::Info, tr("%1 new result(s) appended").arg(nbResults));
+        emit subResultAvailable(libId, Utils::Info, tr("%1 new result(s) appended").arg(nbResults));
     }
 
     increaseProgressStep(SEARCH_DURATION);
@@ -244,10 +244,10 @@ void SearchTask::selectBetterResult(const QSqlRecord &record)
                 QSqlRecord track = _dbHelper->trackInformations(betterResult);
                 QString trackString = track.value(TrackFullInfos::Artists).toString() + " - "
                         + track.value(TrackFullInfos::Title).toString();
-                emit newTaskEntityResult(uid, Utils::Success, tr("Better result found: %1").arg(trackString));
+                emit subResultAvailable(uid, Utils::Success, tr("Better result found: %1").arg(trackString));
                 _dbHelper->setLibraryTrackReference(uid, betterResult);
             } else {
-                emit newTaskEntityResult(uid, Utils::Error, tr("No good result found"));
+                emit subResultAvailable(uid, Utils::Error, tr("No good result found"));
             }
             increaseProgressStep(LINK_RESULT_DURATION);
         }

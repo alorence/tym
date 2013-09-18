@@ -40,9 +40,9 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
     ui->progressBar->hide();
 
     if(_task->hasMultiResults()) {
-        connect(_task, &Task::notifyNewTaskEntity,
+        connect(_task, &Task::newSubResultElement,
                 this, &TaskMonitor::initResultElement);
-        connect(_task, &Task::newTaskEntityResult,
+        connect(_task, &Task::subResultAvailable,
                 this, &TaskMonitor::appendResult);
     } else {
         ui->resultTree->hide();
