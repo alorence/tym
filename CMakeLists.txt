@@ -38,6 +38,7 @@ set(TYM_PATCH_VERSION 0)
 
 option(TYM_BETA OFF)
 option(TYM_UPDATE_TRANSLATIONS OFF)
+option(TYM_CLEAN_TRANSLATIONS OFF)
 option(TYM_COMPILE_TESTS OFF)
 ################## END ####################
 
@@ -118,7 +119,8 @@ message(STATUS "Version:            ${TYM_SHORT_VERSION}")
 message(STATUS "Beatport API key:   ${BEATPORT_API_KEY}")
 message(STATUS "Beta release:       ${TYM_BETA}")
 message(STATUS "Update transl.:     ${TYM_UPDATE_TRANSLATIONS}")
-message(STATUS "Tests compiling:    ${TYM_COMPILE_TESTS}")
+message(STATUS "Cleanup transl.:    ${TYM_CLEAN_TRANSLATIONS}")
+message(STATUS "Compile unit tests: ${TYM_COMPILE_TESTS}")
 message(STATUS "==============================================")
 
 if(NOT APPLE)

@@ -5,7 +5,7 @@
     <name>About</name>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;This program is open source, distrubuted under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GPL 3 licence&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fugue Icons pack&lt;/span&gt;&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;More informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;This program use a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Cutelogger library&lt;/span&gt;&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;LGPL 2.1 licence&lt;/span&gt;&lt;/a&gt;. Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -13,37 +13,37 @@
     </message>
     <message>
         <source>Thanks</source>
-        <translation type="unfinished"></translation>
+        <translation>Remerciements</translation>
     </message>
 </context>
 <context>
     <name>BeatportAuthentication</name>
     <message>
         <source>Beatport Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion à Beatport</translation>
     </message>
     <message>
         <source>Searching on Beatport API now requires you to be logged. Sorry for the inconvenience.</source>
-        <translation type="unfinished"></translation>
+        <translation>La recherche à partir de l&apos;API Beatport necessite maintenant d&apos;être authentifié. Veuillez nous excuser pour la gêne occasionnée.</translation>
     </message>
 </context>
 <context>
     <name>ExportConfigurator</name>
     <message>
         <source>Rename your files</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommez vos fichiers</translation>
     </message>
     <message>
         <source>For the moment, exporting to a Traktor NML collection is the only possible choice. Please select a location on your disk to save the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pour le moment, le seul choix possible est l&apos;export de collection Traktor au format NML. Veuillez choisir un emplacement où enregistrer le fichier :</translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcourir</translation>
     </message>
     <message>
         <source>Select file name</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez un nom de fichier</translation>
     </message>
 </context>
 <context>
@@ -51,48 +51,48 @@
     <message>
         <source>__LANG__</source>
         <extracomment>Fill this with your language (ex: English, Deutch, Français, etc)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Français</translation>
     </message>
     <message>
         <source>__COUNTRY__</source>
         <extracomment>Fill this with the country your language is for (United-States, France, etc.)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>France</translation>
     </message>
 </context>
 <context>
     <name>LibraryModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Statut</translation>
     </message>
     <message>
         <source>Results</source>
-        <translation type="unfinished"></translation>
+        <translation>Résultats</translation>
     </message>
     <message>
         <source>Infos</source>
-        <translation type="unfinished"></translation>
+        <translation>Infos</translation>
     </message>
     <message>
         <source>My Computer</source>
         <extracomment>On Windows only, defines the system top level folder (above disks)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Poste de travail</translation>
     </message>
     <message>
         <source>&lt;empty&gt;</source>
         <extracomment>Used as displayed root dir when library is empty (no tracks in the database)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;vide&gt;</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Root:</source>
-        <translation type="unfinished"></translation>
+        <translation>Racine :</translation>
     </message>
     <message>
         <source>&lt;dir&gt;</source>
@@ -100,91 +100,91 @@
     </message>
     <message>
         <source>Select:</source>
-        <translation type="unfinished"></translation>
+        <translation>Selection :</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation>barre d&apos;outils</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer</translation>
     </message>
     <message>
         <source>Import files into library</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer des fichiers dans la librairie</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférences</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <source>Search on Beatport from files name&apos;s informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher des informations sur Beatport à partir des noms de fichiers</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlever</translation>
     </message>
     <message>
         <source>Remove selected tracks from library</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer les morceaux séléctionnés de la librairie</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <source>Link this result</source>
-        <translation type="unfinished"></translation>
+        <translation>Lier ce resultat</translation>
     </message>
     <message>
         <source>Set as default result for the current track</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir comme résultat par défaut pour le morceau courant</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter</translation>
     </message>
     <message>
         <source>Export selected tracks as playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter les morceaux séléctionnés comme playlist</translation>
     </message>
     <message>
         <source>loginLogout</source>
