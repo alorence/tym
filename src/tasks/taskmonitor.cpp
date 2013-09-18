@@ -46,6 +46,7 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
                 this, &TaskMonitor::appendResult);
     } else {
         ui->resultTree->hide();
+        resize(400, 80);
     }
 
     _task->moveToThread(_thread);
