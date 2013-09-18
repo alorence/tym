@@ -20,6 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "renameconfigurator.h"
 #include "ui_renameconfigurator.h"
 
+#include <QSettings>
+#include <QStringList>
+
 #include "dbaccess/bpdatabase.h"
 #include "tools/utils.h"
 #include "renametask.h"
@@ -128,6 +131,11 @@ RenameConfigurator::RenameConfigurator(const QList<QSqlRecord> &records,
     // Update details according the selection
     connect(ui->previewTable, &QTableWidget::currentCellChanged,
             this, &RenameConfigurator::updateDetails);
+
+    // When user validate the dialog, the custom pattern is stored into settings
+    connect(this, &QDialog::accepted,
+            this, &RenameConfigurator::saveCustomPatternInSettings);
+
     // Select the first entry of pattern selection comboBox
     ui->patternSelection->setCurrentIndex(0);
     // Update all other fields and preview table
@@ -170,15 +178,17 @@ void RenameConfigurator::updatePattern(int comboBoxIndex)
         _currentIsCustom = true;
         ui->pattern->setReadOnly(false);
         _patternHelperButton->setVisible(true);
+        ui->saveCustom->setVisible(true);
     } else {
         // Save the customized pattern if necessary
-        if(_currentIsCustom) {
+        if(_currentIsCustom && ui->pattern->isModified()) {
             _customPattern = ui->pattern->text();
         }
         _currentIsCustom = false;
         ui->pattern->setText(ui->patternSelection->itemText(comboBoxIndex));
         ui->pattern->setReadOnly(true);
         _patternHelperButton->setVisible(false);
+        ui->saveCustom->setVisible(false);
     }
 }
 
@@ -254,5 +264,17 @@ void RenameConfigurator::updateDetails(int row, int)
     } else {
         ui->detailsMsg->clear();
         ui->detailsPix->clear();
+    }
+}
+
+void RenameConfigurator::saveCustomPatternInSettings()
+{
+    if(ui->patternSelection->currentIndex() == ui->patternSelection->count()-1
+            && ui->saveCustom) {
+        QSettings settings;
+        QStringList patterns = settings.value(TYM_PATH_PATTERNS, TYM_DEFAULT_PATTERNS).toStringList();
+        patterns << ui->pattern->text();
+
+        settings.setValue(TYM_PATH_PATTERNS, patterns);
     }
 }

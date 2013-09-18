@@ -14,10 +14,46 @@
    <string>Rename your files</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="6" column="0">
+    <widget class="QTableWidget" name="previewTable">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>300</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>18</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>18</number>
+     </attribute>
+     <column/>
+     <column/>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Choose a predefined format for the renamed files or create your own by selecting &quot;Cusom&quot; in the below list</string>
+      <string>Choose a format for the renamed files or create your own by selecting &quot;Cusom&quot; in the below list</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -65,57 +101,21 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Preview:</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QTableWidget" name="previewTable">
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <property name="columnCount">
-      <number>2</number>
-     </property>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>300</number>
-     </attribute>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderStretchLastSection">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>18</number>
-     </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>18</number>
-     </attribute>
-     <column/>
-     <column/>
-    </widget>
-   </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="detailsPix">
@@ -154,7 +154,7 @@
      </item>
     </layout>
    </item>
-   <item row="7" column="0">
+   <item row="8" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -164,12 +164,20 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="saveCustom">
+     <property name="text">
+      <string>Save this custom format for the next time</string>
+     </property>
+    </widget>
+   </item>
   </layout>
   <zorder>buttonBox</zorder>
   <zorder>line</zorder>
   <zorder>previewTable</zorder>
   <zorder>label_2</zorder>
   <zorder>label_4</zorder>
+  <zorder>saveCustom</zorder>
  </widget>
  <resources/>
  <connections>

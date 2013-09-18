@@ -78,6 +78,11 @@ private slots:
      */
     void updateDetails(int row, int col);
 
+    /**
+     * @brief Save the current custom pattern to the list is settings
+     */
+    void saveCustomPatternInSettings();
+
 private:
     enum Columns {
         OrgnlNameCol,
