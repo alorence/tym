@@ -49,8 +49,10 @@ public:
     ~SearchTask();
 
     void setSearchFromId(bool enabled);
-    void setAutomaticSearch(bool enabled, const QString &pattern);
+    void setNaiveSearch(bool enabled);
     void setManualSearch(bool enabled, QMap<QString, QString> searchTerms);
+
+    void enableBetterResultDetection(bool enabled);
 
 public slots:
     /*!
@@ -75,20 +77,18 @@ private slots:
 
 private:
     /*!
-     * \brief Try to find the better result for each selected tracks, and link it to the track.
+     * \brief Try to find the better result for each tracks, and link it to the track.
      */
-    void selectBetterResult(const QString &uid, QMap<TrackFullInfos::TableIndexes, QString> parsedContent);
+    void selectBetterResult(const QSqlRecord &record);
 
     QList<QSqlRecord> _libraryRecords;
-    int _nbResponseExpected;
+    uint _nbResponseExpected;
 
     bool _bpidSearchEnabled;
-
-    bool _autoSearchEnabled;
-    QString _searchPattern;
-
+    bool _naiveSearchEnabled;
     bool _manualSearchEnabled;
     QMap<QString, QString> _searchTerms;
+    bool _betterResultDetection;
 
     QSet<QString> _libIdInitialized;
     QMap<QString, QMap<TrackFullInfos::TableIndexes, QString>> _trackParsedInformation;

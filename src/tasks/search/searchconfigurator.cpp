@@ -92,7 +92,7 @@ Task *SearchConfigurator::task() const
         task->setSearchFromId(true);
     }
     if(ui->automaticSearch->isChecked()) {
-        task->setAutomaticSearch(true, ui->pattern->text());
+        task->setNaiveSearch(true);
     }
     if(ui->manualSearch->isChecked()) {
         QMap<QString, QString> searchMap;
