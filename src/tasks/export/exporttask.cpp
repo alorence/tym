@@ -45,15 +45,14 @@ ExportTask::ExportTask(const QList<QSqlRecord> &selectedRecords,
 
 void ExportTask::run()
 {
-    if(_outputFile.exists()) {
-        // FIXME: Inform user that his file will be overwritten
-        LOG_WARNING(QString("File %1 exists, it will be overwritten").arg(_outputFile.fileName()));
-    }
-
     if( ! _outputFile.open(QIODevice::WriteOnly)) {
         LOG_WARNING(QString("Unable to open %1 in write mode").arg(_outputFile.fileName()));
+        emit currentStatusChanged(QString("The file %1 can't be opened for writing").arg(_outputFile.fileName()));
+        emit finished();
+        return;
     }
 
+    emit currentStatusChanged(QString("Start to write the file"));
     QXmlStreamWriter xmlDoc(&_outputFile);
     xmlDoc.setAutoFormatting(true);
     xmlDoc.writeStartDocument("1.0", false);
@@ -110,7 +109,8 @@ void ExportTask::run()
 
     _outputFile.close();
 
-    LOG_INFO(QString("File %1 has been correctly written").arg(_outputFile.fileName()));
+    QString finalState = QString("File %1 has been correctly written").arg(_outputFile.fileName());
+    emit currentStatusChanged(finalState);
 
     emit finished();
 }
