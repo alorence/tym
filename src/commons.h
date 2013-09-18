@@ -41,8 +41,9 @@ namespace Settings {
 
 // Settings - general
 #define TYM_PATH_PATTERNS "settings/general/patterns"
-#define TYM_DEFAULT_PATTERNS (QStringList("%ARTISTS% - %NAME% (%MIXNAME%)")<<\
-    "%ARTISTS% [%LABEL%] - %NAME% (%MIXNAME%)")
+#define TYM_DEFAULT_PATTERNS QStringList("%ARTISTS% - %NAME% (%MIXNAME%)") \
+    << "%ARTISTS% [%LABEL%] - %NAME% (%MIXNAME%)" \
+    << "%ARTISTS% - %NAME% - %MIXNAME%"
 
 // Settings - interface
 #define TYM_PATH_LANGUAGE "settings/interface/language"
