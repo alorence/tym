@@ -152,9 +152,11 @@ void SettingsDialog::initPatternsConfigurationWidget()
 {
     connect(ui->addButton, &QPushButton::clicked, [this](){
         new QListWidgetItem("", ui->patternList);
+        ui->patternList->setCurrentRow(ui->patternList->count()-1);
     });
     connect(ui->removeButton, &QPushButton::clicked, [this](){
         delete ui->patternList->takeItem(ui->patternList->currentRow());
+        ui->patternList->setCurrentRow(-1);
     });
     // Reset all elements in the list
     connect(ui->resetButton, &QPushButton::clicked, [this](){
@@ -175,7 +177,11 @@ void SettingsDialog::initPatternsConfigurationWidget()
     connect(ui->patternList, &QListWidget::currentItemChanged,
         [this](QListWidgetItem * current, QListWidgetItem * previous){
             if(current != nullptr) {
+                ui->patternEdit->setEnabled(true);
                 ui->patternEdit->setText(current->text());
+                ui->patternEdit->setFocus();
+            } else {
+                ui->patternEdit->setEnabled(false);
             }
         }
     );
