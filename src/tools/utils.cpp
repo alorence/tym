@@ -183,6 +183,10 @@ void Utils::cleanSomeOldStuff()
 {
     QSettings settings;
 
-    // == Introduced in 0.1. Useless since 0.3 ==
+    // == Introduced in 0.1 Useless since 0.3 ==
     settings.remove("settings/network/beatport/apihost");
+
+    // == Introduced in ??? Useless since 0.3 ==
+    settings.remove("export/lastOutputPath");
+    settings.remove("lastOpenedDir");
 }

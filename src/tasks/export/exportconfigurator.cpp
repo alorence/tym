@@ -25,14 +25,21 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 
 #include "exporttask.h"
 
-ExportConfigurator::ExportConfigurator(const QList<QSqlRecord> &records,
+ExportConfigurator::ExportConfigurator(const QList<QSqlRecord> &libraryRecords,
                                        QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ExportConfigurator),
-    _records(records)
+    _libraryRecords(libraryRecords)
 {
     ui->setupUi(this);
     connect(ui->browseButton, &QPushButton::clicked, this, &ExportConfigurator::askForTargetFile);
+
+    QSettings settings;
+    QString defaultPath = QStandardPaths::writableLocation(QStandardPaths::MusicLocation)
+            + "/tym_generated_collection.nml";
+    QString lastPath = settings.value("export/lastOuputFile", defaultPath).toString();
+
+    ui->targetFilePath->setText(lastPath);
 }
 
 ExportConfigurator::~ExportConfigurator()
@@ -42,27 +49,21 @@ ExportConfigurator::~ExportConfigurator()
 
 Task *ExportConfigurator::task() const
 {
-    Task *task = new ExportTask(_records, ui->targetFilePath->text());
+    Task *task = new ExportTask(_libraryRecords, ui->targetFilePath->text());
     return task;
 }
 
 void ExportConfigurator::askForTargetFile()
 {
-    QSettings settings;
-    QString defaultDir = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-    QString lastOpenedDir = settings.value("lastOpenedDir", defaultDir).toString();
-    QString targetDir = settings.value("export/lastOutputPath", lastOpenedDir).toString();
 
     QString filePath = QFileDialog::getSaveFileName(this,
-                                tr("Select file name"), targetDir, "Traktor collection (*.nml)");
+                                                    tr("Select file name"),
+                                                    ui->targetFilePath->text(),
+                                                    "Traktor collection (*.nml)");
 
     if( ! filePath.isEmpty()) {
         ui->targetFilePath->setText(filePath);
-        settings.setValue("export/lastOutputPath", filePath);
-
-        QFile target(filePath);
-        if(target.exists()) {
-            // TODO: inform user that the file will be overwritten
-        }
+        QSettings settings;
+        settings.setValue("export/lastOuputFile", filePath);
     }
 }

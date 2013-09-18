@@ -36,7 +36,7 @@ class ExportConfigurator : public QDialog, public TaskFactory
     Q_OBJECT
 
 public:
-    explicit ExportConfigurator(const QList<QSqlRecord> &records,
+    explicit ExportConfigurator(const QList<QSqlRecord> &libraryRecords,
                                 QWidget *parent = 0);
     ~ExportConfigurator();
 
@@ -55,7 +55,7 @@ private slots:
 private:
     Ui::ExportConfigurator *ui;
 
-    QList<QSqlRecord> _records;
+    QList<QSqlRecord> _libraryRecords;
 };
 
 

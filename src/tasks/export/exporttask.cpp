@@ -111,7 +111,7 @@ void ExportTask::run()
     QString finalState = tr("File %1 has been correctly written. Now you can import the generated "
                             "collection in Traktor. Don't forget to set priority on information "
                             "from this collection instead of the one you already have.")
-                            .arg(_outputFile.fileName());
+                            .arg(QFileInfo(_outputFile).fileName());
     emit finished(finalState);
 }
 
