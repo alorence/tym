@@ -47,8 +47,7 @@ void ExportTask::run()
 {
     if( ! _outputFile.open(QIODevice::WriteOnly)) {
         LOG_WARNING(QString("Unable to open %1 in write mode").arg(_outputFile.fileName()));
-        emit currentStatusChanged(QString("The file %1 can't be opened for writing").arg(_outputFile.fileName()));
-        emit finished();
+        emit finished(tr("The file %1 can't be opened for writing").arg(_outputFile.fileName()));
         return;
     }
 
@@ -109,10 +108,11 @@ void ExportTask::run()
 
     _outputFile.close();
 
-    QString finalState = QString("File %1 has been correctly written").arg(_outputFile.fileName());
-    emit currentStatusChanged(finalState);
-
-    emit finished();
+    QString finalState = tr("File %1 has been correctly written. Now you can import the generated "
+                            "collection in Traktor. Don't forget to set priority on information "
+                            "from this collection instead of the one you already have.")
+                            .arg(_outputFile.fileName());
+    emit finished(finalState);
 }
 
 void ExportTask::writeCollectionEntry(QXmlStreamWriter &xmlDoc, const QSqlRecord &record)

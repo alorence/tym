@@ -46,13 +46,15 @@ TaskMonitor::TaskMonitor(Task *task, QWidget *parent) :
                 this, &TaskMonitor::appendResult);
     } else {
         ui->resultTree->hide();
-        resize(400, 80);
+        resize(440, 120);
     }
 
     _task->moveToThread(_thread);
     connect(_thread, &QThread::started, _task, &Task::run);
     connect(_task, &Task::finished,
             this, &TaskMonitor::finalizeMonitoring);
+
+    ui->finalText->hide();
 }
 
 TaskMonitor::~TaskMonitor()
@@ -100,9 +102,14 @@ void TaskMonitor::appendResult(const QString &key, Utils::StatusType type, const
 
 }
 
-void TaskMonitor::finalizeMonitoring() {
+void TaskMonitor::finalizeMonitoring(const QString &finalText) {
     if(!ui->progressBar->isHidden()) {
         ui->progressBar->setValue(ui->progressBar->maximum());
+    }
+    if(!finalText.isEmpty()) {
+        ui->finalText->setText(finalText);
+        ui->finalText->show();
+        ui->statusLabel->hide();
     }
     _thread->quit();
 }

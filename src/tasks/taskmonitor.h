@@ -49,7 +49,7 @@ private slots:
     void updateCurrentStatus(const QString &state);
     void initResultElement(const QString &key, const QString &label);
     void appendResult(const QString &key, Utils::StatusType type, const QString &msg);
-    void finalizeMonitoring();
+    void finalizeMonitoring(const QString &finalText);
 
 private:
     Ui::TaskMonitor *ui;

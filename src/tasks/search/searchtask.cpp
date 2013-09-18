@@ -161,9 +161,13 @@ void SearchTask::updateLibraryWithResults(QString libId, QJsonValue result)
             for(QSqlRecord record : _libraryRecords) {
                 selectBetterResult(record);
             }
+            emit finished(tr("You can now check your tracks and verify the results automatically "
+                             "set is the better one."));
+        } else {
+            emit finished(tr("Search is now done for all your tracks. You need to check results "
+                             "and verify which is the better for each of your tracks."));
         }
         _dbHelper->dbObject().commit();
-        emit finished();
     }
 }
 

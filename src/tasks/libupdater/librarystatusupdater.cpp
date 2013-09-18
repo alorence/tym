@@ -57,5 +57,5 @@ void LibraryStatusUpdater::run()
                                        Library::FileNotFound | (Library::FileStatus) missing.value(Library::Status).toInt());
     }
 
-    emit finished();
+    emit finished("All tracks have been updated");
 }

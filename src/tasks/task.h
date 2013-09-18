@@ -65,7 +65,7 @@ signals:
     /*!
      * @brief Signal emitted when all work is done for the task.
      */
-    void finished();
+    void finished(QString);
 
     void initializeProgression(int value);
     void notifyProgression(int newValue);

@@ -35,6 +35,9 @@ void RenameTask::run()
 
     emit initializeProgression(_renameMap.size());
 
+    uint errors = 0;
+    uint success = 0;
+
     for(QPair<QFileInfo,QString> pair : _renameMap) {
         QFileInfo from(pair.first);
         QString to = from.canonicalPath() + '/' + pair.second;
@@ -52,6 +55,7 @@ void RenameTask::run()
                                      tr("%1 does not exists, it "
                                         "can't be renamed.")
                                      .arg(from.canonicalFilePath()));
+            ++errors;
             continue;
         }
 
@@ -60,15 +64,17 @@ void RenameTask::run()
             emit subResultAvailable(key, Utils::Error,
                                      tr("Target file %1 already exists.")
                                      .arg(to));
+            ++errors;
             continue;
         }
 
         // Rename the file
         if( ! QFile(from.canonicalFilePath()).rename(to)) {
             emit subResultAvailable(key, Utils::Error,
-                                     tr("Error when renaming file %1 into %2")
+                                     tr("Unknown error when renaming file %1 into %2")
                                      .arg(from.canonicalFilePath())
                                      .arg(to));
+            ++errors;
             continue;
         }
 
@@ -79,6 +85,7 @@ void RenameTask::run()
                                         "new one (%2) can't be found on disk !")
                                      .arg(from.canonicalFilePath())
                                      .arg(pair.second));
+            ++errors;
             continue;
         }
 
@@ -87,8 +94,15 @@ void RenameTask::run()
                                  .arg(from.canonicalFilePath())
                                  .arg(QFileInfo(to).fileName()));
         db.renameFile(from.canonicalFilePath(), to);
+        ++success;
 
     }
-    emit finished();
+    if(errors) {
+        QString first = tr("%1 track(s) have been renamed.", "", success);
+        QString second = tr("%1 error(s) happened", "", errors).arg(errors);
+        emit finished(first + " " + second);
+    } else {
+        emit finished(tr("%1 track(s) have been renamed without any error.", "", success).arg(success));
+    }
 }
 
