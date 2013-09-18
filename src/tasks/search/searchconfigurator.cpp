@@ -21,6 +21,7 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "ui_searchconfigurator.h"
 
 #include "searchtask.h"
+#include "gui/settingsdialog.h"
 
 SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
                                        QWidget *parent) :
@@ -59,6 +60,12 @@ SearchConfigurator::SearchConfigurator(const QList<QSqlRecord> &records,
             previousLineEdit = lineEdit;
         }
     }
+
+    connect(ui->openSettingsButon, &QPushButton::clicked, [](){
+        // TODO: ensure the general page is open
+        SettingsDialog dialog;
+        dialog.exec();
+    });
 }
 
 SearchConfigurator::~SearchConfigurator()
