@@ -22,7 +22,7 @@ include_directories(../src)
 
 add_executable(zzTestUtils testutils.h testutils.cpp)
 target_link_libraries(zzTestUtils TymTools)
-qt5_use_modules(zzTestUtils Test)
+qt5_use_modules(zzTestUtils Test Gui)
 add_test(UtilsClass zzTestUtils)
 
 
