@@ -98,11 +98,11 @@ void RenameTask::run()
 
     }
     if(errors) {
-        QString first = tr("%1 track(s) have been renamed.", "", success);
-        QString second = tr("%1 error(s) happened", "", errors).arg(errors);
+        QString first = tr("%n track(s) have been renamed.", "", success);
+        QString second = tr("%n error(s) happened", "", errors);
         emit finished(first + " " + second);
     } else {
-        emit finished(tr("%1 track(s) have been renamed without any error.", "", success).arg(success));
+        emit finished(tr("%n track(s) have been renamed without any error.", "", success));
     }
 }
 
