@@ -20,9 +20,9 @@ along with TYM (Tag Your Music). If not, see <http://www.gnu.org/licenses/>.
 #include "about.h"
 #include "ui_about.h"
 
-#include "config.h"
+#include <QFile>
 
-//FIXME: Need to update information with new library used
+#include "config.h"
 
 About::About(QWidget *parent) :
     QDialog(parent),
@@ -32,9 +32,10 @@ About::About(QWidget *parent) :
 
     ui->aboutText->setText(ui->aboutText->text().replace("%VERSION%", TYM_VERSION));
 
-    // TODO: Display tabs when more informations will need to be displayed
-    ui->tabWidget->hide();
-    ((QGridLayout*)this->layout())->addWidget(ui->aboutText, 0, 0);
+    QFile licence(":/general/licencetxt");
+    licence.open(QIODevice::ReadOnly);
+
+    ui->licenceText->setPlainText(licence.readAll());
 }
 
 

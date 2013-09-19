@@ -33,6 +33,7 @@
     </qresource>
     <qresource prefix="/general">
         <file alias="noalbum">noalbum.png</file>
+        <file alias="licencetxt">GPL3licence.txt</file>
     </qresource>
     <qresource prefix="/unused">
         <file>fugues-icons-3.5/icons/music--exclamation.png</file>
