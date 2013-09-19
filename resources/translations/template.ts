@@ -4,18 +4,53 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="../../src/gui/about.ui" line="+27"/>
+        <location filename="../../src/gui/about.ui" line="+33"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;This program is open source, distrubuted under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GPL 3 licence&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fugue Icons pack&lt;/span&gt;&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;More informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;This program use a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Cutelogger library&lt;/span&gt;&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;LGPL 2.1 licence&lt;/span&gt;&lt;/a&gt;. Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location line="+16"/>
+        <source>More information and online help:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Thanks</source>
+        <location line="+106"/>
+        <source>3rd party content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This program uses a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;Cutelogger library&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;LGPL 2.1 licence&lt;/a&gt;.&lt;br/&gt; Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;GitHub&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+80"/>
+        <source>Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;Fugue Icons pack&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/a&gt;.&lt;br/&gt;More information: &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;http://p.yusukekamiyamane.com/&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-126"/>
+        <source>Licence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+148"/>
+        <source>&lt;strong&gt;Libraries&lt;/strong&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-142"/>
+        <source>This program is open source, distrubuted under the terms of GPL 3 licence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+91"/>
+        <source>This program uses &lt;a href=&quot;https://github.com/pipacs/o2&quot;&gt;o2 library&lt;/a&gt; by Akos Polster. Licence:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>&lt;strong&gt;Graphical resources&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -117,6 +152,51 @@
         <location line="+15"/>
         <source>&lt;empty&gt;</source>
         <extracomment>Used as displayed root dir when library is empty (no tracks in the database)</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
+        <source>File not found. Did you moved or rename this file ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use Search to request Beatport for information on this track.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ready.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Please check on the right panel and select the better result for this track.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Searched</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -277,74 +357,6 @@
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
-        <source>File not found. Did you moved or rename this file ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Use Search to request Beatport for information on this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ready.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Please check on the right panel and select the better result for this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Missing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Searched</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/main.cpp" line="+83"/>
-        <source>%1 is starting, version %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Compiled with Qt %1, run with Qt library version %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>data location : %1 - pictures location : %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Application ends with return code %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>RenameConfigurator</name>
     <message>
         <location filename="../../src/tasks/rename/renameconfigurator.ui" line="+14"/>
@@ -447,21 +459,21 @@
     </message>
     <message numerus="yes">
         <location line="+8"/>
-        <source>%1 track(s) have been renamed.</source>
+        <source>%n track(s) have been renamed.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location line="+1"/>
-        <source>%1 error(s) happened</source>
+        <source>%n error(s) happened</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location line="+3"/>
-        <source>%1 track(s) have been renamed without any error.</source>
+        <source>%n track(s) have been renamed without any error.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
@@ -586,7 +598,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+82"/>
+        <source>&lt;strong&gt;General&lt;/strong&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Preferred patterns</source>
         <translation type="unfinished"></translation>
     </message>
@@ -641,12 +658,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Interface&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location line="+16"/>
+        <source>&lt;strong&gt;Interface&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+52"/>
+        <source>&lt;strong&gt;Network&lt;/strong&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
@@ -656,7 +678,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+33"/>
         <source>Enable proxy</source>
         <translation type="unfinished"></translation>
     </message>

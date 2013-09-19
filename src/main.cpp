@@ -80,9 +80,9 @@ int main(int argc, char *argv[])
     // Clean user persistent storage from useless data
     Utils::instance()->cleanSomeOldStuff();
 
-    LOG_INFO(QObject::tr("%1 is starting, version %2").arg(a.applicationDisplayName())
+    LOG_INFO(QString("%1 is starting, version %2").arg(a.applicationDisplayName())
              .arg(a.applicationVersion()));
-    LOG_DEBUG(QObject::tr("Compiled with Qt %1, run with Qt library version %2")
+    LOG_DEBUG(QString("Compiled with Qt %1, run with Qt library version %2")
               .arg(QT_VERSION_STR).arg(qVersion()));
 
     {
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
         if( ! QDir(TYM_ALBUMARTS_LOCATION).exists()) {
             QDir().mkpath(TYM_ALBUMARTS_LOCATION);
         }
-        LOG_DEBUG(QObject::tr("data location : %1 - pictures location : %2")
+        LOG_DEBUG(QString("data location : %1 - pictures location : %2")
                   .arg(TYM_DATA_LOCATION)
                   .arg(TYM_ALBUMARTS_LOCATION));
     }
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     w.show();
     int returnCode = a.exec();
 
-    LOG_DEBUG(QObject::tr("Application ends with return code %1").arg(returnCode));
+    LOG_DEBUG(QString("Application ends with return code %1").arg(returnCode));
 
     // Delete all singletons used in the program
     LangManager::deleteInstance();

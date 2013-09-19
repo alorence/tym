@@ -153,16 +153,16 @@ QString LibraryEntry::infoMessage(int statusCode, int numResults, bool hasLinked
 {
     Library::FileStatus status = (Library::FileStatus)statusCode;
     if(status.testFlag(Library::FileNotFound)) {
-        return QObject::tr("File not found. Did you moved or rename this file ?");
+        return QCoreApplication::translate("LibraryModel","File not found. Did you moved or rename this file ?");
     } else if (status.testFlag(Library::New)) {
-        return QObject::tr("Use Search to request Beatport for information on this track.");
+        return QCoreApplication::translate("LibraryModel","Use Search to request Beatport for information on this track.");
     } else {
         if(hasLinkedResult) {
-            return QObject::tr("Ready.");
+            return QCoreApplication::translate("LibraryModel","Ready.");
         } else if (numResults == 0) {
-            return QObject::tr("No search result has been found, you can try a manual search. Use search tool after selecting only this track.");
+            return QCoreApplication::translate("LibraryModel","No search result has been found, you can try a manual search. Use search tool after selecting only this track.");
         } else {
-            return QObject::tr("Please check on the right panel and select the better result for this track.");
+            return QCoreApplication::translate("LibraryModel","Please check on the right panel and select the better result for this track.");
         }
     }
 }
@@ -171,14 +171,14 @@ QString LibraryEntry::statusMessage(int statusCode, bool hasLinkedResult) const
 {
     Library::FileStatus status = (Library::FileStatus)statusCode;
     if(status.testFlag(Library::FileNotFound)) {
-        return QObject::tr("Missing");
+        return QCoreApplication::translate("LibraryModel","Missing");
     } else if (status.testFlag(Library::New)) {
-        return QObject::tr("New");
+        return QCoreApplication::translate("LibraryModel","New");
     } else {
         if(hasLinkedResult) {
-            return QObject::tr("Ok");
+            return QCoreApplication::translate("LibraryModel","Ok");
         } else {
-            return QObject::tr("Searched");
+            return QCoreApplication::translate("LibraryModel","Searched");
         }
     }
 }

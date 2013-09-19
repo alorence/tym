@@ -4,19 +4,54 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="../../src/gui/about.ui" line="+27"/>
+        <location filename="../../src/gui/about.ui" line="+33"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>More information and online help:</source>
+        <translation>Plus d&apos;informations et de l&apos;aide en ligne :</translation>
+    </message>
+    <message>
+        <location line="+106"/>
+        <source>3rd party content</source>
+        <translation>Contenu tiers</translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Tag Your Music %VERSION%&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/logos/gpl3&quot; style=&quot;float: right;&quot;/&gt;This program is open source, distrubuted under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GPL 3 licence&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fugue Icons pack&lt;/span&gt;&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;More informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://p.yusukekamiyamane.com/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;This program use a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Cutelogger library&lt;/span&gt;&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;LGPL 2.1 licence&lt;/span&gt;&lt;/a&gt;. Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>This program uses a modified version of &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;Cutelogger library&lt;/a&gt; by Boris Moiseev, distributed under the terms of &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;LGPL 2.1 licence&lt;/a&gt;.&lt;br/&gt; Modifications are visible on &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;GitHub&lt;/a&gt;.</source>
+        <translation>&lt;ce programme utilise une version modifiée de la &lt;a href=&quot;https://github.com/cyberbobs/CuteLogger&quot;&gt;librairie Cutelogger&lt;/a&gt; de Boris Moiseev, distribuée sous &lt;a href=&quot;https://www.gnu.org/licenses/lgpl-2.1.html&quot;&gt;licence LGPL 2.1&lt;/a&gt;.&lt;br/&gt;Les modifications sont visibles sur &lt;a href=&quot;https://github.com/alorence/CuteLogger&quot;&gt;GitHub&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Thanks</source>
-        <translation type="unfinished"></translation>
+        <location line="+80"/>
+        <source>Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;Fugue Icons pack&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/a&gt;.&lt;br/&gt;More information: &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;http://p.yusukekamiyamane.com/&lt;/a&gt;.</source>
+        <translation>Les icônes utilisées dans ce programme viennent du&lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;pack Fugue Icons&lt;/a&gt; de Yusuke Kamiyamane. Ce pack est distribué selon les termes de la &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;licence Creative Commons Attribution 3.0&lt;/a&gt;.&lt;br/&gt;Plus d&apos;informations : &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;http://p.yusukekamiyamane.com/&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <location line="-126"/>
+        <source>Licence</source>
+        <translation>Licence</translation>
+    </message>
+    <message>
+        <location line="+148"/>
+        <source>&lt;strong&gt;Libraries&lt;/strong&gt;</source>
+        <translation>&lt;strong&gt;Librairies&lt;/strong&gt;</translation>
+    </message>
+    <message>
+        <location line="-142"/>
+        <source>This program is open source, distrubuted under the terms of GPL 3 licence.</source>
+        <translation>Ce programme est open source, distribué selon les termes de la licence GPL 3.</translation>
+    </message>
+    <message>
+        <location line="+91"/>
+        <source>This program uses &lt;a href=&quot;https://github.com/pipacs/o2&quot;&gt;o2 library&lt;/a&gt; by Akos Polster. Licence:</source>
+        <translation>Ce programme utilise la &lt;a href=&quot;https://github.com/pipacs/o2&quot;&gt;librairie o2&lt;/a&gt; de Akos Polster. Licence :</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>&lt;strong&gt;Graphical resources&lt;/strong&gt;</source>
+        <translation>&lt;strong&gt;Resources graphiques&lt;/strong&gt;</translation>
     </message>
 </context>
 <context>
@@ -24,7 +59,7 @@
     <message>
         <location filename="../../src/network/o1beatport.ui" line="+14"/>
         <source>Beatport Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentification Beatport</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -60,12 +95,12 @@
     <message>
         <location filename="../../src/tasks/export/exporttask.cpp" line="+50"/>
         <source>The file %1 can&apos;t be opened for writing</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier %1 n&apos;a pu être ouvert en écriture</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>File %1 has been correctly written. Now you can import the generated collection in Traktor. Don&apos;t forget to set priority on information from this collection instead of the one you already have.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier %1 a été correctement écrit. Vous pouvez maintenant importer la collection générée dans Traktor. N&apos;oubliez pas de définir la priorité sur les information de cette collection plutôt que sur celle que vous avez déja.</translation>
     </message>
 </context>
 <context>
@@ -119,13 +154,58 @@
         <extracomment>Used as displayed root dir when library is empty (no tracks in the database)</extracomment>
         <translation>&lt;vide&gt;</translation>
     </message>
+    <message>
+        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
+        <source>File not found. Did you moved or rename this file ?</source>
+        <translation>Fichier manquant. Avez-vous déplacé ou renommé ce fichier ?</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use Search to request Beatport for information on this track.</source>
+        <translation>Utilisez la recherche pour récupérer depuis Beatport des informations sur ce morceau. </translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ready.</source>
+        <translation>Prêt.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
+        <translation>Aucun résultat, vous pouvez essayer une recherche manuelle.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Please check on the right panel and select the better result for this track.</source>
+        <translation>Veuillez vérifier dans le panneau de droite et séléctionnez le meilleur résultat pour ce morceau.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Missing</source>
+        <translation>Manquant</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>New</source>
+        <translation>Nouveau</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ok</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Searched</source>
+        <translation>Cherché</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../../src/gui/mainwindow.ui" line="+41"/>
         <source>Root:</source>
-        <translation type="unfinished"></translation>
+        <translation>Racine :</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -235,37 +315,37 @@
     <message>
         <location line="+3"/>
         <source>Export selected tracks as playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter les morceaux séléctionnés comme playlist</translation>
     </message>
     <message>
         <location filename="../../src/gui/mainwindow.cpp" line="+296"/>
         <source>Tag Your Music is misconfigured. Connection to Beatport API is impossible</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag Your Music est mal configuré. La connexion à beatport est impossible</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You are logged on Beatport and will be able to perform search</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous êtes connecté à Beatport and allez pouvoir effectuer des recherches</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You need to log in before searching on Beatport</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous devez être authentifié avant de rechercher sur Beatport</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Déconnexion</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Log in</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion</translation>
     </message>
     <message>
         <location line="+128"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Séléctionner</translation>
     </message>
 </context>
 <context>
@@ -273,75 +353,7 @@
     <message>
         <location filename="../../src/widgets/patternbutton.cpp" line="+33"/>
         <source>Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
-        <source>File not found. Did you moved or rename this file ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Use Search to request Beatport for information on this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ready.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Please check on the right panel and select the better result for this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Missing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Searched</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/main.cpp" line="+83"/>
-        <source>%1 is starting, version %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Compiled with Qt %1, run with Qt library version %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>data location : %1 - pictures location : %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Application ends with return code %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Format</translation>
     </message>
 </context>
 <context>
@@ -349,68 +361,68 @@
     <message>
         <location filename="../../src/tasks/rename/renameconfigurator.ui" line="+14"/>
         <source>Rename your files</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommez vos fichiers</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Choose a format for the renamed files or create your own by selecting &quot;Cusom&quot; in the below list</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez un format pour le fichier renommé ou créez le cotre en choisissant &quot;Personnalisé&quot; dans la liste ci-dessous</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select the output format for your tracks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez le format de sortie pour vos morceaux :</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Format :</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Preview:</source>
-        <translation type="unfinished"></translation>
+        <translation>Prévisualisation :</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Save this custom format for the next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder ce format pour la prochaine fois</translation>
     </message>
     <message>
         <location filename="../../src/tasks/rename/renameconfigurator.cpp" line="+50"/>
         <source>Custom</source>
         <extracomment>Specific value in list of formats, allowing user to create its own</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Personnalisé</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Original filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier original</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau nom</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>This file does not exists on the disk. It will not be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce fichier n&apos;existe pas sur le disque. Il ne sera pas renommé.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>This file has no information attached. It is impossible to generate a new filename. Please use the search function to retrieve information on this track</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce fichier n&apos;a pas d&apos;informations associées. Il est impossible de générer un nouveau nom. Utilisez la fonction de recherche pour récupérer des informations sur ce morceau</translation>
     </message>
     <message>
         <location line="+138"/>
         <source>The target filename is the same than the original one. Nothing to do</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom de fichier final est le même que l&apos;original. Rien à faire</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>The file will be renamed</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier sera bien renommé</translation>
     </message>
 </context>
 <context>
@@ -418,55 +430,55 @@
     <message>
         <location filename="../../src/tasks/rename/renametask.cpp" line="+47"/>
         <source>Renaming file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommage du fichier %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1 does not exists, it can&apos;t be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;existe pas, il ne peut pas être renommé.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Target file %1 already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier cible %1 existe déja.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown error when renaming file %1 into %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur inconnue en renommant %1 en %2</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>The file seems to have been renamed, but the new one (%2) can&apos;t be found on disk !</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier semble avoir été renommé, mais le nouveau (%2) ne peut être localisé sur le disque !</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>File %1 renamed to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier %1 renommé en %2</translation>
     </message>
     <message numerus="yes">
         <location line="+8"/>
-        <source>%1 track(s) have been renamed.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%n track(s) have been renamed.</source>
+        <translation>
+            <numerusform>%n morceaux a été renommé.</numerusform>
+            <numerusform>%n morceaux ont été renommés.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location line="+1"/>
-        <source>%1 error(s) happened</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%n error(s) happened</source>
+        <translation>
+            <numerusform>%n erreur survenue</numerusform>
+            <numerusform>%n erreurs survenues</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location line="+3"/>
-        <source>%1 track(s) have been renamed without any error.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%n track(s) have been renamed without any error.</source>
+        <translation>
+            <numerusform>%n morceau renommé sans erreur.</numerusform>
+            <numerusform>%n morceaux renommés sans erreur.</numerusform>
         </translation>
     </message>
 </context>
@@ -475,62 +487,62 @@
     <message>
         <location filename="../../src/tasks/search/searchconfigurator.ui" line="+14"/>
         <source>Search information for your tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche des informations sur vos fichiers</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Try to automatically detect the better result</source>
-        <translation type="unfinished"></translation>
+        <translation>Essayer de détécter automatiquement le meilleur résultat</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>This option will use file formats you configured in settings to extract informtion from your files which are already formatted. Then, it will try to find the better result and link your track to this one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette option va utiliser les formats de fichiers que vous avez défini dans les préférences pour extraire les informations de vos morceaux qui ont un nom déjà formatté. Ensuite le meilleur résultat sera recherché et associé à chaque fichier.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Open settings to configure your preferred patterns</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir les préférences pour configurer vos formats préférés</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Simple search, based on filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche simple, basée sur les noms de fichiers</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>All words in each filename will be used to perform a classic search on Beatport.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les mots dans chaque nom de fichier seront utilisés comme base pour une recherche sur Beatport.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Try to extract Beatport ID from filenames</source>
-        <translation type="unfinished"></translation>
+        <translation>Essyaer d&apos;extraire les identifiants Beatport des noms de fichiers</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>If you have files with names like 123456_some_title_original_mix, you can enable this option. It will extract the Beatport ID for each file, and search for corresponding track.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si vous avez des fichiers de la forme 123456_titre_original_mix, vous pouvez activer cette option. L&apos;identifiant Beatport du morceau sera extrait, et le morceau correspondant sera recherché sur Beatport.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Manual search</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche manuelle</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>You can enter the words you want to perform a classic search on Beatport</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous pouvez entrer les mots que vous voulez pour effectuer une recherche classique sur Beatport</translation>
     </message>
     <message>
         <location filename="../../src/tasks/search/searchconfigurator.cpp" line="+37"/>
         <source>Track</source>
-        <translation type="unfinished"></translation>
+        <translation>Morceaux</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Search terms</source>
-        <translation type="unfinished"></translation>
+        <translation>Termes de recherche</translation>
     </message>
 </context>
 <context>
@@ -538,47 +550,47 @@
     <message>
         <location filename="../../src/tasks/search/searchtask.cpp" line="+130"/>
         <source>Send search requests to Beatport</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoi des requêtes de recherche sur Beatport</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>No new result appended</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun nouveau résultat ajouté</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 new result(s) appended</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 nouveau(x) résultat(s) ajouté</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Try to detect the better result for each file</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentative de détéction du meilleur résultat</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You can now check your tracks and verify the results automatically set is the better one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous pouvez maintenant vérifier vos morceaux pour vous assurer que le meilleur résultat trouvé automatiquement est correct.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Search is now done for all your tracks. You need to check results and verify which is the better for each of your tracks.</source>
-        <translation type="unfinished"></translation>
+        <translation>La recherche est maintenant terminée pour tous vos morceaux. Vous devez vérifier les résultats et choisir le meilleur pour chaque morceau.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Store results in database</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde des résultats dans la base de donnée</translation>
     </message>
     <message>
         <location line="+73"/>
         <source>Better result found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Meilleur résultat trouvé : %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>No good result found</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun meilleur résultat trouvé</translation>
     </message>
 </context>
 <context>
@@ -586,117 +598,127 @@
     <message>
         <location filename="../../src/gui/settingsdialog.ui" line="+14"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférences</translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+82"/>
+        <source>&lt;strong&gt;General&lt;/strong&gt;</source>
+        <translation>&lt;strong&gt;Général&lt;/strong&gt;</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Preferred patterns</source>
-        <translation type="unfinished"></translation>
+        <translation>Formats préférés</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Edit this list to define your preferred filename formats. It will be used for renaming and for automatic detection of better result on searches. You can drag &amp; drop to modify the order.</source>
-        <translation type="unfinished"></translation>
+        <translation>Editez cette liste pour définir vos formats de fichiers préférés. Elle sera utilisée pour le renommage et pour la détéction automatique du meilleur résultat lors de la recherche. Vous pouvez glissez / déposer des éléments pour changer leur ordre.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlever</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Librairie</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Enable colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer les couleurs</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Tracks Informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations sur les morceaux</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Beatport style</source>
-        <translation type="unfinished"></translation>
+        <translation>Comme Beatport</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>MixedInKey style</source>
-        <translation type="unfinished"></translation>
+        <translation>Comme MixedInKey</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>How keys must be displayed ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Comment les clés doivent être affichées ?</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Interface&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location line="+16"/>
+        <source>&lt;strong&gt;Interface&lt;/strong&gt;</source>
+        <translation>&lt;strong&gt;Interface&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+52"/>
+        <source>&lt;strong&gt;Network&lt;/strong&gt;</source>
+        <translation>&lt;strong&gt;Network&lt;/strong&gt;</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Select your preferred language</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez voter langue préférée</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+33"/>
         <source>Enable proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer le proxy</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Hôte</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateur</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../../src/gui/settingsdialog.cpp" line="+139"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Réseau</translation>
     </message>
 </context>
 <context>
@@ -704,12 +726,12 @@
     <message>
         <location filename="../../src/tasks/taskmonitor.ui" line="+14"/>
         <source>Task execution</source>
-        <translation type="unfinished"></translation>
+        <translation>Execution de la tâche</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>More</source>
-        <translation type="unfinished"></translation>
+        <translation>Plus</translation>
     </message>
 </context>
 <context>
@@ -717,82 +739,82 @@
     <message>
         <location filename="../../src/widgets/trackinfosview.ui" line="+20"/>
         <source>Infos</source>
-        <translation type="unfinished"></translation>
+        <translation>Infos</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Release</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Genres</source>
-        <translation type="unfinished"></translation>
+        <translation>Genres</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Published</source>
-        <translation type="unfinished"></translation>
+        <translation>Publié</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Artist(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Artist(s)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Remixer(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Remixer(s)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Full Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre complet</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Mix Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du remix</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Label</translation>
     </message>
     <message>
         <location line="+71"/>
         <source>Released</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorti</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Prix</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Tempo</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation>Durée</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clé</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Beatport ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant Beatport</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trackinfosview.cpp" line="+45"/>
@@ -800,7 +822,7 @@
         <location line="+24"/>
         <location line="+2"/>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished"></translation>
+        <translation>dd/MM/yyyy</translation>
     </message>
 </context>
 </TS>
