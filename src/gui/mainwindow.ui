@@ -71,7 +71,7 @@
         <item row="0" column="3">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Select:</string>
+           <string>Select a group of tracks:</string>
           </property>
          </widget>
         </item>
@@ -160,7 +160,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -295,10 +295,10 @@
      <normaloff>:/action_icons/tick</normaloff>:/action_icons/tick</iconset>
    </property>
    <property name="text">
-    <string>Link this result</string>
+    <string>Set as better result</string>
    </property>
    <property name="toolTip">
-    <string>Set as default result for the current track</string>
+    <string>Mark this result to use it for other tasks (rename, export, etc.)</string>
    </property>
   </action>
   <action name="actionSearchResultDelete">
@@ -328,7 +328,7 @@
     <string>Export</string>
    </property>
    <property name="toolTip">
-    <string>Export selected tracks as playlist</string>
+    <string>Export selected tracks as Traktor NML collection</string>
    </property>
   </action>
   <action name="actionLoginLogout">

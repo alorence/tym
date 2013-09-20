@@ -108,12 +108,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionImport->setShortcut(QKeySequence::Open);
 
     // Configure actions for selecting groups in library
-    _selectActions[LibraryModel::AllTracks] = "All tracks";
-    _selectActions[LibraryModel::Neither] = "Neither";
-    _selectActions[LibraryModel::NewTracks] = "News";
-    _selectActions[LibraryModel::MissingTracks] = "Missing";
-    _selectActions[LibraryModel::LinkedTracks] = "Linked to a result";
-    _selectActions[LibraryModel::SearchedAndNotLinkedTracks] = "Not linked to better result";
+    _selectActions[LibraryModel::AllTracks] = tr("All");
+    _selectActions[LibraryModel::Neither] = tr("Neither");
+    _selectActions[LibraryModel::NewTracks] = tr("News");
+    _selectActions[LibraryModel::MissingTracks] = tr("Missing");
+    _selectActions[LibraryModel::LinkedTracks] = tr("With better result selected");
+    _selectActions[LibraryModel::SearchedAndNotLinkedTracks] = tr("No better result selected");
 
     QMapIterator<LibraryModel::GroupSelection, QString> it(_selectActions);
 
@@ -444,7 +444,7 @@ void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
 
-    QMenu *selectMenu = contextMenu.addMenu(tr("Select"));
+    QMenu *selectMenu = contextMenu.addMenu(tr("Select tracks"));
     for(QAction *selectAction : _selectActionsList) {
         selectMenu->addAction(selectAction);
     }

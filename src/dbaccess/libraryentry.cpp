@@ -153,16 +153,18 @@ QString LibraryEntry::infoMessage(int statusCode, int numResults, bool hasLinked
 {
     Library::FileStatus status = (Library::FileStatus)statusCode;
     if(status.testFlag(Library::FileNotFound)) {
-        return QCoreApplication::translate("LibraryModel","File not found. Did you moved or rename this file ?");
+        return QCoreApplication::translate("LibraryModel","File not found. Did you move or rename this file ?");
     } else if (status.testFlag(Library::New)) {
-        return QCoreApplication::translate("LibraryModel","Use Search to request Beatport for information on this track.");
+        return QCoreApplication::translate("LibraryModel","Use search to request Beatport for information on this track.");
     } else {
         if(hasLinkedResult) {
-            return QCoreApplication::translate("LibraryModel","Ready.");
+            return QCoreApplication::translate("LibraryModel","Ready");
         } else if (numResults == 0) {
-            return QCoreApplication::translate("LibraryModel","No search result has been found, you can try a manual search. Use search tool after selecting only this track.");
+            return QCoreApplication::translate("LibraryModel","No search result has been found, but you can try "
+                                               "search manually.");
         } else {
-            return QCoreApplication::translate("LibraryModel","Please check on the right panel and select the better result for this track.");
+            return QCoreApplication::translate("LibraryModel","Please check on the right panel and select the better "
+                                               "result for this track.");
         }
     }
 }
