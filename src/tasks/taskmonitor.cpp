@@ -93,12 +93,18 @@ void TaskMonitor::initResultElement(const QString &key, const QString &label)
 
 void TaskMonitor::appendResult(const QString &key, Utils::StatusType type, const QString &msg)
 {
+    QPixmap iconForStatus = Utils::instance()->pixForStatusType(type);
+
     QTreeWidgetItem *item = _resultsItems[key];
     if(item->treeWidget() == 0) {
         ui->resultTree->addTopLevelItem(item);
     }
+    if(item->data(0, Qt::UserRole).toInt() < type) {
+        item->setData(0, Qt::UserRole, type);
+        item->setData(0, Qt::DecorationRole, iconForStatus);
+    }
     QTreeWidgetItem *child = new QTreeWidgetItem(item, QStringList() << msg);
-    child->setData(0, Qt::DecorationRole, Utils::instance()->pixForStatusType(type));
+    child->setData(0, Qt::DecorationRole, iconForStatus);
 
 }
 
