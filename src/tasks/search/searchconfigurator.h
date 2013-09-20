@@ -33,8 +33,6 @@ class SearchConfigurator;
 
 class Task;
 
-//TODO: Implements a dynamic pattern list, based on user settings
-
 class SearchConfigurator : public QDialog, public TaskFactory
 {
     Q_OBJECT

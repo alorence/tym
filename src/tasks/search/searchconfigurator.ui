@@ -85,6 +85,9 @@
         <property name="text">
          <string>All words in each filename will be used to perform a classic search on Beatport.</string>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -141,6 +144,9 @@
      <property name="checkable">
       <bool>true</bool>
      </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <property name="leftMargin">
        <number>2</number>
@@ -158,6 +164,9 @@
        <widget class="QLabel" name="label">
         <property name="text">
          <string>You can enter the words you want to perform a classic search on Beatport</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
