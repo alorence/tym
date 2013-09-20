@@ -14,7 +14,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+106"/>
+        <location line="+66"/>
+        <source>Licence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This program is open source, distrubuted under the terms of GPL 3 licence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>3rd party content</source>
         <translation type="unfinished"></translation>
     </message>
@@ -24,33 +34,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
-        <source>Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;Fugue Icons pack&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/a&gt;.&lt;br/&gt;More information: &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;http://p.yusukekamiyamane.com/&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-126"/>
-        <source>Licence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+148"/>
-        <source>&lt;strong&gt;Libraries&lt;/strong&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-142"/>
-        <source>This program is open source, distrubuted under the terms of GPL 3 licence.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+91"/>
+        <location line="+51"/>
         <source>This program uses &lt;a href=&quot;https://github.com/pipacs/o2&quot;&gt;o2 library&lt;/a&gt; by Akos Polster. Licence:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
         <source>&lt;strong&gt;Graphical resources&lt;/strong&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Icons used in this program are from &lt;a href=&quot;https://github.com/yusukekamiyamane/fugue-icons&quot;&gt;Fugue Icons pack&lt;/a&gt; by Yusuke Kamiyamane. This pack is distributed under the terms of &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0/&quot;&gt;Creative Commons Attribution 3.0 Licence&lt;/a&gt;.&lt;br/&gt;More information: &lt;a href=&quot;http://p.yusukekamiyamane.com/&quot;&gt;http://p.yusukekamiyamane.com/&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>&lt;strong&gt;Libraries&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -80,7 +80,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -123,6 +123,51 @@
 <context>
     <name>LibraryModel</name>
     <message>
+        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
+        <source>File not found. Did you move or rename this file ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use search to request Beatport for information on this track.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>No search result has been found, but you can try search manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Please check on the right panel and select the better result for this track.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Searched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../src/dbaccess/librarymodel.cpp" line="+36"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
@@ -154,51 +199,6 @@
         <extracomment>Used as displayed root dir when library is empty (no tracks in the database)</extracomment>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
-        <source>File not found. Did you moved or rename this file ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Use Search to request Beatport for information on this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ready.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Please check on the right panel and select the better result for this track.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Missing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Searched</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -209,7 +209,7 @@
     </message>
     <message>
         <location line="+33"/>
-        <source>Select:</source>
+        <source>Select a group of tracks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -289,12 +289,12 @@
     </message>
     <message>
         <location line="+9"/>
-        <source>Link this result</source>
+        <source>Set as better result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Set as default result for the current track</source>
+        <source>Mark this result to use it for other tasks (rename, export, etc.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -314,11 +314,41 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Export selected tracks as playlist</source>
+        <source>Export selected tracks as Traktor NML collection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="+296"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="+111"/>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Neither</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>News</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>With better result selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No better result selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+180"/>
         <source>Tag Your Music is misconfigured. Connection to Beatport API is impossible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -343,8 +373,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+128"/>
-        <source>Select</source>
+        <location line="+130"/>
+        <source>Select tracks</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -512,7 +542,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>Try to extract Beatport ID from filenames</source>
         <translation type="unfinished"></translation>
     </message>
@@ -527,7 +557,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+27"/>
         <source>You can enter the words you want to perform a classic search on Beatport</source>
         <translation type="unfinished"></translation>
     </message>
@@ -663,12 +693,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+52"/>
-        <source>&lt;strong&gt;Network&lt;/strong&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-29"/>
+        <location line="+23"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
@@ -678,7 +703,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+23"/>
+        <source>&lt;strong&gt;Network&lt;/strong&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Enable proxy</source>
         <translation type="unfinished"></translation>
     </message>

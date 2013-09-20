@@ -80,7 +80,7 @@
         <translation>Pour le moment, le seul choix possible est l&apos;export de collection Traktor au format NML. Veuillez choisir un emplacement où enregistrer le fichier :</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Browse</source>
         <translation>Parcourir</translation>
     </message>
@@ -155,32 +155,48 @@
         <translation>&lt;vide&gt;</translation>
     </message>
     <message>
-        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
         <source>File not found. Did you moved or rename this file ?</source>
+        <translation type="obsolete">Fichier manquant. Avez-vous déplacé ou renommé ce fichier ?</translation>
+    </message>
+    <message>
+        <source>Use Search to request Beatport for information on this track.</source>
+        <translation type="obsolete">Utilisez la recherche pour récupérer depuis Beatport des informations sur ce morceau. </translation>
+    </message>
+    <message>
+        <source>Ready.</source>
+        <translation type="obsolete">Prêt.</translation>
+    </message>
+    <message>
+        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
+        <translation type="obsolete">Aucun résultat, vous pouvez essayer une recherche manuelle.</translation>
+    </message>
+    <message>
+        <location filename="../../src/dbaccess/libraryentry.cpp" line="+156"/>
+        <source>File not found. Did you move or rename this file ?</source>
         <translation>Fichier manquant. Avez-vous déplacé ou renommé ce fichier ?</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Use Search to request Beatport for information on this track.</source>
-        <translation>Utilisez la recherche pour récupérer depuis Beatport des informations sur ce morceau. </translation>
+        <source>Use search to request Beatport for information on this track.</source>
+        <translation>Utilisez la recherche pour récupérer sur Beatport des informations sur ce morceau.</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Ready.</source>
-        <translation>Prêt.</translation>
+        <source>Ready</source>
+        <translation>Prêt</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>No search result has been found, you can try a manual search. Use search tool after selecting only this track.</source>
+        <source>No search result has been found, but you can try search manually.</source>
         <translation>Aucun résultat, vous pouvez essayer une recherche manuelle.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please check on the right panel and select the better result for this track.</source>
         <translation>Veuillez vérifier dans le panneau de droite et séléctionnez le meilleur résultat pour ce morceau.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Missing</source>
         <translation>Manquant</translation>
     </message>
@@ -208,9 +224,13 @@
         <translation>Racine :</translation>
     </message>
     <message>
-        <location line="+33"/>
         <source>Select:</source>
-        <translation>Selection :</translation>
+        <translation type="obsolete">Selection :</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Select a group of tracks:</source>
+        <translation>Séléctionner un group de morceau :</translation>
     </message>
     <message>
         <location line="+100"/>
@@ -289,16 +309,29 @@
     </message>
     <message>
         <location line="+9"/>
-        <source>Link this result</source>
-        <translation>Lier ce resultat</translation>
+        <source>Set as better result</source>
+        <translation>Marquer comme meilleur résultat</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Set as default result for the current track</source>
-        <translation>Choisir comme résultat par défaut pour le morceau courant</translation>
+        <source>Mark this result to use it for other tasks (rename, export, etc.)</source>
+        <translation>Marquer ce résultat pour l&apos;utiliser dans les autres tâches (renommage, export, etc.)</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+30"/>
+        <source>Export selected tracks as Traktor NML collection</source>
+        <translation>Exporter les morceaux séléctionnés sous forme de collection Traktor (format NML)</translation>
+    </message>
+    <message>
+        <source>Link this result</source>
+        <translation type="obsolete">Lier ce resultat</translation>
+    </message>
+    <message>
+        <source>Set as default result for the current track</source>
+        <translation type="obsolete">Choisir comme résultat par défaut pour le morceau courant</translation>
+    </message>
+    <message>
+        <location line="-21"/>
         <source>Delete</source>
         <translation>Supprimer</translation>
     </message>
@@ -313,12 +346,41 @@
         <translation>Exporter</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Export selected tracks as playlist</source>
-        <translation>Exporter les morceaux séléctionnés comme playlist</translation>
+        <translation type="obsolete">Exporter les morceaux séléctionnés comme playlist</translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="+296"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="+111"/>
+        <source>All</source>
+        <translation>Tous</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Neither</source>
+        <translation>Aucun</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>News</source>
+        <translation>Nouveaux</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Missing</source>
+        <translation>Manquants</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>With better result selected</source>
+        <translation>Avec un meilleur résultat associé</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No better result selected</source>
+        <translation>Sans meilleur résultat associé</translation>
+    </message>
+    <message>
+        <location line="+180"/>
         <source>Tag Your Music is misconfigured. Connection to Beatport API is impossible</source>
         <translation>Tag Your Music est mal configuré. La connexion à beatport est impossible</translation>
     </message>
@@ -343,9 +405,13 @@
         <translation>Connexion</translation>
     </message>
     <message>
-        <location line="+128"/>
+        <location line="+130"/>
+        <source>Select tracks</source>
+        <translation>Séléctionner des morceaux</translation>
+    </message>
+    <message>
         <source>Select</source>
-        <translation>Séléctionner</translation>
+        <translation type="obsolete">Séléctionner</translation>
     </message>
 </context>
 <context>
@@ -515,7 +581,7 @@
         <translation>Tous les mots dans chaque nom de fichier seront utilisés comme base pour une recherche sur Beatport.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>Try to extract Beatport ID from filenames</source>
         <translation>Essyaer d&apos;extraire les identifiants Beatport des noms de fichiers</translation>
     </message>
@@ -530,7 +596,7 @@
         <translation>Recherche manuelle</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+27"/>
         <source>You can enter the words you want to perform a classic search on Beatport</source>
         <translation>Vous pouvez entrer les mots que vous voulez pour effectuer une recherche classique sur Beatport</translation>
     </message>
