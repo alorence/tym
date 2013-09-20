@@ -117,7 +117,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QMapIterator<LibraryModel::GroupSelection, QString> it(_selectActions);
 
-    ui->groupSelectionCombo->addItem("", -1);
     while(it.hasNext()) {
         int id = it.next().key();
         QString label = it.value();
@@ -136,6 +135,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Connect context menu, via the QSignalMapper
     connect(&_groupSelectionMapper, SIGNAL(mapped(int)),
             this, SLOT(selectSpecificLibraryElements(int)));
+    ui->groupSelectionCombo->setCurrentIndex(-1);
 
 
     // Configure settings management
@@ -414,6 +414,8 @@ void MainWindow::afterLibraryViewReset()
 
 void MainWindow::selectSpecificLibraryElements(int comboIndex)
 {
+    if(comboIndex == -1) return;
+
     LibraryModel::GroupSelection selectionGroup =
             (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
     if (selectionGroup == LibraryModel::Neither) {
@@ -435,7 +437,7 @@ void MainWindow::selectSpecificLibraryElements(int comboIndex)
             }
         }
     }
-    ui->groupSelectionCombo->setCurrentIndex(0);
+    ui->groupSelectionCombo->setCurrentIndex(-1);
 }
 
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
