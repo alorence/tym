@@ -34,6 +34,9 @@ if(TYM_UPDATE_TRANSLATIONS)
     else()
         qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_SOURCE_DIR}/src ${TRANSLATIONS_FILES} OPTIONS ${LUPDATE_COMMON_OPTIONS})
     endif()
+    # Target should be rebuilt completely if a source file from another target is modified
+    # Without this, lupdate is not reexcuted if it is considered by cmake as up-to-date
+    add_custom_target(UpdateTranslations ALL SOURCES ${TYM_TRANSLATIONS})
 else()
     qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 endif()
