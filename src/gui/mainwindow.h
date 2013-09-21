@@ -190,6 +190,27 @@ private slots:
     void on_actionLoginLogout_triggered();
 
 private:
+
+    /*!
+     * \brief Perform some connections related to actions in general
+     */
+    void initActions();
+
+    /*!
+     * \brief Initialize group selection combobox and the list of actions used when context menu is opened
+     */
+    void initGroupSelectionHelpers();
+
+    /*!
+     * \brief Initialize variables and connections related to Library view/model
+     */
+    void initLibraryModelView();
+
+    /*!
+     * \brief Initialize variables and connections related to Search Results view/model
+     */
+    void initSearchResultsModelView();
+
     /*!
      * \brief Return a list of files supported by the application
      * If \a entry represents a directory, return a list of files inside it and all its subirectories.
@@ -217,7 +238,6 @@ private:
     PictureDownloader* _pictureDownloader;
     QThread* _libStatusUpdateThread;
 
-    QMap<LibraryModel::GroupSelection,QString> _selectActions;
     QSignalMapper _groupSelectionMapper;
     QList<QAction*> _selectActionsList;
 

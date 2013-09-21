@@ -51,98 +51,21 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // More space on library view instead of right panel
+    // More space for library view than right panel
     ui->horizontalSplitter->setStretchFactor(0, 4);
     ui->horizontalSplitter->setStretchFactor(1, 1);
 
-    connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
-    connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
-
+    // TODO: not very useful
     if( ! _dbHelper->initialized()) {
         LOG_ERROR(QString("Impossible to connect with database..."));
         return;
     }
 
-    // Configure Library Model and View
-    _libraryModel = new LibraryModel(this);
-    ui->libraryView->setModel(_libraryModel);
-
-    // Configure search model
-    _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
-    _searchModel->setTable("SearchResultsHelper");
-    _searchModel->setFilter("libId=NULL");
-    _searchModel->select();
-
-    // Configure search view
-    ui->searchResultsView->setModel(_searchModel);
-    ui->searchResultsView->hideColumn(SearchResults::LibId);
-    ui->searchResultsView->hideColumn(SearchResults::Bpid);
-    ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
-
-    // Update root dir text label
-    connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
-
-    // Reconfigure some view properties when it is refreshed
-    connect(_libraryModel, &LibraryModel::modelAboutToBeReset,
-            this, &MainWindow::beforeLibraryViewReset);
-    connect(_libraryModel, &LibraryModel::modelReset, this, &MainWindow::afterLibraryViewReset);
-
-    // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &MainWindow::updateLibraryActions);
-    // Set actions menu/buttons as enabled/disabled folowing library selection
-    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &MainWindow::updateSearchResultsActions);
-
-    // Display informations about a track when selecting it in the view
-    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &MainWindow::updateTrackInfos);
-
-    // Download pictures when needed
-    connect(ui->trackInfos, &TrackInfosView::needDownloadPicture,
-            _pictureDownloader, &PictureDownloader::downloadTrackPicture);
-    connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
-            ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
-
-    ui->actionRemove->setShortcut(QKeySequence::Delete);
-    ui->actionImport->setShortcut(QKeySequence::Open);
-
-    // Configure actions for selecting groups in library
-    _selectActions[LibraryModel::AllTracks] = tr("All");
-    _selectActions[LibraryModel::Neither] = tr("Neither");
-    _selectActions[LibraryModel::NewTracks] = tr("News");
-    _selectActions[LibraryModel::MissingTracks] = tr("Missing");
-    _selectActions[LibraryModel::LinkedTracks] = tr("With better result selected");
-    _selectActions[LibraryModel::SearchedAndNotLinkedTracks] = tr("No better result selected");
-
-    QMapIterator<LibraryModel::GroupSelection, QString> it(_selectActions);
-
-    while(it.hasNext()) {
-        int id = it.next().key();
-        QString label = it.value();
-
-        ui->groupSelectionCombo->addItem(label, id);
-
-        QAction * action = new QAction(label, ui->libraryView);
-        _groupSelectionMapper.setMapping(action, id + 1);
-        connect(action, SIGNAL(triggered()), &_groupSelectionMapper, SLOT(map()));
-
-        _selectActionsList << action;
-    }
-    // Connect combobox to the slot
-    connect(ui->groupSelectionCombo, SIGNAL(activated(int)),
-            this, SLOT(selectSpecificLibraryElements(int)));
-    // Connect context menu, via the QSignalMapper
-    connect(&_groupSelectionMapper, SIGNAL(mapped(int)),
-            this, SLOT(selectSpecificLibraryElements(int)));
-    ui->groupSelectionCombo->setCurrentIndex(-1);
-
-
-    // Configure settings management
-    connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
-    connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
-    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
-    connect(_settings, &QDialog::accepted, LangManager::instance(), &LangManager::updateTranslationsFromSettings);
+    // Init some stuff. Order IS important
+    initLibraryModelView();
+    initSearchResultsModelView();
+    initActions();
+    initGroupSelectionHelpers();
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
@@ -153,10 +76,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Configure status bar
     ui->statusBar->addWidget(_networkStatus, 2);
-    connect(O1Beatport::instance(), &O1Beatport::statusChanged,
-            this, &MainWindow::updateNetworkStatus);
-    connect(O1Beatport::instance(), &O1Beatport::statusChanged,
-            this, &MainWindow::updateLoginLogoutLabel);
+    connect(O1Beatport::instance(), &O1Beatport::statusChanged, this, &MainWindow::updateNetworkStatus);
+    connect(O1Beatport::instance(), &O1Beatport::statusChanged, this, &MainWindow::updateLoginLogoutLabel);
 
     // Update library entries status (missing, etc.) at startup
     _libStatusUpdateThread->start();
@@ -581,6 +502,106 @@ void MainWindow::on_actionLoginLogout_triggered()
 /*******************************
  * Private methods (utilities) *
  *******************************/
+void MainWindow::initActions()
+{
+    // Connect some basic actions
+    connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
+    connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
+
+    // Initialize default shortcuts for import and remove actions
+    ui->actionRemove->setShortcut(QKeySequence::Delete);
+    ui->actionImport->setShortcut(QKeySequence::Open);
+
+    // Configure settings dialog
+    connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
+    connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
+    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
+    connect(_settings, &QDialog::accepted, LangManager::instance(), &LangManager::updateTranslationsFromSettings);
+
+    // Other actions are connected automatically (on_actionXxx_trigered())
+}
+
+void MainWindow::initGroupSelectionHelpers()
+{
+    QList<QPair<LibraryModel::GroupSelection,QString>> selectionGrps;
+
+    // Set the list of all supported actions
+    selectionGrps << qMakePair(LibraryModel::AllTracks, tr("All"));
+    selectionGrps << qMakePair(LibraryModel::Neither, tr("Neither"));
+    selectionGrps << qMakePair(LibraryModel::NewTracks, tr("News"));
+    selectionGrps << qMakePair(LibraryModel::MissingTracks, tr("Missing"));
+    selectionGrps << qMakePair(LibraryModel::LinkedTracks, tr("With better result selected"));
+    selectionGrps << qMakePair(LibraryModel::SearchedAndNotLinkedTracks, tr("No better result selected"));
+
+    for(auto pair : selectionGrps) {
+        int id = pair.first;
+        QString label = pair.second;
+
+        // Add each one to the comboBox
+        ui->groupSelectionCombo->addItem(label, id);
+
+        QAction * action = new QAction(label, ui->libraryView);
+        _groupSelectionMapper.setMapping(action, id);
+        connect(action, SIGNAL(triggered()), &_groupSelectionMapper, SLOT(map()));
+
+        _selectActionsList << action;
+    }
+    // Connect combobox to the slot
+    connect(ui->groupSelectionCombo, SIGNAL(activated(int)), this, SLOT(selectSpecificLibraryElements(int)));
+    // Connect context menu, via the QSignalMapper
+    connect(&_groupSelectionMapper, SIGNAL(mapped(int)), this, SLOT(selectSpecificLibraryElements(int)));
+    // It is always a wrong entry displayed and selected by default
+    ui->groupSelectionCombo->setCurrentIndex(-1);
+}
+
+void MainWindow::initLibraryModelView()
+{
+    // Configure Library Model and View
+    _libraryModel = new LibraryModel(this);
+    ui->libraryView->setModel(_libraryModel);
+
+    // Update root dir text label
+    connect(_libraryModel, &LibraryModel::rootPathChanged, ui->rootDirLabel, &QLabel::setText);
+
+    // Reconfigure some view properties when it is refreshed
+    connect(_libraryModel, &LibraryModel::modelAboutToBeReset, this, &MainWindow::beforeLibraryViewReset);
+    connect(_libraryModel, &LibraryModel::modelReset, this, &MainWindow::afterLibraryViewReset);
+
+    // Set actions menu/buttons as enabled/disabled folowing library selection
+    connect(ui->libraryView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::updateLibraryActions);
+
+}
+
+void MainWindow::initSearchResultsModelView()
+{
+    // Configure search model
+    _searchModel = new SearchResultsModel(this, _dbHelper->dbObject());
+    _searchModel->setTable("SearchResultsHelper");
+    _searchModel->setFilter("libId=NULL");
+    _searchModel->select();
+
+    // Configure search results view
+    ui->searchResultsView->setModel(_searchModel);
+    ui->searchResultsView->hideColumn(SearchResults::LibId);
+    ui->searchResultsView->hideColumn(SearchResults::Bpid);
+    ui->searchResultsView->hideColumn(SearchResults::DefaultFor);
+
+    // Set actions menu/buttons as enabled/disabled folowing results list selection
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::updateSearchResultsActions);
+
+    // Display information about a track when selecting it in the view
+    connect(ui->searchResultsView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &MainWindow::updateTrackInfos);
+
+    // Download pictures when needed
+    connect(ui->trackInfos, &TrackInfosView::needDownloadPicture,
+            _pictureDownloader, &PictureDownloader::downloadTrackPicture);
+    connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
+            ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
+}
+
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const
 {
     QFileInfoList result;
