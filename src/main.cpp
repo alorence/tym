@@ -93,9 +93,8 @@ int main(int argc, char *argv[])
         if( ! QDir(TYM_ALBUMARTS_LOCATION).exists()) {
             QDir().mkpath(TYM_ALBUMARTS_LOCATION);
         }
-        LOG_DEBUG(QString("data location : %1 - pictures location : %2")
-                  .arg(TYM_DATA_LOCATION)
-                  .arg(TYM_ALBUMARTS_LOCATION));
+        LOG_DEBUG(QString("Database storage: %1").arg(TYM_DATA_LOCATION));
+        LOG_DEBUG(QString("Albums pictures storage: %2").arg(TYM_ALBUMARTS_LOCATION));
     }
 
     // Allow QItemSelection to be stored in a QVariant
