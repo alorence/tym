@@ -219,7 +219,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="+41"/>
+        <location filename="../../src/gui/mainwindow.ui" line="+82"/>
         <source>Root:</source>
         <translation>Racine :</translation>
     </message>
@@ -232,7 +232,7 @@
         <translation type="obsolete">Séléctionner un group de morceau :</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+104"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>

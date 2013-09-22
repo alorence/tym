@@ -203,12 +203,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../src/gui/mainwindow.ui" line="+41"/>
+        <location filename="../../src/gui/mainwindow.ui" line="+82"/>
         <source>Root:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+104"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
