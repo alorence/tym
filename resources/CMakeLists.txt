@@ -28,15 +28,16 @@ if(TYM_UPDATE_TRANSLATIONS)
     message(STATUS "* forget to set TYM_UPDATE_TRANSLATIONS to OFF                      *")
     message(STATUS "*********************************************************************")
 
+    file(GLOB_RECURSE src_files ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.ui)
+
     set(LUPDATE_COMMON_OPTIONS -locations relative)
     if(TYM_CLEAN_TRANSLATIONS)
-        qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_SOURCE_DIR}/src ${TRANSLATIONS_FILES} OPTIONS -no-obsolete ${LUPDATE_COMMON_OPTIONS})
+        qt5_create_translation(TYM_TRANSLATIONS ${src_files} ${TRANSLATIONS_FILES} OPTIONS -no-obsolete ${LUPDATE_COMMON_OPTIONS})
     else()
-        qt5_create_translation(TYM_TRANSLATIONS ${CMAKE_SOURCE_DIR}/src ${TRANSLATIONS_FILES} OPTIONS ${LUPDATE_COMMON_OPTIONS})
+        qt5_create_translation(TYM_TRANSLATIONS ${src_files} ${TRANSLATIONS_FILES} OPTIONS ${LUPDATE_COMMON_OPTIONS})
     endif()
-    # Target should be rebuilt completely if a source file from another target is modified
-    # Without this, lupdate is not reexcuted if it is considered by cmake as up-to-date
-    add_custom_target(UpdateTranslations ALL SOURCES ${TYM_TRANSLATIONS})
+
+    add_custom_target(UpdateTranslations DEPENDS ${src_files} ${TRANSLATIONS_FILES})
 else()
     qt5_add_translation(TYM_TRANSLATIONS ${TRANSLATIONS_FILES})
 endif()
@@ -50,7 +51,7 @@ else(APPLE)
     set(OSX_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/logos/tym.icns PARENT_SCOPE)
 endif()
 
-add_library(TymResources STATIC ${TYM_RESOURCES_GENERATED} ${TYM_TRANSLATIONS} ${TRANSLATIONS_FILES})
+add_library(TymResources STATIC ${TYM_RESOURCES_GENERATED} ${TYM_TRANSLATIONS})
 qt5_use_modules(TymResources Core)
 
 # Expose some variables to other targets --------------------------------------

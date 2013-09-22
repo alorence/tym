@@ -228,12 +228,11 @@
         <translation type="obsolete">Selection :</translation>
     </message>
     <message>
-        <location line="+33"/>
         <source>Select a group of tracks:</source>
-        <translation>Séléctionner un group de morceau :</translation>
+        <translation type="obsolete">Séléctionner un group de morceau :</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+123"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
@@ -350,7 +349,7 @@
         <translation type="obsolete">Exporter les morceaux séléctionnés comme playlist</translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="+111"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="+593"/>
         <source>All</source>
         <translation>Tous</translation>
     </message>
@@ -375,12 +374,11 @@
         <translation>Avec un meilleur résultat associé</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>No better result selected</source>
-        <translation>Sans meilleur résultat associé</translation>
+        <translation type="obsolete">Sans meilleur résultat associé</translation>
     </message>
     <message>
-        <location line="+180"/>
+        <location line="-375"/>
         <source>Tag Your Music is misconfigured. Connection to Beatport API is impossible</source>
         <translation>Tag Your Music est mal configuré. La connexion à beatport est impossible</translation>
     </message>
@@ -405,9 +403,14 @@
         <translation>Connexion</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+349"/>
         <source>Select tracks</source>
         <translation>Séléctionner des morceaux</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Without better result selected</source>
+        <translation>Sans meilleur résultat associé</translation>
     </message>
     <message>
         <source>Select</source>
@@ -883,9 +886,9 @@
         <translation>Identifiant Beatport</translation>
     </message>
     <message>
-        <location filename="../../src/widgets/trackinfosview.cpp" line="+45"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="+46"/>
         <location line="+2"/>
-        <location line="+24"/>
+        <location line="+25"/>
         <location line="+2"/>
         <source>yyyy-MM-dd</source>
         <translation>dd/MM/yyyy</translation>

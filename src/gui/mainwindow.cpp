@@ -595,7 +595,7 @@ void MainWindow::updateGrpSelectionLabels()
     _grpSelectionActions[LibraryModel::NewTracks]->setText(tr("News"));
     _grpSelectionActions[LibraryModel::MissingTracks]->setText(tr("Missing"));
     _grpSelectionActions[LibraryModel::LinkedTracks]->setText(tr("With better result selected"));
-    _grpSelectionActions[LibraryModel::SearchedAndNotLinkedTracks]->setText(tr("No better result selected"));
+    _grpSelectionActions[LibraryModel::SearchedAndNotLinkedTracks]->setText(tr("Without better result selected"));
 }
 
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const

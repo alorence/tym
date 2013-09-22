@@ -208,12 +208,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Select a group of tracks:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+100"/>
+        <location line="+123"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -318,7 +313,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/gui/mainwindow.cpp" line="+111"/>
+        <location filename="../../src/gui/mainwindow.cpp" line="+593"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
@@ -343,12 +338,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No better result selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+180"/>
+        <location line="-375"/>
         <source>Tag Your Music is misconfigured. Connection to Beatport API is impossible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -373,8 +363,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+349"/>
         <source>Select tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Without better result selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -844,9 +839,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/widgets/trackinfosview.cpp" line="+45"/>
+        <location filename="../../src/widgets/trackinfosview.cpp" line="+46"/>
         <location line="+2"/>
-        <location line="+24"/>
+        <location line="+25"/>
         <location line="+2"/>
         <source>yyyy-MM-dd</source>
         <translation type="unfinished"></translation>
