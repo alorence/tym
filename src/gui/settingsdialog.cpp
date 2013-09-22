@@ -146,6 +146,7 @@ void SettingsDialog::initMenu()
     _menuPagesMap[item] = ui->networkPage;
 
     ui->content->setCurrentIndex(0);
+    ui->menu->setCurrentItem(_menuPagesMap.key(ui->generalPage));
 }
 
 void SettingsDialog::initPatternsConfigurationWidget()

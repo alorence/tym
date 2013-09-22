@@ -41,10 +41,12 @@ void TrackInfosView::changeEvent(QEvent *e)
 {
     if(e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        QDateTime d = QDateTime::fromTime_t(_result.value(TrackFullInfos::ReleaseDate).toInt());
-        ui->d_releaseDate->setText(d.toString(tr("yyyy-MM-dd")));
-        d = QDateTime::fromTime_t(_result.value(TrackFullInfos::PublishDate).toInt());
-        ui->d_publishdate->setText(d.toString(tr("yyyy-MM-dd")));
+        if(!_result.isEmpty()) {
+            QDateTime d = QDateTime::fromTime_t(_result.value(TrackFullInfos::ReleaseDate).toInt());
+            ui->d_releaseDate->setText(d.toString(tr("yyyy-MM-dd")));
+            d = QDateTime::fromTime_t(_result.value(TrackFullInfos::PublishDate).toInt());
+            ui->d_publishdate->setText(d.toString(tr("yyyy-MM-dd")));
+        }
     }
     QWidget::changeEvent(e);
 }
@@ -114,5 +116,7 @@ void TrackInfosView::clearData()
 
     ui->imageArea->setPixmap(_defaultAlbumArt);
     _currentPictureId = "";
+
+    _result.clearValues();
 }
 
