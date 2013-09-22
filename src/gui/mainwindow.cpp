@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     _aboutDialog(new About(this)),
     _settings(new SettingsDialog(this)),
+    _grpSelectionMenu(nullptr),
     _dbHelper(new BPDatabase),
     _pictureDownloader(new PictureDownloader(this)),
     _libStatusUpdateThread(new QThread()),
@@ -65,7 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
     initLibraryModelView();
     initSearchResultsModelView();
     initActions();
-    initGroupSelectionHelpers();
+    initGroupSelectionMenu();
+    updateGrpSelectionLabels();
 
     // Configure thread to update library entries status
     Task* libStatusUpdateTask = new LibraryStatusUpdater();
@@ -100,7 +102,8 @@ MainWindow::~MainWindow()
     _libStatusUpdateThread->wait();
     _libStatusUpdateThread->deleteLater();
     delete _networkStatus;
-    qDeleteAll(_selectActionsList);
+    qDeleteAll(_grpSelectionMenu->actions());
+    _grpSelectionMenu->deleteLater();
 }
 
 /********************************************************
@@ -173,9 +176,11 @@ void MainWindow::changeEvent(QEvent *e)
         ui->retranslateUi(this);
         // Restore the path for the library root dir
         ui->rootDirLabel->setText(rootTextSave);
-        // By default, login/logout button has a false text. Prevent from
-        // redisplaying this one after a change on current language
+        // By default, login/logout button has a false text. It is not
+        // retranslated by default
         updateLoginLogoutLabel();
+        // Retranslate group selection menu and its associated actions
+        updateGrpSelectionLabels();
     }
     QWidget::changeEvent(e);
 }
@@ -333,17 +338,16 @@ void MainWindow::afterLibraryViewReset()
     updateSearchResults(ui->libraryView->selectionModel()->currentIndex());
 }
 
-void MainWindow::selectSpecificLibraryElements(int comboIndex)
+void MainWindow::selectSpecificLibraryElements()
 {
-    if(comboIndex == -1) return;
+    QAction *action = static_cast<QAction *>(sender());
+    LibraryModel::GroupSelection selectGrp = _grpSelectionActions.key(action);
 
-    LibraryModel::GroupSelection selectionGroup =
-            (LibraryModel::GroupSelection) ui->groupSelectionCombo->itemData(comboIndex).toInt();
-    if (selectionGroup == LibraryModel::Neither) {
+    if (selectGrp == LibraryModel::Neither) {
         ui->libraryView->selectionModel()->clear();
     } else {
         ui->libraryView->selectionModel()->clear();
-        QModelIndexList indexes = _libraryModel->indexesForGroup(selectionGroup);
+        QModelIndexList indexes = _libraryModel->indexesForGroup(selectGrp);
         for(QModelIndex index : indexes) {
             ui->libraryView->selectionModel()->select(index,
                                             QItemSelectionModel::Select|QItemSelectionModel::Rows);
@@ -358,18 +362,12 @@ void MainWindow::selectSpecificLibraryElements(int comboIndex)
             }
         }
     }
-    ui->groupSelectionCombo->setCurrentIndex(-1);
 }
 
 void MainWindow::on_libraryView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu contextMenu;
-
-    QMenu *selectMenu = contextMenu.addMenu(tr("Select tracks"));
-    for(QAction *selectAction : _selectActionsList) {
-        selectMenu->addAction(selectAction);
-    }
-
+    contextMenu.addMenu(_grpSelectionMenu);
     contextMenu.addSeparator();
     contextMenu.addActions(QList<QAction*>() << ui->actionImport << ui->actionRemove);
     contextMenu.exec(ui->libraryView->mapToGlobal(pos));
@@ -502,58 +500,6 @@ void MainWindow::on_actionLoginLogout_triggered()
 /*******************************
  * Private methods (utilities) *
  *******************************/
-void MainWindow::initActions()
-{
-    // Connect some basic actions
-    connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
-    connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
-
-    // Initialize default shortcuts for import and remove actions
-    ui->actionRemove->setShortcut(QKeySequence::Delete);
-    ui->actionImport->setShortcut(QKeySequence::Open);
-
-    // Configure settings dialog
-    connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
-    connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
-    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
-    connect(_settings, &QDialog::accepted, LangManager::instance(), &LangManager::updateTranslationsFromSettings);
-
-    // Other actions are connected automatically (on_actionXxx_trigered())
-}
-
-void MainWindow::initGroupSelectionHelpers()
-{
-    QList<QPair<LibraryModel::GroupSelection,QString>> selectionGrps;
-
-    // Set the list of all supported actions
-    selectionGrps << qMakePair(LibraryModel::AllTracks, tr("All"));
-    selectionGrps << qMakePair(LibraryModel::Neither, tr("Neither"));
-    selectionGrps << qMakePair(LibraryModel::NewTracks, tr("News"));
-    selectionGrps << qMakePair(LibraryModel::MissingTracks, tr("Missing"));
-    selectionGrps << qMakePair(LibraryModel::LinkedTracks, tr("With better result selected"));
-    selectionGrps << qMakePair(LibraryModel::SearchedAndNotLinkedTracks, tr("No better result selected"));
-
-    for(auto pair : selectionGrps) {
-        int id = pair.first;
-        QString label = pair.second;
-
-        // Add each one to the comboBox
-        ui->groupSelectionCombo->addItem(label, id);
-
-        QAction * action = new QAction(label, ui->libraryView);
-        _groupSelectionMapper.setMapping(action, id);
-        connect(action, SIGNAL(triggered()), &_groupSelectionMapper, SLOT(map()));
-
-        _selectActionsList << action;
-    }
-    // Connect combobox to the slot
-    connect(ui->groupSelectionCombo, SIGNAL(activated(int)), this, SLOT(selectSpecificLibraryElements(int)));
-    // Connect context menu, via the QSignalMapper
-    connect(&_groupSelectionMapper, SIGNAL(mapped(int)), this, SLOT(selectSpecificLibraryElements(int)));
-    // It is always a wrong entry displayed and selected by default
-    ui->groupSelectionCombo->setCurrentIndex(-1);
-}
-
 void MainWindow::initLibraryModelView()
 {
     // Configure Library Model and View
@@ -600,6 +546,56 @@ void MainWindow::initSearchResultsModelView()
             _pictureDownloader, &PictureDownloader::downloadTrackPicture);
     connect(_pictureDownloader, &PictureDownloader::pictureDownloadFinished,
             ui->trackInfos, &TrackInfosView::displayDownloadedPicture);
+}
+
+void MainWindow::initActions()
+{
+    // Connect some basic actions
+    connect(ui->actionClose, &QAction::triggered, this, &MainWindow::close);
+    connect(ui->actionAbout, &QAction::triggered, _aboutDialog, &QDialog::show);
+
+    // Initialize default shortcuts for import and remove actions
+    ui->actionRemove->setShortcut(QKeySequence::Delete);
+    ui->actionImport->setShortcut(QKeySequence::Open);
+
+    // Configure settings dialog
+    connect(ui->actionSettings, &QAction::triggered, _settings, &QDialog::open);
+    connect(_settings, &QDialog::accepted, this, &MainWindow::updateSettings);
+    connect(_settings, &QDialog::accepted, _libraryModel, &LibraryModel::updateSettings);
+    connect(_settings, &QDialog::accepted, LangManager::instance(), &LangManager::updateTranslationsFromSettings);
+
+    // Other actions are connected automatically (on_actionXxx_trigered())
+}
+
+void MainWindow::initGroupSelectionMenu()
+{
+    // Initialize menu
+    _grpSelectionMenu = new QMenu(this);
+
+    // Initialize supported actions
+    QList<LibraryModel::GroupSelection> groups;
+    groups << LibraryModel::AllTracks << LibraryModel::Neither << LibraryModel::NewTracks
+           << LibraryModel::MissingTracks << LibraryModel::LinkedTracks << LibraryModel::SearchedAndNotLinkedTracks;
+
+    for(LibraryModel::GroupSelection group : groups) {
+        QAction * action = new QAction(ui->libraryView);
+        connect(action, &QAction::triggered, this, &MainWindow::selectSpecificLibraryElements);
+        // Add action to the map, to allow retranslation later
+        _grpSelectionActions.insert(group, action);
+        // Add action to the submenu
+        _grpSelectionMenu->addAction(action);
+    }
+}
+
+void MainWindow::updateGrpSelectionLabels()
+{
+    _grpSelectionMenu->setTitle(tr("Select tracks"));
+    _grpSelectionActions[LibraryModel::AllTracks]->setText(tr("All"));
+    _grpSelectionActions[LibraryModel::Neither]->setText(tr("Neither"));
+    _grpSelectionActions[LibraryModel::NewTracks]->setText(tr("News"));
+    _grpSelectionActions[LibraryModel::MissingTracks]->setText(tr("Missing"));
+    _grpSelectionActions[LibraryModel::LinkedTracks]->setText(tr("With better result selected"));
+    _grpSelectionActions[LibraryModel::SearchedAndNotLinkedTracks]->setText(tr("No better result selected"));
 }
 
 const QFileInfoList MainWindow::filteredFileList(const QFileInfo &entry) const

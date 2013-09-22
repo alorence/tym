@@ -144,7 +144,7 @@ private slots:
      *
      * \param checkGroup index of the combo element selected
      */
-    void selectSpecificLibraryElements(int checkGroup);
+    void selectSpecificLibraryElements();
     /*!
      * \brief Open the context menu on library table view
      * \param pos Global mouse position
@@ -192,24 +192,25 @@ private slots:
 private:
 
     /*!
-     * \brief Perform some connections related to actions in general
-     */
-    void initActions();
-
-    /*!
-     * \brief Initialize group selection combobox and the list of actions used when context menu is opened
-     */
-    void initGroupSelectionHelpers();
-
-    /*!
      * \brief Initialize variables and connections related to Library view/model
      */
     void initLibraryModelView();
-
     /*!
      * \brief Initialize variables and connections related to Search Results view/model
      */
     void initSearchResultsModelView();
+    /*!
+     * \brief Perform some connections related to actions in general
+     */
+    void initActions();
+    /*!
+     * \brief Initialize list of actions used for group selection context menu
+     */
+    void initGroupSelectionMenu();
+    /*!
+     * \brief Set texts for group selection context menu
+     */
+    void updateGrpSelectionLabels();
 
     /*!
      * \brief Return a list of files supported by the application
@@ -231,6 +232,9 @@ private:
     About * _aboutDialog;
     SettingsDialog* _settings;
 
+    QMenu * _grpSelectionMenu;
+    QMap<LibraryModel::GroupSelection, QAction*> _grpSelectionActions;
+
     BPDatabase* _dbHelper;
     LibraryModel* _libraryModel;
     SearchResultsModel* _searchModel;
@@ -238,8 +242,6 @@ private:
     PictureDownloader* _pictureDownloader;
     QThread* _libStatusUpdateThread;
 
-    QSignalMapper _groupSelectionMapper;
-    QList<QAction*> _selectActionsList;
 
     QStringList _expandedItems;
     QLabel * _networkStatus;
